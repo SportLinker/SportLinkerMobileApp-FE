@@ -15,6 +15,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { persistor, store } from "./redux/store";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
+import { PaperProvider } from "react-native-paper";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -52,48 +53,50 @@ const App = () => {
     <SafeAreaProvider>
       <Provider store={store}>
         <PersistGate persistor={persistor}>
-          <StatusBar style="dark" />
-          <NavigationContainer>
-            <Stack.Navigator
-              initialRouteName="Login"
-              options={{
-                headerShown: false,
-                headerLeft: () => null, // This will remove the left button
-              }}
-              screenOptions={{
-                cardStyle: {
-                  flex: 1,
-                  paddingTop:
-                    Platform.OS === "ios" ? StatusBar.currentHeight : 40,
-                },
-              }}
-            >
-              <Stack.Screen
-                name="Login"
-                component={LoginScreen}
+          <PaperProvider>
+            <StatusBar style="dark" />
+            <NavigationContainer>
+              <Stack.Navigator
+                initialRouteName="Login"
                 options={{
                   headerShown: false,
                   headerLeft: () => null, // This will remove the left button
                 }}
-              />
-              <Stack.Screen
-                name="Register"
-                component={RegisterScreen}
-                options={{
-                  headerShown: false,
-                  headerLeft: () => null, // This will remove the left button
+                screenOptions={{
+                  cardStyle: {
+                    flex: 1,
+                    paddingTop:
+                      Platform.OS === "ios" ? StatusBar.currentHeight : 40,
+                  },
                 }}
-              />
-              <Stack.Screen
-                name="Authentabs"
-                component={Authentabs}
-                options={{
-                  headerShown: false,
-                  headerLeft: () => null, // This will remove the left button
-                }}
-              />
-            </Stack.Navigator>
-          </NavigationContainer>
+              >
+                <Stack.Screen
+                  name="Login"
+                  component={LoginScreen}
+                  options={{
+                    headerShown: false,
+                    headerLeft: () => null, // This will remove the left button
+                  }}
+                />
+                <Stack.Screen
+                  name="Register"
+                  component={RegisterScreen}
+                  options={{
+                    headerShown: false,
+                    headerLeft: () => null, // This will remove the left button
+                  }}
+                />
+                <Stack.Screen
+                  name="Authentabs"
+                  component={Authentabs}
+                  options={{
+                    headerShown: false,
+                    headerLeft: () => null, // This will remove the left button
+                  }}
+                />
+              </Stack.Navigator>
+            </NavigationContainer>
+          </PaperProvider>
         </PersistGate>
       </Provider>
     </SafeAreaProvider>
