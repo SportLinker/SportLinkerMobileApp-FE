@@ -9,30 +9,32 @@ export default function HomeTabs() {
   const Stack = createStackNavigator();
 
   return (
-    <Stack.Navigator
-      initialRouteName="HomeScreen"
-      options={{
-        headerShown: false,
-        headerLeft: () => null, // This will remove the left button
-      }}
-    >
-      <Stack.Screen
-        name="HomeScreen"
-        component={HomeScreen}
+    <>
+      <Stack.Navigator
+        initialRouteName="HomeScreen"
         options={{
           headerShown: false,
           headerLeft: () => null, // This will remove the left button
         }}
-      />
+      >
+        <Stack.Screen
+          name="HomeScreen"
+          component={HomeScreen}
+          options={{
+            headerShown: false,
+            headerLeft: () => null, // This will remove the left button
+          }}
+        />
 
-      <Stack.Screen
-        name="PostLinkerScreen"
-        component={PostLinkerScreen}
-        options={{
-          headerShown: false,
-          headerLeft: () => null, // This will remove the left button
-        }}
-      />
-    </Stack.Navigator>
+        <Stack.Screen
+          name="PostLinkerScreen"
+          component={PostLinkerScreen}
+          options={{
+            headerShown: false,
+            headerLeft: () => null, // This will remove the left button
+          }}
+        />
+      </Stack.Navigator>
+    </>
   );
 }
