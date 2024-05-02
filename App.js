@@ -9,13 +9,14 @@ import LoginScreen from "./screens/LoginScreen";
 import NewsScreen from "./screens/NewsScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import HomeTabs from "./tabs/HomeTabs";
-import { HomeOutlined, BellOutlined } from "@ant-design/icons-react-native";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { persistor, store } from "./redux/store";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { PaperProvider } from "react-native-paper";
+
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -34,6 +35,9 @@ const Authentabs = () => {
         component={HomeTabs}
         options={{
           tabBarLabel: "Home",
+          tabBarIcon: ({ color, size }) => (
+            <Icon name={"home-outline"} color={color} size={size + 5} />
+          ),
           headerShown: false,
         }}
       />

@@ -1,8 +1,8 @@
 import { View, Text, Platform } from "react-native";
 import React from "react";
-import HomeScreen from "../screens/HomeScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import HomeScreen from "../screens/HomeScreen/HomeScreen";
 import PostLinkerScreen from "../screens/PostLinkerScreen";
 
 export default function HomeTabs() {
