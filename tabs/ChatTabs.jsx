@@ -1,32 +1,23 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import HomeScreen from "../screens/HomeScreen/HomeScreen";
-import PostLinkerScreen from "../screens/PostLinkerScreen";
+import ChatListScreen from "../screens/ChatScreen/ChatListScreen";
+import ChatDetail from "../screens/ChatScreen/ChatDetail";
 
-export default function HomeTabs() {
+export default function ChatTabs() {
   const Stack = createStackNavigator();
 
   return (
     <>
       <Stack.Navigator
-        initialRouteName="HomeScreen"
+        initialRouteName="ChatListScreen"
         options={{
           headerShown: false,
           headerLeft: () => null, // This will remove the left button
         }}
       >
         <Stack.Screen
-          name="HomeScreen"
-          component={HomeScreen}
-          options={{
-            headerShown: false,
-            headerLeft: () => null, // This will remove the left button
-          }}
-        />
-
-        <Stack.Screen
-          name="PostLinkerScreen"
-          component={PostLinkerScreen}
+          name="ChatListScreen"
+          component={ChatListScreen}
           options={{
             headerShown: false,
             headerLeft: () => null, // This will remove the left button

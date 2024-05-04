@@ -34,13 +34,6 @@ export default function PostItem() {
         style={styles.postImage} // Adjust width and height as needed
       />
       <View style={styles.bottomWrap}>
-        {/* <Button
-          icon={liked ? "thumb-up" : "thumb-up-outline"}
-          mode="text"
-          onPress={handleToggleLike}
-          textColor={liked ? "white" : "black"}
-          style={liked ? [styles.button, styles.liked] : styles.button}
-        ></Button> */}
         <View style={{ flexDirection: "row" }}>
           <TouchableOpacity onPress={handleToggleLike} style={styles.mr5}>
             <Icon name={liked ? "heart" : "heart-outline"} size={30} />
