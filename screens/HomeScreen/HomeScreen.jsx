@@ -8,7 +8,7 @@ import {
   ScrollView,
   RefreshControl,
 } from "react-native";
-import { Button, FAB } from "react-native-paper";
+import { FAB } from "react-native-paper";
 import PostItem from "./PostItem";
 
 const HomeScreen = ({ navigation }) => {
@@ -58,6 +58,8 @@ const HomeScreen = ({ navigation }) => {
               />
             }
           >
+            <PostItem />
+            <PostItem />
             <PostItem />
             <PostItem />
             <PostItem />
