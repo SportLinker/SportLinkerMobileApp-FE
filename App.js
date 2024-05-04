@@ -8,7 +8,10 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import LoginScreen from "./screens/LoginScreen";
 import NewsScreen from "./screens/NewsScreen";
 import RegisterScreen from "./screens/RegisterScreen";
+import ChatListScreen from "./screens/ChatScreen/ChatListScreen";
+
 import HomeTabs from "./tabs/HomeTabs";
+
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { persistor, store } from "./redux/store";
@@ -17,6 +20,8 @@ import { PersistGate } from "redux-persist/integration/react";
 import { PaperProvider } from "react-native-paper";
 
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import ChatTabs from "./tabs/ChatTabs";
+import ChatDetail from "./screens/ChatScreen/ChatDetail";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -37,6 +42,21 @@ const Authentabs = () => {
           tabBarLabel: "Home",
           tabBarIcon: ({ color, size }) => (
             <Icon name={"home-outline"} color={color} size={size + 5} />
+          ),
+          headerShown: false,
+        }}
+      />
+      <Tab.Screen
+        name="Chat"
+        component={ChatTabs}
+        options={{
+          tabBarLabel: "Chat",
+          tabBarIcon: ({ color, size }) => (
+            <Icon
+              name={"chat-processing-outline"}
+              color={color}
+              size={size + 5}
+            />
           ),
           headerShown: false,
         }}
@@ -93,6 +113,14 @@ const App = () => {
                 <Stack.Screen
                   name="Authentabs"
                   component={Authentabs}
+                  options={{
+                    headerShown: false,
+                    headerLeft: () => null, // This will remove the left button
+                  }}
+                />
+                <Stack.Screen
+                  name="ChatDetailScreen"
+                  component={ChatDetail}
                   options={{
                     headerShown: false,
                     headerLeft: () => null, // This will remove the left button
