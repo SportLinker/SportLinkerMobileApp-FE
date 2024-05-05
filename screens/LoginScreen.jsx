@@ -39,7 +39,7 @@ const LoginScreen = ({ navigation }) => {
       </TouchableOpacity>
       <Button
         title="Go to Authentabs"
-        onPress={() => navigation.navigate("Authentabs")}
+        onPress={() => navigation.navigate("BottomTabs")}
       />
       <Button
         title="Go to Register"
