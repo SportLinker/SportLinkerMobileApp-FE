@@ -11,7 +11,7 @@ import BottomTabNavigator from "../tabs/BottomTabNavigator";
 const Stack = createStackNavigator();
 
 const StackNavigator = () => (
-  <Stack.Navigator initialRouteName="Login" headerMode="none">
+  <Stack.Navigator initialRouteName="Login">
     <Stack.Screen
       name="Login"
       options={{
