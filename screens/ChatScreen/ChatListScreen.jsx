@@ -16,6 +16,7 @@ export default function ChatListScreen({ navigation }) {
           iconColor="#1646A9"
           inputStyle={styles.textInput}
           style={styles.searchInput}
+          placeholderTextColor="#707070"
         />
       </View>
       <View style={styles.chatBody}>

@@ -1,10 +1,22 @@
-import { View, Text } from "react-native";
-import React from "react";
+import { View, Text, SafeAreaView } from "react-native";
+import React, { useState } from "react";
+import SearchInputDynamic from "../../component/SearchInputDynamic";
+import { useFocusEffect, useRoute } from "@react-navigation/native";
 
 export default function PlayerScreen() {
+  const route = useRoute();
+  const [activeScreenName, setActiveScreenName] = useState(route.name);
+
+  // Update activeScreenName whenever the screen focus changes
+  useFocusEffect(
+    React.useCallback(() => {
+      setActiveScreenName(route.name);
+    }, [route])
+  );
+
   return (
-    <View>
-      <Text>PlayerScreen</Text>
-    </View>
+    <SafeAreaView>
+      <SearchInputDynamic screen={activeScreenName} />
+    </SafeAreaView>
   );
 }
