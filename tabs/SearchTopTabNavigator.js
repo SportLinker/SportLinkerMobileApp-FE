@@ -14,11 +14,14 @@ const TopTab = createMaterialTopTabNavigator();
 
 const SearchTopTabNavigator = () => (
   <TopTab.Navigator
-    tabBarOptions={{
-      activeTintColor: "#4878D9", // Color when tab is selected
-      inactiveTintColor: "black", // Color when tab is not selected
-      labelStyle: { fontSize: 12 }, // Style for tab label
+    screenOptions={{
+      tabBarActiveTintColor: "#4878D9",
+      tabBarInactiveTintColor: "black",
+      tabBarLabelStyle: {
+        fontSize: 12,
+      },
     }}
+    initialRouteName="Event"
   >
     <TopTab.Screen
       name="Club"
