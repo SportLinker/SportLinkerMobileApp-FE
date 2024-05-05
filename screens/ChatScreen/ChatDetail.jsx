@@ -55,7 +55,7 @@ export default function ChatDetail({ navigation }) {
     if (message.trim() !== "") {
       setMessages([...messages, { text: message, sender: "me" }]);
       setMessage("");
-      Keyboard  .dismiss();
+      Keyboard.dismiss();
     }
   };
 
@@ -206,6 +206,6 @@ const styles = StyleSheet.create({
   },
   btnSend: {
     backgroundColor: "#1646A9",
-    borderRadius: "50%",
+    borderRadius: 50,
   },
 });
