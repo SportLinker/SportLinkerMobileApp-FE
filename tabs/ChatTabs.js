@@ -1,7 +1,6 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import ChatListScreen from "../screens/ChatScreen/ChatListScreen";
-import ChatDetail from "../screens/ChatScreen/ChatDetail";
 
 export default function ChatTabs() {
   const Stack = createStackNavigator();
