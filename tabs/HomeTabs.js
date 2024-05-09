@@ -27,10 +27,10 @@ export default function HomeTabs() {
         <Stack.Screen
           name="PostLinkerScreen"
           component={PostLinkerScreen}
-          options={{
-            headerShown: false,
-            headerLeft: () => null, // This will remove the left button
-          }}
+          // options={{
+          //   headerShown: false,
+          //   headerLeft: () => null, // This will remove the left button
+          // }}
         />
       </Stack.Navigator>
     </>
