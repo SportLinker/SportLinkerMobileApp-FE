@@ -1,6 +1,12 @@
-import { AntDesign, FontAwesome6, Ionicons } from "@expo/vector-icons";
-import React from "react";
 import {
+  AntDesign,
+  FontAwesome6,
+  Ionicons,
+  MaterialIcons,
+} from "@expo/vector-icons";
+import React, { useState } from "react";
+import {
+  Modal,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -30,6 +36,13 @@ export default function AccountScreen({ navigation }) {
     { city: "Ho Chi Minh City", code: "EXE201" },
     { city: "Hanoi", code: "EXE202" },
   ];
+
+  const [showMenu, setShowMenu] = useState(false);
+
+  const toggleMenu = () => {
+    setShowMenu(!showMenu);
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView>
@@ -39,7 +52,7 @@ export default function AccountScreen({ navigation }) {
               style={styles.editBtn}
               onPress={() => navigation.navigate("EditAccountScreen")}
             >
-              <AntDesign name="edit" size={24} color="black" />
+              <MaterialIcons name="edit" size={24} color="black" />
             </TouchableOpacity>
             <View style={styles.horizontalIconsContainer}>
               <TouchableOpacity style={styles.icon}>
@@ -49,7 +62,7 @@ export default function AccountScreen({ navigation }) {
                   color="black"
                 />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.icon}>
+              <TouchableOpacity style={styles.icon} onPress={toggleMenu}>
                 <Ionicons name="ellipsis-vertical" size={24} color="black" />
               </TouchableOpacity>
             </View>
@@ -176,6 +189,28 @@ export default function AccountScreen({ navigation }) {
             ))}
           </View>
         </View>
+        <Modal visible={showMenu} animationType="fade" transparent={true}>
+          <View style={styles.modalContainer}>
+            <View style={styles.menu}>
+              <TouchableOpacity
+                onPress={() => {
+                  setShowMenu(false);
+                  navigation.navigate("PasswordScreen");
+                }}
+                style={styles.menuItem}
+              >
+                <Text style={styles.textMenuItem}>Đổi mật khẩu</Text>
+              </TouchableOpacity>
+              <View
+                style={{
+                  borderBottomWidth: 1,
+                  marginVertical: 10,
+                  borderColor: "#C4C4C4",
+                }}
+              />
+            </View>
+          </View>
+        </Modal>
       </ScrollView>
     </SafeAreaView>
   );
@@ -259,4 +294,22 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   centerStyle: { alignItems: "center" },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "flex-end",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  menu: {
+    backgroundColor: "#FDFDFD",
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    width: "100%",
+  },
+  menuItem: {
+    padding: 10,
+  },
+  textMenuItem: { fontSize: 16, fontWeight: "bold" },
 });
