@@ -11,6 +11,7 @@ import {
   ScrollView,
 } from "react-native";
 import { TextInput, Button, Divider } from "react-native-paper";
+import { Ionicons } from "@expo/vector-icons";
 
 const LoginScreen = ({ navigation }) => {
   const [loginForm, setLoginForm] = useState({ phone: "", password: "" });
@@ -122,6 +123,7 @@ const LoginScreen = ({ navigation }) => {
               right={
                 <TextInput.Icon
                   color="#1646A9"
+                  forceTextInputFocus={false}
                   icon={isHidePassword ? "eye-off" : "eye"}
                   onPress={() => setIsHidePassword(!isHidePassword)}
                 />
@@ -181,7 +183,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#fff",
     paddingHorizontal: 40,
-    paddingVertical: 10,
+    paddingBottom: 20,
     height: "100%",
   },
   label: {
