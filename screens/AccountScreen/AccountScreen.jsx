@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { Avatar } from "react-native-paper";
 
-export default function AccountScreen() {
+export default function AccountScreen({ navigation }) {
   const fakeData = [
     {
       title: "Bóng đá",
@@ -35,7 +35,10 @@ export default function AccountScreen() {
       <ScrollView>
         <View>
           <View style={styles.iconContainer}>
-            <TouchableOpacity style={styles.editBtn}>
+            <TouchableOpacity
+              style={styles.editBtn}
+              onPress={() => navigation.navigate("EditAccountScreen")}
+            >
               <AntDesign name="edit" size={24} color="black" />
             </TouchableOpacity>
             <View style={styles.horizontalIconsContainer}>
