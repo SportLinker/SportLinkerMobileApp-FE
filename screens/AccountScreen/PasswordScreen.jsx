@@ -56,6 +56,25 @@ export default function PasswordScreen({ navigation }) {
               secureTextEntry={true}
             />
           </View>
+          <View
+            style={{
+              marginVertical: 20,
+              marginHorizontal: 50,
+            }}
+          >
+            <TouchableOpacity
+              style={{
+                alignItems: "center",
+                backgroundColor: "#1646A9",
+                paddingHorizontal: 50,
+                paddingVertical: 10,
+                borderRadius: 10,
+              }}
+              onPress={() => navigation.navigate("AccountScreen")}
+            >
+              <Text style={{ color: "#FFF" }}>Cập nhật</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
