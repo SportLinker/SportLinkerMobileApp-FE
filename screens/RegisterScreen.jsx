@@ -1,4 +1,10 @@
-import { View, Text } from "react-native";
+import {
+  View,
+  Text,
+  Platform,
+  KeyboardAvoidingView,
+  ScrollView,
+} from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native";
 import { StyleSheet } from "react-native";
@@ -52,101 +58,104 @@ export default function RegisterScreen({ navigation }) {
           errors,
           touched,
         }) => (
-          <View style={styles.container}>
-            <Image
-              style={{
-                resizeMode: "contain",
-                height: 100,
-                width: 150,
-              }}
-              source={require("./../assets/logo.png")}
-            />
-            <Text style={styles.title}>Đăng ký nào!</Text>
-            <Text style={styles.secondaryText}>
-              Để đăng ký hãy nhập thông tin bên dưới
-            </Text>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+          >
+            <ScrollView style={styles.container}>
+              <Image
+                style={{
+                  resizeMode: "contain",
+                  height: 100,
+                  width: 150,
+                }}
+                source={require("./../assets/logo.png")}
+              />
+              <Text style={styles.title}>Đăng ký nào!</Text>
+              <Text style={styles.secondaryText}>
+                Để đăng ký hãy nhập thông tin bên dưới
+              </Text>
 
-            <Text style={styles.label}>Số điện thoại:</Text>
-            <TextInput
-              style={styles.input}
-              mode="outlined"
-              inputMode="decimal"
-              placeholder="Số điện thoại"
-              onChangeText={handleChange("phone")}
-              onBlur={handleBlur("phone")}
-              value={values.phone}
-              outlineColor={touched.phone && errors.phone && "red"}
-            />
-            <Text style={styles.errorMessage}>
-              {touched.phone && errors.phone && errors.phone}
-            </Text>
+              <Text style={styles.label}>Số điện thoại:</Text>
+              <TextInput
+                style={styles.input}
+                mode="outlined"
+                inputMode="decimal"
+                placeholder="Số điện thoại"
+                onChangeText={handleChange("phone")}
+                onBlur={handleBlur("phone")}
+                value={values.phone}
+                outlineColor={touched.phone && errors.phone && "red"}
+              />
+              <Text style={styles.errorMessage}>
+                {touched.phone && errors.phone && errors.phone}
+              </Text>
 
-            <Text style={styles.label}>Họ và tên:</Text>
-            <TextInput
-              style={styles.input}
-              mode="outlined"
-              inputMode="text"
-              placeholder="Họ và tên"
-              onChangeText={handleChange("fullname")}
-              onBlur={handleBlur("fullname")}
-              value={values.fullname}
-              outlineColor={touched.fullname && errors.fullname && "red"}
-            />
-            <Text style={styles.errorMessage}>
-              {touched.fullname && errors.fullname && errors.fullname}
-            </Text>
+              <Text style={styles.label}>Họ và tên:</Text>
+              <TextInput
+                style={styles.input}
+                mode="outlined"
+                inputMode="text"
+                placeholder="Họ và tên"
+                onChangeText={handleChange("fullname")}
+                onBlur={handleBlur("fullname")}
+                value={values.fullname}
+                outlineColor={touched.fullname && errors.fullname && "red"}
+              />
+              <Text style={styles.errorMessage}>
+                {touched.fullname && errors.fullname && errors.fullname}
+              </Text>
 
-            <Text style={styles.label}>Mật khẩu:</Text>
-            <TextInput
-              style={styles.input}
-              mode="outlined"
-              inputMode="text"
-              placeholder="Mật khẩu"
-              onChangeText={handleChange("password")}
-              onBlur={handleBlur("password")}
-              value={values.password}
-              outlineColor={touched.password && errors.password && "red"}
-            />
-            <Text style={styles.errorMessage}>
-              {touched.password && errors.password && errors.password}
-            </Text>
+              <Text style={styles.label}>Mật khẩu:</Text>
+              <TextInput
+                style={styles.input}
+                mode="outlined"
+                inputMode="text"
+                placeholder="Mật khẩu"
+                onChangeText={handleChange("password")}
+                onBlur={handleBlur("password")}
+                value={values.password}
+                outlineColor={touched.password && errors.password && "red"}
+              />
+              <Text style={styles.errorMessage}>
+                {touched.password && errors.password && errors.password}
+              </Text>
+              <Text style={styles.label}>Xác nhận mật khẩu:</Text>
+              <TextInput
+                style={styles.input}
+                mode="outlined"
+                inputMode="text"
+                placeholder="Xác nhận mật khẩu"
+                onChangeText={handleChange("confirmPassword")}
+                onBlur={handleBlur("confirmPassword")}
+                value={values.confirmPassword}
+                outlineColor={
+                  touched.confirmPassword && errors.confirmPassword && "red"
+                }
+              />
+              <Text style={styles.errorMessage}>
+                {touched.confirmPassword &&
+                  errors.confirmPassword &&
+                  errors.confirmPassword}
+              </Text>
 
-            <Text style={styles.label}>Xác nhận mật khẩu:</Text>
-            <TextInput
-              style={styles.input}
-              mode="outlined"
-              inputMode="text"
-              placeholder="Xác nhận mật khẩu"
-              onChangeText={handleChange("confirmPassword")}
-              onBlur={handleBlur("confirmPassword")}
-              value={values.confirmPassword}
-              outlineColor={
-                touched.confirmPassword && errors.confirmPassword && "red"
-              }
-            />
-            <Text style={styles.errorMessage}>
-              {touched.confirmPassword &&
-                errors.confirmPassword &&
-                errors.confirmPassword}
-            </Text>
+              <Button
+                mode="contained"
+                style={styles.button}
+                labelStyle={styles.buttonText}
+                onPress={handleSubmit}
+              >
+                Đăng ký
+              </Button>
 
-            <Button
-              mode="contained"
-              style={styles.button}
-              labelStyle={styles.buttonText}
-              onPress={handleSubmit}
-            >
-              Đăng ký
-            </Button>
-
-            <Button
-              mode="outlined"
-              onPress={() => navigation.navigate("Login")}
-              style={{ marginTop: 20 }}
-            >
-              Go to Login
-            </Button>
-          </View>
+              <Button
+                mode="outlined"
+                onPress={() => navigation.navigate("Login")}
+                style={{ marginVertical: 20 }}
+              >
+                Go to Login
+              </Button>
+            </ScrollView>
+          </KeyboardAvoidingView>
         )}
       </Formik>
     </SafeAreaView>
