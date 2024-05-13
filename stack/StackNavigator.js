@@ -1,12 +1,14 @@
 // StackNavigator.js
-import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
+import React from "react";
 
 // Import screen components
+import ChatDetail from "../screens/ChatScreen/ChatDetail";
 import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
-import ChatDetail from "../screens/ChatScreen/ChatDetail";
 import BottomTabNavigator from "../tabs/BottomTabNavigator";
+import AccountScreen from "../screens/AccountScreen/AccountScreen";
+import EditAccountScreen from "../screens/AccountScreen/EditAccountScreen";
 
 const Stack = createStackNavigator();
 
