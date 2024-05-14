@@ -3,12 +3,13 @@ import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 
 // Import screen components
+import EditAccountScreen from "../screens/AccountScreen/EditAccountScreen";
+import PasswordScreen from "../screens/AccountScreen/PasswordScreen";
 import ChatDetail from "../screens/ChatScreen/ChatDetail";
 import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import BottomTabNavigator from "../tabs/BottomTabNavigator";
-import AccountScreen from "../screens/AccountScreen/AccountScreen";
-import EditAccountScreen from "../screens/AccountScreen/EditAccountScreen";
+import CoachTopTabNavigator from "../tabs/CoachTopTabNavigator";
 
 const Stack = createStackNavigator();
 
@@ -41,6 +42,30 @@ const StackNavigator = () => (
         headerShown: false,
       }}
       component={ChatDetail}
+    />
+    <Stack.Screen
+      name="EditAccountScreen"
+      component={EditAccountScreen}
+      options={{
+        headerShown: false,
+        headerLeft: () => null,
+      }}
+    />
+    <Stack.Screen
+      name="PasswordScreen"
+      component={PasswordScreen}
+      options={{
+        headerShown: false,
+        headerLeft: () => null,
+      }}
+    />
+    <Stack.Screen
+      name="CoachTopTabs"
+      component={CoachTopTabNavigator}
+      options={{
+        headerShown: false,
+        headerLeft: () => null,
+      }}
     />
   </Stack.Navigator>
 );

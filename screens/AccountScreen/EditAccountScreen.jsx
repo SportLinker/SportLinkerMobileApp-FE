@@ -99,6 +99,13 @@ export default function EditAccountScreen({ navigation }) {
                     size={24}
                     color={isGenderSelected === "male" ? "white" : "black"}
                   />
+                  <Text
+                    style={{
+                      color: isGenderSelected === "male" ? "white" : "black",
+                    }}
+                  >
+                    Nam
+                  </Text>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => handleGenderPress("female")}>
@@ -113,6 +120,13 @@ export default function EditAccountScreen({ navigation }) {
                     size={24}
                     color={isGenderSelected === "female" ? "white" : "black"}
                   />
+                  <Text
+                    style={{
+                      color: isGenderSelected === "female" ? "white" : "black",
+                    }}
+                  >
+                    Nữ
+                  </Text>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => handleGenderPress("secret")}>
@@ -127,6 +141,13 @@ export default function EditAccountScreen({ navigation }) {
                     size={24}
                     color={isGenderSelected === "secret" ? "white" : "black"}
                   />
+                  <Text
+                    style={{
+                      color: isGenderSelected === "secret" ? "white" : "black",
+                    }}
+                  >
+                    Bí mật
+                  </Text>
                 </View>
               </TouchableOpacity>
             </View>
