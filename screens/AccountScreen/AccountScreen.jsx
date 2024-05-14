@@ -15,6 +15,7 @@ import {
   View,
 } from "react-native";
 import { Avatar } from "react-native-paper";
+import { styles } from "../../component/style";
 
 export default function AccountScreen({ navigation }) {
   const fakeData = [
@@ -55,7 +56,10 @@ export default function AccountScreen({ navigation }) {
               <MaterialIcons name="edit" size={24} color="black" />
             </TouchableOpacity>
             <View style={styles.horizontalIconsContainer}>
-              <TouchableOpacity style={styles.icon}>
+              <TouchableOpacity
+                style={styles.icon}
+                onPress={() => navigation.navigate("ChatListScreen")}
+              >
                 <Ionicons
                   name="chatbubble-ellipses-outline"
                   size={24}
@@ -120,7 +124,7 @@ export default function AccountScreen({ navigation }) {
                   <View
                     style={{
                       borderBottomWidth: 1,
-                      marginVertical: 10,
+                      marginVertical: 5,
                       borderColor: "#C4C4C4",
                     }}
                   />
@@ -189,7 +193,7 @@ export default function AccountScreen({ navigation }) {
             ))}
           </View>
         </View>
-        <Modal visible={showMenu} animationType="fade" transparent={true}>
+        <Modal visible={showMenu} animationType="slide" transparent={true}>
           <View style={styles.modalContainer}>
             <View style={styles.menu}>
               <TouchableOpacity
@@ -201,10 +205,29 @@ export default function AccountScreen({ navigation }) {
               >
                 <Text style={styles.textMenuItem}>Đổi mật khẩu</Text>
               </TouchableOpacity>
+
               <View
                 style={{
                   borderBottomWidth: 1,
-                  marginVertical: 10,
+                  marginVertical: 5,
+                  borderColor: "#C4C4C4",
+                }}
+              />
+              <TouchableOpacity
+                onPress={() => {
+                  setShowMenu(false);
+                  navigation.navigate("AccountScreen");
+                }}
+                style={styles.menuItem}
+              >
+                <Text style={[styles.textMenuItem, styles.cancelText]}>
+                  Hủy bỏ
+                </Text>
+              </TouchableOpacity>
+              <View
+                style={{
+                  borderBottomWidth: 1,
+                  marginVertical: 5,
                   borderColor: "#C4C4C4",
                 }}
               />
@@ -215,101 +238,3 @@ export default function AccountScreen({ navigation }) {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  editBtn: {
-    marginRight: 20,
-  },
-  editBtnInfo: {
-    color: "black",
-  },
-  iconContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingHorizontal: 20,
-    alignItems: "center",
-    marginTop: 30,
-  },
-  horizontalIconsContainer: {
-    flexDirection: "row",
-  },
-  icon: {
-    marginLeft: 20,
-  },
-  nameContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  nameText: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginTop: 10,
-  },
-  infoText: {
-    fontSize: 10,
-    fontStyle: "normal",
-    fontWeight: 400,
-  },
-  innerInfoSport: {
-    borderRadius: 20,
-    backgroundColor: "#fff", // Màu nền của phần tử
-    width: 337,
-    height: 101,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5, // Chỉ áp dụng cho Android
-    marginBottom: 20,
-  },
-  topInfoSport: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginHorizontal: 38,
-    marginTop: 30,
-    marginBottom: 10,
-  },
-  bottomInfoSport: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-around",
-  },
-  innerInfoCommunity: {
-    borderRadius: 20,
-    backgroundColor: "#fff", // Màu nền của phần tử
-    width: 337,
-    height: 60,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5, // Chỉ áp dụng cho Android
-    marginBottom: 20,
-  },
-  centerStyle: { alignItems: "center" },
-  modalContainer: {
-    flex: 1,
-    justifyContent: "flex-end",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
-  menu: {
-    backgroundColor: "#FDFDFD",
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    width: "100%",
-  },
-  menuItem: {
-    padding: 10,
-  },
-  textMenuItem: { fontSize: 16, fontWeight: "bold" },
-});
