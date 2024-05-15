@@ -48,6 +48,20 @@ export const styles = StyleSheet.create({
     elevation: 5, // Chỉ áp dụng cho Android
     marginBottom: 20,
   },
+  profileCoach: {
+    borderRadius: 20,
+    backgroundColor: "#fff", // Màu nền của phần tử
+    width: 300,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5, // Chỉ áp dụng cho Android
+    marginBottom: 20,
+  },
   topInfoSport: {
     display: "flex",
     flexDirection: "row",
@@ -95,9 +109,48 @@ export const styles = StyleSheet.create({
   menuItem: {
     padding: 10,
   },
-  textMenuItem: { fontSize: 16, fontWeight: "bold" },
+  textMenuItem: { fontSize: 20, fontWeight: "bold" },
+  textTitleSport: { fontSize: 13, fontWeight: "bold", color: "#707070" },
   cancelText: {
     color: "red",
   },
+  blueText: {
+    color: "blue",
+  },
   marginTopText: { marginTop: 20 },
+  modalMainContainer: {
+    backgroundColor: "white",
+    padding: 20,
+    height: "100%",
+    paddingTop: 30,
+  },
+  iconContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 5,
+  },
+  editBtn: {
+    padding: 10,
+  },
+  horizontalIconsContainer: {
+    flexDirection: "row",
+  },
+  icon: {
+    marginHorizontal: 10,
+  },
+  nameText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginTop: 10,
+  },
+  centerStyle: { alignItems: "center" },
+  nameContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  flexRowStyle: {
+    display: "flex",
+    flexDirection: "row",
+  },
 });
