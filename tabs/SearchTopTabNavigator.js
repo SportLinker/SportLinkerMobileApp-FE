@@ -5,7 +5,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 // Import screen components
 import EventScreen from "../screens/SearchScreen/EventScreen/EventScreen";
-import CoachScreen from "../screens/SearchScreen/CoachScreen";
+import CoachScreen from "../screens/SearchScreen/CoachScreen/CoachScreen";
 import ClubScreen from "../screens/ChatScreen/ClubScreen";
 import PlayerScreen from "../screens/SearchScreen/PlayerScreen";
 import YardScreen from "../screens/SearchScreen/YardScreen";
@@ -18,7 +18,6 @@ const SearchTopTabNavigator = () => {
   const navigationState = useNavigationState((state) => state); // Get the navigation state
   const activeRouteName = navigationState;
 
-  console.log(activeRouteName);
   return (
     <>
       <SearchInputDynamic />

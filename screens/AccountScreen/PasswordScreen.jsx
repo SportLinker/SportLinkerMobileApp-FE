@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Alert,
 } from "react-native";
 import React, { useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
@@ -14,6 +15,34 @@ export default function PasswordScreen({ navigation }) {
   const [oldPassword, onChangeOldPassword] = useState("");
   const [newPassword, onChangeNewPassword] = useState("");
   const [confirmPassword, onChangeConfirmPassword] = useState("");
+
+  const validatePasswords = () => {
+    if (!oldPassword) {
+      Alert.alert("Lỗi", "Mật khẩu cũ không được để trống");
+      return false;
+    }
+    if (!newPassword) {
+      Alert.alert("Lỗi", "Mật khẩu mới không được để trống");
+      return false;
+    }
+    if (!confirmPassword) {
+      Alert.alert("Lỗi", "Xác nhận mật khẩu mới không được để trống");
+      return false;
+    }
+    if (newPassword !== confirmPassword) {
+      Alert.alert("Lỗi", "Mật khẩu mới và xác nhận mật khẩu mới không khớp");
+      return false;
+    }
+    return true;
+  };
+
+  const handleUpdatePassword = () => {
+    if (validatePasswords()) {
+      // Mật khẩu hợp lệ, tiến hành cập nhật
+      navigation.navigate("AccountScreen");
+    }
+  };
+
   return (
     <SafeAreaView>
       <ScrollView>
@@ -70,7 +99,7 @@ export default function PasswordScreen({ navigation }) {
                 paddingVertical: 10,
                 borderRadius: 10,
               }}
-              onPress={() => navigation.navigate("AccountScreen")}
+              onPress={handleUpdatePassword}
             >
               <Text style={{ color: "#FFF" }}>Cập nhật</Text>
             </TouchableOpacity>
