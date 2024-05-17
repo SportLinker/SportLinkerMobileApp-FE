@@ -17,7 +17,9 @@ export default function EventScreen() {
       <Button
         icon="camera"
         mode="contained"
-        onPress={() => setCreatePopup(true)}
+        onPress={() => {
+          setCreatePopup(true);
+        }}
       >
         Press me
       </Button>
