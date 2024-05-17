@@ -9,6 +9,7 @@ import ChatDetail from "../screens/ChatScreen/ChatDetail";
 import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import BottomTabNavigator from "../tabs/BottomTabNavigator";
+import EventDetail from "../screens/SearchScreen/EventScreen/EventDetail";
 import CoachTopTabNavigator from "../tabs/CoachTopTabNavigator";
 import DetailPlayerScreen from "../screens/SearchScreen/PlayerScreen/DetailPlayerScreen";
 
@@ -44,6 +45,14 @@ const StackNavigator = () => (
       }}
       component={ChatDetail}
     />
+    <Stack.Screen
+      name="EventDetailScreen"
+      options={{
+        headerShown: false,
+      }}
+      component={EventDetail}
+    />
+
     <Stack.Screen
       name="EditAccountScreen"
       component={EditAccountScreen}
