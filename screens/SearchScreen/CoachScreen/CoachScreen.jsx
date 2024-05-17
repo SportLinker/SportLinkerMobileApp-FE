@@ -75,7 +75,7 @@ export default function CoachScreen({ navigation }) {
         <View style={[styles.centerStyle, styles.marginTopText]}>
           {fakeData.map((item, index) => (
             <View style={styles.innerInfoSport}>
-              <View key={index}>
+              <View key={item.id}>
                 <TouchableOpacity
                   onPress={() => setModalVisible(true)}
                   style={{

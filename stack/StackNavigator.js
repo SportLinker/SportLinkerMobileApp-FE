@@ -10,6 +10,7 @@ import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import BottomTabNavigator from "../tabs/BottomTabNavigator";
 import CoachTopTabNavigator from "../tabs/CoachTopTabNavigator";
+import DetailPlayerScreen from "../screens/SearchScreen/PlayerScreen/DetailPlayerScreen";
 
 const Stack = createStackNavigator();
 
