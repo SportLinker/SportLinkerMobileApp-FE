@@ -105,6 +105,23 @@ export const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     width: "100%",
+    height: "50%",
+  },
+  avatarContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 10,
+  },
+  textContainer: {
+    marginLeft: 15,
+  },
+  playerName: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  playerGender: {
+    fontSize: 16,
+    color: "gray",
   },
   menuItem: {
     padding: 10,

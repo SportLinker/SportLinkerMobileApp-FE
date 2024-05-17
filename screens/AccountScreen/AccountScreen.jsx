@@ -98,7 +98,7 @@ export default function AccountScreen({ navigation }) {
           <View style={styles.centerStyle}>
             {fakeData.map((item, index) => (
               <View style={styles.innerInfoSport}>
-                <View key={index}>
+                <View key={item.id}>
                   <TouchableOpacity
                     style={{
                       display: "flex",
