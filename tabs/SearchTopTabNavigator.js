@@ -5,12 +5,13 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 // Import screen components
 import EventScreen from "../screens/SearchScreen/EventScreen/EventScreen";
-import CoachScreen from "../screens/SearchScreen/CoachScreen";
+import CoachScreen from "../screens/SearchScreen/CoachScreen/CoachScreen";
 import ClubScreen from "../screens/ChatScreen/ClubScreen";
-import PlayerScreen from "../screens/SearchScreen/PlayerScreen";
+import PlayerScreen from "../screens/SearchScreen/PlayerScreen/PlayerScreen";
 import YardScreen from "../screens/SearchScreen/YardScreen";
 import SearchInputDynamic from "../component/SearchInputDynamic";
 import { useNavigation, useNavigationState } from "@react-navigation/native";
+import PlayerTabs from "./PlayerTabs";
 
 const TopTab = createMaterialTopTabNavigator();
 
@@ -18,7 +19,6 @@ const SearchTopTabNavigator = () => {
   const navigationState = useNavigationState((state) => state); // Get the navigation state
   const activeRouteName = navigationState;
 
-  // console.log(activeRouteName);
   return (
     <>
       <SearchInputDynamic />
@@ -66,7 +66,8 @@ const SearchTopTabNavigator = () => {
         />
         <TopTab.Screen
           name="Players"
-          component={PlayerScreen}
+          component={PlayerTabs}
+          O
           options={{
             tabBarLabel: "Người",
             tabBarIcon: ({ color }) => (
