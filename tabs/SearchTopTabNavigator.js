@@ -18,7 +18,7 @@ const SearchTopTabNavigator = () => {
   const navigationState = useNavigationState((state) => state); // Get the navigation state
   const activeRouteName = navigationState;
 
-  console.log(activeRouteName);
+  // console.log(activeRouteName);
   return (
     <>
       <SearchInputDynamic />
@@ -27,6 +27,7 @@ const SearchTopTabNavigator = () => {
         screenOptions={{
           tabBarActiveTintColor: "#4878D9",
           tabBarInactiveTintColor: "black",
+          swipeEnabled: false,
           tabBarLabelStyle: {
             fontSize: 12,
           },
