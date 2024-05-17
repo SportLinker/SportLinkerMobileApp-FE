@@ -7,6 +7,7 @@ import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import ChatDetail from "../screens/ChatScreen/ChatDetail";
 import BottomTabNavigator from "../tabs/BottomTabNavigator";
+import EventDetail from "../screens/SearchScreen/EventScreen/EventDetail";
 
 const Stack = createStackNavigator();
 
@@ -39,6 +40,13 @@ const StackNavigator = () => (
         headerShown: false,
       }}
       component={ChatDetail}
+    />
+    <Stack.Screen
+      name="EventDetailScreen"
+      options={{
+        headerShown: false,
+      }}
+      component={EventDetail}
     />
   </Stack.Navigator>
 );
