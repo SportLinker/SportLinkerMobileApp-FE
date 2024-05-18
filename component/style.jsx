@@ -107,6 +107,22 @@ export const styles = StyleSheet.create({
     width: "100%",
     height: "50%",
   },
+  menuAccount: {
+    backgroundColor: "#FDFDFD",
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    width: "100%",
+  },
+  menuCoach: {
+    backgroundColor: "#FDFDFD",
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    width: "100%",
+  },
   avatarContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -169,5 +185,21 @@ export const styles = StyleSheet.create({
   flexRowStyle: {
     display: "flex",
     flexDirection: "row",
+  },
+  container: {
+    flex: 1,
+  },
+  header: {
+    height: 50, // Chiều cao của header
+    backgroundColor: "#ccc", // Màu nền của header
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  headerText: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  scene: {
+    flex: 1,
   },
 });

@@ -9,8 +9,7 @@ import ChatDetail from "../screens/ChatScreen/ChatDetail";
 import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import BottomTabNavigator from "../tabs/BottomTabNavigator";
-import CoachTopTabNavigator from "../tabs/CoachTopTabNavigator";
-import DetailPlayerScreen from "../screens/SearchScreen/PlayerScreen/DetailPlayerScreen";
+import ChatListScreen from "../screens/ChatScreen/ChatListScreen";
 
 const Stack = createStackNavigator();
 
@@ -60,14 +59,14 @@ const StackNavigator = () => (
         headerLeft: () => null,
       }}
     />
-    <Stack.Screen
-      name="CoachTopTabs"
-      component={CoachTopTabNavigator}
+    {/* <Stack.Screen
+      name="ChatListScreen"
+      component={ChatListScreen}
       options={{
         headerShown: false,
         headerLeft: () => null,
       }}
-    />
+    /> */}
   </Stack.Navigator>
 );
 

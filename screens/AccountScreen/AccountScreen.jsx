@@ -9,7 +9,6 @@ import {
   Modal,
   SafeAreaView,
   ScrollView,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View,
@@ -20,12 +19,14 @@ import { styles } from "../../component/style";
 export default function AccountScreen({ navigation }) {
   const fakeData = [
     {
+      id: 1,
       title: "Bóng đá",
       level: "Chuyên nghiệp",
       position: "Trung vệ",
       icon: "soccer-ball",
     },
     {
+      id: 2,
       title: "Bóng rổ",
       level: "Amateur",
       position: "Point guard",
@@ -34,8 +35,8 @@ export default function AccountScreen({ navigation }) {
   ];
 
   const fakeDataCommunity = [
-    { city: "Ho Chi Minh City", code: "EXE201" },
-    { city: "Hanoi", code: "EXE202" },
+    { id: 1, city: "Ho Chi Minh City", code: "EXE201" },
+    { id: 2, city: "Hanoi", code: "EXE202" },
   ];
 
   const [showMenu, setShowMenu] = useState(false);
@@ -96,9 +97,9 @@ export default function AccountScreen({ navigation }) {
             <Text style={{ color: "#4878D9", fontWeight: "bold" }}>Thêm</Text>
           </View>
           <View style={styles.centerStyle}>
-            {fakeData.map((item, index) => (
-              <View style={styles.innerInfoSport}>
-                <View key={item.id}>
+            {fakeData.map((item) => (
+              <View key={item.id} style={styles.innerInfoSport}>
+                <View>
                   <TouchableOpacity
                     style={{
                       display: "flex",
@@ -155,9 +156,9 @@ export default function AccountScreen({ navigation }) {
             <Text style={{ color: "#4878D9", fontWeight: "bold" }}>Thêm</Text>
           </View>
           <View style={styles.centerStyle}>
-            {fakeDataCommunity.map((item, index) => (
-              <View style={styles.innerInfoCommunity}>
-                <View key={index}>
+            {fakeDataCommunity.map((item) => (
+              <View key={item.id} style={styles.innerInfoCommunity}>
+                <View>
                   <TouchableOpacity
                     style={{
                       display: "flex",
@@ -193,9 +194,9 @@ export default function AccountScreen({ navigation }) {
             ))}
           </View>
         </View>
-        <Modal visible={showMenu} animationType="slide" transparent={true}>
+        <Modal visible={showMenu} animationType="fade" transparent={true}>
           <View style={styles.modalContainer}>
-            <View style={styles.menu}>
+            <View style={styles.menuAccount}>
               <TouchableOpacity
                 onPress={() => {
                   setShowMenu(false);
