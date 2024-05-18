@@ -33,7 +33,7 @@ export default function EditAccountScreen({ navigation }) {
         <View>
           <TouchableOpacity
             style={{ paddingTop: 30, paddingLeft: 20 }}
-            onPress={() => navigation.navigate("AccountScreen")}
+            onPress={() => navigation.goBack()}
           >
             <AntDesign name="arrowleft" size={24} color="black" />
           </TouchableOpacity>
