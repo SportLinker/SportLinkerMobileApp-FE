@@ -11,7 +11,6 @@ import {
   ScrollView,
 } from "react-native";
 import { TextInput, Button, Divider } from "react-native-paper";
-import { Ionicons } from "@expo/vector-icons";
 
 const LoginScreen = ({ navigation }) => {
   const [loginForm, setLoginForm] = useState({ phone: "", password: "" });
