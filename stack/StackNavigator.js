@@ -8,8 +8,8 @@ import PasswordScreen from "../screens/AccountScreen/PasswordScreen";
 import ChatDetail from "../screens/ChatScreen/ChatDetail";
 import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
+import EventDetail from "../screens/SearchScreen/EventScreen/EventDetail";
 import BottomTabNavigator from "../tabs/BottomTabNavigator";
-import ChatListScreen from "../screens/ChatScreen/ChatListScreen";
 
 const Stack = createStackNavigator();
 
@@ -44,6 +44,14 @@ const StackNavigator = () => (
       component={ChatDetail}
     />
     <Stack.Screen
+      name="EventDetailScreen"
+      options={{
+        headerShown: false,
+      }}
+      component={EventDetail}
+    />
+
+    <Stack.Screen
       name="EditAccountScreen"
       component={EditAccountScreen}
       options={{
@@ -59,14 +67,6 @@ const StackNavigator = () => (
         headerLeft: () => null,
       }}
     />
-    {/* <Stack.Screen
-      name="ChatListScreen"
-      component={ChatListScreen}
-      options={{
-        headerShown: false,
-        headerLeft: () => null,
-      }}
-    /> */}
   </Stack.Navigator>
 );
 

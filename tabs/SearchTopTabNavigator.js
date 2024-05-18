@@ -28,6 +28,7 @@ const SearchTopTabNavigator = () => {
         screenOptions={{
           tabBarActiveTintColor: "#4878D9",
           tabBarInactiveTintColor: "black",
+          swipeEnabled: false,
           tabBarLabelStyle: {
             fontSize: 12,
           },
