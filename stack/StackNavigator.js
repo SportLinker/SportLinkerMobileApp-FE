@@ -1,11 +1,14 @@
 // StackNavigator.js
-import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
+import React from "react";
 
 // Import screen components
+import EditAccountScreen from "../screens/AccountScreen/EditAccountScreen";
+import PasswordScreen from "../screens/AccountScreen/PasswordScreen";
+import ChatDetail from "../screens/ChatScreen/ChatDetail";
 import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
-import ChatDetail from "../screens/ChatScreen/ChatDetail";
+import EventDetail from "../screens/SearchScreen/EventScreen/EventDetail";
 import BottomTabNavigator from "../tabs/BottomTabNavigator";
 
 const Stack = createStackNavigator();
@@ -39,6 +42,30 @@ const StackNavigator = () => (
         headerShown: false,
       }}
       component={ChatDetail}
+    />
+    <Stack.Screen
+      name="EventDetailScreen"
+      options={{
+        headerShown: false,
+      }}
+      component={EventDetail}
+    />
+
+    <Stack.Screen
+      name="EditAccountScreen"
+      component={EditAccountScreen}
+      options={{
+        headerShown: false,
+        headerLeft: () => null,
+      }}
+    />
+    <Stack.Screen
+      name="PasswordScreen"
+      component={PasswordScreen}
+      options={{
+        headerShown: false,
+        headerLeft: () => null,
+      }}
     />
   </Stack.Navigator>
 );
