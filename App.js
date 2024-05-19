@@ -8,7 +8,6 @@ import { store, persistor } from "./redux/store";
 import { PaperProvider } from "react-native-paper";
 import StackNavigator from "./stack/StackNavigator";
 import { NavigationContainer } from "@react-navigation/native";
-import Toast from "react-native-toast-message";
 
 const App = () => (
   <SafeAreaProvider>
@@ -19,12 +18,6 @@ const App = () => (
           <NavigationContainer>
             <StackNavigator />
           </NavigationContainer>
-          <Toast
-            ref={(ref) => Toast.setRef(ref)}
-            visibilityTime={3000}
-            swipeable={true}
-            position="bottom"
-          />
         </PaperProvider>
       </PersistGate>
     </Provider>
