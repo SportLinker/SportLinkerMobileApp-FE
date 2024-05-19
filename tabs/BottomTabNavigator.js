@@ -1,14 +1,14 @@
 // BottomTabNavigator.js
-import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import React from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 // Import screen components
-import HomeTabs from "./HomeTabs";
-import ChatTabs from "./ChatTabs";
-import SearchTopTabNavigator from "./SearchTopTabNavigator";
-import AccountScreen from "../screens/AccountScreen/AccountScreen";
 import { Image } from "react-native";
+import AccountTabs from "./AccountTabs";
+import ChatTabs from "./ChatTabs";
+import HomeTabs from "./HomeTabs";
+import SearchTopTabNavigator from "./SearchTopTabNavigator";
 
 const Tab = createBottomTabNavigator();
 
@@ -61,7 +61,7 @@ const BottomTabNavigator = () => (
     />
     <Tab.Screen
       name="Account"
-      component={AccountScreen}
+      component={AccountTabs}
       options={{
         headerShown: false,
         tabBarLabel: "Tài Khoản",
