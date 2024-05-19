@@ -338,12 +338,13 @@ const EventScheduleTable = () => {
                   alignItems: "center",
                 }}
               >
-                {renderData.map((newItem) => {
+                {renderData.map((newItem, idx) => {
                   if (newItem.isPlaceholder) {
-                    return <DashCircle />;
+                    return <DashCircle key={`placeholder-${idx}`} />;
                   } else if (newItem.remaining) {
                     return (
                       <Text
+                        key={`remaining-${idx}`}
                         style={{
                           color: "#717171",
                           fontWeight: "bold",
@@ -357,6 +358,7 @@ const EventScheduleTable = () => {
                   } else {
                     return (
                       <Avatar.Image
+                        key={`member-${newItem.id}`}
                         size={30}
                         source={{
                           uri: newItem.avatar,
@@ -400,7 +402,7 @@ const EventScheduleTable = () => {
           <FlatList
             data={item.items}
             renderItem={eventView}
-            keyExtractor={({ index }) => index + "" + item.time}
+            keyExtractor={(item, index) => item.id + "-" + index}
           />
         </View>
       </View>
@@ -410,7 +412,7 @@ const EventScheduleTable = () => {
     <View>
       <SectionList
         sections={fakeData}
-        keyExtractor={(item, index) => item + index}
+        keyExtractor={(item, index) => item.id + "-" + index}
         renderItem={scheduleItem}
         renderSectionHeader={({ section: { title } }) => (
           <View>

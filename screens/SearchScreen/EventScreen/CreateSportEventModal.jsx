@@ -11,7 +11,6 @@ import { Button } from "react-native-paper";
 import StepOne from "./Step/StepOne";
 import StepTwo from "./Step/StepTwo";
 import StepThree from "./Step/StepThree";
-import Toast from "react-native-toast-message";
 
 const CreateSportEventModal = ({ visible, onClose }) => {
   const [step, setStep] = useState(1);
@@ -169,6 +168,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
     // position: "absolute",
     // bottom: 20,
     // left: 0,
