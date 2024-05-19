@@ -12,6 +12,8 @@ import { Modal, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { styles } from "../../../component/style";
 import CoachProfile from "./CoachProfile";
 import CoachTrain from "./CoachTrain";
+import CoachTabView from "./CoachTabView";
+import CoachTopTabNavigator from "../../../tabs/CoachTopTabNavigator";
 
 export default function DetailCoachScreen({
   navigation,
@@ -148,14 +150,11 @@ export default function DetailCoachScreen({
                 <CoachProfile />
                 <CoachTrain />
               </ScrollView>
+              {/* <CoachTabView /> */}
 
-              <Modal
-                visible={showMenu}
-                animationType="slide"
-                transparent={true}
-              >
+              <Modal visible={showMenu} animationType="fade" transparent={true}>
                 <View style={styles.modalContainer}>
-                  <View style={styles.menu}>
+                  <View style={styles.menuCoach}>
                     <TouchableOpacity style={styles.menuItem}>
                       <Text style={styles.textTitleSport}>Bóng đá</Text>
                     </TouchableOpacity>

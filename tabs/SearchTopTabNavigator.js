@@ -12,6 +12,7 @@ import YardScreen from "../screens/SearchScreen/YardScreen";
 import SearchInputDynamic from "../component/SearchInputDynamic";
 import { useNavigation, useNavigationState } from "@react-navigation/native";
 import PlayerTabs from "./PlayerTabs";
+import CoachTabs from "./CoachTabs";
 
 const TopTab = createMaterialTopTabNavigator();
 
@@ -97,7 +98,7 @@ const SearchTopTabNavigator = () => {
         />
         <TopTab.Screen
           name="Coaches"
-          component={CoachScreen}
+          component={CoachTabs}
           options={{
             tabBarLabel: "HLV",
             tabBarIcon: ({ color }) => (
