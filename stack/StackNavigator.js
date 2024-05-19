@@ -8,10 +8,8 @@ import PasswordScreen from "../screens/AccountScreen/PasswordScreen";
 import ChatDetail from "../screens/ChatScreen/ChatDetail";
 import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
-import BottomTabNavigator from "../tabs/BottomTabNavigator";
 import EventDetail from "../screens/SearchScreen/EventScreen/EventDetail";
-import CoachTopTabNavigator from "../tabs/CoachTopTabNavigator";
-import DetailPlayerScreen from "../screens/SearchScreen/PlayerScreen/DetailPlayerScreen";
+import BottomTabNavigator from "../tabs/BottomTabNavigator";
 
 const Stack = createStackNavigator();
 
@@ -64,14 +62,6 @@ const StackNavigator = () => (
     <Stack.Screen
       name="PasswordScreen"
       component={PasswordScreen}
-      options={{
-        headerShown: false,
-        headerLeft: () => null,
-      }}
-    />
-    <Stack.Screen
-      name="CoachTopTabs"
-      component={CoachTopTabNavigator}
       options={{
         headerShown: false,
         headerLeft: () => null,

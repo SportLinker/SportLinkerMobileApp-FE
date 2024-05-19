@@ -12,6 +12,7 @@ import {
 import { Avatar } from "react-native-paper";
 import DetailCoachScreen from "../CoachScreen/DetailCoachScreen";
 import TruncatedText from "../../../component/TruncatedText";
+import CoachTabView from "../CoachScreen/CoachTabView";
 
 const fakeData = [
   {
@@ -163,6 +164,7 @@ export default function DetailPlayerScreen({ navigation }) {
                   </View>
                 ))}
               </View>
+
               {/* <View>
                 <Text
                   style={{ marginLeft: 15, fontWeight: "700", marginTop: 20 }}
