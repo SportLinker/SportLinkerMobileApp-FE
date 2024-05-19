@@ -29,7 +29,7 @@ export default function PostItem() {
       </Text>
       <Image
         source={{
-          uri: "https://s3-alpha-sig.figma.com/img/e7cd/93f6/035d892bd30f4affbc75e6a572951ef4?Expires=1715558400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=Io9GViJ4u9jz2bLWXnfCVJtBcaXC1wAZ8m0x-SGgyA2gPnso9BCsWHlGCGMbpOHyJ~Mml1d70EEOpl~PhmZarzqatYhQxSDy4K535oI47daZBGyxUfSujBCLH84vZhh37gG~JYZztrzIMtAYU5DV8KRitcUiUbMOMJevyScgYp~QQXsnsNs5MZy0eOb1l-TlEtIlMGG4MvRINLyDJw3Ig5Mq0b0Plwy8f-3e6dJVKOoHcnxJShNvLdzYWolQakXGB9rNegELoYbvqOJvmcAVJfMzmAFCsmIEVgHtbSUvBP7YDlu~RcBu6tO5JD6MR80mAq8SxW0E-uYSuhnb75wX6Q__",
+          uri: "https://derehamstrikesbowl.co.uk/wp-content/uploads/2022/01/pool-table1.webp",
         }}
         style={styles.postImage} // Adjust width and height as needed
       />
