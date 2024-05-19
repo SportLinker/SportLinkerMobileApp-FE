@@ -31,10 +31,7 @@ const FilterEventOptionList = () => {
       keyExtractor={(item) => item.id.toString()}
       renderItem={({ item, index, separators }) => (
         <Button
-<<<<<<< HEAD
           textColor="white"
-=======
->>>>>>> 077cd7ee25d92334034b3793d2b70963f0132949
           mode="outlined"
           labelStyle={{
             marginVertical: 0,
@@ -46,10 +43,7 @@ const FilterEventOptionList = () => {
             paddingHorizontal: 20,
             paddingVertical: 10,
             height: 40,
-<<<<<<< HEAD
             backgroundColor: "#707070",
-=======
->>>>>>> 077cd7ee25d92334034b3793d2b70963f0132949
           }}
         >
           {item.label}
