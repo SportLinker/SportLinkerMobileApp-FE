@@ -1,11 +1,6 @@
-import {
-  AntDesign,
-  FontAwesome6,
-  Ionicons,
-  MaterialIcons,
-} from "@expo/vector-icons";
 import React, { useState } from "react";
 import {
+  Alert,
   Modal,
   SafeAreaView,
   ScrollView,
@@ -13,7 +8,14 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Avatar } from "react-native-paper";
+import { Avatar, Snackbar } from "react-native-paper";
+import {
+  AntDesign,
+  FontAwesome6,
+  Ionicons,
+  MaterialIcons,
+} from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
 import { styles } from "../../component/style";
 
 export default function AccountScreen({ navigation }) {
@@ -40,9 +42,43 @@ export default function AccountScreen({ navigation }) {
   ];
 
   const [showMenu, setShowMenu] = useState(false);
+  const [image, setImage] = useState(
+    "https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcQlj3rCfLHry58AtJ8ZyBEAFPtChMddDSUSjt7C7nV3Nhsni9RIx5b0-n7LxfgerrPS6b-P-u3BOM3abuY"
+  );
+  const [showImagePickerOptions, setShowImagePickerOptions] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
+  };
+
+  const pickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+      setShowImagePickerOptions(false);
+      setSuccessMessage("Chọn ảnh thành công!");
+    }
+  };
+
+  const captureImage = async () => {
+    const result = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+      setShowImagePickerOptions(false);
+      setSuccessMessage("Chụp ảnh thành công!");
+    }
   };
 
   return (
@@ -74,13 +110,28 @@ export default function AccountScreen({ navigation }) {
           </View>
         </View>
         <View style={styles.centerStyle}>
-          <Avatar.Image
-            size={60}
-            source={{
-              uri: "https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcQlj3rCfLHry58AtJ8ZyBEAFPtChMddDSUSjt7C7nV3Nhsni9RIx5b0-n7LxfgerrPS6b-P-u3BOM3abuY",
-            }}
-            style={{ marginTop: 50 }}
-          />
+          <View style={{ position: "relative" }}>
+            <TouchableOpacity onPress={() => setShowImagePickerOptions(true)}>
+              <Avatar.Image
+                size={60}
+                source={{ uri: image }}
+                style={{ marginTop: 50 }}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setShowImagePickerOptions(true)}
+              style={{
+                position: "absolute",
+                bottom: -5,
+                right: -5,
+                backgroundColor: "white",
+                borderRadius: 15,
+                padding: 3,
+              }}
+            >
+              <Ionicons name="pencil" size={20} color="black" />
+            </TouchableOpacity>
+          </View>
           <View style={styles.nameContainer}>
             <Text style={{ marginTop: 5 }}>Ninh</Text>
             <Text style={{ marginTop: 5 }}>Nam - Người lớn</Text>
@@ -206,7 +257,6 @@ export default function AccountScreen({ navigation }) {
               >
                 <Text style={styles.textMenuItem}>Đổi mật khẩu</Text>
               </TouchableOpacity>
-
               <View
                 style={{
                   borderBottomWidth: 1,
@@ -235,6 +285,60 @@ export default function AccountScreen({ navigation }) {
             </View>
           </View>
         </Modal>
+
+        <Modal
+          visible={showImagePickerOptions}
+          animationType="fade"
+          transparent={true}
+        >
+          <View style={styles.modalContainer}>
+            <View style={styles.menuAccount}>
+              <TouchableOpacity onPress={pickImage} style={styles.menuItem}>
+                <Text style={styles.textMenuItem}>Chọn ảnh từ thư viện</Text>
+              </TouchableOpacity>
+              <View
+                style={{
+                  borderBottomWidth: 1,
+                  marginVertical: 5,
+                  borderColor: "#C4C4C4",
+                }}
+              />
+              <TouchableOpacity onPress={captureImage} style={styles.menuItem}>
+                <Text style={styles.textMenuItem}>Chụp ảnh mới</Text>
+              </TouchableOpacity>
+              <View
+                style={{
+                  borderBottomWidth: 1,
+                  marginVertical: 5,
+                  borderColor: "#C4C4C4",
+                }}
+              />
+              <TouchableOpacity
+                onPress={() => setShowImagePickerOptions(false)}
+                style={styles.menuItem}
+              >
+                <Text style={[styles.textMenuItem, styles.cancelText]}>
+                  Hủy bỏ
+                </Text>
+              </TouchableOpacity>
+              <View
+                style={{
+                  borderBottomWidth: 1,
+                  marginVertical: 5,
+                  borderColor: "#C4C4C4",
+                }}
+              />
+            </View>
+          </View>
+        </Modal>
+        <Snackbar
+          visible={successMessage !== ""}
+          onDismiss={() => setSuccessMessage("")}
+          duration={2000}
+          style={styles.snackbarContainer}
+        >
+          {successMessage}
+        </Snackbar>
       </ScrollView>
     </SafeAreaView>
   );
