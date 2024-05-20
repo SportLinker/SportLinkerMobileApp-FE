@@ -10,22 +10,12 @@ export const styles = StyleSheet.create({
   editBtnInfo: {
     color: "black",
   },
-  iconContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingHorizontal: 20,
-    alignItems: "center",
-    marginTop: 30,
-  },
+
   horizontalIconsContainer: {
     flexDirection: "row",
   },
   icon: {
     marginLeft: 20,
-  },
-  nameContainer: {
-    justifyContent: "center",
-    alignItems: "center",
   },
   nameText: {
     fontSize: 18,
@@ -158,13 +148,18 @@ export const styles = StyleSheet.create({
     backgroundColor: "white",
     padding: 20,
     height: "100%",
-    paddingTop: 30,
+    paddingTop: 20,
   },
   iconContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: 5,
+    padding: 20,
+  },
+  iconCoachContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   editBtn: {
     padding: 10,
@@ -182,8 +177,12 @@ export const styles = StyleSheet.create({
   },
   centerStyle: { alignItems: "center" },
   nameContainer: {
-    justifyContent: "center",
+    marginLeft: 20,
+    paddingTop: 2,
+  },
+  nameAccountContainer: {
     alignItems: "center",
+    paddingTop: 2,
   },
   flexRowStyle: {
     display: "flex",
@@ -217,5 +216,26 @@ export const styles = StyleSheet.create({
       { translateY: -0.4 * screenHeight },
     ],
     backgroundColor: "#1646a9",
+  },
+  header: {
+    marginTop: 30,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingBottom: 10,
+    borderBottomWidth: 2,
+    borderColor: "#C4C4C4",
+    paddingHorizontal: 20,
+  },
+  logo: {
+    height: 35,
+    width: 82,
+    resizeMode: "cover",
+  },
+  buttonsContainer: {
+    flexDirection: "row",
+  },
+  buttonHeader: {
+    backgroundColor: "#F7F7F7",
   },
 });

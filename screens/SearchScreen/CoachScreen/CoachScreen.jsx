@@ -75,7 +75,7 @@ export default function CoachScreen({ navigation }) {
           {fakeData.map((item, index) => (
             <View key={index} style={styles.innerInfoSport}>
               <TouchableOpacity
-                onPress={() => setModalVisible(true)}
+                onPress={() => navigation.navigate("DetailCoachScreen")}
                 style={{
                   display: "flex",
                   flexDirection: "row",
@@ -160,10 +160,6 @@ export default function CoachScreen({ navigation }) {
             </View>
           ))}
         </View>
-        <DetailCoachScreen
-          modalVisible={modalVisible}
-          modalClose={handleCloseModal}
-        />
       </ScrollView>
     </SafeAreaView>
   );

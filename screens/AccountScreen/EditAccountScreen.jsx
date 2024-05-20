@@ -12,31 +12,35 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 
 export default function EditAccountScreen({ navigation }) {
-  const [textName, onChangeTextName] = useState("Ninh");
-  const [textUsername, onChangeTextUsername] = useState("Ninh-88");
-  const [textEmail, onChangeTextEmail] = useState("ninh2002@gmail.com");
-  const [textBio, onChangeTextBio] = useState("Tôi là Ninh, quê Tây Ninh");
-  const [isGenderSelected, setIsGenderSelected] = useState(false);
-  const [isAgeSelected, setIsAgeSelected] = useState(false);
+  const [formData, setFormData] = useState({
+    textName: "Ninh",
+    textUsername: "Ninh-88",
+    textEmail: "ninh2002@gmail.com",
+    textBio: "Tôi là Ninh, quê Tây Ninh",
+    isGenderSelected: "",
+    isAgeSelected: "",
+  });
 
-  const handleGenderPress = (gender) => {
-    setIsGenderSelected(gender);
+  const handleChangeText = (key, value) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [key]: value,
+    }));
   };
 
-  const handleAgePress = (age) => {
-    setIsAgeSelected(age);
+  const handlePress = (key, value) => {
+    setFormData((prevData) => ({ ...prevData, [key]: value }));
+  };
+
+  const handleSubmitUpdate = () => {
+    console.log(formData);
+    navigation.navigate("AccountScreen");
   };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView>
-        <View>
-          <TouchableOpacity
-            style={{ paddingTop: 30, paddingLeft: 20 }}
-            onPress={() => navigation.goBack()}
-          >
-            <AntDesign name="arrowleft" size={24} color="black" />
-          </TouchableOpacity>
+        <View style={{ paddingTop: 20 }}>
           <View style={{ alignItems: "center" }}>
             <Text style={{ fontWeight: "bold", fontSize: 20 }}>
               Cập nhật hồ sơ
@@ -46,32 +50,32 @@ export default function EditAccountScreen({ navigation }) {
             <Text style={styles.textTitle}>Tên</Text>
             <TextInput
               style={styles.input}
-              onChangeText={onChangeTextName}
-              value={textName}
+              onChangeText={(text) => handleChangeText("textName", text)}
+              value={formData.textName}
             />
           </View>
           <View style={styles.infoTextContainer}>
             <Text style={styles.textTitle}>Tên người dùng</Text>
             <TextInput
               style={styles.input}
-              onChangeText={onChangeTextUsername}
-              value={textUsername}
+              onChangeText={(text) => handleChangeText("textUsername", text)}
+              value={formData.textUsername}
             />
           </View>
           <View style={styles.infoTextContainer}>
             <Text style={styles.textTitle}>Email</Text>
             <TextInput
               style={styles.input}
-              onChangeText={onChangeTextEmail}
-              value={textEmail}
+              onChangeText={(text) => handleChangeText("textEmail", text)}
+              value={formData.textEmail}
             />
           </View>
           <View style={styles.infoTextContainer}>
             <Text style={styles.textTitle}>Tiểu sử</Text>
             <TextInput
               style={styles.inputBio}
-              onChangeText={onChangeTextBio}
-              value={textBio}
+              onChangeText={(text) => handleChangeText("textBio", text)}
+              value={formData.textBio}
               multiline={true}
               numberOfLines={4}
               returnKeyType="done"
@@ -87,63 +91,86 @@ export default function EditAccountScreen({ navigation }) {
                 marginTop: 10,
               }}
             >
-              <TouchableOpacity onPress={() => handleGenderPress("male")}>
+              <TouchableOpacity
+                onPress={() => handlePress("isGenderSelected", "male")}
+              >
                 <View
                   style={[
                     styles.iconGender,
-                    isGenderSelected === "male" && styles.iconSelected,
+                    formData.isGenderSelected === "male" && styles.iconSelected,
                   ]}
                 >
                   <Ionicons
                     name="male"
                     size={24}
-                    color={isGenderSelected === "male" ? "white" : "black"}
+                    color={
+                      formData.isGenderSelected === "male" ? "white" : "black"
+                    }
                   />
                   <Text
                     style={{
-                      color: isGenderSelected === "male" ? "white" : "black",
+                      color:
+                        formData.isGenderSelected === "male"
+                          ? "white"
+                          : "black",
                     }}
                   >
                     Nam
                   </Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => handleGenderPress("female")}>
+              <TouchableOpacity
+                onPress={() => handlePress("isGenderSelected", "female")}
+              >
                 <View
                   style={[
                     styles.iconGender,
-                    isGenderSelected === "female" && styles.iconSelected,
+                    formData.isGenderSelected === "female" &&
+                      styles.iconSelected,
                   ]}
                 >
                   <Ionicons
                     name="female"
                     size={24}
-                    color={isGenderSelected === "female" ? "white" : "black"}
+                    color={
+                      formData.isGenderSelected === "female" ? "white" : "black"
+                    }
                   />
                   <Text
                     style={{
-                      color: isGenderSelected === "female" ? "white" : "black",
+                      color:
+                        formData.isGenderSelected === "female"
+                          ? "white"
+                          : "black",
                     }}
                   >
                     Nữ
                   </Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => handleGenderPress("secret")}>
+              <TouchableOpacity
+                onPress={() => handlePress("isGenderSelected", "secret")}
+              >
                 <View
                   style={[
                     styles.iconGender,
-                    isGenderSelected === "secret" && styles.iconSelected,
+                    formData.isGenderSelected === "secret" &&
+                      styles.iconSelected,
                   ]}
                 >
                   <Ionicons
                     name="male-female"
                     size={24}
-                    color={isGenderSelected === "secret" ? "white" : "black"}
+                    color={
+                      formData.isGenderSelected === "secret" ? "white" : "black"
+                    }
                   />
                   <Text
                     style={{
-                      color: isGenderSelected === "secret" ? "white" : "black",
+                      color:
+                        formData.isGenderSelected === "secret"
+                          ? "white"
+                          : "black",
                     }}
                   >
                     Bí mật
@@ -162,69 +189,81 @@ export default function EditAccountScreen({ navigation }) {
                 marginTop: 10,
               }}
             >
-              <TouchableOpacity onPress={() => handleAgePress("young")}>
+              <TouchableOpacity
+                onPress={() => handlePress("isAgeSelected", "young")}
+              >
                 <View
                   style={[
                     styles.iconGender,
-                    isAgeSelected === "young" && styles.iconSelected,
+                    formData.isAgeSelected === "young" && styles.iconSelected,
                   ]}
                 >
                   <Text
                     style={{
-                      color: isAgeSelected === "young" ? "white" : "black",
+                      color:
+                        formData.isAgeSelected === "young" ? "white" : "black",
                     }}
                   >
                     Thiếu niên
                   </Text>
                   <Text
                     style={{
-                      color: isAgeSelected === "young" ? "white" : "black",
+                      color:
+                        formData.isAgeSelected === "young" ? "white" : "black",
                     }}
                   >
                     (dưới 18)
                   </Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => handleAgePress("adult")}>
+              <TouchableOpacity
+                onPress={() => handlePress("isAgeSelected", "adult")}
+              >
                 <View
                   style={[
                     styles.iconGender,
-                    isAgeSelected === "adult" && styles.iconSelected,
+                    formData.isAgeSelected === "adult" && styles.iconSelected,
                   ]}
                 >
                   <Text
                     style={{
-                      color: isAgeSelected === "adult" ? "white" : "black",
+                      color:
+                        formData.isAgeSelected === "adult" ? "white" : "black",
                     }}
                   >
                     Người lớn
                   </Text>
                   <Text
                     style={{
-                      color: isAgeSelected === "adult" ? "white" : "black",
+                      color:
+                        formData.isAgeSelected === "adult" ? "white" : "black",
                     }}
                   >
                     (18 - 50)
                   </Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => handleAgePress("senior")}>
+              <TouchableOpacity
+                onPress={() => handlePress("isAgeSelected", "senior")}
+              >
                 <View
                   style={[
                     styles.iconGender,
-                    isAgeSelected === "senior" && styles.iconSelected,
+                    formData.isAgeSelected === "senior" && styles.iconSelected,
                   ]}
                 >
                   <Text
                     style={{
-                      color: isAgeSelected === "senior" ? "white" : "black",
+                      color:
+                        formData.isAgeSelected === "senior" ? "white" : "black",
                     }}
                   >
                     Cao tuổi
                   </Text>
                   <Text
                     style={{
-                      color: isAgeSelected === "senior" ? "white" : "black",
+                      color:
+                        formData.isAgeSelected === "senior" ? "white" : "black",
                     }}
                   >
                     (trên 50)
@@ -247,7 +286,7 @@ export default function EditAccountScreen({ navigation }) {
                 paddingVertical: 10,
                 borderRadius: 10,
               }}
-              onPress={() => navigation.navigate("AccountScreen")}
+              onPress={handleSubmitUpdate}
             >
               <Text style={{ color: "#FFF" }}>Cập nhật</Text>
             </TouchableOpacity>
