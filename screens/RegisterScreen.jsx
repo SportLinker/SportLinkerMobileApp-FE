@@ -142,7 +142,13 @@ export default function RegisterScreen({ navigation }) {
                 mode="contained"
                 style={styles.button}
                 labelStyle={styles.buttonText}
-                onPress={handleSubmit}
+                onPress={() => {
+                  // HANDLE SUBMIT
+                  // handleSubmit();
+
+                  // HANDLE DISPLAY OTP
+                  navigation.navigate("OTPScreen");
+                }}
               >
                 Đăng ký
               </Button>
