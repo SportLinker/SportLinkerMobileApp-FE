@@ -10,6 +10,7 @@ import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import EventDetail from "../screens/SearchScreen/EventScreen/EventDetail";
 import BottomTabNavigator from "../tabs/BottomTabNavigator";
+import OTPInputScreen from "../screens/OTPScreen";
 
 const Stack = createStackNavigator();
 
@@ -28,6 +29,13 @@ const StackNavigator = () => (
         headerShown: false,
       }}
       component={RegisterScreen}
+    />
+    <Stack.Screen
+      name="OTPScreen"
+      options={{
+        headerShown: false,
+      }}
+      component={OTPInputScreen}
     />
     <Stack.Screen
       name="BottomTabs"
