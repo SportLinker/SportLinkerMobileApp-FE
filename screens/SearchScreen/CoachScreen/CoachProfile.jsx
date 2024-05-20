@@ -14,7 +14,7 @@ export default function CoachProfile() {
             </View>
             <View style={styles.centerStyle}>
               <Text style={{ color: "#707070" }}>Vị trí</Text>
-              <Text style={{ fontWeight: "bold" }}>Tiền vệ</Text>
+              <Text style={{ fontWeight: "bold" }}>Libero</Text>
             </View>
           </View>
         </View>

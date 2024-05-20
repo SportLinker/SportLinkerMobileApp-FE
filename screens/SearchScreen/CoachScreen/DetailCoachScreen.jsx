@@ -1,287 +1,190 @@
-import {
-  AntDesign,
-  Entypo,
-  FontAwesome,
-  FontAwesome5,
-  FontAwesome6,
-  Ionicons,
-  MaterialIcons,
-} from "@expo/vector-icons";
+import { AntDesign, FontAwesome6, Ionicons } from "@expo/vector-icons";
 import React, { useState } from "react";
-import { Modal, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { Avatar } from "react-native-paper";
 import { styles } from "../../../component/style";
 import CoachProfile from "./CoachProfile";
 import CoachTrain from "./CoachTrain";
-import CoachTabView from "./CoachTabView";
-import CoachTopTabNavigator from "../../../tabs/CoachTopTabNavigator";
 
-export default function DetailCoachScreen({
-  navigation,
-  modalVisible,
-  modalClose,
-}) {
-  const [showMenu, setShowMenu] = useState(false);
-  const [showReportModal, setShowReportModal] = useState(false);
-
-  const toggleMenu = () => {
-    setShowMenu(!showMenu);
-  };
-  const handleCloseModal = () => {
-    setShowReportModal(false);
-  };
+export default function DetailCoachScreen({ navigation }) {
+  const [image, setImage] = useState(
+    "https://scontent.fsgn8-4.fna.fbcdn.net/v/t39.30808-6/425623584_2313425845714783_5573579011979336424_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_ohc=cIh6RaICGbsQ7kNvgEWA7Pf&_nc_ht=scontent.fsgn8-4.fna&oh=00_AYDDdVJzDlj1Iq8EGUVWtqpUWqxH8KAgXU-GUzDBqueVlw&oe=6650F6E5"
+  );
+  const [liked, setLiked] = useState("");
+  const [addUser, setAddUser] = useState("");
 
   return (
-    <>
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={modalClose}
-      >
-        <View style={styles.modalMainContainer}>
-          <ScrollView>
-            <View>
-              <View style={styles.iconContainer}>
-                <TouchableOpacity style={styles.editBtn} onPress={modalClose}>
-                  <AntDesign name="arrowleft" size={24} color="black" />
-                </TouchableOpacity>
-                <View style={styles.horizontalIconsContainer}>
-                  <TouchableOpacity
-                    style={styles.icon}
-                    onPress={() => navigation.navigate("ChatListScreen")}
-                  >
-                    <Ionicons
-                      name="chatbubble-ellipses-outline"
-                      size={24}
-                      color="black"
-                    />
-                  </TouchableOpacity>
-                  <TouchableOpacity style={styles.icon} onPress={toggleMenu}>
-                    <Ionicons
-                      name="ellipsis-vertical"
-                      size={24}
-                      color="black"
-                    />
-                  </TouchableOpacity>
-                </View>
-              </View>
-              <View style={styles.centerStyle}>
-                <FontAwesome6 name="soccer-ball" size={60} color="black" />
-                <View style={styles.nameContainer}>
-                  <Text
-                    style={{ marginTop: 5, fontSize: 20, fontWeight: "bold" }}
-                  >
-                    Bóng đá
-                  </Text>
-                  <Text style={{ marginTop: 2, color: "#707070" }}>Ninh</Text>
-                </View>
-              </View>
-              <View
+    <View style={styles.modalMainContainer}>
+      <ScrollView>
+        <View>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+            }}
+          >
+            <View style={{ alignItems: "center", marginLeft: 15 }}>
+              <Avatar.Image size={100} source={{ uri: image }} />
+            </View>
+            <View style={styles.nameContainer}>
+              <Text
                 style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-around",
-                  marginTop: 20,
+                  fontSize: 20,
+                  fontWeight: "bold",
                 }}
               >
-                <View
-                  style={{
-                    alignItems: "center",
-                    borderRightWidth: 1,
-                    paddingRight: 30,
-                    borderRightColor: "#C4C4C4",
-                    paddingVertical: 15,
-                  }}
+                Kim Anh
+              </Text>
+              <View style={{ display: "flex", flexDirection: "row" }}>
+                <Text style={{ paddingTop: 3, fontWeight: 700, fontSize: 16 }}>
+                  Nữ
+                </Text>
+                <Text style={{ paddingHorizontal: 5, paddingTop: 5 }}>●</Text>
+                <FontAwesome6
+                  name="volleyball"
+                  size={15}
+                  color="black"
+                  style={{ paddingRight: 5, paddingTop: 8 }}
+                />
+                <Text
+                  style={{ fontWeight: 700, color: "#707070", paddingTop: 5 }}
                 >
-                  <Text
-                    style={{
-                      color: "#707070",
-                      fontSize: 16,
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Trận đấu
-                  </Text>
-                  <Text style={{ fontSize: 20, fontWeight: "bold" }}>0</Text>
-                </View>
-                <View
-                  style={{
-                    alignItems: "center",
-                    borderRightWidth: 1,
-                    borderRightColor: "#C4C4C4",
-                    paddingRight: 30,
-                    paddingVertical: 15,
-                    marginLeft: 15,
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: "#707070",
-                      fontSize: 16,
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Hoạt động
-                  </Text>
-                  <Text style={{ fontSize: 20, fontWeight: "bold" }}>1</Text>
-                </View>
-                <View style={{ alignItems: "center", paddingVertical: 15 }}>
-                  <Text
-                    style={{
-                      color: "#707070",
-                      fontSize: 16,
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Giải thưởng
-                  </Text>
-                  <Text style={{ fontSize: 20, fontWeight: "bold" }}>0</Text>
-                </View>
+                  Bóng chuyền
+                </Text>
               </View>
               <View
-                style={{
-                  borderWidth: 1,
-                  marginVertical: 20,
-                  borderColor: "#c4c4c4",
-                }}
-              />
-              {/* <CoachTopTabNavigator /> */}
-              <ScrollView>
-                <CoachProfile />
-                <CoachTrain />
-              </ScrollView>
-              {/* <CoachTabView /> */}
-
-              <Modal visible={showMenu} animationType="fade" transparent={true}>
-                <View style={styles.modalContainer}>
-                  <View style={styles.menuCoach}>
-                    <TouchableOpacity style={styles.menuItem}>
-                      <Text style={styles.textTitleSport}>Bóng đá</Text>
-                    </TouchableOpacity>
-
-                    <View
-                      style={{
-                        borderBottomWidth: 1,
-                        marginVertical: 5,
-                        borderColor: "#C4C4C4",
-                      }}
+                style={{ display: "flex", flexDirection: "row", marginTop: 10 }}
+              >
+                {addUser === "checked" ? (
+                  <TouchableOpacity onPress={() => setAddUser("unchecked")}>
+                    <AntDesign
+                      name="deleteuser"
+                      size={30}
+                      color="red"
+                      style={{ marginRight: 30 }}
                     />
-                    <TouchableOpacity
-                      style={[styles.menuItem, styles.flexRowStyle]}
-                    >
-                      <FontAwesome
-                        name="bookmark-o"
-                        size={24}
-                        color="blue"
-                        style={{ paddingRight: 8 }}
-                      />
-                      <Text style={[styles.textMenuItem, styles.blueText]}>
-                        Yêu thích
-                      </Text>
-                    </TouchableOpacity>
-
-                    <View
-                      style={{
-                        borderBottomWidth: 1,
-                        marginVertical: 5,
-                        borderColor: "#C4C4C4",
-                      }}
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity onPress={() => setAddUser("checked")}>
+                    <AntDesign
+                      name="adduser"
+                      size={30}
+                      color="#1646a9"
+                      style={{ marginRight: 30 }}
                     />
-                    <TouchableOpacity
-                      style={[styles.menuItem, styles.flexRowStyle]}
-                    >
-                      <FontAwesome5
-                        name="calendar-check"
-                        size={24}
-                        color="black"
-                        style={{ paddingRight: 8 }}
-                      />
-                      <Text style={styles.textMenuItem}>Mời người chơi</Text>
-                    </TouchableOpacity>
-
-                    <View
-                      style={{
-                        borderBottomWidth: 1,
-                        marginVertical: 5,
-                        borderColor: "#C4C4C4",
-                      }}
+                  </TouchableOpacity>
+                )}
+                <TouchableOpacity>
+                  <Ionicons
+                    name="chatbubble-ellipses-outline"
+                    size={30}
+                    color="black"
+                    style={{ marginRight: 20 }}
+                    onPress={() => navigation.navigate("ChatListScreen")}
+                  />
+                </TouchableOpacity>
+                {liked === "liked" ? (
+                  <TouchableOpacity onPress={() => setLiked("unliked")}>
+                    <AntDesign
+                      name="star"
+                      size={30}
+                      color="#F9A825"
+                      style={{ marginRight: 20 }}
                     />
-                    <TouchableOpacity
-                      style={[styles.menuItem, styles.flexRowStyle]}
-                      onPress={() => {
-                        setShowReportModal(true);
-                        setShowMenu(false);
-                      }}
-                    >
-                      <Entypo
-                        name="flag"
-                        size={24}
-                        color="black"
-                        style={{ paddingRight: 8 }}
-                      />
-                      <Text style={styles.textMenuItem}>
-                        Báo cáo người chơi
-                      </Text>
-                    </TouchableOpacity>
-
-                    <View
-                      style={{
-                        borderBottomWidth: 1,
-                        marginVertical: 5,
-                        borderColor: "#C4C4C4",
-                      }}
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity onPress={() => setLiked("liked")}>
+                    <AntDesign
+                      name="staro"
+                      size={30}
+                      color="black"
+                      style={{ marginRight: 20 }}
                     />
-                    <TouchableOpacity
-                      style={[styles.menuItem, styles.flexRowStyle]}
-                    >
-                      <MaterialIcons
-                        name="block-flipped"
-                        size={24}
-                        color="red"
-                        style={{ paddingRight: 8 }}
-                      />
-                      <Text style={[styles.textMenuItem, styles.cancelText]}>
-                        Chặn người chơi
-                      </Text>
-                    </TouchableOpacity>
-
-                    <View
-                      style={{
-                        borderBottomWidth: 1,
-                        marginVertical: 5,
-                        borderColor: "#C4C4C4",
-                      }}
-                    />
-                    <TouchableOpacity
-                      onPress={() => {
-                        setShowMenu(false);
-                      }}
-                      style={[styles.menuItem, styles.flexRowStyle]}
-                    >
-                      <AntDesign
-                        name="close"
-                        size={24}
-                        color="red"
-                        style={{ paddingRight: 8, paddingTop: 2 }}
-                      />
-                      <Text style={[styles.textMenuItem, styles.cancelText]}>
-                        Hủy bỏ
-                      </Text>
-                    </TouchableOpacity>
-                    <View
-                      style={{
-                        borderBottomWidth: 1,
-                        marginVertical: 5,
-                        borderColor: "#C4C4C4",
-                      }}
-                    />
-                  </View>
-                </View>
-              </Modal>
+                  </TouchableOpacity>
+                )}
+                <TouchableOpacity>
+                  <Ionicons name="flag" size={30} color="red" />
+                </TouchableOpacity>
+              </View>
             </View>
+          </View>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-around",
+              marginTop: 20,
+            }}
+          >
+            <View
+              style={{
+                alignItems: "center",
+                borderRightWidth: 1,
+                paddingRight: 30,
+                borderRightColor: "#C4C4C4",
+                paddingVertical: 15,
+              }}
+            >
+              <Text
+                style={{
+                  color: "#707070",
+                  fontSize: 16,
+                  fontWeight: "bold",
+                }}
+              >
+                Trận đấu
+              </Text>
+              <Text style={{ fontSize: 20, fontWeight: "bold" }}>0</Text>
+            </View>
+            <View
+              style={{
+                alignItems: "center",
+                borderRightWidth: 1,
+                borderRightColor: "#C4C4C4",
+                paddingRight: 30,
+                paddingVertical: 15,
+                marginLeft: 15,
+              }}
+            >
+              <Text
+                style={{
+                  color: "#707070",
+                  fontSize: 16,
+                  fontWeight: "bold",
+                }}
+              >
+                Hoạt động
+              </Text>
+              <Text style={{ fontSize: 20, fontWeight: "bold" }}>1</Text>
+            </View>
+            <View style={{ alignItems: "center", paddingVertical: 15 }}>
+              <Text
+                style={{
+                  color: "#707070",
+                  fontSize: 16,
+                  fontWeight: "bold",
+                }}
+              >
+                Giải thưởng
+              </Text>
+              <Text style={{ fontSize: 20, fontWeight: "bold" }}>0</Text>
+            </View>
+          </View>
+          <View
+            style={{
+              borderWidth: 1,
+              marginVertical: 20,
+              borderColor: "#c4c4c4",
+            }}
+          />
+          {/* <CoachTopTabNavigator /> */}
+          <ScrollView>
+            <CoachProfile />
+            <CoachTrain />
           </ScrollView>
+          {/* <CoachTabView /> */}
         </View>
-      </Modal>
-    </>
+      </ScrollView>
+    </View>
   );
 }

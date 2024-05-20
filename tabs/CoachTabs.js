@@ -8,15 +8,9 @@ export default function CoachTabs() {
 
   return (
     <>
-      <Stack.Navigator
-        initialRouteName="CoachScreen"
-        options={{
-          headerShown: false,
-          headerLeft: () => null,
-        }}
-      >
+      <Stack.Navigator initialRouteName="CoachScreen">
         <Stack.Screen
-          name="AccountScreen"
+          name="CoachScreen"
           component={CoachScreen}
           options={{
             headerShown: false,
