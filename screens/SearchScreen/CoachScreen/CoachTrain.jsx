@@ -20,8 +20,8 @@ export default function CoachTrain() {
             fontSize: 16,
           }}
         >
-          15-year-old soccer player. University captain amateur teams and
-          players in the US
+          15-year-old volleyball player. University captain of amateur teams and
+          players in the VN
         </Text>
       </View>
       <View style={{ marginTop: 10 }}>

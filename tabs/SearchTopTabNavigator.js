@@ -35,7 +35,7 @@ const SearchTopTabNavigator = () => {
         }}
         initialRouteName="Event"
       >
-        <TopTab.Screen
+        {/* <TopTab.Screen
           name="Club"
           component={ClubScreen}
           options={{
@@ -49,7 +49,7 @@ const SearchTopTabNavigator = () => {
               />
             ),
           }}
-        />
+        /> */}
         <TopTab.Screen
           name="Events"
           component={EventScreen}

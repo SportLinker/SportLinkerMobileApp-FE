@@ -7,10 +7,11 @@ import EditAccountScreen from "../screens/AccountScreen/EditAccountScreen";
 import PasswordScreen from "../screens/AccountScreen/PasswordScreen";
 import ChatDetail from "../screens/ChatScreen/ChatDetail";
 import LoginScreen from "../screens/LoginScreen";
+import OTPInputScreen from "../screens/OTPScreen";
 import RegisterScreen from "../screens/RegisterScreen";
+import DetailCoachScreen from "../screens/SearchScreen/CoachScreen/DetailCoachScreen";
 import EventDetail from "../screens/SearchScreen/EventScreen/EventDetail";
 import BottomTabNavigator from "../tabs/BottomTabNavigator";
-import OTPInputScreen from "../screens/OTPScreen";
 
 const Stack = createStackNavigator();
 
@@ -63,16 +64,28 @@ const StackNavigator = () => (
       name="EditAccountScreen"
       component={EditAccountScreen}
       options={{
-        headerShown: false,
-        headerLeft: () => null,
+        title: "",
+        headerMode: "screen",
+        headerStyle: { backgroundColor: "#1646a9" },
+        headerTintColor: "white",
       }}
     />
     <Stack.Screen
       name="PasswordScreen"
       component={PasswordScreen}
       options={{
-        headerShown: false,
-        headerLeft: () => null,
+        title: "",
+        headerStyle: { backgroundColor: "#1646a9" },
+        headerTintColor: "white",
+      }}
+    />
+    <Stack.Screen
+      name="DetailCoachScreen"
+      component={DetailCoachScreen}
+      options={{
+        title: "",
+        headerStyle: { backgroundColor: "#1646a9" },
+        headerTintColor: "white",
       }}
     />
   </Stack.Navigator>
