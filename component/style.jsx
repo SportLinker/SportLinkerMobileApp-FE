@@ -1,4 +1,7 @@
-import { StyleSheet } from "react-native";
+import { useState } from "react";
+import { Animated, Dimensions, StyleSheet } from "react-native";
+
+const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
 export const styles = StyleSheet.create({
   editBtn: {
@@ -201,5 +204,18 @@ export const styles = StyleSheet.create({
   },
   scene: {
     flex: 1,
+  },
+  snackbarContainer: {
+    borderRadius: 10,
+    position: "absolute",
+    bottom: "50%",
+    left: "50%",
+    alignItems: "center",
+    textAlign: "center",
+    transform: [
+      { translateX: -0.5 * screenWidth },
+      { translateY: -0.4 * screenHeight },
+    ],
+    backgroundColor: "#1646a9",
   },
 });
