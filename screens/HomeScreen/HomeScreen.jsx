@@ -50,10 +50,12 @@ const HomeScreen = ({ navigation }) => {
     <SafeAreaView>
       <View style={styles.container}>
         <View style={styles.header}>
-          <Image
-            source={require("./../../assets/logo.png")}
-            style={styles.logo}
-          />
+          <View style={[styles.logoHeader, styles.pr5]}>
+            <Image
+              source={require("./../../assets/logo.png")}
+              style={styles.logo}
+            />
+          </View>
           <View style={styles.buttonsContainer}>
             <FAB
               icon="plus-circle-outline"
@@ -67,7 +69,7 @@ const HomeScreen = ({ navigation }) => {
               color="black"
               size="small"
               style={styles.buttonHeader}
-              onPress={() => navigation.navigate("PostLinkerScreen")}
+              onPress={() => navigation.navigate("NotificationScreen")}
             />
           </View>
         </View>
@@ -84,6 +86,7 @@ const HomeScreen = ({ navigation }) => {
               titleColor="#4478ff"
             />
           }
+          style={{ paddingHorizontal: 10 }}
         >
           {posts.map((item, index) => (
             <PostItem key={index} />
@@ -96,17 +99,18 @@ const HomeScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 10,
     paddingBottom: 120,
   },
   header: {
-    marginTop: 30,
+    paddingTop: 10,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     paddingBottom: 10,
     borderBottomWidth: 2,
     borderColor: "#C4C4C4",
+    paddingHorizontal: 10,
+    backgroundColor: "#1646a9",
   },
   logo: {
     height: 35,
@@ -115,6 +119,13 @@ const styles = StyleSheet.create({
   },
   buttonsContainer: {
     flexDirection: "row",
+  },
+  logoHeader: {
+    backgroundColor: "#F7F7F7",
+    borderRadius: 10,
+  },
+  pr5: {
+    padding: 5,
   },
   buttonHeader: {
     backgroundColor: "#F7F7F7",

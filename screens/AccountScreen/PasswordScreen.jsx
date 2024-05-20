@@ -38,7 +38,8 @@ export default function PasswordScreen({ navigation }) {
 
   const handleUpdatePassword = () => {
     if (validatePasswords()) {
-      // Mật khẩu hợp lệ, tiến hành cập nhật
+      const data = { oldPassword, newPassword, confirmPassword };
+      console.log(data);
       navigation.navigate("AccountScreen");
     }
   };
@@ -46,16 +47,10 @@ export default function PasswordScreen({ navigation }) {
   return (
     <SafeAreaView>
       <ScrollView>
-        <View>
-          <TouchableOpacity
-            style={{ paddingTop: 30, paddingLeft: 20 }}
-            onPress={() => navigation.navigate("AccountScreen")}
-          >
-            <AntDesign name="arrowleft" size={24} color="black" />
-          </TouchableOpacity>
+        <View style={{ paddingTop: 20 }}>
           <View style={{ alignItems: "center" }}>
             <Text style={{ fontWeight: "bold", fontSize: 20 }}>
-              Cập nhật hồ sơ
+              Thay đổi mật khẩu
             </Text>
           </View>
           <View style={styles.infoTextContainer}>
