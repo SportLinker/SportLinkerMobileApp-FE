@@ -12,6 +12,7 @@ import {
 import { Avatar } from "react-native-paper";
 import DetailCoachScreen from "../CoachScreen/DetailCoachScreen";
 import TruncatedText from "../../../component/TruncatedText";
+import CoachTabView from "../CoachScreen/CoachTabView";
 
 const fakeData = [
   {
@@ -41,6 +42,8 @@ export default function DetailPlayerScreen({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalDetailVisible, setModalDetailVisible] = useState(true);
   const [showMenu, setShowMenu] = useState(false);
+  const [liked, setLiked] = useState("");
+  const [addUser, setAddUser] = useState("");
 
   const handleCloseModal = () => {
     setModalVisible(false);
@@ -92,19 +95,46 @@ export default function DetailPlayerScreen({ navigation }) {
                 </Text>
                 <Text style={{ marginBottom: 10 }}>Nam</Text>
                 <View style={{ display: "flex", flexDirection: "row" }}>
-                  <AntDesign
-                    name="adduser"
-                    size={30}
-                    color="black"
-                    style={{ marginRight: 30 }}
-                  />
-                  <Ionicons
-                    name="chatbubble-ellipses-outline"
-                    size={30}
-                    color="black"
-                    style={{ marginRight: 30 }}
-                  />
-                  <AntDesign name="staro" size={30} color="black" />
+                  {addUser === "checked" ? (
+                    <TouchableOpacity onPress={() => setAddUser("unchecked")}>
+                      <AntDesign
+                        name="deleteuser"
+                        size={30}
+                        color="red"
+                        style={{ marginRight: 30 }}
+                      />
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity onPress={() => setAddUser("checked")}>
+                      <AntDesign
+                        name="adduser"
+                        size={30}
+                        color="#1646a9"
+                        style={{ marginRight: 30 }}
+                      />
+                    </TouchableOpacity>
+                  )}
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate("ChatListScreen"), handleCloseModal();
+                    }}
+                  >
+                    <Ionicons
+                      name="chatbubble-ellipses-outline"
+                      size={30}
+                      color="black"
+                      style={{ marginRight: 30 }}
+                    />
+                  </TouchableOpacity>
+                  {liked === "liked" ? (
+                    <TouchableOpacity onPress={() => setLiked("unliked")}>
+                      <AntDesign name="star" size={30} color="#F9A825" />
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity onPress={() => setLiked("liked")}>
+                      <AntDesign name="staro" size={30} color="black" />
+                    </TouchableOpacity>
+                  )}
                 </View>
               </View>
             </View>
@@ -163,6 +193,7 @@ export default function DetailPlayerScreen({ navigation }) {
                   </View>
                 ))}
               </View>
+
               {/* <View>
                 <Text
                   style={{ marginLeft: 15, fontWeight: "700", marginTop: 20 }}
@@ -213,7 +244,7 @@ export default function DetailPlayerScreen({ navigation }) {
         modalVisible={modalVisible}
         modalClose={handleCloseModal}
       />
-      <Modal visible={showMenu} animationType="slide" transparent={true}>
+      <Modal visible={showMenu} animationType="fade" transparent={true}>
         <View style={styles.modalContainer}>
           <View style={styles.menu}>
             <TouchableOpacity style={styles.menuItem}>
@@ -227,25 +258,7 @@ export default function DetailPlayerScreen({ navigation }) {
                 borderColor: "#C4C4C4",
               }}
             />
-            <TouchableOpacity style={[styles.menuItem, styles.flexRowStyle]}>
-              <FontAwesome
-                name="bookmark-o"
-                size={24}
-                color="blue"
-                style={{ paddingRight: 8 }}
-              />
-              <Text style={[styles.textMenuItem, styles.blueText]}>
-                Yêu thích
-              </Text>
-            </TouchableOpacity>
 
-            <View
-              style={{
-                borderBottomWidth: 1,
-                marginVertical: 5,
-                borderColor: "#C4C4C4",
-              }}
-            />
             <TouchableOpacity style={[styles.menuItem, styles.flexRowStyle]}>
               <FontAwesome5
                 name="calendar-check"
@@ -393,12 +406,7 @@ const styles = {
     width: "30%",
     marginBottom: 20,
   },
-  modalContainer: {
-    flex: 1,
-    justifyContent: "flex-end",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
+
   menu: {
     backgroundColor: "#FDFDFD",
     paddingHorizontal: 20,
@@ -406,7 +414,6 @@ const styles = {
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     width: "100%",
-    height: "50%",
   },
   menuItem: {
     padding: 10,

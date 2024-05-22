@@ -85,7 +85,7 @@ export default function ChatDetail({ navigation }) {
         <ScrollView
           ref={scrollViewRef}
           style={styles.chatBody}
-          contentContainerStyle={{ flexGrow: 1 }}
+          contentContainerStyle={{ paddingTop: 20 }}
           onLayout={scrollToBottom} // Scroll to the end when ScrollView is rendered
         >
           {messages.map((msg, index) => (

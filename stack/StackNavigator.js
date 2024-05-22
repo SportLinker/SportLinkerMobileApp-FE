@@ -7,13 +7,15 @@ import EditAccountScreen from "../screens/AccountScreen/EditAccountScreen";
 import PasswordScreen from "../screens/AccountScreen/PasswordScreen";
 import ChatDetail from "../screens/ChatScreen/ChatDetail";
 import LoginScreen from "../screens/LoginScreen";
+import OTPInputScreen from "../screens/OTPScreen";
 import RegisterScreen from "../screens/RegisterScreen";
-import BottomTabNavigator from "../tabs/BottomTabNavigator";
+import DetailCoachScreen from "../screens/SearchScreen/CoachScreen/DetailCoachScreen";
 import EventDetail from "../screens/SearchScreen/EventScreen/EventDetail";
 import CoachTopTabNavigator from "../tabs/CoachTopTabNavigator";
 import DetailPlayerScreen from "../screens/SearchScreen/PlayerScreen/DetailPlayerScreen";
 import { Text } from "react-native";
 import EventDetailTabs from "../tabs/EventDetailTabs";
+import BottomTabNavigator from "../tabs/BottomTabNavigator";
 
 const Stack = createStackNavigator();
 
@@ -32,6 +34,13 @@ const StackNavigator = () => (
         headerShown: false,
       }}
       component={RegisterScreen}
+    />
+    <Stack.Screen
+      name="OTPScreen"
+      options={{
+        headerShown: false,
+      }}
+      component={OTPInputScreen}
     />
     <Stack.Screen
       name="BottomTabs"
@@ -59,24 +68,28 @@ const StackNavigator = () => (
       name="EditAccountScreen"
       component={EditAccountScreen}
       options={{
-        headerShown: false,
-        headerLeft: () => null,
+        title: "",
+        headerMode: "screen",
+        headerStyle: { backgroundColor: "#1646a9" },
+        headerTintColor: "white",
       }}
     />
     <Stack.Screen
       name="PasswordScreen"
       component={PasswordScreen}
       options={{
-        headerShown: false,
-        headerLeft: () => null,
+        title: "",
+        headerStyle: { backgroundColor: "#1646a9" },
+        headerTintColor: "white",
       }}
     />
     <Stack.Screen
-      name="CoachTopTabs"
-      component={CoachTopTabNavigator}
+      name="DetailCoachScreen"
+      component={DetailCoachScreen}
       options={{
-        headerShown: false,
-        headerLeft: () => null,
+        title: "",
+        headerStyle: { backgroundColor: "#1646a9" },
+        headerTintColor: "white",
       }}
     />
   </Stack.Navigator>
