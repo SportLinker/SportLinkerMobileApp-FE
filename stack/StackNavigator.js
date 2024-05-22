@@ -12,6 +12,7 @@ import RegisterScreen from "../screens/RegisterScreen";
 import DetailCoachScreen from "../screens/SearchScreen/CoachScreen/DetailCoachScreen";
 import EventDetail from "../screens/SearchScreen/EventScreen/EventDetail";
 import BottomTabNavigator from "../tabs/BottomTabNavigator";
+import ListLikeScreen from "../screens/HomeScreen/ListLikeScreen";
 
 const Stack = createStackNavigator();
 
@@ -86,6 +87,14 @@ const StackNavigator = () => (
         title: "",
         headerStyle: { backgroundColor: "#1646a9" },
         headerTintColor: "white",
+      }}
+    />
+    <Stack.Screen
+      name="ListLikeScreen"
+      component={ListLikeScreen}
+      options={{
+        headerShown: false,
+        headerLeft: () => null,
       }}
     />
   </Stack.Navigator>
