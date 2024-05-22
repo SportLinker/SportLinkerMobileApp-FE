@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import {
   FlatList,
   Pressable,
@@ -217,32 +218,32 @@ const fakeData = [
   },
 ];
 
+export const DashCircle = ({ styles }) => (
+  <View
+    style={[
+      {
+        width: 30,
+        height: 30,
+        borderRadius: 50,
+        borderWidth: 2,
+        borderColor: "#717171",
+        borderStyle: "dashed",
+        backgroundColor: "#D9D9D9",
+      },
+      styles && { ...styles },
+    ]}
+  ></View>
+);
+
 const EventScheduleTable = () => {
   // const renderEventItem = ({ item }) => {
   //   return <View>Item</View>;
   // };
-
-  const DashCircle = ({ styles }) => (
-    <View
-      style={[
-        {
-          width: 30,
-          height: 30,
-          borderRadius: 50,
-          borderWidth: 2,
-          borderColor: "#717171",
-          borderStyle: "dashed",
-          backgroundColor: "#D9D9D9",
-        },
-        styles && { ...styles },
-      ]}
-    ></View>
-  );
+  const navigation = useNavigation();
 
   const eventView = ({ item, index }) => {
     //handle render member avatar
     const maxItems = 5;
-    console.log(item);
     // Prepare the data to render
     let renderData = item.members.slice(0, maxItems);
 
@@ -262,7 +263,7 @@ const EventScheduleTable = () => {
     }
 
     return (
-      <Pressable onPress={() => console.log("Pressed")}>
+      <Pressable onPress={() => navigation.navigate("EventDetailScreen")}>
         <View
           style={[
             {
@@ -338,12 +339,13 @@ const EventScheduleTable = () => {
                   alignItems: "center",
                 }}
               >
-                {renderData.map((newItem) => {
+                {renderData.map((newItem, index) => {
                   if (newItem.isPlaceholder) {
-                    return <DashCircle />;
+                    return <DashCircle key={newItem.id + index} />;
                   } else if (newItem.remaining) {
                     return (
                       <Text
+                        key={newItem.id + index}
                         style={{
                           color: "#717171",
                           fontWeight: "bold",
@@ -357,6 +359,7 @@ const EventScheduleTable = () => {
                   } else {
                     return (
                       <Avatar.Image
+                        key={newItem.id + index}
                         size={30}
                         source={{
                           uri: newItem.avatar,
@@ -373,7 +376,7 @@ const EventScheduleTable = () => {
     );
   };
 
-  const scheduleItem = ({ item }) => {
+  const scheduleItem = ({ item: scheduleItem }) => {
     return (
       <View
         style={{
@@ -394,13 +397,17 @@ const EventScheduleTable = () => {
             alignItems: "center",
           }}
         >
-          <Text style={{ fontSize: 18, fontWeight: "bold" }}>{item.time}</Text>
+          <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+            {scheduleItem.time}
+          </Text>
         </View>
         <View style={{ width: "80%", paddingHorizontal: 10 }}>
           <FlatList
-            data={item.items}
+            data={scheduleItem.items}
             renderItem={eventView}
-            keyExtractor={({ index }) => index + "" + item.time}
+            keyExtractor={(item, index) => {
+              return index + "" + scheduleItem.time + item.id;
+            }}
           />
         </View>
       </View>
@@ -409,8 +416,9 @@ const EventScheduleTable = () => {
   return (
     <View>
       <SectionList
+        stickySectionHeadersEnabled
         sections={fakeData}
-        keyExtractor={(item, index) => item + index}
+        keyExtractor={(item, index) => index}
         renderItem={scheduleItem}
         renderSectionHeader={({ section: { title } }) => (
           <View>
