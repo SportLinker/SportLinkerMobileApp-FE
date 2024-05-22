@@ -1,19 +1,30 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { Avatar } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Swiper from "react-native-swiper";
+import CommentModal from "./CommentModal"; // Import CommentModal
 
-export default function PostItem() {
+export default function PostItem({ navigation }) {
   const [liked, setLiked] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
   const [images, setImages] = useState([
     "https://derehamstrikesbowl.co.uk/wp-content/uploads/2022/01/pool-table1.webp",
     "https://th.bing.com/th/id/OIP.0dBKywMs9F5N7ykZfI3VKAAAAA?rs=1&pid=ImgDetMain",
+    "https://blog.dktcdn.net/files/bida-la-gi-2.jpg",
+    "https://blog.dktcdn.net/files/bida-la-gi-2.jpg",
   ]);
 
   const handleToggleLike = () => {
     setLiked(!liked);
   };
+
+  const comments = [
+    { id: "1", text: "Great post!" },
+    { id: "2", text: "Nice one!" },
+    { id: "3", text: "Thanks for sharing." },
+  ];
 
   return (
     <View style={styles.postWrapper}>
@@ -32,11 +43,13 @@ export default function PostItem() {
         Tìm bạn cùng chơi bi-a ở Thủ Đức, từ 18 - 30 tuổi, ưu tiên các bạn nam
       </Text>
       <Swiper
-        style={styles.swiper} // Updated style
-        autoplayTimeout={3} // Adjusted timeout
-        showsPagination={true}
-        dotStyle={styles.dotStyle} // Added dotStyle
-        activeDotStyle={styles.activeDotStyle} // Added activeDotStyle
+        style={styles.swiper}
+        autoplayTimeout={3}
+        dotStyle={styles.dotStyle}
+        activeDotStyle={styles.activeDotStyle}
+        loop={false} // Disable looping
+        index={activeIndex} // Set the current active index
+        onIndexChanged={(index) => setActiveIndex(index)}
       >
         {images.map((image, index) => (
           <Image key={index} source={{ uri: image }} style={styles.postImage} />
@@ -48,7 +61,7 @@ export default function PostItem() {
             <Icon name={liked ? "heart" : "heart-outline"} size={30} />
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => console.log("Comment pressed")}
+            onPress={() => setModalVisible(true)}
             style={styles.mr5}
           >
             <Icon name="chat-outline" size={30} />
@@ -60,8 +73,15 @@ export default function PostItem() {
             <Icon name="share-outline" size={30} />
           </TouchableOpacity>
         </View>
-        <Text>500 lượt thích</Text>
+        <TouchableOpacity onPress={() => navigation.navigate("ListLikeScreen")}>
+          <Text>500 lượt thích</Text>
+        </TouchableOpacity>
       </View>
+      <CommentModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        comments={comments}
+      />
     </View>
   );
 }
@@ -88,8 +108,9 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   postImage: {
+    flex: 1,
     width: "100%",
-    height: 190,
+    minHeight: 190,
     borderRadius: 5,
   },
   mr5: {
@@ -102,7 +123,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   swiper: {
-    height: 200, // Ensuring Swiper has a set height
+    height: 200,
   },
   dotStyle: {
     backgroundColor: "rgba(255,255,255,.3)",
