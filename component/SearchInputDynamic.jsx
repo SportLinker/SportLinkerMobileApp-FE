@@ -9,7 +9,7 @@ export default function SearchInputDynamic({ screen }) {
     <SafeAreaView>
       <View style={{ backgroundColor: "white", padding: 10 }}>
         <Searchbar
-          placeholder={`Tìm kiếm bằng từ khóa ${screen}`}
+          placeholder={`Tìm kiếm bằng từ khóa `}
           onChangeText={setSearchQuery}
           value={searchQuery}
           iconColor="#4878D9"
