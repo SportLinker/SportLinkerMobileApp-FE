@@ -1,6 +1,7 @@
 import { View, Text, ScrollView } from "react-native";
 import React from "react";
 import { AntDesign } from "@expo/vector-icons";
+import { Appbar } from "react-native-paper";
 
 const mock_data = [
   {
@@ -75,132 +76,145 @@ const mock_data = [
   },
 ];
 
-export default function NotificationScreen() {
+export default function NotificationScreen({ navigation }) {
   return (
-    <ScrollView>
-      <View>
-        <Text
-          style={{
-            marginTop: 20,
-            marginLeft: 20,
-            fontWeight: 700,
-            color: "#a7a7a7",
-          }}
-        >
-          Today
-        </Text>
-        {mock_data
-          .filter((item) => item.day === "today")
-          .map((item) => (
-            <View
-              key={item.id}
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                paddingVertical: 20,
-              }}
-            >
-              <AntDesign
-                name={item.icon}
-                size={24}
-                color="#6f9495"
-                style={{ marginVertical: "auto", marginHorizontal: 30 }}
-              />
-              <View>
-                <Text style={{ fontSize: 16, fontWeight: 700 }}>
-                  {item.title}
-                </Text>
-                <Text
-                  style={{ fontSize: 14, fontWeight: 700, color: "#d7d7d7" }}
-                >
-                  {item.desc}
-                </Text>
+    <View>
+      <Appbar.Header style={{ backgroundColor: "#1646A9" }}>
+        <Appbar.BackAction
+          color="white"
+          style={{ fontSize: 18 }}
+          onPress={() => navigation.goBack()}
+        />
+        <Appbar.Content
+          title="Thông Báo"
+          titleStyle={{ fontSize: 18, color: "white" }}
+        />
+      </Appbar.Header>
+      <ScrollView>
+        <View>
+          <Text
+            style={{
+              marginTop: 20,
+              marginLeft: 20,
+              fontWeight: 700,
+              color: "#a7a7a7",
+            }}
+          >
+            Today
+          </Text>
+          {mock_data
+            .filter((item) => item.day === "today")
+            .map((item) => (
+              <View
+                key={item.id}
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  paddingVertical: 20,
+                }}
+              >
+                <AntDesign
+                  name={item.icon}
+                  size={24}
+                  color="#6f9495"
+                  style={{ marginVertical: "auto", marginHorizontal: 30 }}
+                />
+                <View>
+                  <Text style={{ fontSize: 16, fontWeight: 700 }}>
+                    {item.title}
+                  </Text>
+                  <Text
+                    style={{ fontSize: 14, fontWeight: 700, color: "#d7d7d7" }}
+                  >
+                    {item.desc}
+                  </Text>
+                </View>
               </View>
-            </View>
-          ))}
-      </View>
-      <View>
-        <Text
-          style={{
-            marginTop: 20,
-            marginLeft: 20,
-            fontWeight: 700,
-            color: "#a7a7a7",
-          }}
-        >
-          Yesterday
-        </Text>
-        {mock_data
-          .filter((item) => item.day === "yesterday")
-          .map((item) => (
-            <View
-              key={item.id}
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                paddingVertical: 20,
-              }}
-            >
-              <AntDesign
-                name={item.icon}
-                size={24}
-                color="#6f9495"
-                style={{ marginVertical: "auto", marginHorizontal: 30 }}
-              />
-              <View>
-                <Text style={{ fontSize: 16, fontWeight: 700 }}>
-                  {item.title}
-                </Text>
-                <Text
-                  style={{ fontSize: 14, fontWeight: 700, color: "#d7d7d7" }}
-                >
-                  {item.desc}
-                </Text>
+            ))}
+        </View>
+        <View>
+          <Text
+            style={{
+              marginTop: 20,
+              marginLeft: 20,
+              fontWeight: 700,
+              color: "#a7a7a7",
+            }}
+          >
+            Yesterday
+          </Text>
+          {mock_data
+            .filter((item) => item.day === "yesterday")
+            .map((item) => (
+              <View
+                key={item.id}
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  paddingVertical: 20,
+                }}
+              >
+                <AntDesign
+                  name={item.icon}
+                  size={24}
+                  color="#6f9495"
+                  style={{ marginVertical: "auto", marginHorizontal: 30 }}
+                />
+                <View>
+                  <Text style={{ fontSize: 16, fontWeight: 700 }}>
+                    {item.title}
+                  </Text>
+                  <Text
+                    style={{ fontSize: 14, fontWeight: 700, color: "#d7d7d7" }}
+                  >
+                    {item.desc}
+                  </Text>
+                </View>
               </View>
-            </View>
-          ))}
-      </View>
-      <View>
-        <Text
-          style={{
-            marginTop: 20,
-            marginLeft: 20,
-            fontWeight: 700,
-            color: "#a7a7a7",
-          }}
-        >
-          Older
-        </Text>
-        {mock_data
-          .filter((item) => item.day === "older")
-          .map((item) => (
-            <View
-              key={item.id}
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                paddingVertical: 20,
-              }}
-            >
-              <AntDesign
-                name={item.icon}
-                size={24}
-                color="#6f9495"
-                style={{ marginVertical: "auto", marginHorizontal: 30 }}
-              />
-              <View>
-                <Text style={{ fontSize: 16, fontWeight: 700 }}>
-                  {item.title}
-                </Text>
-                <Text
-                  style={{ fontSize: 14, fontWeight: 700, color: "#d7d7d7" }}
-                >
-                  {item.desc}
-                </Text>
+            ))}
+        </View>
+        <View>
+          <Text
+            style={{
+              marginTop: 20,
+              marginLeft: 20,
+              fontWeight: 700,
+              color: "#a7a7a7",
+            }}
+          >
+            Older
+          </Text>
+          {mock_data
+            .filter((item) => item.day === "older")
+            .map((item) => (
+              <View
+                key={item.id}
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  paddingVertical: 20,
+                }}
+              >
+                <AntDesign
+                  name={item.icon}
+                  size={24}
+                  color="#6f9495"
+                  style={{ marginVertical: "auto", marginHorizontal: 30 }}
+                />
+                <View>
+                  <Text style={{ fontSize: 16, fontWeight: 700 }}>
+                    {item.title}
+                  </Text>
+                  <Text
+                    style={{ fontSize: 14, fontWeight: 700, color: "#d7d7d7" }}
+                  >
+                    {item.desc}
+                  </Text>
+                </View>
               </View>
-            </View>
-          ))}
-      </View>
-    </ScrollView>
+            ))}
+        </View>
+      </ScrollView>
+    </View>
   );
 }
