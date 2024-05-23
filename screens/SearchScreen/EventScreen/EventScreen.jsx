@@ -17,7 +17,7 @@ export default function EventScreen() {
     <SafeAreaView style={{ height: "100%", position: "relative", flex: 1 }}>
       <EventSchedule />
       <IconButton
-        icon="camera"
+        icon="view-grid-plus"
         size={42}
         mode="contained"
         onPress={() => setCreatePopup(true)}
@@ -26,7 +26,9 @@ export default function EventScreen() {
           bottom: 20,
           right: 10,
           zIndex: 20,
+          backgroundColor: "white",
         }}
+        iconColor="#1646A9"
       ></IconButton>
       <CreateSportEventModal
         visible={createPopup}
