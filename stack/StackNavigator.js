@@ -11,6 +11,10 @@ import OTPInputScreen from "../screens/OTPScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import DetailCoachScreen from "../screens/SearchScreen/CoachScreen/DetailCoachScreen";
 import EventDetail from "../screens/SearchScreen/EventScreen/EventDetail";
+import CoachTopTabNavigator from "../tabs/CoachTopTabNavigator";
+import DetailPlayerScreen from "../screens/SearchScreen/PlayerScreen/DetailPlayerScreen";
+import { Text } from "react-native";
+import EventDetailTabs from "../tabs/EventDetailTabs";
 import BottomTabNavigator from "../tabs/BottomTabNavigator";
 import ListLikeScreen from "../screens/HomeScreen/ListLikeScreen";
 
@@ -56,9 +60,9 @@ const StackNavigator = () => (
     <Stack.Screen
       name="EventDetailScreen"
       options={{
-        headerShown: false,
+        title: "Event Detail",
       }}
-      component={EventDetail}
+      component={EventDetailTabs}
     />
 
     <Stack.Screen

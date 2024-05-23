@@ -37,5 +37,3 @@ export default function EventScreen() {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({});

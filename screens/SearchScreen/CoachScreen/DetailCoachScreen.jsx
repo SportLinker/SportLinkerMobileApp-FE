@@ -8,7 +8,7 @@ import CoachTrain from "./CoachTrain";
 
 export default function DetailCoachScreen({ navigation }) {
   const [image, setImage] = useState(
-    "https://scontent.fsgn8-4.fna.fbcdn.net/v/t39.30808-6/425623584_2313425845714783_5573579011979336424_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_ohc=cIh6RaICGbsQ7kNvgEWA7Pf&_nc_ht=scontent.fsgn8-4.fna&oh=00_AYDDdVJzDlj1Iq8EGUVWtqpUWqxH8KAgXU-GUzDBqueVlw&oe=6650F6E5"
+    "https://www.redditstatic.com/avatars/avatar_default_03_FF8717.png"
   );
   const [liked, setLiked] = useState("");
   const [addUser, setAddUser] = useState("");
