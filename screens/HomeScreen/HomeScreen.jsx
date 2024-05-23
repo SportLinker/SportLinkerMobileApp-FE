@@ -52,7 +52,7 @@ const HomeScreen = ({ navigation }) => {
         <View style={styles.header}>
           <View style={[styles.logoHeader, styles.pr5]}>
             <Image
-              source={require("./../../assets/logo.png")}
+              source={require("./../../assets/sportlinker_logo.png")}
               style={styles.logo}
             />
           </View>
@@ -121,7 +121,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   logoHeader: {
-    backgroundColor: "#F7F7F7",
     borderRadius: 10,
   },
   pr5: {

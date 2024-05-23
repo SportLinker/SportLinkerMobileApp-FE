@@ -1,18 +1,15 @@
-import React, { useState } from "react";
-import { Modal, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import {
   AntDesign,
   Entypo,
-  FontAwesome,
   FontAwesome5,
   FontAwesome6,
   Ionicons,
   MaterialIcons,
 } from "@expo/vector-icons";
+import React, { useState } from "react";
+import { Modal, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { Avatar } from "react-native-paper";
 import DetailCoachScreen from "../CoachScreen/DetailCoachScreen";
-import TruncatedText from "../../../component/TruncatedText";
-import CoachTabView from "../CoachScreen/CoachTabView";
 
 const fakeData = [
   {
@@ -346,7 +343,7 @@ const styles = {
   modalContainer: {
     flex: 1,
     justifyContent: "flex-end",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: "rgba(0, 211, 241, 0.5)",
   },
   modalContent: {
     width: "100%",

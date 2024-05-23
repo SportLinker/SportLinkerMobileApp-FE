@@ -36,8 +36,9 @@ export default function HomeTabs() {
           name="NotificationScreen"
           component={NotificationScreen}
           options={{
-            headerShown: false,
-            headerLeft: () => null, // This will remove the left button
+            title: "Thông Báo",
+            headerStyle: { backgroundColor: "#1646a9" },
+            headerTintColor: "white",
           }}
         />
       </Stack.Navigator>
