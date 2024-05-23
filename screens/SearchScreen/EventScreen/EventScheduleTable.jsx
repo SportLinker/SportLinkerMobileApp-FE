@@ -78,7 +78,7 @@ const fakeData = [
           },
           {
             id: "e3",
-            title: "Football với Thăng Long",
+            title: "Football với Thăng Long Long Long Long Long Long",
             address: "Sân bóng Mai Anh",
             distance: "2,1km",
             totalMember: 20,

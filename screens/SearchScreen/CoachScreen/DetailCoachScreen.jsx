@@ -5,16 +5,19 @@ import { Avatar } from "react-native-paper";
 import { styles } from "../../../component/style";
 import CoachProfile from "./CoachProfile";
 import CoachTrain from "./CoachTrain";
+import { useNavigation } from "@react-navigation/native";
 
-export default function DetailCoachScreen({ navigation }) {
+export default function DetailCoachScreen() {
   const [image, setImage] = useState(
     "https://www.redditstatic.com/avatars/avatar_default_03_FF8717.png"
   );
   const [liked, setLiked] = useState("");
   const [addUser, setAddUser] = useState("");
 
+  const navigation = useNavigation();
+
   return (
-    <View style={styles.modalMainContainer}>
+    <View style={styles.modalCoachContainer}>
       <ScrollView>
         <View>
           <View

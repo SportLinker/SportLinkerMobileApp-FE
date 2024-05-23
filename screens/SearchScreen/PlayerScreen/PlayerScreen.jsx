@@ -8,6 +8,8 @@ import {
   View,
 } from "react-native";
 import { Avatar } from "react-native-paper";
+import { styles } from "../../../component/style";
+import FilterEventOptionList from "../EventScreen/FilterEventOptionList";
 
 export const mock_data = [
   { id: 1, name: "Tai Vo", star: "true" },
@@ -24,10 +26,11 @@ export const mock_data = [
 export default function PlayerScreen({ navigation }) {
   return (
     <SafeAreaView>
+      <FilterEventOptionList />
       <ScrollView>
-        <View>
+        <View style={{ alignItems: "center", marginTop: 20 }}>
           {mock_data.map((item) => (
-            <View key={item.id}>
+            <View key={item.id} style={styles.containerPlayer}>
               <TouchableOpacity
                 onPress={() => navigation.navigate("DetailPlayerScreen")}
               >
@@ -35,7 +38,7 @@ export default function PlayerScreen({ navigation }) {
                   style={{
                     flexDirection: "row",
                     alignItems: "center",
-                    marginTop: 5,
+
                     marginLeft: 20,
                   }}
                 >
@@ -59,13 +62,6 @@ export default function PlayerScreen({ navigation }) {
                   )}
                 </View>
               </TouchableOpacity>
-              <View
-                style={{
-                  borderBottomWidth: 1,
-                  marginVertical: 10,
-                  borderColor: "#C4C4C4",
-                }}
-              />
             </View>
           ))}
         </View>

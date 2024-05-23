@@ -17,6 +17,7 @@ import { Text } from "react-native";
 import EventDetailTabs from "../tabs/EventDetailTabs";
 import BottomTabNavigator from "../tabs/BottomTabNavigator";
 import ListLikeScreen from "../screens/HomeScreen/ListLikeScreen";
+import DetailYardScreen from "../screens/SearchScreen/YardScreen/DetailYardScreen";
 
 const Stack = createStackNavigator();
 
@@ -88,7 +89,7 @@ const StackNavigator = () => (
       name="DetailCoachScreen"
       component={DetailCoachScreen}
       options={{
-        title: "",
+        title: "Chi Tiết Huấn Luyện Viên",
         headerStyle: { backgroundColor: "#1646a9" },
         headerTintColor: "white",
       }}
@@ -99,6 +100,15 @@ const StackNavigator = () => (
       options={{
         headerShown: false,
         headerLeft: () => null,
+      }}
+    />
+    <Stack.Screen
+      name="DetailYardScreen"
+      component={DetailYardScreen}
+      options={{
+        title: "Chi Tiết Sân",
+        headerStyle: { backgroundColor: "#1646a9" },
+        headerTintColor: "white",
       }}
     />
   </Stack.Navigator>
