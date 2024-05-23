@@ -49,7 +49,7 @@ const StepOne = ({
           outlineColor="#1646A9"
           placeholderTextColor="#1646A9"
         />
-        <View style={styles.justifyLeft}>
+        {/* <View style={styles.justifyLeft}>
           <Text style={styles.dateLabel}>Tên CLB </Text>
         </View>
         <TextInput
@@ -62,7 +62,7 @@ const StepOne = ({
           placeholderTextColor="#1646A9"
           style={styles.textInput}
           outlineColor="#1646A9"
-        />
+        /> */}
         <View style={styles.justifyLeft}>
           <Text style={styles.dateLabel}>Ngày diễn ra sự kiện</Text>
         </View>

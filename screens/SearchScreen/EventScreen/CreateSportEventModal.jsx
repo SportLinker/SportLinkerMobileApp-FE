@@ -44,7 +44,7 @@ const CreateSportEventModal = ({ visible, onClose }) => {
 
   const checkStepEmpty = (step) => {
     if (step === 1) {
-      if (!eventName.trim() || !clubName.trim() || !selectedSport) {
+      if (!eventName.trim() || !selectedSport) {
         return "Please fill in all fields for Step 1";
       }
     } else if (step === 2) {
