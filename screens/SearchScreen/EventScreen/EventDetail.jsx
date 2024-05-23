@@ -1,10 +1,8 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import EventDetailTabs from "../../../tabs/EventDetailTabs";
-import { useEffect } from "react";
 import { Avatar, Button } from "react-native-paper";
-import { DashCircle } from "./EventScheduleTable";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { formatCurrency } from "../../../utils";
+import { DashCircle } from "../../../component/DashCircle";
 
 const fakeData = {
   id: "e1",
@@ -204,6 +202,7 @@ const styles = StyleSheet.create({
     display: "flex",
     gap: 20,
     paddingTop: 30,
+    paddingBottom: 150,
     paddingHorizontal: 20,
     backgroundColor: "white",
   },
@@ -236,13 +235,13 @@ const styles = StyleSheet.create({
     width: "100%",
     display: "flex",
     flexDirection: "row",
-    height: 100,
+    height: 150,
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 20,
     gap: 10,
     zIndex: 1,
-    backgroundColor: "transparent",
+    backgroundColor: "rgba(255, 255, 255, 0.9)",
   },
   floatBtnLabel: {
     fontSize: 16,
