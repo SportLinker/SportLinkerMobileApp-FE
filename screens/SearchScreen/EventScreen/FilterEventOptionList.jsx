@@ -21,7 +21,7 @@ const fakeData = [
   // },
 ];
 
-const FilterEventOptionList = () => {
+export const FilterEventOptionList = () => {
   return (
     <FlatList
       data={fakeData}

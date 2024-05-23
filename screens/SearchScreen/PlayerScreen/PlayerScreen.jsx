@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Avatar } from "react-native-paper";
 import { styles } from "../../../component/style";
+import FilterEventOptionList from "../EventScreen/FilterEventOptionList";
 
 export const mock_data = [
   { id: 1, name: "Tai Vo", star: "true" },
@@ -25,6 +26,7 @@ export const mock_data = [
 export default function PlayerScreen({ navigation }) {
   return (
     <SafeAreaView>
+      <FilterEventOptionList />
       <ScrollView>
         <View style={{ alignItems: "center", marginTop: 20 }}>
           {mock_data.map((item) => (

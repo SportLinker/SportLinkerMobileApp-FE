@@ -10,6 +10,7 @@ import {
 import { Avatar } from "react-native-paper";
 import { styles } from "../../../component/style";
 import DetailCoachScreen from "./DetailCoachScreen";
+import FilterEventOptionList from "../EventScreen/FilterEventOptionList";
 
 export default function CoachScreen({ navigation }) {
   const fakeData = [
@@ -64,6 +65,7 @@ export default function CoachScreen({ navigation }) {
 
   return (
     <SafeAreaView>
+      <FilterEventOptionList />
       <ScrollView>
         <View style={[styles.centerStyle, styles.marginTopText]}>
           {fakeData.map((item, index) => (

@@ -17,7 +17,7 @@ export default function DetailCoachScreen() {
   const navigation = useNavigation();
 
   return (
-    <View style={styles.modalMainContainer}>
+    <View style={styles.modalCoachContainer}>
       <ScrollView>
         <View>
           <View
