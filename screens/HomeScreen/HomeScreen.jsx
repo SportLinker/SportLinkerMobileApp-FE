@@ -89,7 +89,7 @@ const HomeScreen = ({ navigation }) => {
           style={{ paddingHorizontal: 10 }}
         >
           {posts.map((item, index) => (
-            <PostItem key={index} />
+            <PostItem key={index} navigation={navigation} />
           ))}
         </ScrollView>
       </View>
