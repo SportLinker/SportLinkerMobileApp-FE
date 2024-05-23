@@ -346,7 +346,7 @@ const styles = {
   modalContainer: {
     flex: 1,
     justifyContent: "flex-end",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: "rgba(0, 211, 241, 0.5)",
   },
   modalContent: {
     width: "100%",

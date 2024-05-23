@@ -259,15 +259,15 @@ export default function AccountScreen() {
             </View>
           </View>
         </Modal>
-        <Snackbar
-          visible={successMessage !== ""}
-          onDismiss={() => setSuccessMessage("")}
-          duration={2000}
-          style={styles.snackbarContainer}
-        >
-          {successMessage}
-        </Snackbar>
       </ScrollView>
+      <Snackbar
+        visible={successMessage !== ""}
+        onDismiss={() => setSuccessMessage("")}
+        duration={2000}
+        style={styles.snackbarContainer}
+      >
+        {successMessage}
+      </Snackbar>
     </SafeAreaView>
   );
 }
