@@ -167,7 +167,7 @@ export default function AccountScreen() {
             ))}
           </View>
         </View>
-        <View>
+        {/* <View>
           <View style={styles.topInfoSport}>
             <Text style={{ color: "#707070", fontWeight: "bold" }}>
               {"Cộng đồng".toUpperCase()}
@@ -212,7 +212,7 @@ export default function AccountScreen() {
               </View>
             ))}
           </View>
-        </View>
+        </View> */}
 
         <Modal
           visible={showImagePickerOptions}

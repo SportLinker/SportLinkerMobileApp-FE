@@ -14,3 +14,13 @@ export const formatTime = (time) => {
     minute: "2-digit",
   });
 };
+
+export function formatCurrency(amount, currency = "USD", locale = "en-US") {
+  // Format number to currency
+  const formatter = new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency: currency,
+  });
+
+  return formatter.format(amount);
+}
