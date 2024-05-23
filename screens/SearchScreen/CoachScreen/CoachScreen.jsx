@@ -62,12 +62,6 @@ export default function CoachScreen({ navigation }) {
     },
   ];
 
-  const [modalVisible, setModalVisible] = React.useState(false);
-
-  const handleCloseModal = () => {
-    setModalVisible(false);
-  };
-
   return (
     <SafeAreaView>
       <ScrollView>

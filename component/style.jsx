@@ -30,7 +30,7 @@ export const styles = StyleSheet.create({
   innerInfoSport: {
     borderRadius: 20,
     backgroundColor: "#fff", // Màu nền của phần tử
-    width: 337,
+    width: "95%",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -89,7 +89,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-end",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: "rgba(0, 211, 241, 0.5)",
   },
   menu: {
     backgroundColor: "#FDFDFD",
@@ -145,7 +145,7 @@ export const styles = StyleSheet.create({
   },
   marginTopText: { marginTop: 20 },
   modalMainContainer: {
-    backgroundColor: "white",
+    backgroundColor: "rgba(0, 211, 241, 0.5)",
     padding: 20,
     height: "100%",
     paddingTop: 20,
@@ -206,14 +206,14 @@ export const styles = StyleSheet.create({
   },
   snackbarContainer: {
     borderRadius: 10,
-    position: "absolute",
-    bottom: "50%",
-    left: "50%",
+    // position: "absolute",
+    // bottom: "50%",
+    // left: "50%",
     alignItems: "center",
     textAlign: "center",
     transform: [
-      { translateX: -0.5 * screenWidth },
-      { translateY: -0.4 * screenHeight },
+      { translateX: 0 * screenWidth },
+      { translateY: 0 * screenHeight },
     ],
     backgroundColor: "#1646a9",
   },
@@ -237,5 +237,34 @@ export const styles = StyleSheet.create({
   },
   buttonHeader: {
     backgroundColor: "#F7F7F7",
+  },
+  containerPlayer: {
+    width: "95%",
+    borderRadius: 10,
+    backgroundColor: "#fff",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 10,
+    padding: 10,
+    marginBottom: 20,
+  },
+  containerYard: {
+    borderRadius: 10,
+    backgroundColor: "#fff",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 10,
+    padding: 10,
+    marginBottom: 20,
+  },
+  imageYard: {
+    width: 355,
+    height: 150,
+    resizeMode: "cover",
+    borderRadius: 10,
   },
 });
