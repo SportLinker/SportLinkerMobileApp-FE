@@ -87,7 +87,7 @@ const EventMember = () => {
       </View>
       <View style={styles.avatarContainer}>
         {data.map((item) => {
-          return <MemberItem item={item} />;
+          return <MemberItem item={item} key={item.id} />;
         })}
       </View>
     </View>
