@@ -2,6 +2,7 @@ import { View, Text, SafeAreaView } from "react-native";
 import React, { useState } from "react";
 import YardItem from "./YardItem";
 import { ScrollView } from "react-native-gesture-handler";
+import FilterEventOptionList from "../EventScreen/FilterEventOptionList";
 
 const fake_data = [
   {
@@ -15,8 +16,7 @@ const fake_data = [
   },
   {
     id: 2,
-    image:
-      "https://www.nhavanhoasinhvien.vn/wp-content/uploads/2022/12/%E1%BA%A2nh-ch%E1%BB%A5p-M%C3%A0n-h%C3%ACnh-2022-12-08-l%C3%BAc-10.09.05.png",
+    image: "https://ipsc.edu.vn/uploads/news/2020_07/hoi-boi-dhqg-hcm-3a.jpg",
     yardName: "HỒ BƠI ĐẠI HỌC QUỐC GIA",
     location: "Thủ Đức",
     openTime: "6h00 - 21h00",
@@ -25,7 +25,7 @@ const fake_data = [
   {
     id: 3,
     image:
-      "https://www.nhavanhoasinhvien.vn/wp-content/uploads/2022/12/%E1%BA%A2nh-ch%E1%BB%A5p-M%C3%A0n-h%C3%ACnh-2022-12-08-l%C3%BAc-10.09.05.png",
+      "https://yousport.vn/Media/Blog/san-bong-ro-tp-hcm/san-bong-ro-hcm-17.jpg",
     yardName: "SÂN BÓNG RỔ CÔNG VIÊN GIA ĐỊNH",
     location: "Phú Nhuận",
     openTime: "5h30 - 23h00",
@@ -34,7 +34,7 @@ const fake_data = [
   {
     id: 4,
     image:
-      "https://www.nhavanhoasinhvien.vn/wp-content/uploads/2022/12/%E1%BA%A2nh-ch%E1%BB%A5p-M%C3%A0n-h%C3%ACnh-2022-12-08-l%C3%BAc-10.09.05.png",
+      "https://tinyfilms.vn/wp-content/uploads/2018/08/TinyFilms_L%E1%BB%85-khai-tr%C6%B0%C6%A1ng-s%C3%A2n-tennis-Ho%C3%A0ng-Gia.jpg",
     yardName: "SÂN TENNIS HOÀNG GIA",
     location: "Quận 7",
     openTime: "6h00 - 22h00",
@@ -42,8 +42,7 @@ const fake_data = [
   },
   {
     id: 5,
-    image:
-      "https://www.nhavanhoasinhvien.vn/wp-content/uploads/2022/12/%E1%BA%A2nh-ch%E1%BB%A5p-M%C3%A0n-h%C3%ACnh-2022-12-08-l%C3%BAc-10.09.05.png",
+    image: "https://ts.huit.edu.vn/tttstt/images/tin-tuc/rlsk9.jpg",
     yardName: "HỒ BƠI ĐẠI HỌC CÔNG NGHIỆP",
     location: "Gò Vấp",
     openTime: "7h00 - 20h00",
@@ -51,8 +50,7 @@ const fake_data = [
   },
   {
     id: 6,
-    image:
-      "https://www.nhavanhoasinhvien.vn/wp-content/uploads/2022/12/%E1%BA%A2nh-ch%E1%BB%A5p-M%C3%A0n-h%C3%ACnh-2022-12-08-l%C3%BAc-10.09.05.png",
+    image: "https://sieuthicaulong.vn/userfiles/files/san-cau-long-mega.jpg",
     yardName: "SÂN CẦU LÔNG QUỐC TẾ",
     location: "Quận 1",
     openTime: "6h30 - 21h30",
@@ -70,7 +68,7 @@ const fake_data = [
   {
     id: 8,
     image:
-      "https://www.nhavanhoasinhvien.vn/wp-content/uploads/2022/12/%E1%BA%A2nh-ch%E1%BB%A5p-M%C3%A0n-h%C3%ACnh-2022-12-08-l%C3%BAc-10.09.05.png",
+      "https://sport360.vn/wp-content/uploads/2019/08/Kich-thuoc-san-bong-chuyen-hoi-tieu-chuan-sport360vn-4.jpg",
     yardName: "SÂN BÓNG CHUYỀN PHÚ THỌ",
     location: "Quận 11",
     openTime: "6h00 - 21h00",
@@ -79,7 +77,7 @@ const fake_data = [
   {
     id: 9,
     image:
-      "https://www.nhavanhoasinhvien.vn/wp-content/uploads/2022/12/%E1%BA%A2nh-ch%E1%BB%A5p-M%C3%A0n-h%C3%ACnh-2022-12-08-l%C3%BAc-10.09.05.png",
+      "https://www.myuc.vn/uploads/products/2019/01/28/pvcredcolortabletennisfloor.jpg",
     yardName: "SÂN BÓNG BÀN THỦ THIÊM",
     location: "Quận 2",
     openTime: "6h00 - 23h00",
@@ -88,7 +86,7 @@ const fake_data = [
   {
     id: 10,
     image:
-      "https://www.nhavanhoasinhvien.vn/wp-content/uploads/2022/12/%E1%BA%A2nh-ch%E1%BB%A5p-M%C3%A0n-h%C3%ACnh-2022-12-08-l%C3%BAc-10.09.05.png",
+      "https://sport360.vn/wp-content/uploads/2019/08/Kich-thuoc-san-bong-chuyen-hoi-tieu-chuan-sport360vn-4.jpg",
     yardName: "SÂN BÓNG CHUYỀN HÀ ĐÔ",
     location: "Quận 10",
     openTime: "5h00 - 22h00",
@@ -108,6 +106,7 @@ const fake_data = [
 export default function YardScreen() {
   return (
     <SafeAreaView>
+      <FilterEventOptionList />
       <ScrollView>
         <YardItem data={fake_data} />
       </ScrollView>

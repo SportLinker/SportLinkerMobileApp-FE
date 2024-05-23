@@ -150,6 +150,12 @@ export const styles = StyleSheet.create({
     height: "100%",
     paddingTop: 20,
   },
+  modalCoachContainer: {
+    backgroundColor: "#fff",
+    padding: 20,
+    height: "100%",
+    paddingTop: 20,
+  },
   iconContainer: {
     flexDirection: "row",
     justifyContent: "space-between",

@@ -3,13 +3,19 @@ import React from "react";
 import { AntDesign } from "@expo/vector-icons";
 import { styles } from "../../../component/style";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { useNavigation } from "@react-navigation/native";
 
 export default function YardItem({ data }) {
+  const navigation = useNavigation();
   return (
     <View style={{ marginTop: 20, marginHorizontal: "auto" }}>
       {data.map((yard) => (
-        <TouchableOpacity style={styles.containerYard}>
-          <View key={yard.id}>
+        <TouchableOpacity
+          key={yard.id}
+          style={styles.containerYard}
+          // onPress={() => navigation.navigate("DetailYardScreen")}
+        >
+          <View>
             <Image source={{ uri: yard.image }} style={styles.imageYard} />
           </View>
           <View
