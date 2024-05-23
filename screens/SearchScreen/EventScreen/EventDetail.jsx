@@ -1,10 +1,8 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import EventDetailTabs from "../../../tabs/EventDetailTabs";
-import { useEffect } from "react";
 import { Avatar, Button } from "react-native-paper";
-import { DashCircle } from "./EventScheduleTable";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { formatCurrency } from "../../../utils";
+import { DashCircle } from "../../../component/DashCircle";
 
 const fakeData = {
   id: "e1",
