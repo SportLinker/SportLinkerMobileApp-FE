@@ -1,18 +1,15 @@
 // SearchTopTabNavigator.js
-import React from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import React from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 // Import screen components
-import EventScreen from "../screens/SearchScreen/EventScreen/EventScreen";
-import CoachScreen from "../screens/SearchScreen/CoachScreen/CoachScreen";
-import ClubScreen from "../screens/ChatScreen/ClubScreen";
-import PlayerScreen from "../screens/SearchScreen/PlayerScreen/PlayerScreen";
-import YardScreen from "../screens/SearchScreen/YardScreen";
+import { useNavigationState } from "@react-navigation/native";
 import SearchInputDynamic from "../component/SearchInputDynamic";
-import { useNavigation, useNavigationState } from "@react-navigation/native";
-import PlayerTabs from "./PlayerTabs";
+import EventScreen from "../screens/SearchScreen/EventScreen/EventScreen";
+import YardScreen from "../screens/SearchScreen/YardScreen/YardScreen";
 import CoachTabs from "./CoachTabs";
+import PlayerTabs from "./PlayerTabs";
 
 const TopTab = createMaterialTopTabNavigator();
 
@@ -35,21 +32,6 @@ const SearchTopTabNavigator = () => {
         }}
         initialRouteName="Event"
       >
-        {/* <TopTab.Screen
-          name="Club"
-          component={ClubScreen}
-          options={{
-            tabBarLabel: "CLB",
-            tabBarIcon: ({ color }) => (
-              <Icon
-                name="account-supervisor"
-                size={15}
-                color={color}
-                style={{ marginTop: 10, textAlign: "center" }} // Adjust the marginTop to center the icon
-              />
-            ),
-          }}
-        /> */}
         <TopTab.Screen
           name="Events"
           component={EventScreen}

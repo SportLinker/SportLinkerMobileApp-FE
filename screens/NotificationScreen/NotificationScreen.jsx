@@ -79,17 +79,6 @@ const mock_data = [
 export default function NotificationScreen({ navigation }) {
   return (
     <View>
-      <Appbar.Header style={{ backgroundColor: "#1646A9" }}>
-        <Appbar.BackAction
-          color="white"
-          style={{ fontSize: 18 }}
-          onPress={() => navigation.goBack()}
-        />
-        <Appbar.Content
-          title="Thông Báo"
-          titleStyle={{ fontSize: 18, color: "white" }}
-        />
-      </Appbar.Header>
       <ScrollView>
         <View>
           <Text
