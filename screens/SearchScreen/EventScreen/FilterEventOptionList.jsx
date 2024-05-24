@@ -11,17 +11,17 @@ const fakeData = [
     id: 2,
     label: "Thời gian",
   },
-  {
-    id: 3,
-    label: "Thời gian",
-  },
-  {
-    id: 4,
-    label: "Thời gian",
-  },
+  // {
+  //   id: 3,
+  //   label: "Thời gian",
+  // },
+  // {
+  //   id: 4,
+  //   label: "Thời gian",
+  // },
 ];
 
-const FilterEventOptionList = () => {
+export const FilterEventOptionList = () => {
   return (
     <FlatList
       data={fakeData}

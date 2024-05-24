@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import {
   FlatList,
   Pressable,
@@ -9,6 +10,7 @@ import {
 import { Avatar, TouchableRipple } from "react-native-paper";
 import Icon from "react-native-vector-icons/AntDesign";
 import Icon2 from "react-native-vector-icons/MaterialCommunityIcons";
+import { DashCircle } from "../../../component/DashCircle";
 
 const fakeData = [
   {
@@ -76,7 +78,7 @@ const fakeData = [
           },
           {
             id: "e3",
-            title: "Football với Thăng Long",
+            title: "Football với Thăng Long Long Long Long Long Long",
             address: "Sân bóng Mai Anh",
             distance: "2,1km",
             totalMember: 20,
@@ -221,28 +223,11 @@ const EventScheduleTable = () => {
   // const renderEventItem = ({ item }) => {
   //   return <View>Item</View>;
   // };
-
-  const DashCircle = ({ styles }) => (
-    <View
-      style={[
-        {
-          width: 30,
-          height: 30,
-          borderRadius: 50,
-          borderWidth: 2,
-          borderColor: "#717171",
-          borderStyle: "dashed",
-          backgroundColor: "#D9D9D9",
-        },
-        styles && { ...styles },
-      ]}
-    ></View>
-  );
+  const navigation = useNavigation();
 
   const eventView = ({ item, index }) => {
     //handle render member avatar
     const maxItems = 5;
-    console.log(item);
     // Prepare the data to render
     let renderData = item.members.slice(0, maxItems);
 
@@ -262,7 +247,7 @@ const EventScheduleTable = () => {
     }
 
     return (
-      <Pressable onPress={() => console.log("Pressed")}>
+      <Pressable onPress={() => navigation.navigate("EventDetailScreen")}>
         <View
           style={[
             {
@@ -338,13 +323,13 @@ const EventScheduleTable = () => {
                   alignItems: "center",
                 }}
               >
-                {renderData.map((newItem, idx) => {
+                {renderData.map((newItem, index) => {
                   if (newItem.isPlaceholder) {
-                    return <DashCircle key={`placeholder-${idx}`} />;
+                    return <DashCircle key={newItem.id + index} />;
                   } else if (newItem.remaining) {
                     return (
                       <Text
-                        key={`remaining-${idx}`}
+                        key={newItem.id + index}
                         style={{
                           color: "#717171",
                           fontWeight: "bold",
@@ -358,7 +343,7 @@ const EventScheduleTable = () => {
                   } else {
                     return (
                       <Avatar.Image
-                        key={`member-${newItem.id}`}
+                        key={newItem.id + index}
                         size={30}
                         source={{
                           uri: newItem.avatar,
@@ -375,7 +360,7 @@ const EventScheduleTable = () => {
     );
   };
 
-  const scheduleItem = ({ item }) => {
+  const scheduleItem = ({ item: scheduleItem }) => {
     return (
       <View
         style={{
@@ -396,13 +381,17 @@ const EventScheduleTable = () => {
             alignItems: "center",
           }}
         >
-          <Text style={{ fontSize: 18, fontWeight: "bold" }}>{item.time}</Text>
+          <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+            {scheduleItem.time}
+          </Text>
         </View>
         <View style={{ width: "80%", paddingHorizontal: 10 }}>
           <FlatList
-            data={item.items}
+            data={scheduleItem.items}
             renderItem={eventView}
-            keyExtractor={(item, index) => item.id + "-" + index}
+            keyExtractor={(item, index) => {
+              return index + "" + scheduleItem.time + item.id;
+            }}
           />
         </View>
       </View>
@@ -411,8 +400,9 @@ const EventScheduleTable = () => {
   return (
     <View>
       <SectionList
+        stickySectionHeadersEnabled
         sections={fakeData}
-        keyExtractor={(item, index) => item.id + "-" + index}
+        keyExtractor={(item, index) => index}
         renderItem={scheduleItem}
         renderSectionHeader={({ section: { title } }) => (
           <View>

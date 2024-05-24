@@ -11,8 +11,13 @@ import OTPInputScreen from "../screens/OTPScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import DetailCoachScreen from "../screens/SearchScreen/CoachScreen/DetailCoachScreen";
 import EventDetail from "../screens/SearchScreen/EventScreen/EventDetail";
+import CoachTopTabNavigator from "../tabs/CoachTopTabNavigator";
+import DetailPlayerScreen from "../screens/SearchScreen/PlayerScreen/DetailPlayerScreen";
+import { Text } from "react-native";
+import EventDetailTabs from "../tabs/EventDetailTabs";
 import BottomTabNavigator from "../tabs/BottomTabNavigator";
 import ListLikeScreen from "../screens/HomeScreen/ListLikeScreen";
+import DetailYardScreen from "../screens/SearchScreen/YardScreen/DetailYardScreen";
 
 const Stack = createStackNavigator();
 
@@ -56,9 +61,9 @@ const StackNavigator = () => (
     <Stack.Screen
       name="EventDetailScreen"
       options={{
-        headerShown: false,
+        title: "Event Detail",
       }}
-      component={EventDetail}
+      component={EventDetailTabs}
     />
 
     <Stack.Screen
@@ -84,7 +89,7 @@ const StackNavigator = () => (
       name="DetailCoachScreen"
       component={DetailCoachScreen}
       options={{
-        title: "",
+        title: "Chi Tiết Huấn Luyện Viên",
         headerStyle: { backgroundColor: "#1646a9" },
         headerTintColor: "white",
       }}
@@ -95,6 +100,15 @@ const StackNavigator = () => (
       options={{
         headerShown: false,
         headerLeft: () => null,
+      }}
+    />
+    <Stack.Screen
+      name="DetailYardScreen"
+      component={DetailYardScreen}
+      options={{
+        title: "Chi Tiết Sân",
+        headerStyle: { backgroundColor: "#1646a9" },
+        headerTintColor: "white",
       }}
     />
   </Stack.Navigator>
