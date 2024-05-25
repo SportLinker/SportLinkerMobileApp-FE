@@ -1,6 +1,6 @@
 // SearchTopTabNavigator.js
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import React from "react";
+import React, { useState } from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 // Import screen components
@@ -10,92 +10,142 @@ import EventScreen from "../screens/SearchScreen/EventScreen/EventScreen";
 import YardScreen from "../screens/SearchScreen/YardScreen/YardScreen";
 import CoachTabs from "./CoachTabs";
 import PlayerTabs from "./PlayerTabs";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Button } from "react-native-paper";
+import { color } from "react-native-elements/dist/helpers";
 
 const TopTab = createMaterialTopTabNavigator();
 
 const SearchTopTabNavigator = () => {
   const navigationState = useNavigationState((state) => state); // Get the navigation state
   const activeRouteName = navigationState;
+  const [activeTab, setActiveTab] = useState("match"); // save the active tab: match, user, yard, coach
 
   return (
     <>
       <SearchInputDynamic />
 
-      <TopTab.Navigator
-        screenOptions={{
-          tabBarActiveTintColor: "#4878D9",
-          tabBarInactiveTintColor: "black",
-          swipeEnabled: false,
-          tabBarLabelStyle: {
-            fontSize: 12,
-          },
-        }}
-        initialRouteName="Event"
-      >
-        <TopTab.Screen
-          name="Events"
-          component={EventScreen}
-          options={{
-            tabBarLabel: "Kèo",
-            tabBarIcon: ({ color }) => (
-              <Icon
-                name="calendar-search"
-                size={15}
-                color={color}
-                style={{ marginTop: 10, textAlign: "center" }} // Adjust the marginTop to center the icon
-              />
-            ),
+      <View style={styles.filterTab}>
+        <TouchableOpacity
+          style={[
+            styles.textWrapper,
+            activeTab == "match" && styles.activeTextWrapper,
+          ]}
+          onPress={() => {
+            setActiveTab("match");
           }}
-        />
-        <TopTab.Screen
-          name="Players"
-          component={PlayerTabs}
-          O
-          options={{
-            tabBarLabel: "Người",
-            tabBarIcon: ({ color }) => (
-              <Icon
-                name="account"
-                size={15}
-                color={color}
-                style={{ marginTop: 10, textAlign: "center" }} // Adjust the marginTop to center the icon
-              />
-            ),
+        >
+          <Icon
+            name="calendar-search"
+            size={16}
+            style={[styles.tabIcon, activeTab == "match" && styles.activeText]}
+          />
+          <Text
+            style={[styles.boldText, activeTab == "match" && styles.activeText]}
+          >
+            KÈO
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            setActiveTab("user");
           }}
-        />
-        <TopTab.Screen
-          name="Yard"
-          component={YardScreen}
-          options={{
-            tabBarLabel: "Sân",
-            tabBarIcon: ({ color }) => (
-              <Icon
-                name="calendar-text-outline"
-                size={15}
-                color={color}
-                style={{ marginTop: 10, textAlign: "center" }} // Adjust the marginTop to center the icon
-              />
-            ),
+          style={[
+            styles.textWrapper,
+            activeTab == "user" && styles.activeTextWrapper,
+          ]}
+        >
+          <Icon
+            name="account"
+            size={16}
+            style={[styles.tabIcon, activeTab == "user" && styles.activeText]}
+          />
+          <Text
+            style={[styles.boldText, activeTab == "user" && styles.activeText]}
+          >
+            NGƯỜI
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            setActiveTab("yard");
           }}
-        />
-        <TopTab.Screen
-          name="Coaches"
-          component={CoachTabs}
-          options={{
-            tabBarLabel: "HLV",
-            tabBarIcon: ({ color }) => (
-              <Icon
-                name="account-plus"
-                size={15}
-                color={color}
-                style={{ marginTop: 10, textAlign: "center" }} // Adjust the marginTop to center the icon
-              />
-            ),
+          style={[
+            styles.textWrapper,
+            activeTab == "yard" && styles.activeTextWrapper,
+          ]}
+        >
+          <Icon
+            name="calendar-text-outline"
+            size={16}
+            style={[styles.tabIcon, activeTab == "yard" && styles.activeText]}
+          />
+          <Text
+            style={[styles.boldText, activeTab == "yard" && styles.activeText]}
+          >
+            SÂN
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            setActiveTab("coach");
           }}
-        />
-      </TopTab.Navigator>
+          style={[
+            styles.textWrapper,
+            activeTab == "coach" && styles.activeTextWrapper,
+          ]}
+        >
+          <Icon
+            name="account-plus"
+            size={16}
+            style={[styles.tabIcon, activeTab == "coach" && styles.activeText]}
+          />
+          <Text
+            style={[styles.boldText, activeTab == "coach" && styles.activeText]}
+          >
+            HLV
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      {activeTab == "match" && <EventScreen />}
+      {activeTab == "user" && <PlayerTabs />}
+      {activeTab == "yard" && <YardScreen />}
+      {activeTab == "coach" && <CoachTabs />}
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  filterTab: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    borderBottomWidth: 1,
+    borderBottomColor: "#C4C4C4",
+  },
+  textWrapper: {
+    width: "25%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 5,
+    paddingVertical: 10,
+  },
+  boldText: {
+    fontSize: 12,
+  },
+  activeText: {
+    color: "blue",
+  },
+  activeTextWrapper: {
+    borderBottomWidth: 2,
+    borderBottomColor: "blue",
+  },
+  tabIcon: { marginTop: 10, textAlign: "center" },
+});
 
 export default SearchTopTabNavigator;
