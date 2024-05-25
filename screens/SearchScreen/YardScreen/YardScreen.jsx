@@ -156,7 +156,7 @@ export default function YardScreen() {
           <Text>{errorMsg || "Waiting..."}</Text>
         )}
       </View>
-      <ScrollView>
+      <ScrollView style={{ height: "90%" }}>
         <YardItem data={fake_data} />
       </ScrollView>
     </SafeAreaView>
