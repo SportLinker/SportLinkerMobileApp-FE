@@ -18,6 +18,7 @@ import EventDetailTabs from "../tabs/EventDetailTabs";
 import BottomTabNavigator from "../tabs/BottomTabNavigator";
 import ListLikeScreen from "../screens/HomeScreen/ListLikeScreen";
 import DetailYardScreen from "../screens/SearchScreen/YardScreen/DetailYardScreen";
+import PostLinkerScreen from "../screens/PostLinkerScreen/PostLinkerScreen";
 
 const Stack = createStackNavigator();
 
@@ -110,6 +111,15 @@ const StackNavigator = () => (
         headerStyle: { backgroundColor: "#1646a9" },
         headerTintColor: "white",
       }}
+    />
+    <Stack.Screen
+      name="PostLinkerScreen"
+      component={PostLinkerScreen}
+      // options={{
+      //   title: "Chi Tiết Sân",
+      //   headerStyle: { backgroundColor: "#1646a9" },
+      //   headerTintColor: "white",
+      // }}
     />
   </Stack.Navigator>
 );
