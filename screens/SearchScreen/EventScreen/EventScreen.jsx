@@ -26,9 +26,9 @@ export default function EventScreen() {
           bottom: 20,
           right: 10,
           zIndex: 20,
-          backgroundColor: "white",
+          backgroundColor: "#1646A9",
         }}
-        iconColor="#1646A9"
+        iconColor="white"
       ></IconButton>
       <CreateSportEventModal
         visible={createPopup}

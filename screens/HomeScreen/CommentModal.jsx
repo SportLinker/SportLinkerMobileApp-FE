@@ -131,7 +131,7 @@ export default function CommentModal({ modalVisible, setModalVisible }) {
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.input}
-              placeholder="Add a comment..."
+              placeholder="Thêm bình luận..."
               value={commentText}
               onChangeText={setCommentText}
             />
