@@ -13,7 +13,7 @@ export default function YardItem({ data }) {
         <TouchableOpacity
           key={yard.id}
           style={styles.containerYard}
-          // onPress={() => navigation.navigate("DetailYardScreen")}
+          onPress={() => navigation.navigate("DetailYardScreen")}
         >
           <View>
             <Image source={{ uri: yard.image }} style={styles.imageYard} />

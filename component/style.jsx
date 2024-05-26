@@ -273,4 +273,57 @@ export const styles = StyleSheet.create({
     resizeMode: "cover",
     borderRadius: 10,
   },
+  containerDetailYard: {
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  innerDetailYard: {
+    position: "relative",
+    width: "100%",
+    height: 200,
+  },
+  imageDetailYard: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
+  },
+  avatar: {
+    position: "absolute",
+    bottom: -55,
+    left: 10,
+    borderWidth: 2,
+    borderColor: "white",
+  },
+  detailSection: {
+    flexDirection: "row",
+    paddingTop: 10,
+    width: "100%",
+    justifyContent: "center",
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: "700",
+  },
+  starsContainer: {
+    flexDirection: "row",
+    marginTop: 2,
+    fontSize: 16,
+  },
+  containerYardDetail: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    // padding: 10,
+  },
+  avatarSpacer: {
+    width: 80,
+  },
+  rating: {
+    fontWeight: "600",
+    fontSize: 16,
+    marginLeft: 10,
+    marginVertical: "auto",
+    color: "#F9A825",
+  },
 });
