@@ -19,11 +19,19 @@ import BottomTabNavigator from "../tabs/BottomTabNavigator";
 import ListLikeScreen from "../screens/HomeScreen/ListLikeScreen";
 import DetailYardScreen from "../screens/SearchScreen/YardScreen/DetailYardScreen";
 import PostLinkerScreen from "../screens/PostLinkerScreen/PostLinkerScreen";
+import WelcomeScreen from "../screens/WelcomeScreen";
 
 const Stack = createStackNavigator();
 
 const StackNavigator = () => (
-  <Stack.Navigator initialRouteName="Login">
+  <Stack.Navigator initialRouteName="Welcome">
+    <Stack.Screen
+      name="Welcome"
+      options={{
+        headerShown: false,
+      }}
+      component={WelcomeScreen}
+    />
     <Stack.Screen
       name="Login"
       options={{
