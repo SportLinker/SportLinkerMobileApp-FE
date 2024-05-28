@@ -131,9 +131,10 @@ export default function CommentModal({ modalVisible, setModalVisible }) {
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.input}
-              placeholder="Thêm bình luận..."
+              placeholder="Thêm Bình Luận..."
               value={commentText}
               onChangeText={setCommentText}
+              placeholderTextColor="black"
             />
             <TouchableOpacity style={styles.sendButton}>
               <MaterialIcons name="send" size={24} color="white" />
@@ -207,7 +208,8 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    padding: 10,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
     borderRadius: 20,
     borderWidth: 1,
     borderColor: "#ddd",

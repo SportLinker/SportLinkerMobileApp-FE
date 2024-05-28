@@ -62,10 +62,10 @@ const CreateSportEventModal = ({ visible, onClose }) => {
 
   const handleNextStep = () => {
     const stepEmptyError = checkStepEmpty(step);
-    if (stepEmptyError) {
-      Alert.alert("Error", stepEmptyError);
-      return;
-    }
+    // if (stepEmptyError) {
+    //   Alert.alert("Error", stepEmptyError);
+    //   return;
+    // }
 
     if (step === 1) {
       setStep(2);
