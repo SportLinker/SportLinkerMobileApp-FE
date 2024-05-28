@@ -1,3 +1,5 @@
+import { Dimensions } from "react-native";
+
 export const sports = [
   {
     label: "Bóng đá",
@@ -77,3 +79,6 @@ export const minDate = new Date(currentDate);
 export const maxDate = new Date(
   currentDate.setFullYear(currentDate.getFullYear() + 1)
 );
+
+export const { width: WINDOW_WIDTH, height: WINDOW_HEIGHT } =
+  Dimensions.get("window");
