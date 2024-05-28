@@ -113,7 +113,9 @@ export default function DetailPlayerScreen({ navigation }) {
                   )}
                   <TouchableOpacity
                     onPress={() => {
-                      navigation.navigate("ChatListScreen"), handleCloseModal();
+                      setModalVisible(false);
+                      navigation.navigate("PlayerScreen");
+                      navigation.navigate("ChatListScreen");
                     }}
                   >
                     <Ionicons

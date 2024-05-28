@@ -3,13 +3,14 @@ import React from "react";
 
 export default function CoachTrain() {
   return (
-    <View>
+    <View style={{ padding: 20 }}>
       <View style={{ marginVertical: 5 }}>
         <Text
           style={{
             fontWeight: 600,
             color: "#707070",
             fontSize: 16,
+            paddingBottom: 10,
           }}
         >
           {"Kinh nghiệm".toUpperCase()}
@@ -18,6 +19,7 @@ export default function CoachTrain() {
           style={{
             fontWeight: 600,
             fontSize: 16,
+            paddingBottom: 10,
           }}
         >
           15-year-old volleyball player. University captain of amateur teams and
@@ -30,6 +32,7 @@ export default function CoachTrain() {
             fontWeight: 600,
             color: "#707070",
             fontSize: 16,
+            paddingBottom: 10,
           }}
         >
           {"Mức phí huấn luyện".toUpperCase()}
