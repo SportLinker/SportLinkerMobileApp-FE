@@ -6,6 +6,7 @@ import { styles } from "../../../component/style";
 import CoachProfile from "./CoachProfile";
 import CoachTrain from "./CoachTrain";
 import { useNavigation } from "@react-navigation/native";
+import CoachMatch from "./CoachMatch";
 
 export default function DetailCoachScreen() {
   const [image, setImage] = useState(
@@ -13,180 +14,235 @@ export default function DetailCoachScreen() {
   );
   const [liked, setLiked] = useState("");
   const [addUser, setAddUser] = useState("");
+  const [activeTab, setActiveTab] = useState("train");
 
   const navigation = useNavigation();
 
   return (
     <View style={styles.modalCoachContainer}>
-      <ScrollView>
-        <View>
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-            }}
-          >
-            <View style={{ alignItems: "center", marginLeft: 15 }}>
-              <Avatar.Image size={100} source={{ uri: image }} />
-            </View>
-            <View style={styles.nameContainer}>
-              <Text
-                style={{
-                  fontSize: 20,
-                  fontWeight: "bold",
-                }}
-              >
-                Kim Anh
+      <View>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+          }}
+        >
+          <View style={{ alignItems: "center", marginLeft: 15 }}>
+            <Avatar.Image size={100} source={{ uri: image }} />
+          </View>
+          <View style={styles.nameContainer}>
+            <Text
+              style={{
+                fontSize: 20,
+                fontWeight: "bold",
+              }}
+            >
+              Kim Anh
+            </Text>
+            <View style={{ display: "flex", flexDirection: "row" }}>
+              <Text style={{ paddingTop: 3, fontWeight: 700, fontSize: 16 }}>
+                Nữ
               </Text>
-              <View style={{ display: "flex", flexDirection: "row" }}>
-                <Text style={{ paddingTop: 3, fontWeight: 700, fontSize: 16 }}>
-                  Nữ
-                </Text>
-                <Text style={{ paddingHorizontal: 5, paddingTop: 5 }}>●</Text>
-                <FontAwesome6
-                  name="volleyball"
-                  size={15}
-                  color="black"
-                  style={{ paddingRight: 5, paddingTop: 8 }}
-                />
-                <Text
-                  style={{ fontWeight: 700, color: "#707070", paddingTop: 5 }}
-                >
-                  Bóng chuyền
-                </Text>
-              </View>
-              <View
-                style={{ display: "flex", flexDirection: "row", marginTop: 10 }}
+              <Text style={{ paddingHorizontal: 5, paddingTop: 5 }}>●</Text>
+              <FontAwesome6
+                name="volleyball"
+                size={15}
+                color="black"
+                style={{ paddingRight: 5, paddingTop: 8 }}
+              />
+              <Text
+                style={{ fontWeight: 700, color: "#707070", paddingTop: 5 }}
               >
-                {addUser === "checked" ? (
-                  <TouchableOpacity onPress={() => setAddUser("unchecked")}>
-                    <AntDesign
-                      name="deleteuser"
-                      size={30}
-                      color="red"
-                      style={{ marginRight: 30 }}
-                    />
-                  </TouchableOpacity>
-                ) : (
-                  <TouchableOpacity onPress={() => setAddUser("checked")}>
-                    <AntDesign
-                      name="adduser"
-                      size={30}
-                      color="#1646a9"
-                      style={{ marginRight: 30 }}
-                    />
-                  </TouchableOpacity>
-                )}
-                <TouchableOpacity>
-                  <Ionicons
-                    name="chatbubble-ellipses-outline"
+                Bóng chuyền
+              </Text>
+            </View>
+            <View
+              style={{ display: "flex", flexDirection: "row", marginTop: 10 }}
+            >
+              {addUser === "checked" ? (
+                <TouchableOpacity onPress={() => setAddUser("unchecked")}>
+                  <AntDesign
+                    name="deleteuser"
+                    size={30}
+                    color="red"
+                    style={{ marginRight: 30 }}
+                  />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity onPress={() => setAddUser("checked")}>
+                  <AntDesign
+                    name="adduser"
+                    size={30}
+                    color="#1646a9"
+                    style={{ marginRight: 30 }}
+                  />
+                </TouchableOpacity>
+              )}
+              <TouchableOpacity>
+                <Ionicons
+                  name="chatbubble-ellipses-outline"
+                  size={30}
+                  color="black"
+                  style={{ marginRight: 20 }}
+                  onPress={() => navigation.navigate("ChatListScreen")}
+                />
+              </TouchableOpacity>
+              {liked === "liked" ? (
+                <TouchableOpacity onPress={() => setLiked("unliked")}>
+                  <AntDesign
+                    name="star"
+                    size={30}
+                    color="#F9A825"
+                    style={{ marginRight: 20 }}
+                  />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity onPress={() => setLiked("liked")}>
+                  <AntDesign
+                    name="staro"
                     size={30}
                     color="black"
                     style={{ marginRight: 20 }}
-                    onPress={() => navigation.navigate("ChatListScreen")}
                   />
                 </TouchableOpacity>
-                {liked === "liked" ? (
-                  <TouchableOpacity onPress={() => setLiked("unliked")}>
-                    <AntDesign
-                      name="star"
-                      size={30}
-                      color="#F9A825"
-                      style={{ marginRight: 20 }}
-                    />
-                  </TouchableOpacity>
-                ) : (
-                  <TouchableOpacity onPress={() => setLiked("liked")}>
-                    <AntDesign
-                      name="staro"
-                      size={30}
-                      color="black"
-                      style={{ marginRight: 20 }}
-                    />
-                  </TouchableOpacity>
-                )}
-                <TouchableOpacity>
-                  <Ionicons name="flag" size={30} color="red" />
-                </TouchableOpacity>
-              </View>
+              )}
+              <TouchableOpacity>
+                <Ionicons name="flag" size={30} color="red" />
+              </TouchableOpacity>
             </View>
           </View>
+        </View>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-around",
+            marginTop: 20,
+          }}
+        >
           <View
             style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-around",
-              marginTop: 20,
+              alignItems: "center",
+              borderRightWidth: 1,
+              paddingRight: 30,
+              borderRightColor: "#C4C4C4",
+              paddingVertical: 15,
             }}
           >
-            <View
+            <Text
               style={{
-                alignItems: "center",
-                borderRightWidth: 1,
-                paddingRight: 30,
-                borderRightColor: "#C4C4C4",
-                paddingVertical: 15,
+                color: "#707070",
+                fontSize: 16,
+                fontWeight: "bold",
               }}
             >
-              <Text
-                style={{
-                  color: "#707070",
-                  fontSize: 16,
-                  fontWeight: "bold",
-                }}
-              >
-                Trận đấu
-              </Text>
-              <Text style={{ fontSize: 20, fontWeight: "bold" }}>0</Text>
-            </View>
-            <View
-              style={{
-                alignItems: "center",
-                borderRightWidth: 1,
-                borderRightColor: "#C4C4C4",
-                paddingRight: 30,
-                paddingVertical: 15,
-                marginLeft: 15,
-              }}
-            >
-              <Text
-                style={{
-                  color: "#707070",
-                  fontSize: 16,
-                  fontWeight: "bold",
-                }}
-              >
-                Hoạt động
-              </Text>
-              <Text style={{ fontSize: 20, fontWeight: "bold" }}>1</Text>
-            </View>
-            <View style={{ alignItems: "center", paddingVertical: 15 }}>
-              <Text
-                style={{
-                  color: "#707070",
-                  fontSize: 16,
-                  fontWeight: "bold",
-                }}
-              >
-                Giải thưởng
-              </Text>
-              <Text style={{ fontSize: 20, fontWeight: "bold" }}>0</Text>
-            </View>
+              Trận đấu
+            </Text>
+            <Text style={{ fontSize: 20, fontWeight: "bold" }}>0</Text>
           </View>
           <View
             style={{
-              borderWidth: 1,
-              marginVertical: 20,
-              borderColor: "#c4c4c4",
+              alignItems: "center",
+              borderRightWidth: 1,
+              borderRightColor: "#C4C4C4",
+              paddingRight: 30,
+              paddingVertical: 15,
+              marginLeft: 15,
             }}
-          />
-          {/* <CoachTopTabNavigator /> */}
-          <ScrollView>
-            <CoachProfile />
-            <CoachTrain />
-          </ScrollView>
-          {/* <CoachTabView /> */}
+          >
+            <Text
+              style={{
+                color: "#707070",
+                fontSize: 16,
+                fontWeight: "bold",
+              }}
+            >
+              Hoạt động
+            </Text>
+            <Text style={{ fontSize: 20, fontWeight: "bold" }}>1</Text>
+          </View>
+          <View style={{ alignItems: "center", paddingVertical: 15 }}>
+            <Text
+              style={{
+                color: "#707070",
+                fontSize: 16,
+                fontWeight: "bold",
+              }}
+            >
+              Giải thưởng
+            </Text>
+            <Text style={{ fontSize: 20, fontWeight: "bold" }}>0</Text>
+          </View>
         </View>
+      </View>
+      <View
+        style={{
+          borderWidth: 1,
+          marginTop: 20,
+          borderColor: "#c4c4c4",
+        }}
+      />
+      <View style={styles.tabViewCoach}>
+        <TouchableOpacity
+          style={[
+            styles.textCoachWrapper,
+            activeTab == "profile" && styles.activeTextWrapper,
+          ]}
+          onPress={() => {
+            setActiveTab("profile");
+          }}
+        >
+          <Text
+            style={[
+              styles.boldTextCoach,
+              activeTab == "profile" && styles.activeText,
+            ]}
+          >
+            Giới thiệu
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[
+            styles.textCoachWrapper,
+            activeTab == "match" && styles.activeTextWrapper,
+          ]}
+          onPress={() => {
+            setActiveTab("match");
+          }}
+        >
+          <Text
+            style={[
+              styles.boldTextCoach,
+              activeTab == "match" && styles.activeText,
+            ]}
+          >
+            Trận đấu
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[
+            styles.textCoachWrapper,
+            activeTab == "train" && styles.activeTextWrapper,
+          ]}
+          onPress={() => {
+            setActiveTab("train");
+          }}
+        >
+          <Text
+            style={[
+              styles.boldTextCoach,
+              activeTab == "train" && styles.activeText,
+            ]}
+          >
+            Huấn luyện
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      <ScrollView style={{ backgroundColor: "#fff" }}>
+        {activeTab === "profile" && <CoachProfile />}
+        {activeTab === "match" && <CoachMatch />}
+        {activeTab === "train" && <CoachTrain />}
       </ScrollView>
     </View>
   );

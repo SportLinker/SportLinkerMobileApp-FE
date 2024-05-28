@@ -88,7 +88,7 @@ export default function DetailYardScreen() {
           justifyContent: "space-around",
           backgroundColor: "#fff",
           marginTop: 26,
-          padding: 5,
+          padding: 10,
         }}
       >
         <View>
@@ -100,13 +100,12 @@ export default function DetailYardScreen() {
             }}
           >
             <MaterialCommunityIcons name="post" size={30} color="black" />
-            <Text>Bài Đăng</Text>
           </TouchableOpacity>
         </View>
         <View>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate("ChatListScreen"), handleCloseModal();
+              navigation.navigate("ChatListScreen");
             }}
             style={{
               display: "flex",
@@ -119,7 +118,6 @@ export default function DetailYardScreen() {
               size={30}
               color="black"
             />
-            <Text>Chat</Text>
           </TouchableOpacity>
         </View>
         <View>
@@ -133,7 +131,6 @@ export default function DetailYardScreen() {
               }}
             >
               <AntDesign name="star" size={30} color="#F9A825" />
-              <Text>Đã Thích</Text>
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
@@ -145,7 +142,6 @@ export default function DetailYardScreen() {
               }}
             >
               <AntDesign name="staro" size={30} color="black" />
-              <Text>Thích</Text>
             </TouchableOpacity>
           )}
         </View>

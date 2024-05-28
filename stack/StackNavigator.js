@@ -6,20 +6,16 @@ import React from "react";
 import EditAccountScreen from "../screens/AccountScreen/EditAccountScreen";
 import PasswordScreen from "../screens/AccountScreen/PasswordScreen";
 import ChatDetail from "../screens/ChatScreen/ChatDetail";
+import ListLikeScreen from "../screens/HomeScreen/ListLikeScreen";
 import LoginScreen from "../screens/LoginScreen";
 import OTPInputScreen from "../screens/OTPScreen";
+import PostLinkerScreen from "../screens/PostLinkerScreen/PostLinkerScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import DetailCoachScreen from "../screens/SearchScreen/CoachScreen/DetailCoachScreen";
-import EventDetail from "../screens/SearchScreen/EventScreen/EventDetail";
-import CoachTopTabNavigator from "../tabs/CoachTopTabNavigator";
-import DetailPlayerScreen from "../screens/SearchScreen/PlayerScreen/DetailPlayerScreen";
-import { Text } from "react-native";
-import EventDetailTabs from "../tabs/EventDetailTabs";
-import BottomTabNavigator from "../tabs/BottomTabNavigator";
-import ListLikeScreen from "../screens/HomeScreen/ListLikeScreen";
 import DetailYardScreen from "../screens/SearchScreen/YardScreen/DetailYardScreen";
-import PostLinkerScreen from "../screens/PostLinkerScreen/PostLinkerScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
+import BottomTabNavigator from "../tabs/BottomTabNavigator";
+import EventDetailTabs from "../tabs/EventDetailTabs";
 
 const Stack = createStackNavigator();
 

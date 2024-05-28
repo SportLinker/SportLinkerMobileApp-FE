@@ -11,24 +11,28 @@ import {
 } from "react-native";
 import { Avatar, Snackbar } from "react-native-paper";
 import { styles } from "../../component/style";
+import Profile from "./Profile";
+import MyPost from "./MyPost";
+
+const fakeData = [
+  {
+    id: 1,
+    title: "Bóng đá",
+    level: "Chuyên nghiệp",
+    position: "Trung vệ",
+    icon: "soccer-ball",
+  },
+  {
+    id: 2,
+    title: "Bóng rổ",
+    level: "Amateur",
+    position: "Point guard",
+    icon: "basketball",
+  },
+];
 
 export default function AccountScreen() {
-  const fakeData = [
-    {
-      id: 1,
-      title: "Bóng đá",
-      level: "Chuyên nghiệp",
-      position: "Trung vệ",
-      icon: "soccer-ball",
-    },
-    {
-      id: 2,
-      title: "Bóng rổ",
-      level: "Amateur",
-      position: "Point guard",
-      icon: "basketball",
-    },
-  ];
+  const [activeTab, setActiveTab] = useState("profile");
 
   const fakeDataCommunity = [
     { id: 1, city: "Ho Chi Minh City", code: "EXE201" },
@@ -108,7 +112,48 @@ export default function AccountScreen() {
             </Text>
           </View>
         </View>
-        <View>
+
+        <View style={styles.tabView}>
+          <TouchableOpacity
+            style={[
+              styles.textWrapper,
+              activeTab == "profile" && styles.activeTextWrapper,
+            ]}
+            onPress={() => {
+              setActiveTab("profile");
+            }}
+          >
+            <Text
+              style={[
+                styles.boldText,
+                activeTab == "profile" && styles.activeText,
+              ]}
+            >
+              Giới thiệu
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.textWrapper,
+              activeTab == "post" && styles.activeTextWrapper,
+            ]}
+            onPress={() => {
+              setActiveTab("post");
+            }}
+          >
+            <Text
+              style={[
+                styles.boldText,
+                activeTab == "post" && styles.activeText,
+              ]}
+            >
+              Bài đăng
+            </Text>
+          </TouchableOpacity>
+        </View>
+        {activeTab === "profile" && <Profile fakeData={fakeData} />}
+        {activeTab === "post" && <MyPost />}
+        {/* <View>
           <View style={styles.topInfoSport}>
             <Text style={{ color: "#707070", fontWeight: "bold" }}>
               {"Thể thao".toUpperCase()}
@@ -166,7 +211,7 @@ export default function AccountScreen() {
               </View>
             ))}
           </View>
-        </View>
+        </View> */}
         {/* <View>
           <View style={styles.topInfoSport}>
             <Text style={{ color: "#707070", fontWeight: "bold" }}>
