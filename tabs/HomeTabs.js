@@ -30,6 +30,7 @@ export default function HomeTabs() {
             title: "Thông Báo",
             headerStyle: { backgroundColor: "#1646a9" },
             headerTintColor: "white",
+            headerBackTitle: " ",
           }}
         />
       </Stack.Navigator>
