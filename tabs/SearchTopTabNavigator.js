@@ -139,11 +139,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   activeText: {
-    color: "blue",
+    color: "#4878D9",
   },
   activeTextWrapper: {
     borderBottomWidth: 2,
-    borderBottomColor: "blue",
+    borderBottomColor: "#4878D9",
   },
   tabIcon: { marginTop: 10, textAlign: "center" },
 });

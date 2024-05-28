@@ -268,7 +268,7 @@ const EventScheduleTable = () => {
                 color: "black",
               }}
             />
-            {item.currentMember == item.totalMember && (
+            {item.currentMember == item.totalMember ? (
               <Text
                 style={{
                   backgroundColor: "#a237cd",
@@ -285,6 +285,23 @@ const EventScheduleTable = () => {
               >
                 Đủ người
               </Text>
+            ) : (
+              <Text
+                style={{
+                  backgroundColor: "#66FF66",
+                  color: "white",
+                  height: 25,
+                  borderRadius: 15,
+                  overflow: "hidden",
+                  textAlign: "center",
+                  fontSize: 14,
+                  fontWeight: "bold",
+                  paddingHorizontal: 10,
+                  paddingVertical: 3,
+                }}
+              >
+                Chưa Đủ Người
+              </Text>
             )}
           </View>
           <View
@@ -294,12 +311,10 @@ const EventScheduleTable = () => {
               paddingLeft: 40,
             }}
           >
-            <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+            <Text style={{ fontSize: 18, fontWeight: "bold" }}>
               {item.title}
             </Text>
-            <Text
-              style={{ fontSize: 16, fontWeight: "bold", color: "#717171" }}
-            >
+            <Text style={{ fontSize: 15, color: "#717171" }}>
               <Icon name="enviromento" size={16} color={"#717171"} />
               Sân bóng Mai Anh
             </Text>
@@ -312,7 +327,7 @@ const EventScheduleTable = () => {
               }}
             >
               <Text
-                style={{ fontSize: 16, fontWeight: "bold" }}
+                style={{ fontSize: 16, fontWeight: "500" }}
               >{`${item.currentMember}/${item.totalMember}`}</Text>
               <Text>•</Text>
               <View

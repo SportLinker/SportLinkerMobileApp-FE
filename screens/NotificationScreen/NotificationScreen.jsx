@@ -1,77 +1,76 @@
 import { View, Text, ScrollView } from "react-native";
 import React from "react";
 import { AntDesign } from "@expo/vector-icons";
-import { Appbar } from "react-native-paper";
 
 const mock_data = [
   {
     id: 1,
     icon: "checkcircleo",
-    title: "Account Verified",
-    desc: "Your account has been verified",
+    title: "Tài Khoản Đã Xác Minh",
+    desc: "Tài khoản của bạn đã được xác minh",
     day: "today",
   },
   {
     id: 2,
     icon: "checkcircleo",
-    title: "Payment Received",
-    desc: "We have received your payment",
+    title: "Đã Nhận Thanh Toán",
+    desc: "Chúng tôi đã nhận được thanh toán của bạn",
     day: "today",
   },
   {
     id: 3,
     icon: "closecircleo",
-    title: "Payment Failed",
-    desc: "Your payment failed. Please try again",
+    title: "Thanh Toán Thất Bại",
+    desc: "Thanh toán của bạn không thành công. Vui lòng thử lại",
     day: "yesterday",
   },
   {
     id: 4,
     icon: "infocirlceo",
-    title: "New Feature Released",
-    desc: "Check out the new feature we have released",
+    title: "Tính Năng Mới Được Phát Hành",
+    desc: "Xem tính năng mới chúng tôi đã phát hành",
     day: "yesterday",
   },
   {
     id: 5,
     icon: "warning",
-    title: "Security Alert",
-    desc: "A new login to your account was detected",
+    title: "Cảnh Báo Bảo Mật",
+    desc: "Phát hiện đăng nhập mới vào tài khoản của bạn",
     day: "yesterday",
   },
   {
     id: 6,
     icon: "mail",
-    title: "New Message",
-    desc: "You have received a new message",
+    title: "Tin Nhắn Mới",
+    desc: "Bạn đã nhận được tin nhắn mới",
     day: "yesterday",
   },
   {
     id: 7,
     icon: "checkcircleo",
-    title: "Subscription Renewed",
-    desc: "Your subscription has been renewed",
+    title: "Gia Hạn Đăng Ký",
+    desc: "Đăng ký của bạn đã được gia hạn",
     day: "today",
   },
   {
     id: 8,
     icon: "like2",
-    title: "New Like",
-    desc: "Someone liked your post",
+    title: "Thích Mới",
+    desc: "Ai đó đã thích bài viết của bạn",
     day: "older",
   },
   {
     id: 9,
     icon: "message1",
-    title: "New Comment",
-    desc: "Someone commented on your post",
+    title: "Bình Luận Mới",
+    desc: "Ai đó đã bình luận về bài viết của bạn",
     day: "older",
   },
   {
     id: 10,
     icon: "bells",
-    title: "Reminder",
-    desc: "Don't forget to check your tasks",
+    title: "Nhắc Nhở",
+    desc: "Đừng quên kiểm tra các nhiệm vụ của bạn",
     day: "older",
   },
 ];
@@ -89,7 +88,7 @@ export default function NotificationScreen({ navigation }) {
               color: "#a7a7a7",
             }}
           >
-            Today
+            Hôm nay
           </Text>
           {mock_data
             .filter((item) => item.day === "today")
@@ -105,15 +104,24 @@ export default function NotificationScreen({ navigation }) {
                 <AntDesign
                   name={item.icon}
                   size={24}
-                  color="#6f9495"
+                  color="#1646A9"
                   style={{ marginVertical: "auto", marginHorizontal: 30 }}
                 />
-                <View>
-                  <Text style={{ fontSize: 16, fontWeight: 700 }}>
+                <View style={{ width: "80%" }}>
+                  <Text
+                    style={{ fontSize: 16, fontWeight: 700, marginBottom: 10 }}
+                  >
                     {item.title}
                   </Text>
                   <Text
-                    style={{ fontSize: 14, fontWeight: 700, color: "#d7d7d7" }}
+                    numberOfLines={2}
+                    style={{
+                      fontSize: 14,
+                      fontWeight: 700,
+                      color: "#cccccc",
+                      width: "90%",
+                      lineHeight: 20,
+                    }}
                   >
                     {item.desc}
                   </Text>
@@ -130,7 +138,7 @@ export default function NotificationScreen({ navigation }) {
               color: "#a7a7a7",
             }}
           >
-            Yesterday
+            Hôm qua
           </Text>
           {mock_data
             .filter((item) => item.day === "yesterday")
@@ -146,15 +154,24 @@ export default function NotificationScreen({ navigation }) {
                 <AntDesign
                   name={item.icon}
                   size={24}
-                  color="#6f9495"
+                  color="#1646A9"
                   style={{ marginVertical: "auto", marginHorizontal: 30 }}
                 />
-                <View>
-                  <Text style={{ fontSize: 16, fontWeight: 700 }}>
+                <View style={{ width: "80%" }}>
+                  <Text
+                    style={{ fontSize: 16, fontWeight: 700, marginBottom: 10 }}
+                  >
                     {item.title}
                   </Text>
                   <Text
-                    style={{ fontSize: 14, fontWeight: 700, color: "#d7d7d7" }}
+                    numberOfLines={2}
+                    style={{
+                      fontSize: 14,
+                      fontWeight: 700,
+                      color: "#cccccc",
+                      width: "90%",
+                      lineHeight: 20,
+                    }}
                   >
                     {item.desc}
                   </Text>
@@ -171,7 +188,7 @@ export default function NotificationScreen({ navigation }) {
               color: "#a7a7a7",
             }}
           >
-            Older
+            Cũ hơn
           </Text>
           {mock_data
             .filter((item) => item.day === "older")
@@ -187,15 +204,24 @@ export default function NotificationScreen({ navigation }) {
                 <AntDesign
                   name={item.icon}
                   size={24}
-                  color="#6f9495"
+                  color="#1646A9"
                   style={{ marginVertical: "auto", marginHorizontal: 30 }}
                 />
-                <View>
-                  <Text style={{ fontSize: 16, fontWeight: 700 }}>
+                <View style={{ width: "80%" }}>
+                  <Text
+                    style={{ fontSize: 16, fontWeight: 700, marginBottom: 10 }}
+                  >
                     {item.title}
                   </Text>
                   <Text
-                    style={{ fontSize: 14, fontWeight: 700, color: "#d7d7d7" }}
+                    numberOfLines={2}
+                    style={{
+                      fontSize: 14,
+                      fontWeight: 700,
+                      color: "#cccccc",
+                      width: "90%",
+                      lineHeight: 20,
+                    }}
                   >
                     {item.desc}
                   </Text>
