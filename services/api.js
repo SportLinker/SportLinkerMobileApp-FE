@@ -1,7 +1,6 @@
 import axios from "axios";
-import { toast } from "react-toastify";
 
-const API = "http://localhost:8080/v1/api";
+const API_URL = "http://localhost:8080/v1/api";
 // let accessToken =
 // 	localStorage.getItem('user') && JSON.parse(localStorage.getItem('user')).accessToken;
 // let refreshToken =
@@ -12,7 +11,7 @@ export const api_mockoi = axios.create({
   baseURL: API_URL,
 });
 export const api = axios.create({
-  baseURL: API,
+  baseURL: API_URL,
   // headers: {
   // 	'x-authentication': accessToken,
   // 	'x-api-email': email,

@@ -115,11 +115,12 @@ const StackNavigator = () => (
     <Stack.Screen
       name="PostLinkerScreen"
       component={PostLinkerScreen}
-      // options={{
-      //   title: "Chi Tiết Sân",
-      //   headerStyle: { backgroundColor: "#1646a9" },
-      //   headerTintColor: "white",
-      // }}
+      options={{
+        title: "Tạo bài đăng",
+        headerStyle: { backgroundColor: "#1646a9" },
+        headerTitleAlign: "center",
+        headerTintColor: "white",
+      }}
     />
   </Stack.Navigator>
 );
