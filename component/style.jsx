@@ -44,7 +44,7 @@ export const styles = StyleSheet.create({
   profileCoach: {
     borderRadius: 20,
     backgroundColor: "#fff", // Màu nền của phần tử
-    width: 300,
+    width: "100%",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -59,7 +59,7 @@ export const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    marginHorizontal: 38,
+    marginHorizontal: 20,
     marginTop: 30,
     marginBottom: 10,
   },
@@ -152,7 +152,7 @@ export const styles = StyleSheet.create({
   },
   modalCoachContainer: {
     backgroundColor: "#fff",
-    padding: 20,
+
     height: "100%",
     paddingTop: 20,
   },
@@ -325,5 +325,72 @@ export const styles = StyleSheet.create({
     marginLeft: 10,
     marginVertical: "auto",
     color: "#F9A825",
+  },
+  tabView: {
+    marginTop: 20,
+    backgroundColor: "#fff",
+    width: "100%",
+    height: 45,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    borderBottomWidth: 1,
+    borderBottomColor: "#C4C4C4",
+  },
+  textWrapper: {
+    width: "50%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 5,
+    paddingVertical: 10,
+  },
+  boldText: {
+    fontSize: 17,
+    fontWeight: 700,
+  },
+  activeText: {
+    color: "#4878D9",
+  },
+  activeTextWrapper: {
+    borderBottomWidth: 2,
+    borderBottomColor: "#4878D9",
+  },
+  tabViewCoach: {
+    backgroundColor: "#fff",
+    width: "100%",
+    height: 44,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    borderBottomWidth: 1,
+    borderBottomColor: "#C4C4C4",
+  },
+  textCoachWrapper: {
+    width: "33.33%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 5,
+    paddingVertical: 10,
+  },
+  boldTextCoach: {
+    fontSize: 16,
+    fontWeight: 700,
+  },
+  logoRankContainer: { padding: 20, width: 150, height: 150, margin: "auto" },
+  textRank: {
+    fontWeight: "600",
+    fontSize: 20,
+    textAlign: "center",
+  },
+  imageStyle: {
+    resizeMode: "cover",
+    height: "100%",
+    width: "100%",
   },
 });
