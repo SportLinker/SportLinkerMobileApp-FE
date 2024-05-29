@@ -18,6 +18,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { TouchableOpacity } from "react-native";
 import DraggableBottomSheet from "../../component/DraggableBottomSheet";
 import VideoPlayer from "react-native-video-controls";
+import { LinkPreview, oneOf } from "@flyerhq/react-native-link-preview";
 
 const cationOptions = [
   {
@@ -137,15 +138,33 @@ export default function PostLinkerScreen({ navigation }) {
           </View>
           <View style={styles.contentContainer}>
             <View style={styles.captionWrapper}>
-              <TextInput
+              {/* <TextInput
                 multiline={true}
-                numberOfLines={3}
-                maxLength={70}
+                numberOfLines={8}
+                maxLength={500}
                 value={caption}
                 onChangeText={(text) => setCaption(text)}
                 placeholder="Bạn đang nghĩ gì?"
                 placeholderTextColor="#707070"
                 style={styles.txtCatption}
+              /> */}
+              <LinkPreview
+                containerStyle={{
+                  width: "100%",
+                }}
+                textContainerStyle={{ width: "100%", marginHorizontal: 0 }}
+                renderText={(text) => (
+                  <Text
+                    style={{
+                      color: "blue",
+                      textDecorationLine: "underline",
+                      fontSize: 16,
+                    }}
+                  >
+                    {text}
+                  </Text>
+                )}
+                text="This link https://www.google.com/ can be extracted from the text"
               />
             </View>
             {images && (
@@ -218,12 +237,15 @@ const styles = StyleSheet.create({
   },
   captionWrapper: {
     width: "100%",
-    height: 100,
+    height: 150,
     marginVertical: 20,
+    overflow: "hidden",
   },
   txtCatption: {
-    fontSize: 24,
-    height: 100,
+    fontSize: 16,
+    height: "100%",
+    textAlign: "left",
+    textAlignVertical: "top",
   },
   imageContainer: {
     width: "100%",
