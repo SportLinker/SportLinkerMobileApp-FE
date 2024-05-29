@@ -4,8 +4,10 @@ import { Avatar } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Swiper from "react-native-swiper";
 import CommentModal from "./CommentModal"; // Import CommentModal
+import LoadVideo from "./LoadVideo";
+import LoadImage from "./LoadImage";
 
-export default function PostItem({ navigation }) {
+export default function PostItem({ navigation, index }) {
   const [liked, setLiked] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -26,6 +28,12 @@ export default function PostItem({ navigation }) {
     { id: "3", text: "Thanks for sharing." },
   ];
 
+  const listVideo = [
+    "https://res.cloudinary.com/dcbsbl9zg/video/upload/v1716902043/Test/8b665e16-8e46-4fab-91da-8bacd2b2f7b3_mykxqt.mp4",
+    "https://res.cloudinary.com/dcbsbl9zg/video/upload/v1716902043/Test/8b665e16-8e46-4fab-91da-8bacd2b2f7b3_mykxqt.mp4",
+    "https://res.cloudinary.com/dcbsbl9zg/video/upload/v1716902043/Test/8b665e16-8e46-4fab-91da-8bacd2b2f7b3_mykxqt.mp4",
+  ];
+
   return (
     <View style={styles.postWrapper}>
       <View style={styles.avatarWrapper}>
@@ -42,19 +50,14 @@ export default function PostItem({ navigation }) {
       <Text style={styles.postTitle}>
         Tìm bạn cùng chơi bi-a ở Thủ Đức, từ 18 - 30 tuổi, ưu tiên các bạn nam
       </Text>
-      <Swiper
-        style={styles.swiper}
-        autoplayTimeout={3}
-        dotStyle={styles.dotStyle}
-        activeDotStyle={styles.activeDotStyle}
-        loop={false} // Disable looping
-        index={activeIndex} // Set the current active index
-        onIndexChanged={(index) => setActiveIndex(index)}
-      >
-        {images.map((image, index) => (
-          <Image key={index} source={{ uri: image }} style={styles.postImage} />
-        ))}
-      </Swiper>
+      <View>
+        {index % 2 == 0 ? (
+          <LoadVideo listVideo={listVideo} />
+        ) : (
+          <LoadImage listImages={images} />
+        )}
+      </View>
+
       <View style={styles.bottomWrap}>
         <View style={{ flexDirection: "row" }}>
           <TouchableOpacity onPress={handleToggleLike} style={styles.mr5}>
@@ -107,12 +110,6 @@ const styles = StyleSheet.create({
     color: "#707070",
     fontSize: 12,
   },
-  postImage: {
-    flex: 1,
-    width: "100%",
-    minHeight: 190,
-    borderRadius: 5,
-  },
   mr5: {
     marginRight: 5,
   },
@@ -121,22 +118,5 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginTop: 15,
-  },
-  swiper: {
-    height: 200,
-  },
-  dotStyle: {
-    backgroundColor: "rgba(255,255,255,.3)",
-    width: 6,
-    height: 6,
-    borderRadius: 4,
-    margin: 3,
-  },
-  activeDotStyle: {
-    backgroundColor: "#FFFFFF",
-    width: 6,
-    height: 6,
-    borderRadius: 4,
-    margin: 3,
   },
 });
