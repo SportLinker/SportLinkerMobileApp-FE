@@ -89,7 +89,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-end",
     alignItems: "center",
-    backgroundColor: "rgba(0, 211, 241, 0.5)",
+    backgroundColor: "rgba(72, 120, 217, 0.5)",
   },
   menu: {
     backgroundColor: "#FDFDFD",
