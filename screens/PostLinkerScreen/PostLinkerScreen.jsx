@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Linking,
 } from "react-native";
 import React, { useEffect, useLayoutEffect, useState, useRef } from "react";
 import { Avatar, Button } from "react-native-paper";
@@ -19,6 +20,9 @@ import { TouchableOpacity } from "react-native";
 import DraggableBottomSheet from "../../component/DraggableBottomSheet";
 import VideoPlayer from "react-native-video-controls";
 import { LinkPreview, oneOf } from "@flyerhq/react-native-link-preview";
+import LoadImage from "../HomeScreen/LoadImage";
+import LoadVideo from "../HomeScreen/LoadVideo";
+import Autolink from "react-native-autolink";
 
 const cationOptions = [
   {
@@ -49,6 +53,7 @@ const cationOptions = [
 
 export default function PostLinkerScreen({ navigation }) {
   const [caption, setCaption] = useState("");
+  const [url, setUrl] = useState("");
   const [isHorizontal, setIsHorizontal] = useState(true); // whether flatlist layout should horizontal or not
   const [images, setImages] = useState([
     "https://derehamstrikesbowl.co.uk/wp-content/uploads/2022/01/pool-table1.webp",
@@ -56,7 +61,8 @@ export default function PostLinkerScreen({ navigation }) {
     "https://blog.dktcdn.net/files/bida-la-gi-2.jpg",
     "https://blog.dktcdn.net/files/bida-la-gi-2.jpg",
   ]); // save images picked from library
-  const [activeIndex, setActiveIndex] = useState(0); // index of image being shown
+  const [videos, setVideos] = useState(null); // save videos picked from library
+  const [inputHeight, setInputHeight] = useState(40); // initial height of the TextInput
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -80,6 +86,20 @@ export default function PostLinkerScreen({ navigation }) {
       ),
     });
   }, []);
+
+  const handleTextChange = (inputText) => {
+    setCaption(inputText);
+    const urlRegex =
+      /(?:https?:\/\/|www\.)[^\s/$.?#].[^\s]*|(?:\b(?:(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+(?:[a-z]{2,}|xn--[a-z0-9]{2,})\b)(?![^<]*>|[^<>]*<\/a>))/gi;
+    const matchedUrl = inputText.match(urlRegex);
+    if (matchedUrl && matchedUrl.length > 0) {
+      console.log("set links");
+      setUrl(matchedUrl[0]);
+    } else {
+      setUrl("");
+      console.log("no links");
+    }
+  };
 
   return (
     <SafeAreaView
@@ -138,56 +158,54 @@ export default function PostLinkerScreen({ navigation }) {
           </View>
           <View style={styles.contentContainer}>
             <View style={styles.captionWrapper}>
-              {/* <TextInput
+              <TextInput
                 multiline={true}
-                numberOfLines={8}
+                numberOfLines={10}
                 maxLength={500}
                 value={caption}
-                onChangeText={(text) => setCaption(text)}
+                onChangeText={(text) => handleTextChange(text)}
                 placeholder="Bạn đang nghĩ gì?"
                 placeholderTextColor="#707070"
-                style={styles.txtCatption}
-              /> */}
-              <LinkPreview
-                containerStyle={{
-                  width: "100%",
-                }}
-                textContainerStyle={{ width: "100%", marginHorizontal: 0 }}
-                renderText={(text) => (
-                  <Text
-                    style={{
-                      color: "blue",
-                      textDecorationLine: "underline",
-                      fontSize: 16,
-                    }}
-                  >
-                    {text}
-                  </Text>
-                )}
-                text="This link https://www.google.com/ can be extracted from the text"
+                onContentSizeChange={
+                  (e) => setInputHeight(e.nativeEvent.contentSize.height) //update the height of input
+                }
+                style={[
+                  styles.txtCatption,
+                  { height: Math.max(40, inputHeight) },
+                ]}
               />
+              {/* <TextInput
+                style={styles.txtCatption}
+                placeholder="Type something with a URL..."
+                value={caption}
+                onChangeText={(text) => setCaption(text)}
+                multiline
+              /> */}
+              <View>
+                {url && (
+                  <LinkPreview
+                    renderImage={(data) => (
+                      <Image
+                        style={styles.previewImage}
+                        source={{ uri: data.url }}
+                      />
+                    )}
+                    containerStyle={styles.previewContainer}
+                    text={url}
+                  />
+                )}
+              </View>
             </View>
-            {images && (
+            {/* {images && !videos && (
               <View style={styles.imageContainer}>
-                <Swiper
-                  style={styles.swiper}
-                  autoplayTimeout={3}
-                  dotStyle={styles.dotStyle}
-                  activeDotStyle={styles.activeDotStyle}
-                  loop={false} // Disable looping
-                  index={activeIndex} // Set the current active index
-                  onIndexChanged={(index) => setActiveIndex(index)}
-                >
-                  {images.map((image, index) => (
-                    <Image
-                      key={index}
-                      source={{ uri: image }}
-                      style={styles.postImage}
-                    />
-                  ))}
-                </Swiper>
+                <LoadImage listImages={images} />
               </View>
             )}
+            {!images && videos && (
+              <View style={styles.imageContainer}>
+                <LoadVideo listVideo={videos} />
+              </View>
+            )} */}
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -237,13 +255,12 @@ const styles = StyleSheet.create({
   },
   captionWrapper: {
     width: "100%",
-    height: 150,
+    height: 400,
+    display: "flex",
     marginVertical: 20,
-    overflow: "hidden",
   },
   txtCatption: {
     fontSize: 16,
-    height: "100%",
     textAlign: "left",
     textAlignVertical: "top",
   },
@@ -252,9 +269,6 @@ const styles = StyleSheet.create({
     height: 200,
     display: "flex",
     justifyContent: "flex-start",
-  },
-  swiper: {
-    height: 200,
   },
   dotStyle: {
     backgroundColor: "rgba(255,255,255,.3)",
@@ -275,5 +289,33 @@ const styles = StyleSheet.create({
     width: "100%",
     minHeight: 190,
     borderRadius: 5,
+  },
+  previewContainer: {
+    width: "100%",
+    height: 300,
+    backgroundColor: "#d6d9dc",
+    borderRadius: 10,
+    overflow: "hidden",
+    elevation: 2,
+    display: "flex",
+    flexDirection: "column-reverse",
+    marginTop: 10,
+  },
+  previewImage: {
+    height: "100%",
+    objectFit: "cover",
+    objectPosition: "center",
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+  },
+  previewTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    padding: 10,
+  },
+  previewDescription: {
+    fontSize: 14,
+    padding: 10,
+    color: "#707070",
   },
 });
