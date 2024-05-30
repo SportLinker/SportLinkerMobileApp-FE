@@ -90,9 +90,9 @@ const StepThree = ({
           style={styles.locationList}
           contentContainerStyle={styles.scrollViewContent}
         >
-          {locations.map((location) => (
+          {locations.map((location, i) => (
             <TouchableOpacity
-              key={location.id}
+              key={i}
               style={styles.locationItem}
               onPress={() => setSelectedLocation(location)}
             >
