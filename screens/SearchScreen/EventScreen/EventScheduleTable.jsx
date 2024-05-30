@@ -271,7 +271,7 @@ const EventScheduleTable = () => {
             {item.currentMember == item.totalMember ? (
               <Text
                 style={{
-                  backgroundColor: "#a237cd",
+                  backgroundColor: "#1646a9",
                   color: "white",
                   height: 25,
                   borderRadius: 15,
@@ -288,7 +288,7 @@ const EventScheduleTable = () => {
             ) : (
               <Text
                 style={{
-                  backgroundColor: "#66FF66",
+                  backgroundColor: "#9a9a98",
                   color: "white",
                   height: 25,
                   borderRadius: 15,
