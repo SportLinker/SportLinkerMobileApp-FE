@@ -192,49 +192,6 @@ export default function DetailPlayerScreen({ navigation }) {
                   </View>
                 ))}
               </View>
-
-              {/* <View>
-                <Text
-                  style={{ marginLeft: 15, fontWeight: "700", marginTop: 20 }}
-                >
-                  {"clb / Cộng đồng".toUpperCase()}
-                </Text>
-                <View style={styles.clubContainer}>
-                  {fakeCLBData.map((item) => (
-                    <View key={item.id} style={styles.clubItem}>
-                      <TouchableOpacity
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          marginHorizontal: 20,
-                          marginTop: 10,
-                        }}
-                      >
-                        <View
-                          style={{
-                            alignItems: "center",
-                            display: "flex",
-                            flexDirection: "column",
-                          }}
-                        >
-                          <Avatar.Image
-                            size={60}
-                            source={{
-                              uri: "https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcQlj3rCfLHry58AtJ8ZyBEAFPtChMddDSUSjt7C7nV3Nhsni9RIx5b0-n7LxfgerrPS6b-P-u3BOM3abuY",
-                            }}
-                          />
-                          <TruncatedText
-                            text={item.name}
-                            maxCharsPerLine={10}
-                            maxLines={2}
-                          />
-                        </View>
-                      </TouchableOpacity>
-                    </View>
-                  ))}
-                </View>
-              </View> */}
             </ScrollView>
           </View>
         </View>
@@ -345,7 +302,7 @@ const styles = {
   modalContainer: {
     flex: 1,
     justifyContent: "flex-end",
-    backgroundColor: "rgba(0, 211, 241, 0.5)",
+    backgroundColor: "rgba(72, 120, 217, 0.5)",
   },
   modalContent: {
     width: "100%",
