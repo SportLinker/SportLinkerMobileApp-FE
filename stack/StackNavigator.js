@@ -16,6 +16,7 @@ import DetailYardScreen from "../screens/SearchScreen/YardScreen/DetailYardScree
 import WelcomeScreen from "../screens/WelcomeScreen";
 import BottomTabNavigator from "../tabs/BottomTabNavigator";
 import EventDetailTabs from "../tabs/EventDetailTabs";
+import NotificationScreen from "../screens/NotificationScreen/NotificationScreen";
 
 const Stack = createStackNavigator();
 
@@ -57,6 +58,16 @@ const StackNavigator = () => (
       component={BottomTabNavigator}
     />
     <Stack.Screen
+      name="NotificationScreen"
+      component={NotificationScreen}
+      options={{
+        title: "Thông Báo",
+        headerStyle: { backgroundColor: "#1646a9" },
+        headerTintColor: "white",
+        headerBackTitle: " ",
+      }}
+    />
+    <Stack.Screen
       name="ChatDetailScreen"
       options={{
         headerShown: false,
@@ -70,7 +81,6 @@ const StackNavigator = () => (
       }}
       component={EventDetailTabs}
     />
-
     <Stack.Screen
       name="EditAccountScreen"
       component={EditAccountScreen}

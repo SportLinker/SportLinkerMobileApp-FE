@@ -47,7 +47,7 @@ const HomeScreen = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ backgroundColor: "#fff" }}>
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={[styles.logoHeader, styles.pr5]}>
