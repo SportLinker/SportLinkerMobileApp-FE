@@ -53,7 +53,7 @@ const VideoPlayer = ({ uri }) => {
 
 const styles = StyleSheet.create({
   swiper: {
-    height: 250, // Adjust based on your needs
+    height: 400, // Adjust based on your needs
   },
   dotStyle: {
     backgroundColor: "#FFFFFF",
@@ -73,12 +73,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: "100%", // Ensure this matches the swiper height
-    backgroundColor: "white",
+    backgroundColor: "black",
   },
   video: {
     alignSelf: "center",
     width: "100%",
-    height: 250,
+    height: "100%",
+    resizeMode: "center",
   },
   buttons: {
     flexDirection: "row",

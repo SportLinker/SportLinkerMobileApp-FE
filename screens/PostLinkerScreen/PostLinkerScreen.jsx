@@ -18,11 +18,13 @@ import Swiper from "react-native-swiper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { TouchableOpacity } from "react-native";
 import DraggableBottomSheet from "../../component/DraggableBottomSheet";
-import VideoPlayer from "react-native-video-controls";
 import { LinkPreview, oneOf } from "@flyerhq/react-native-link-preview";
 import LoadImage from "../HomeScreen/LoadImage";
 import LoadVideo from "../HomeScreen/LoadVideo";
 import Autolink from "react-native-autolink";
+import * as ImagePicker from "expo-image-picker";
+import SelectLocationModal from "../../component/SelectLocationModal";
+import PublicStatusModal from "./PublicStatusModal";
 
 const cationOptions = [
   {
@@ -43,26 +45,39 @@ const cationOptions = [
     icon: "map-marker-outline",
     color: "#F83434",
   },
-  {
-    id: 4,
-    label: "Liên kết",
-    icon: "link-variant",
-    color: "#AB741A",
-  },
+  // {
+  //   id: 4,
+  //   label: "Liên kết",
+  //   icon: "link-variant",
+  //   color: "#AB741A",
+  // },
 ];
 
 export default function PostLinkerScreen({ navigation }) {
   const [caption, setCaption] = useState("");
   const [url, setUrl] = useState("");
   const [isHorizontal, setIsHorizontal] = useState(true); // whether flatlist layout should horizontal or not
-  const [images, setImages] = useState([
-    "https://derehamstrikesbowl.co.uk/wp-content/uploads/2022/01/pool-table1.webp",
-    "https://th.bing.com/th/id/OIP.0dBKywMs9F5N7ykZfI3VKAAAAA?rs=1&pid=ImgDetMain",
-    "https://blog.dktcdn.net/files/bida-la-gi-2.jpg",
-    "https://blog.dktcdn.net/files/bida-la-gi-2.jpg",
-  ]); // save images picked from library
+  const [images, setImages] = useState(null); // save images picked from library
   const [videos, setVideos] = useState(null); // save videos picked from library
   const [inputHeight, setInputHeight] = useState(40); // initial height of the TextInput
+
+  const [successMessage, setSuccessMessage] = useState("");
+  const [isOpen, setIsOpen] = useState(false); //open modal pick location
+  const [isOpenStatusModal, setIsOpenStatusModal] = useState(false); //open modal public status
+  const [selectedLocation, setSelectedLocation] = useState(null);
+  const [searchQuery, setSearchQuery] = useState(null);
+  const [publicStatus, setPublicStatus] = useState("Công khai");
+
+  const onToggleStatusModal = () => {
+    setIsOpenStatusModal(!isOpenStatusModal);
+  };
+
+  const onToggleModal = () => {
+    setIsOpen(!isOpen);
+    if (isOpen) {
+      setSearchQuery(null);
+    }
+  };
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -86,6 +101,37 @@ export default function PostLinkerScreen({ navigation }) {
       ),
     });
   }, []);
+
+  const pickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsMultipleSelection: true,
+      aspect: [1, 1],
+      quality: 3,
+    });
+
+    if (!result.canceled) {
+      // console.log(result);
+      let imageArr = [...result.assets];
+      console.log("imageArr", imageArr);
+      let imagesSelect = imageArr.map((image) => image.uri);
+      console.log("images: " + imagesSelect);
+      setImages([...imagesSelect]);
+      setSuccessMessage("Chọn ảnh thành công!");
+    }
+  };
+
+  const pickVideo = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Videos,
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setVideos([result.assets[0].uri]);
+    }
+  };
 
   const handleTextChange = (inputText) => {
     setCaption(inputText);
@@ -114,47 +160,63 @@ export default function PostLinkerScreen({ navigation }) {
         <ScrollView>
           <View
             style={{
-              width: "100%",
               display: "flex",
               flexDirection: "row",
-              alignItems: "center",
               marginHorizontal: 10,
-              gap: 20,
+              gap: 10,
               marginTop: 20,
             }}
           >
             <Avatar.Image
-              size={40}
+              size={50}
               source={{
                 uri: "https://www.redditstatic.com/avatars/avatar_default_03_FF8717.png",
               }}
             />
-            <Button
-              contentStyle={{
-                flexDirection: "row-reverse",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: 10,
-              }}
-              labelStyle={{
-                fontWeight: "bold",
-                marginVertical: 10,
-                marginRight: 10,
-                color: "#707070",
-              }}
-              onPress={() => console.log("Pressed")}
-              mode="outlined"
-              icon="chevron-down"
-              style={{
-                borderRadius: 5,
-                height: 40,
-                width: 120,
-                paddingVertical: 0,
-                paddingHorizontal: 0,
-              }}
-            >
-              Công khai
-            </Button>
+            <View style={styles.headingWrapper}>
+              <View style={styles.nameWrapper}>
+                <Text multiline={true} numberOfLines={2}>
+                  <Text style={styles.boldText}>Ninh Đăng Phạm</Text>
+                  {selectedLocation && <Text> đang ở</Text>}
+                  {selectedLocation && (
+                    <Text style={styles.boldText}>
+                      {" "}
+                      {selectedLocation.title}
+                    </Text>
+                  )}
+                </Text>
+              </View>
+              <Button
+                contentStyle={{
+                  flexDirection: "row-reverse",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: 10,
+                }}
+                labelStyle={{
+                  fontWeight: "bold",
+                  marginVertical: 3,
+                  marginHorizontal: 5,
+
+                  color: "#1646A9",
+                }}
+                onPress={() => onToggleStatusModal()}
+                mode="outlined"
+                icon="chevron-down"
+                style={{
+                  borderRadius: 5,
+                  height: 30,
+                  width: 120,
+                  paddingVertical: 0,
+                  paddingHorizontal: 0,
+                  marginVertical: 0,
+                  marginHorizontal: 0,
+                  borderColor: "#1646A9",
+                }}
+              >
+                {publicStatus}
+              </Button>
+            </View>
           </View>
           <View style={styles.contentContainer}>
             <View style={styles.captionWrapper}>
@@ -174,15 +236,8 @@ export default function PostLinkerScreen({ navigation }) {
                   { height: Math.max(40, inputHeight) },
                 ]}
               />
-              {/* <TextInput
-                style={styles.txtCatption}
-                placeholder="Type something with a URL..."
-                value={caption}
-                onChangeText={(text) => setCaption(text)}
-                multiline
-              /> */}
               <View>
-                {url && (
+                {url && !images && !videos && (
                   <LinkPreview
                     renderImage={(data) => (
                       <Image
@@ -196,16 +251,28 @@ export default function PostLinkerScreen({ navigation }) {
                 )}
               </View>
             </View>
-            {/* {images && !videos && (
+            {images && !videos && (
               <View style={styles.imageContainer}>
+                <TouchableOpacity
+                  style={styles.removeIcon}
+                  onPress={() => setImages(null)}
+                >
+                  <Icon name="close-thick" size={30} style={styles.btnRemove} />
+                </TouchableOpacity>
                 <LoadImage listImages={images} />
               </View>
             )}
             {!images && videos && (
               <View style={styles.imageContainer}>
+                <TouchableOpacity
+                  style={styles.removeIcon}
+                  onPress={() => setVideos(null)}
+                >
+                  <Icon name="close-thick" size={30} style={styles.btnRemove} />
+                </TouchableOpacity>
                 <LoadVideo listVideo={videos} />
               </View>
-            )} */}
+            )}
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -218,6 +285,15 @@ export default function PostLinkerScreen({ navigation }) {
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => {
+                if (item.label === "Ảnh") {
+                  pickImage();
+                }
+                if (item.label === "Vị trí") {
+                  onToggleModal();
+                }
+                if (item.label === "Video") {
+                  pickVideo();
+                }
                 console.log("Press");
               }}
             >
@@ -243,6 +319,21 @@ export default function PostLinkerScreen({ navigation }) {
           )}
         />
       </DraggableBottomSheet>
+      <SelectLocationModal
+        isOpen={isOpen}
+        selectedLocation={selectedLocation}
+        setSelectedLocation={setSelectedLocation}
+        setSearchQuery={setSearchQuery}
+        searchQuery={searchQuery}
+        onToggleModal={onToggleModal}
+      ></SelectLocationModal>
+      <PublicStatusModal
+        isOpenStatusModal={isOpenStatusModal}
+        setIsOpenStatusModal={setIsOpenStatusModal}
+        onToggleStatusModal={onToggleStatusModal}
+        setPublicStatus={setPublicStatus}
+        publicStatus={publicStatus}
+      ></PublicStatusModal>
     </SafeAreaView>
   );
 }
@@ -255,7 +346,7 @@ const styles = StyleSheet.create({
   },
   captionWrapper: {
     width: "100%",
-    height: 400,
+    height: "wrap-content",
     display: "flex",
     marginVertical: 20,
   },
@@ -264,11 +355,31 @@ const styles = StyleSheet.create({
     textAlign: "left",
     textAlignVertical: "top",
   },
+  btnRemove: {
+    color: "white",
+  },
   imageContainer: {
+    position: "relative",
     width: "100%",
-    height: 200,
+    overflow: "hidden",
     display: "flex",
     justifyContent: "flex-start",
+    paddingTop: 10,
+    paddingHorizontal: 5,
+    zIndex: 0,
+  },
+  removeIcon: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    width: 30,
+    height: 30,
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
+    zIndex: 1,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 5,
   },
   dotStyle: {
     backgroundColor: "rgba(255,255,255,.3)",
@@ -313,9 +424,27 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     padding: 10,
   },
+  headingWrapper: {
+    flex: 1,
+    display: "flex",
+    justifyContent: "center",
+    gap: 10,
+  },
   previewDescription: {
     fontSize: 14,
     padding: 10,
     color: "#707070",
+  },
+  nameWrapper: {
+    flex: 1,
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "center",
+  },
+
+  boldText: {
+    fontWeight: "bold",
+    fontSize: 16,
   },
 });
