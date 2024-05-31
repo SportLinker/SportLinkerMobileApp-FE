@@ -89,7 +89,12 @@ const HomeScreen = ({ navigation }) => {
           style={{ paddingHorizontal: 10 }}
         >
           {posts.map((item, index) => (
-            <PostItem key={index} index={index} navigation={navigation} />
+            <PostItem
+              caption="Tìm bạn cùng chơi bi-a ở Thủ Đức, từ 18 - 30 tuổi, ưu tiên các bạn nam github.com google.com"
+              key={index}
+              index={index}
+              navigation={navigation}
+            />
           ))}
         </ScrollView>
       </View>
