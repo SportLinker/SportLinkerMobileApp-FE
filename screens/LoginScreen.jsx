@@ -10,7 +10,8 @@ import {
   Platform,
   ScrollView,
 } from "react-native";
-import { TextInput, Button, Divider } from "react-native-paper";
+import { TextInput, Button, Divider, Snackbar } from "react-native-paper";
+import { screenHeight, screenWidth } from "../component/style";
 
 const LoginScreen = ({ navigation }) => {
   const [loginForm, setLoginForm] = useState({ phone: "", password: "" });
@@ -21,17 +22,13 @@ const LoginScreen = ({ navigation }) => {
     // Handle login logic here, such as sending login credentials to server
     console.log("Phone:", loginForm.phone);
     console.log("Password:", loginForm.password);
-    if (loginForm.phone == "" || loginForm.password == "") {
+    if (loginForm.phone === "" || loginForm.password === "") {
       setErrorMessage("Vui lòng không bỏ trống!");
     }
   };
 
   return (
-    <SafeAreaView
-      style={{
-        backgroundColor: "white",
-      }}
-    >
+    <SafeAreaView style={{ backgroundColor: "white", flex: 1 }}>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
@@ -42,10 +39,11 @@ const LoginScreen = ({ navigation }) => {
                 resizeMode: "contain",
                 height: 100,
                 width: 150,
+                marginTop: 50,
               }}
-              source={require("./../assets/logo.png")}
+              source={require("./../assets/sportlinker_logo.png")}
             />
-            <Text style={styles.title}>Đăng nhập nào!</Text>
+            <Text style={styles.title}>Chào mừng quay lại!</Text>
             <Text style={styles.secondaryText}>
               Để đăng nhập hãy nhập thông tin bên dưới
             </Text>
@@ -56,6 +54,8 @@ const LoginScreen = ({ navigation }) => {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
+                marginVertical: "auto",
+                padding: 5,
               }}
               onPress={() => console.log("Pressed")}
             >
@@ -65,8 +65,6 @@ const LoginScreen = ({ navigation }) => {
                   flexDirection: "row",
                   alignItems: "center",
                   justifyContent: "center",
-                  marginBottom: 0,
-                  paddingBottom: 0,
                 }}
               >
                 <Image
@@ -131,8 +129,18 @@ const LoginScreen = ({ navigation }) => {
               secureTextEntry={isHidePassword}
               outlineColor={errorMessage && "red"}
             />
-            <Text style={styles.errorMessage}>
-              {errorMessage && errorMessage}
+            <Text
+              style={{
+                fontSize: 15,
+                fontWeight: "bold",
+                color: "#4878D9",
+                marginBottom: 10,
+                paddingVertical: 5,
+              }}
+              mode="outlined"
+              onPress={() => console.log("Pressed")}
+            >
+              Quên mật khẩu?
             </Text>
             <Button
               mode="contained"
@@ -142,29 +150,35 @@ const LoginScreen = ({ navigation }) => {
             >
               Đăng nhập
             </Button>
-            <Button
-              style={{ width: "100%", marginTop: 10 }}
-              mode="outlined"
-              onPress={() => navigation.navigate("Register")}
-              labelStyle={{ color: "black", fontSize: 16 }}
-            >
-              Đăng ký
-            </Button>
-            <Text
+            <View
               style={{
-                fontSize: 14,
-                fontWeight: "bold",
-                textDecorationLine: "underline",
-                marginVertical: 20,
-                width: "100%",
-                textAlign: "center",
-                color: "#4878D9",
+                display: "flex",
+                flexDirection: "row",
+                marginVertical: 10,
               }}
-              mode="outlined"
-              onPress={() => console.log("Pressed")}
             >
-              Quên mật khẩu
-            </Text>
+              <Text style={{ marginVertical: "auto", fontSize: 16 }}>
+                Bạn chưa có tài khoản?
+              </Text>
+              <TouchableOpacity
+                mode="outlined"
+                onPress={() => navigation.navigate("Register")}
+              >
+                <Text
+                  style={{
+                    fontWeight: "700",
+                    color: "#1646a9",
+                    marginLeft: 10,
+                    fontSize: 16,
+                    width: "100%",
+                    textAlign: "center",
+                  }}
+                >
+                  Đăng ký
+                </Text>
+              </TouchableOpacity>
+            </View>
+
             <Button
               mode="outlined"
               onPress={() => navigation.navigate("BottomTabs")}
@@ -173,6 +187,14 @@ const LoginScreen = ({ navigation }) => {
             </Button>
           </View>
         </ScrollView>
+        <Snackbar
+          visible={!!errorMessage}
+          duration={2000}
+          onDismiss={() => setErrorMessage(null)}
+          style={styles.snackbarContainer}
+        >
+          {errorMessage}
+        </Snackbar>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -182,8 +204,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#fff",
     paddingHorizontal: 40,
-    paddingBottom: 20,
-    height: "100%",
   },
   label: {
     width: "100%",
@@ -195,14 +215,6 @@ const styles = StyleSheet.create({
     color: "#797979",
     marginBottom: 30,
     fontSize: 16,
-  },
-  errorMessage: {
-    fontSize: 15,
-    color: "red",
-    width: "100%",
-    textAlign: "center",
-    marginBottom: 10,
-    height: 20,
   },
   title: {
     fontSize: 28,
@@ -218,11 +230,19 @@ const styles = StyleSheet.create({
     width: "100%",
     borderRadius: 20,
     paddingVertical: 4,
-    marginTop: 30,
   },
   buttonText: {
     color: "#fff",
     fontSize: 18,
+  },
+  snackbarContainer: {
+    borderRadius: 10,
+    alignItems: "center",
+    textAlign: "center",
+    transform: [
+      { translateX: 0 * screenWidth },
+      { translateY: -0.02 * screenHeight },
+    ],
   },
 });
 
