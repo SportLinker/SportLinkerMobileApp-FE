@@ -80,8 +80,33 @@ export default function AccountScreen() {
     }
   };
 
+  //  const captureImage = async () => {
+  //    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+  //    if (status !== "granted") {
+  //      // Hiển thị thông báo tùy chỉnh nếu quyền bị từ chối
+  //      Alert.alert(
+  //        "Yêu cầu quyền truy cập camera",
+  //        "Ứng dụng cần quyền truy cập camera để chụp ảnh.",
+  //        [{ text: "OK", onPress: () => console.log("OK Pressed") }]
+  //      );
+  //      return;
+  //    }
+
+  //    const result = await ImagePicker.launchCameraAsync({
+  //      allowsEditing: true,
+  //      aspect: [1, 1],
+  //      quality: 1,
+  //    });
+
+  //    if (!result.canceled) {
+  //      setImage(result.assets[0].uri);
+  //      setShowImagePickerOptions(false);
+  //      setSuccessMessage("Chụp ảnh thành công!");
+  //    }
+  //  };
+
   return (
-    <SafeAreaView style={{ flex: 1, marginTop: 20 }}>
+    <SafeAreaView style={{ flex: 1, paddingTop: 20, backgroundColor: "#fff" }}>
       <ScrollView>
         <View style={styles.centerStyle}>
           <View style={{ position: "relative" }}>
@@ -157,6 +182,7 @@ export default function AccountScreen() {
             </Text>
           </TouchableOpacity>
         </View>
+
         {activeTab === "profile" && <Profile fakeData={fakeData} />}
         {activeTab === "post" && <MyPost />}
 

@@ -12,6 +12,7 @@ import { Image } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const phoneRegExp = /^0\d{9}$/;
 
@@ -144,22 +145,43 @@ export default function RegisterScreen({ navigation }) {
                 labelStyle={styles.buttonText}
                 onPress={() => {
                   // HANDLE SUBMIT
-                  // handleSubmit();
+                  handleSubmit();
 
                   // HANDLE DISPLAY OTP
-                  navigation.navigate("OTPScreen");
+                  // navigation.navigate("OTPScreen");
                 }}
               >
                 Đăng ký
               </Button>
-
-              <Button
-                mode="outlined"
-                onPress={() => navigation.navigate("Login")}
-                style={{ marginVertical: 20 }}
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  marginVertical: 10,
+                }}
               >
-                Go to Login
-              </Button>
+                <Text style={{ marginVertical: "auto", fontSize: 16 }}>
+                  Bạn đã có tài khoản?
+                </Text>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("Login")}
+                  mode="outlined"
+                  labelStyle={{ color: "black", fontSize: 16 }}
+                >
+                  <Text
+                    style={{
+                      fontWeight: "700",
+                      color: "#1646a9",
+                      marginLeft: 10,
+                      fontSize: 16,
+                      width: "100%",
+                      textAlign: "center",
+                    }}
+                  >
+                    Đăng nhập
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </ScrollView>
           </KeyboardAvoidingView>
         )}
