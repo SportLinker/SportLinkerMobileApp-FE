@@ -14,7 +14,14 @@ export default function EventScreen() {
   };
 
   return (
-    <SafeAreaView style={{ height: "100%", position: "relative", flex: 1 }}>
+    <SafeAreaView
+      style={{
+        height: "100%",
+        position: "relative",
+        flex: 1,
+        backgroundColor: "#fff",
+      }}
+    >
       <EventSchedule />
       <IconButton
         icon="view-grid-plus"

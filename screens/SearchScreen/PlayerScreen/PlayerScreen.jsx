@@ -25,7 +25,7 @@ export const mock_data = [
 
 export default function PlayerScreen({ navigation }) {
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ backgroundColor: "#fff" }}>
       <FilterEventOptionList />
       <ScrollView>
         <View style={{ alignItems: "center", marginTop: 20 }}>
