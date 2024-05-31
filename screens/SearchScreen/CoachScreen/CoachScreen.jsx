@@ -64,7 +64,7 @@ export default function CoachScreen({ navigation }) {
   ];
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ backgroundColor: "#fff" }}>
       <FilterEventOptionList />
       <ScrollView>
         <View style={[styles.centerStyle, styles.marginTopText]}>
