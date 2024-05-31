@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Linking,
 } from "react-native";
 import React, { useEffect, useLayoutEffect, useState, useRef } from "react";
 import { Avatar, Button } from "react-native-paper";
@@ -17,7 +18,13 @@ import Swiper from "react-native-swiper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { TouchableOpacity } from "react-native";
 import DraggableBottomSheet from "../../component/DraggableBottomSheet";
-import VideoPlayer from "react-native-video-controls";
+import { LinkPreview, oneOf } from "@flyerhq/react-native-link-preview";
+import LoadImage from "../HomeScreen/LoadImage";
+import LoadVideo from "../HomeScreen/LoadVideo";
+import Autolink from "react-native-autolink";
+import * as ImagePicker from "expo-image-picker";
+import SelectLocationModal from "../../component/SelectLocationModal";
+import PublicStatusModal from "./PublicStatusModal";
 
 const cationOptions = [
   {
@@ -38,24 +45,39 @@ const cationOptions = [
     icon: "map-marker-outline",
     color: "#F83434",
   },
-  {
-    id: 4,
-    label: "Liên kết",
-    icon: "link-variant",
-    color: "#AB741A",
-  },
+  // {
+  //   id: 4,
+  //   label: "Liên kết",
+  //   icon: "link-variant",
+  //   color: "#AB741A",
+  // },
 ];
 
 export default function PostLinkerScreen({ navigation }) {
   const [caption, setCaption] = useState("");
+  const [url, setUrl] = useState("");
   const [isHorizontal, setIsHorizontal] = useState(true); // whether flatlist layout should horizontal or not
-  const [images, setImages] = useState([
-    "https://derehamstrikesbowl.co.uk/wp-content/uploads/2022/01/pool-table1.webp",
-    "https://th.bing.com/th/id/OIP.0dBKywMs9F5N7ykZfI3VKAAAAA?rs=1&pid=ImgDetMain",
-    "https://blog.dktcdn.net/files/bida-la-gi-2.jpg",
-    "https://blog.dktcdn.net/files/bida-la-gi-2.jpg",
-  ]); // save images picked from library
-  const [activeIndex, setActiveIndex] = useState(0); // index of image being shown
+  const [images, setImages] = useState(null); // save images picked from library
+  const [videos, setVideos] = useState(null); // save videos picked from library
+  const [inputHeight, setInputHeight] = useState(40); // initial height of the TextInput
+
+  const [successMessage, setSuccessMessage] = useState("");
+  const [isOpen, setIsOpen] = useState(false); //open modal pick location
+  const [isOpenStatusModal, setIsOpenStatusModal] = useState(false); //open modal public status
+  const [selectedLocation, setSelectedLocation] = useState(null);
+  const [searchQuery, setSearchQuery] = useState(null);
+  const [publicStatus, setPublicStatus] = useState("Công khai");
+
+  const onToggleStatusModal = () => {
+    setIsOpenStatusModal(!isOpenStatusModal);
+  };
+
+  const onToggleModal = () => {
+    setIsOpen(!isOpen);
+    if (isOpen) {
+      setSearchQuery(null);
+    }
+  };
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -80,6 +102,51 @@ export default function PostLinkerScreen({ navigation }) {
     });
   }, []);
 
+  const pickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsMultipleSelection: true,
+      aspect: [1, 1],
+      quality: 3,
+    });
+
+    if (!result.canceled) {
+      // console.log(result);
+      let imageArr = [...result.assets];
+      console.log("imageArr", imageArr);
+      let imagesSelect = imageArr.map((image) => image.uri);
+      console.log("images: " + imagesSelect);
+      setImages([...imagesSelect]);
+      setSuccessMessage("Chọn ảnh thành công!");
+    }
+  };
+
+  const pickVideo = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Videos,
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setVideos([result.assets[0].uri]);
+    }
+  };
+
+  const handleTextChange = (inputText) => {
+    setCaption(inputText);
+    const urlRegex =
+      /(?:https?:\/\/|www\.)[^\s/$.?#].[^\s]*|(?:\b(?:(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+(?:[a-z]{2,}|xn--[a-z0-9]{2,})\b)(?![^<]*>|[^<>]*<\/a>))/gi;
+    const matchedUrl = inputText.match(urlRegex);
+    if (matchedUrl && matchedUrl.length > 0) {
+      console.log("set links");
+      setUrl(matchedUrl[0]);
+    } else {
+      setUrl("");
+      console.log("no links");
+    }
+  };
+
   return (
     <SafeAreaView
       style={{
@@ -93,80 +160,117 @@ export default function PostLinkerScreen({ navigation }) {
         <ScrollView>
           <View
             style={{
-              width: "100%",
               display: "flex",
               flexDirection: "row",
-              alignItems: "center",
               marginHorizontal: 10,
-              gap: 20,
+              gap: 10,
               marginTop: 20,
             }}
           >
             <Avatar.Image
-              size={40}
+              size={50}
               source={{
                 uri: "https://www.redditstatic.com/avatars/avatar_default_03_FF8717.png",
               }}
             />
-            <Button
-              contentStyle={{
-                flexDirection: "row-reverse",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: 10,
-              }}
-              labelStyle={{
-                fontWeight: "bold",
-                marginVertical: 10,
-                marginRight: 10,
-                color: "#707070",
-              }}
-              onPress={() => console.log("Pressed")}
-              mode="outlined"
-              icon="chevron-down"
-              style={{
-                borderRadius: 5,
-                height: 40,
-                width: 120,
-                paddingVertical: 0,
-                paddingHorizontal: 0,
-              }}
-            >
-              Công khai
-            </Button>
+            <View style={styles.headingWrapper}>
+              <View style={styles.nameWrapper}>
+                <Text multiline={true} numberOfLines={2}>
+                  <Text style={styles.boldText}>Ninh Đăng Phạm</Text>
+                  {selectedLocation && <Text> đang ở</Text>}
+                  {selectedLocation && (
+                    <Text style={styles.boldText}>
+                      {" "}
+                      {selectedLocation.title}
+                    </Text>
+                  )}
+                </Text>
+              </View>
+              <Button
+                contentStyle={{
+                  flexDirection: "row-reverse",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: 10,
+                }}
+                labelStyle={{
+                  fontWeight: "bold",
+                  marginVertical: 3,
+                  marginHorizontal: 5,
+
+                  color: "#1646A9",
+                }}
+                onPress={() => onToggleStatusModal()}
+                mode="outlined"
+                icon="chevron-down"
+                style={{
+                  borderRadius: 5,
+                  height: 30,
+                  width: 120,
+                  paddingVertical: 0,
+                  paddingHorizontal: 0,
+                  marginVertical: 0,
+                  marginHorizontal: 0,
+                  borderColor: "#1646A9",
+                }}
+              >
+                {publicStatus}
+              </Button>
+            </View>
           </View>
           <View style={styles.contentContainer}>
             <View style={styles.captionWrapper}>
               <TextInput
                 multiline={true}
-                numberOfLines={3}
-                maxLength={70}
+                numberOfLines={10}
+                maxLength={500}
                 value={caption}
-                onChangeText={(text) => setCaption(text)}
+                onChangeText={(text) => handleTextChange(text)}
                 placeholder="Bạn đang nghĩ gì?"
                 placeholderTextColor="#707070"
-                style={styles.txtCatption}
+                onContentSizeChange={
+                  (e) => setInputHeight(e.nativeEvent.contentSize.height) //update the height of input
+                }
+                style={[
+                  styles.txtCatption,
+                  { height: Math.max(40, inputHeight) },
+                ]}
               />
+              <View>
+                {url && !images && !videos && (
+                  <LinkPreview
+                    renderImage={(data) => (
+                      <Image
+                        style={styles.previewImage}
+                        source={{ uri: data.url }}
+                      />
+                    )}
+                    containerStyle={styles.previewContainer}
+                    text={url}
+                  />
+                )}
+              </View>
             </View>
-            {images && (
+            {images && !videos && (
               <View style={styles.imageContainer}>
-                <Swiper
-                  style={styles.swiper}
-                  autoplayTimeout={3}
-                  dotStyle={styles.dotStyle}
-                  activeDotStyle={styles.activeDotStyle}
-                  loop={false} // Disable looping
-                  index={activeIndex} // Set the current active index
-                  onIndexChanged={(index) => setActiveIndex(index)}
+                <TouchableOpacity
+                  style={styles.removeIcon}
+                  onPress={() => setImages(null)}
                 >
-                  {images.map((image, index) => (
-                    <Image
-                      key={index}
-                      source={{ uri: image }}
-                      style={styles.postImage}
-                    />
-                  ))}
-                </Swiper>
+                  <Icon name="close-thick" size={30} style={styles.btnRemove} />
+                </TouchableOpacity>
+                <LoadImage listImages={images} />
+              </View>
+            )}
+            {!images && videos && (
+              <View style={styles.imageContainer}>
+                <TouchableOpacity
+                  style={styles.removeIcon}
+                  onPress={() => setVideos(null)}
+                >
+                  <Icon name="close-thick" size={30} style={styles.btnRemove} />
+                </TouchableOpacity>
+                <LoadVideo listVideo={videos} />
               </View>
             )}
           </View>
@@ -181,6 +285,15 @@ export default function PostLinkerScreen({ navigation }) {
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => {
+                if (item.label === "Ảnh") {
+                  pickImage();
+                }
+                if (item.label === "Vị trí") {
+                  onToggleModal();
+                }
+                if (item.label === "Video") {
+                  pickVideo();
+                }
                 console.log("Press");
               }}
             >
@@ -206,6 +319,21 @@ export default function PostLinkerScreen({ navigation }) {
           )}
         />
       </DraggableBottomSheet>
+      <SelectLocationModal
+        isOpen={isOpen}
+        selectedLocation={selectedLocation}
+        setSelectedLocation={setSelectedLocation}
+        setSearchQuery={setSearchQuery}
+        searchQuery={searchQuery}
+        onToggleModal={onToggleModal}
+      ></SelectLocationModal>
+      <PublicStatusModal
+        isOpenStatusModal={isOpenStatusModal}
+        setIsOpenStatusModal={setIsOpenStatusModal}
+        onToggleStatusModal={onToggleStatusModal}
+        setPublicStatus={setPublicStatus}
+        publicStatus={publicStatus}
+      ></PublicStatusModal>
     </SafeAreaView>
   );
 }
@@ -218,21 +346,40 @@ const styles = StyleSheet.create({
   },
   captionWrapper: {
     width: "100%",
-    height: 100,
+    height: "wrap-content",
+    display: "flex",
     marginVertical: 20,
   },
   txtCatption: {
-    fontSize: 24,
-    height: 100,
+    fontSize: 16,
+    textAlign: "left",
+    textAlignVertical: "top",
+  },
+  btnRemove: {
+    color: "white",
   },
   imageContainer: {
+    position: "relative",
     width: "100%",
-    height: 200,
+    overflow: "hidden",
     display: "flex",
     justifyContent: "flex-start",
+    paddingTop: 10,
+    paddingHorizontal: 5,
+    zIndex: 0,
   },
-  swiper: {
-    height: 200,
+  removeIcon: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    width: 30,
+    height: 30,
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
+    zIndex: 1,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 5,
   },
   dotStyle: {
     backgroundColor: "rgba(255,255,255,.3)",
@@ -253,5 +400,51 @@ const styles = StyleSheet.create({
     width: "100%",
     minHeight: 190,
     borderRadius: 5,
+  },
+  previewContainer: {
+    width: "100%",
+    height: 300,
+    backgroundColor: "#d6d9dc",
+    borderRadius: 10,
+    overflow: "hidden",
+    elevation: 2,
+    display: "flex",
+    flexDirection: "column-reverse",
+    marginTop: 10,
+  },
+  previewImage: {
+    height: "100%",
+    objectFit: "cover",
+    objectPosition: "center",
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+  },
+  previewTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    padding: 10,
+  },
+  headingWrapper: {
+    flex: 1,
+    display: "flex",
+    justifyContent: "center",
+    gap: 10,
+  },
+  previewDescription: {
+    fontSize: 14,
+    padding: 10,
+    color: "#707070",
+  },
+  nameWrapper: {
+    flex: 1,
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "center",
+  },
+
+  boldText: {
+    fontWeight: "bold",
+    fontSize: 16,
   },
 });

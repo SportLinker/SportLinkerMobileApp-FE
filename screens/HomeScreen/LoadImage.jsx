@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   swiper: {
-    height: 250, // Adjust based on your needs
+    height: 400, // Adjust based on your needs
   },
   dotStyle: {
     backgroundColor: "#FFFFFF",
@@ -45,14 +45,18 @@ const styles = StyleSheet.create({
   },
   slide: {
     flex: 1,
+    width: "100%",
+    height: "100%",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "red",
+    overflow: "hidden",
   },
   image: {
     width: "100%",
     height: "100%",
-    resizeMode: "cover",
+    resizeMode: "center",
+    objectFit: "cover",
+    objectPosition: "center",
   },
 });
 
