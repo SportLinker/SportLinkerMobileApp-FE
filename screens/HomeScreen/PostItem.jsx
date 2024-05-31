@@ -1,16 +1,26 @@
 import React, { useState } from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Linking,
+} from "react-native";
 import { Avatar } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Swiper from "react-native-swiper";
 import CommentModal from "./CommentModal"; // Import CommentModal
 import LoadVideo from "./LoadVideo";
 import LoadImage from "./LoadImage";
+import Autolink from "react-native-autolink";
+import { LinkPreview } from "@flyerhq/react-native-link-preview";
+import { useEffect } from "react";
 
-export default function PostItem({ navigation, index }) {
+export default function PostItem({ navigation, index, caption }) {
   const [liked, setLiked] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [url, setUrl] = useState(null);
   const [images, setImages] = useState([
     "https://derehamstrikesbowl.co.uk/wp-content/uploads/2022/01/pool-table1.webp",
     "https://th.bing.com/th/id/OIP.0dBKywMs9F5N7ykZfI3VKAAAAA?rs=1&pid=ImgDetMain",
@@ -18,20 +28,32 @@ export default function PostItem({ navigation, index }) {
     "https://blog.dktcdn.net/files/bida-la-gi-2.jpg",
   ]);
 
+  const listVideo = [
+    "https://res.cloudinary.com/dcbsbl9zg/video/upload/v1716902043/Test/8b665e16-8e46-4fab-91da-8bacd2b2f7b3_mykxqt.mp4",
+    "https://res.cloudinary.com/dcbsbl9zg/video/upload/v1716902043/Test/8b665e16-8e46-4fab-91da-8bacd2b2f7b3_mykxqt.mp4",
+    "https://res.cloudinary.com/dcbsbl9zg/video/upload/v1716902043/Test/8b665e16-8e46-4fab-91da-8bacd2b2f7b3_mykxqt.mp4",
+  ];
+
   const handleToggleLike = () => {
     setLiked(!liked);
   };
+
+  useEffect(() => {
+    // Extract URL using a regex pattern
+    const urlRegex =
+      /(?:https?:\/\/|www\.)[^\s/$.?#].[^\s]*|(?:\b(?:(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+(?:[a-z]{2,}|xn--[a-z0-9]{2,})\b)(?![^<]*>|[^<>]*<\/a>))/gi;
+    const matchedUrl = caption.match(urlRegex);
+    if (matchedUrl && matchedUrl.length > 0) {
+      setUrl(matchedUrl[0]);
+    } else {
+      setUrl("");
+    }
+  }, [caption]);
 
   const comments = [
     { id: "1", text: "Great post!" },
     { id: "2", text: "Nice one!" },
     { id: "3", text: "Thanks for sharing." },
-  ];
-
-  const listVideo = [
-    "https://res.cloudinary.com/dcbsbl9zg/video/upload/v1716902043/Test/8b665e16-8e46-4fab-91da-8bacd2b2f7b3_mykxqt.mp4",
-    "https://res.cloudinary.com/dcbsbl9zg/video/upload/v1716902043/Test/8b665e16-8e46-4fab-91da-8bacd2b2f7b3_mykxqt.mp4",
-    "https://res.cloudinary.com/dcbsbl9zg/video/upload/v1716902043/Test/8b665e16-8e46-4fab-91da-8bacd2b2f7b3_mykxqt.mp4",
   ];
 
   return (
@@ -47,16 +69,48 @@ export default function PostItem({ navigation, index }) {
         <Text style={styles.mr5}>Ninh PD</Text>
         <Text style={styles.postTime}>1h</Text>
       </View>
-      <Text style={styles.postTitle}>
-        Tìm bạn cùng chơi bi-a ở Thủ Đức, từ 18 - 30 tuổi, ưu tiên các bạn nam
-      </Text>
-      <View>
-        {index % 2 == 0 ? (
-          <LoadVideo listVideo={listVideo} />
-        ) : (
-          <LoadImage listImages={images} />
+      <Autolink
+        style={styles.postTitle}
+        // Required: the text to parse for links
+        text={caption}
+        // Optional: enable email linking
+        email
+        // Optional: enable phone linking
+        phone="sms"
+        // Optional: enable URL linking
+        url
+        renderLink={(text, match) => (
+          <Text
+            style={{ color: "blue" }}
+            onPress={() =>
+              Linking.openURL(match.getAnchorHref()).catch((err) =>
+                console.error("Failed to open URL:", err)
+              )
+            }
+          >
+            {text}
+          </Text>
         )}
-      </View>
+      />
+      {url && !images && !listVideo && (
+        <LinkPreview
+          renderImage={(data) => (
+            <Image style={styles.previewImage} source={{ uri: data.url }} />
+          )}
+          containerStyle={styles.previewContainer}
+          text={url}
+        />
+      )}
+
+      {(images || listVideo) && (
+        <View>
+          {index % 2 == 0 ? (
+            <LoadVideo listVideo={listVideo} />
+          ) : (
+            <LoadImage listImages={images} />
+          )}
+        </View>
+      )}
 
       <View style={styles.bottomWrap}>
         <View style={{ flexDirection: "row" }}>
@@ -96,6 +150,28 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
     borderBottomWidth: 2,
     borderColor: "#C4C4C4",
+  },
+  previewContainer: {
+    width: "100%",
+    height: 300,
+    backgroundColor: "#d6d9dc",
+    borderRadius: 10,
+    overflow: "hidden",
+    elevation: 2,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    display: "flex",
+    flexDirection: "column-reverse",
+    marginTop: 10,
+  },
+  previewImage: {
+    height: "100%",
+    objectFit: "cover",
+    objectPosition: "center",
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
   },
   avatarWrapper: {
     flexDirection: "row",
