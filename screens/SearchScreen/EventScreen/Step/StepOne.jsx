@@ -9,27 +9,24 @@ import {
 import { TextInput } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { formatDate, formatTime } from "../../../../utils";
-import { maxDate, minDate } from "../../../../utils/constant";
 import SportSelectionPopup from "../SportSelectionPopup";
 
-const StepOne = ({
-  eventName,
-  setEventName,
-  clubName,
-  setClubName,
-  eventDate,
-  setShowDatePicker,
-  showDatePicker,
-  handleDateChange,
-  eventTime,
-  setShowTimePicker,
-  showTimePicker,
-  handleTimeChange,
-  selectedSport,
-  setSelectedSport,
-}) => {
+const StepOne = ({ values, setFieldValue, errors, touched }) => {
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showTimePicker, setShowTimePicker] = useState(false);
   const [showSportPicker, setShowSportPicker] = useState(false);
+
+  const handleDateChange = (event, selectedDate) => {
+    const currentDate = selectedDate || new Date(values.eventDate);
+    setShowDatePicker(false);
+    setFieldValue("eventDate", currentDate.toISOString());
+  };
+
+  const handleTimeChange = (event, selectedTime) => {
+    const currentTime = selectedTime || new Date(values.eventTime);
+    setShowTimePicker(false);
+    setFieldValue("eventTime", currentTime.toISOString());
+  };
 
   return (
     <ScrollView>
@@ -42,27 +39,16 @@ const StepOne = ({
           mode="outlined"
           activeUnderlineColor="#1646A9"
           textColor="#1646A9"
-          value={eventName}
-          onChangeText={(text) => setEventName(text)}
+          value={values.eventName}
+          onChangeText={(text) => setFieldValue("eventName", text)}
           placeholder="Điền tên sự kiện..."
           style={styles.textInput}
           outlineColor="#1646A9"
           placeholderTextColor="#1646A9"
         />
-        {/* <View style={styles.justifyLeft}>
-          <Text style={styles.dateLabel}>Tên CLB </Text>
-        </View>
-        <TextInput
-          mode="outlined"
-          activeUnderlineColor="#1646A9"
-          textColor="#1646A9"
-          value={clubName}
-          onChangeText={(text) => setClubName(text)}
-          placeholder="Điền tên clb..."
-          placeholderTextColor="#1646A9"
-          style={styles.textInput}
-          outlineColor="#1646A9"
-        /> */}
+        {errors.eventName && touched.eventName && (
+          <Text style={styles.errorText}>{errors.eventName}</Text>
+        )}
         <View style={styles.justifyLeft}>
           <Text style={styles.dateLabel}>Ngày diễn ra sự kiện</Text>
         </View>
@@ -70,20 +56,23 @@ const StepOne = ({
           style={styles.inputDate}
           onPress={() => setShowDatePicker(true)}
         >
-          <Text style={styles.dateValue}>{formatDate(eventDate)}</Text>
+          <Text style={styles.dateValue}>
+            {new Date(values.eventDate).toLocaleDateString()}
+          </Text>
         </TouchableOpacity>
         {showDatePicker && (
           <DateTimePicker
             testID="dateTimePicker"
-            value={eventDate}
+            value={new Date(values.eventDate)}
             mode="date"
             is24Hour={true}
             display="spinner"
             onChange={handleDateChange}
-            minimumDate={minDate} // Ngày tối thiểu (ngày hiện tại)
-            maximumDate={maxDate} // Ngày tối đa (1 năm sau)
             textColor="#1646A9"
           />
+        )}
+        {errors.eventDate && touched.eventDate && (
+          <Text style={styles.errorText}>{errors.eventDate}</Text>
         )}
         <View style={styles.justifyLeft}>
           <Text style={styles.dateLabel}>Giờ diễn ra sự kiện</Text>
@@ -92,12 +81,19 @@ const StepOne = ({
           style={styles.inputDate}
           onPress={() => setShowTimePicker(true)}
         >
-          <Text style={styles.dateValue}>{formatTime(eventTime)}</Text>
+          <Text style={styles.dateValue}>
+            {/* tranform 7:00:00 to 7:00 */}
+            {new Date(values.eventTime).toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: true,
+            })}
+          </Text>
         </TouchableOpacity>
         {showTimePicker && (
           <DateTimePicker
             testID="timePicker"
-            value={eventTime}
+            value={new Date(values.eventTime)}
             mode="time"
             is24Hour={true}
             display="spinner"
@@ -114,21 +110,21 @@ const StepOne = ({
             <Text style={styles.dateLabel}>Môn thể thao</Text>
           </View>
           <View style={styles.selectedSportContainer}>
-            {selectedSport ? (
+            {values.selectedSport ? (
               <View style={{ flex: 1 }}>
                 <Icon
-                  name={selectedSport.icon}
+                  name={values.selectedSport.icon}
                   size={30}
                   style={{
                     marginTop: 10,
                     textAlign: "center",
                     color: "white",
-                  }} // Adjust the marginTop to center the icon
+                  }}
                 />
                 <Text
                   style={{ color: "white", fontSize: 14, textAlign: "center" }}
                 >
-                  {selectedSport.label}
+                  {values.selectedSport.label}
                 </Text>
               </View>
             ) : (
@@ -141,8 +137,11 @@ const StepOne = ({
         <SportSelectionPopup
           visible={showSportPicker}
           onClose={() => setShowSportPicker(false)}
-          onSelectSport={(sport) => setSelectedSport(sport)}
+          onSelectSport={(sport) => setFieldValue("selectedSport", sport)}
         />
+        {errors.selectedSport && touched.selectedSport && (
+          <Text style={styles.errorText}>{errors.selectedSport}</Text>
+        )}
       </View>
     </ScrollView>
   );
@@ -165,13 +164,13 @@ const styles = StyleSheet.create({
   textInput: {
     width: "100%",
     backgroundColor: "white",
-    marginBottom: 20,
     fontSize: 16,
     fontWeight: "600",
     borderRadius: 10,
+    marginBottom: 10,
   },
   inputDate: {
-    marginBottom: 15,
+    marginBottom: 10,
     paddingVertical: 20,
     paddingHorizontal: 15,
     borderWidth: 1,
@@ -186,6 +185,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   dateLabel: {
+    marginTop: 10,
     fontSize: 16,
     marginBottom: 5,
     color: "#707070",
@@ -217,5 +217,11 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 14,
     textAlign: "center",
+  },
+  errorText: {
+    color: "red",
+    fontSize: 14,
+    textAlign: "left",
+    width: "100%",
   },
 });

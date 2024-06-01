@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   View,
   Modal,
@@ -8,71 +8,95 @@ import {
   Alert,
 } from "react-native";
 import { Button } from "react-native-paper";
+import { Formik } from "formik";
+import * as Yup from "yup";
 import StepOne from "./Step/StepOne";
 import StepTwo from "./Step/StepTwo";
 import StepThree from "./Step/StepThree";
 
 const CreateSportEventModal = ({ visible, onClose }) => {
-  const [step, setStep] = useState(1);
-  // STEP 1
-  const [eventName, setEventName] = useState("");
-  const [clubName, setClubName] = useState("");
-  const [eventDate, setEventDate] = useState(new Date());
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [eventTime, setEventTime] = useState(new Date());
-  const [showTimePicker, setShowTimePicker] = useState(false);
-  const [selectedSport, setSelectedSport] = useState(null);
-  // STEP 2
-  const [participants, setParticipants] = useState(0);
-  const [budget, setBudget] = useState(0);
-  const [note, setNote] = useState("");
-  // STEP 3
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedLocation, setSelectedLocation] = useState(null);
+  const [step, setStep] = React.useState(1);
 
-  const handleDateChange = (event, selectedDate) => {
-    const currentDate = selectedDate || eventDate;
-    setShowDatePicker(false);
-    setEventDate(currentDate);
+  const initialValues = {
+    eventName: "",
+    clubName: "",
+    eventDate: new Date(),
+    eventTime: (() => {
+      const time = new Date();
+      time.setHours(7, 0, 0, 0); // Đặt giờ là 7:00 sáng
+      return time;
+    })(),
+    selectedSport: null,
+    participants: 0,
+    budget: 0,
+    note: "",
+    searchQuery: "",
+    selectedLocation: null,
   };
 
-  const handleTimeChange = (event, selectedTime) => {
-    const currentTime = selectedTime || eventTime;
-    setShowTimePicker(false);
-    setEventTime(currentTime);
-  };
+  const validationSchemaStepOne = Yup.object().shape({
+    eventName: Yup.string().required("Hãy chọn tên sự kiện"),
+    eventDate: Yup.date()
+      .min(new Date(), "Không chọn ngày trong quá khứ")
+      .max(
+        new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
+        "Không chọn ngày quá 1 năm sau"
+      )
+      .required("Hãy chọn ngày của sự kiện"),
+    selectedSport: Yup.object()
+      .shape({
+        label: Yup.string().required("Sport label is required"),
+        value: Yup.string().required("Sport value is required"),
+        icon: Yup.string().required("Sport icon is required"),
+      })
+      .required("Hãy chọn môn thể thao"),
+  });
 
-  const checkStepEmpty = (step) => {
-    if (step === 1) {
-      if (!eventName.trim() || !selectedSport) {
-        return "Please fill in all fields for Step 1";
-      }
-    } else if (step === 2) {
-      if (participants <= 0 || budget <= 0 || !note.trim()) {
-        return "Please fill in all fields for Step 2";
-      }
-    } else if (step === 3) {
-      if (!selectedLocation) {
-        return "Please fill in all fields for Step 3";
-      }
+  const validationSchemaStepTwo = Yup.object().shape({
+    participants: Yup.number()
+      .min(2, "Người tham gia phải lớn hơn 1")
+      .required("Hãy chọn số lượng người tham gia"),
+    budget: Yup.number()
+      .min(1000, "Ngân sách mỗi người mang lớn hơn 1000")
+      .required("Hãy chọn số tiền"),
+    note: Yup.string().required("Hãy viết lưu ý"),
+  });
+
+  const validationSchemaStepThree = Yup.object().shape({
+    selectedLocation: Yup.object().required("Hãy chọn vị trí"),
+  });
+
+  const getValidationSchema = () => {
+    switch (step) {
+      case 1:
+        return validationSchemaStepOne;
+      case 2:
+        return validationSchemaStepTwo;
+      case 3:
+        return validationSchemaStepThree;
+      default:
+        return validationSchemaStepOne;
     }
-
-    return null; // No error, all fields are filled
   };
 
-  const handleNextStep = () => {
-    const stepEmptyError = checkStepEmpty(step);
-    // if (stepEmptyError) {
-    //   Alert.alert("Error", stepEmptyError);
-    //   return;
-    // }
-
-    if (step === 1) {
+  const handleNextStep = (values, actions) => {
+    if (step === 1 && validationSchemaStepOne.isValidSync(values)) {
       setStep(2);
-    } else if (step === 2) {
+      actions.setTouched({});
+    } else if (step === 2 && validationSchemaStepTwo.isValidSync(values)) {
       setStep(3);
-    } else if (step === 3) {
+      actions.setTouched({});
+    } else if (step === 3 && validationSchemaStepThree.isValidSync(values)) {
       onClose();
+    } else {
+      actions.validateForm().then(() => {
+        actions.setTouched({
+          ...Object.keys(initialValues).reduce((acc, key) => {
+            acc[key] = true;
+            return acc;
+          }, {}),
+        });
+      });
     }
   };
 
@@ -89,69 +113,75 @@ const CreateSportEventModal = ({ visible, onClose }) => {
       animationType="slide"
       onRequestClose={onClose}
     >
-      <View style={styles.modalContainer}>
-        <TouchableOpacity
-          style={{ flexDirection: "row", alignItems: "center" }}
-          onPress={onClose}
-        >
-          <Text style={styles.btnBack}>Quay Về</Text>
-        </TouchableOpacity>
-        {step === 1 && (
-          <StepOne
-            eventName={eventName}
-            setEventName={setEventName}
-            clubName={clubName}
-            setClubName={setClubName}
-            eventDate={eventDate}
-            setShowDatePicker={setShowDatePicker}
-            showDatePicker={showDatePicker}
-            handleDateChange={handleDateChange}
-            eventTime={eventTime}
-            setShowTimePicker={setShowTimePicker}
-            showTimePicker={showTimePicker}
-            handleTimeChange={handleTimeChange}
-            selectedSport={selectedSport}
-            setSelectedSport={setSelectedSport}
-          />
+      <Formik
+        initialValues={initialValues}
+        validationSchema={getValidationSchema}
+        onSubmit={(values, actions) => handleNextStep(values, actions)}
+      >
+        {({
+          handleSubmit,
+          values,
+          setFieldValue,
+          errors,
+          touched,
+          isValid,
+        }) => (
+          <View style={styles.modalContainer}>
+            <TouchableOpacity
+              style={{ flexDirection: "row", alignItems: "center" }}
+              onPress={() => {
+                setStep(1);
+                onClose();
+              }}
+            >
+              <Text style={styles.btnBack}>Quay Về</Text>
+            </TouchableOpacity>
+            {step === 1 && (
+              <StepOne
+                values={values}
+                setFieldValue={setFieldValue}
+                errors={errors}
+                touched={touched}
+              />
+            )}
+            {step === 2 && (
+              <StepTwo
+                values={values}
+                setFieldValue={setFieldValue}
+                errors={errors}
+                touched={touched}
+              />
+            )}
+            {step === 3 && (
+              <StepThree
+                values={values}
+                setFieldValue={setFieldValue}
+                errors={errors}
+                touched={touched}
+              />
+            )}
+            <View style={styles.buttonContainer}>
+              <Button
+                mode="elevated"
+                onPress={handlePreviousStep}
+                disabled={step === 1}
+                style={styles.buttonPre}
+                textColor="#1646A9"
+              >
+                Trước
+              </Button>
+              <Button
+                mode="elevated"
+                onPress={handleSubmit}
+                style={styles.button}
+                textColor="#fff"
+              >
+                {step === 3 ? "Hoàn thành" : "Tiếp tục"}
+              </Button>
+            </View>
+          </View>
         )}
-        {step === 2 && (
-          <StepTwo
-            budget={budget}
-            setBudget={setBudget}
-            participants={participants}
-            setParticipants={setParticipants}
-            note={note}
-            setNote={setNote}
-          />
-        )}
-        {step === 3 && (
-          <StepThree
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-            selectedLocation={selectedLocation}
-            setSelectedLocation={setSelectedLocation}
-          />
-        )}
-        <View style={styles.buttonContainer}>
-          <Button
-            mode="elevated"
-            onPress={handlePreviousStep}
-            disabled={step === 1}
-            style={styles.buttonPre}
-            textColor="#1646A9"
-          >
-            Trước
-          </Button>
-          <Button
-            mode="elevated"
-            onPress={handleNextStep}
-            style={styles.button}
-            textColor="#fff"
-          >
-            {step === 3 ? "Hoàn thành" : "Tiếp tục"}
-          </Button>
-        </View>
-      </View>
+      </Formik>
     </Modal>
   );
 };
@@ -169,10 +199,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    // position: "absolute",
-    // bottom: 20,
-    // left: 0,
-    // right: 0,
   },
   btnBack: {
     fontSize: 14,
