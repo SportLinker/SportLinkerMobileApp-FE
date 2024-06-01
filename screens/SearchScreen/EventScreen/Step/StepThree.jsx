@@ -11,12 +11,7 @@ import { Searchbar } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import axios from "axios";
 
-const StepThree = ({
-  searchQuery,
-  setSearchQuery,
-  selectedLocation,
-  setSelectedLocation,
-}) => {
+const StepThree = ({ values, setFieldValue, errors, touched }) => {
   const [locations, setLocations] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -49,35 +44,38 @@ const StepThree = ({
   };
 
   useEffect(() => {
-    if (searchQuery) {
-      fetchLocations(searchQuery);
+    if (values.searchQuery) {
+      fetchLocations(values.searchQuery);
     } else {
       fetchLocations("Sân Bóng Gần Đây");
     }
-  }, [searchQuery]);
+  }, [values.searchQuery]);
 
   return (
     <View style={styles.stepContainer}>
       <Text style={styles.textTitle}>Hãy chọn địa điểm</Text>
-      {selectedLocation && (
+      {errors.selectedLocation && touched.selectedLocation && (
+        <Text style={styles.errorText}>{errors.selectedLocation}</Text>
+      )}
+      {values.selectedLocation && (
         <View style={styles.selectedLocationContainer}>
           <Text style={styles.selectedLocationText}>Địa điểm đã chọn:</Text>
           <Text style={styles.selectedLocation}>
-            {selectedLocation.title} - {selectedLocation.address}
+            {values.selectedLocation.title} - {values.selectedLocation.address}
           </Text>
         </View>
       )}
       <Searchbar
         placeholder="Tìm kiếm..."
-        onChangeText={setSearchQuery}
-        value={searchQuery}
-        onClearIconPress={() => setSearchQuery("")}
+        onChangeText={(text) => setFieldValue("searchQuery", text)}
+        value={values.searchQuery}
+        onClearIconPress={() => setFieldValue("searchQuery", "")}
         clearIcon={() => (
           <Icon
             name="close-circle"
             size={20}
             color="gray"
-            onPress={() => setSearchQuery("")}
+            onPress={() => setFieldValue("searchQuery", "")}
           />
         )}
         style={styles.searchbar}
@@ -94,7 +92,7 @@ const StepThree = ({
             <TouchableOpacity
               key={i}
               style={styles.locationItem}
-              onPress={() => setSelectedLocation(location)}
+              onPress={() => setFieldValue("selectedLocation", location)}
             >
               <Icon
                 name="map-marker-radius-outline"
@@ -172,5 +170,12 @@ const styles = StyleSheet.create({
   locationDesc: {
     fontSize: 14,
     color: "#222222",
+  },
+  errorText: {
+    color: "red",
+    fontSize: 14,
+    textAlign: "center",
+    width: "100%",
+    marginBottom: 20,
   },
 });
