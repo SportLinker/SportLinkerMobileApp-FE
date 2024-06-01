@@ -12,18 +12,30 @@ import {
 } from "react-native";
 import { TextInput, Button, Divider, Snackbar } from "react-native-paper";
 import { screenHeight, screenWidth } from "../component/style";
+import { useDispatch } from "react-redux";
+import { login } from "../redux/slices/userSlice";
+import { api } from "../services/api";
 
 const LoginScreen = ({ navigation }) => {
-  const [loginForm, setLoginForm] = useState({ phone: "", password: "" });
+  const [loginForm, setLoginForm] = useState({
+    phone: "0825999873",
+    password: "123456",
+  });
   const [errorMessage, setErrorMessage] = useState(null);
   const [isHidePassword, setIsHidePassword] = useState(true);
 
-  const handleLogin = () => {
-    // Handle login logic here, such as sending login credentials to server
-    console.log("Phone:", loginForm.phone);
-    console.log("Password:", loginForm.password);
-    if (loginForm.phone === "" || loginForm.password === "") {
-      setErrorMessage("Vui lòng không bỏ trống!");
+  const dispatch = useDispatch();
+
+  const handleLogin = async () => {
+    try {
+      // Handle login logic here, such as sending login credentials to server
+
+      if (loginForm.phone === "" || loginForm.password === "") {
+        setErrorMessage("Vui lòng không bỏ trống!");
+      }
+      dispatch(login(loginForm));
+    } catch (error) {
+      console.log(error);
     }
   };
 
