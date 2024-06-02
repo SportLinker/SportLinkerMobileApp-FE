@@ -5,6 +5,10 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Platform,
 } from "react-native";
 import { TextInput } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -29,142 +33,155 @@ const StepOne = ({ values, setFieldValue, errors, touched }) => {
   };
 
   return (
-    <ScrollView>
-      <View style={styles.stepContainer}>
-        <Text style={styles.textTitle}>Chi Tiết</Text>
-        <View style={styles.justifyLeft}>
-          <Text style={styles.dateLabel}>Tên sự kiện </Text>
-        </View>
-        <TextInput
-          mode="outlined"
-          activeUnderlineColor="#1646A9"
-          textColor="#1646A9"
-          value={values.eventName}
-          onChangeText={(text) => setFieldValue("eventName", text)}
-          placeholder="Điền tên sự kiện..."
-          style={styles.textInput}
-          outlineColor="#1646A9"
-          placeholderTextColor="#1646A9"
-        />
-        {errors.eventName && touched.eventName && (
-          <Text style={styles.errorText}>{errors.eventName}</Text>
-        )}
-        <View style={styles.justifyLeft}>
-          <Text style={styles.dateLabel}>Ngày diễn ra sự kiện</Text>
-        </View>
-        <TouchableOpacity
-          style={styles.inputDate}
-          onPress={() => setShowDatePicker(true)}
-        >
-          <Text style={styles.dateValue}>
-            {new Date(values.eventDate).toLocaleDateString()}
-          </Text>
-        </TouchableOpacity>
-        {showDatePicker && (
-          <DateTimePicker
-            testID="dateTimePicker"
-            value={new Date(values.eventDate)}
-            mode="date"
-            is24Hour={true}
-            display="spinner"
-            onChange={handleDateChange}
-            textColor="#1646A9"
-          />
-        )}
-        {errors.eventDate && touched.eventDate && (
-          <Text style={styles.errorText}>{errors.eventDate}</Text>
-        )}
-        <View style={styles.justifyLeft}>
-          <Text style={styles.dateLabel}>Giờ diễn ra sự kiện</Text>
-        </View>
-        <TouchableOpacity
-          style={styles.inputDate}
-          onPress={() => setShowTimePicker(true)}
-        >
-          <Text style={styles.dateValue}>
-            {new Date(values.eventTime).toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-              hour12: true,
-            })}
-          </Text>
-        </TouchableOpacity>
-        {showTimePicker && (
-          <DateTimePicker
-            testID="timePicker"
-            value={new Date(values.eventTime)}
-            mode="time"
-            is24Hour={true}
-            display="spinner"
-            onChange={handleTimeChange}
-            minuteInterval={30}
-            textColor="#1646A9"
-          />
-        )}
-        {errors.eventTime && touched.eventTime && (
-          <Text style={styles.errorText}>{errors.eventTime}</Text>
-        )}
-        <View style={styles.justifyLeft}>
-          <Text style={styles.dateLabel}>Thời lượng (Phút)</Text>
-        </View>
-        <TextInput
-          textContentType="telephoneNumber"
-          mode="outlined"
-          activeUnderlineColor="#1646A9"
-          textColor="#1646A9"
-          value={values.duration}
-          onChangeText={(text) => setFieldValue("duration", text)}
-          placeholder="Nhập thời lượng sự kiện..."
-          style={styles.textInput}
-          outlineColor="#1646A9"
-          placeholderTextColor="#1646A9"
-          keyboardType="numeric"
-        />
-        {errors.duration && touched.duration && (
-          <Text style={styles.errorText}>{errors.duration}</Text>
-        )}
-        <TouchableOpacity
-          style={styles.dropdown}
-          onPress={() => setShowSportPicker(true)}
-        >
-          <View style={styles.justifyLeft}>
-            <Text style={styles.dateLabel}>Môn thể thao</Text>
-          </View>
-          <View style={styles.selectedSportContainer}>
-            {values.selectedSport ? (
-              <View style={{ flex: 1 }}>
-                <Icon
-                  name={values.selectedSport.icon}
-                  size={30}
-                  style={{
-                    marginTop: 10,
-                    textAlign: "center",
-                    color: "white",
-                  }}
-                />
-                <Text
-                  style={{ color: "white", fontSize: 14, textAlign: "center" }}
-                >
-                  {values.selectedSport.label}
-                </Text>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView>
+          <View style={styles.stepContainer}>
+            <Text style={styles.textTitle}>Chi Tiết</Text>
+            <View style={styles.justifyLeft}>
+              <Text style={styles.dateLabel}>Tên sự kiện </Text>
+            </View>
+            <TextInput
+              mode="outlined"
+              activeUnderlineColor="#1646A9"
+              textColor="#1646A9"
+              value={values.eventName}
+              onChangeText={(text) => setFieldValue("eventName", text)}
+              placeholder="Điền tên sự kiện..."
+              style={styles.textInput}
+              outlineColor="#1646A9"
+              placeholderTextColor="#1646A9"
+            />
+            {errors.eventName && touched.eventName && (
+              <Text style={styles.errorText}>{errors.eventName}</Text>
+            )}
+            <View style={styles.justifyLeft}>
+              <Text style={styles.dateLabel}>Ngày diễn ra sự kiện</Text>
+            </View>
+            <TouchableOpacity
+              style={styles.inputDate}
+              onPress={() => setShowDatePicker(true)}
+            >
+              <Text style={styles.dateValue}>
+                {new Date(values.eventDate).toLocaleDateString()}
+              </Text>
+            </TouchableOpacity>
+            {showDatePicker && (
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={new Date(values.eventDate)}
+                mode="date"
+                is24Hour={true}
+                display="spinner"
+                onChange={handleDateChange}
+                textColor="#1646A9"
+              />
+            )}
+            {errors.eventDate && touched.eventDate && (
+              <Text style={styles.errorText}>{errors.eventDate}</Text>
+            )}
+            <View style={styles.justifyLeft}>
+              <Text style={styles.dateLabel}>Giờ diễn ra sự kiện</Text>
+            </View>
+            <TouchableOpacity
+              style={styles.inputDate}
+              onPress={() => setShowTimePicker(true)}
+            >
+              <Text style={styles.dateValue}>
+                {new Date(values.eventTime).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: true,
+                })}
+              </Text>
+            </TouchableOpacity>
+            {showTimePicker && (
+              <DateTimePicker
+                testID="timePicker"
+                value={new Date(values.eventTime)}
+                mode="time"
+                is24Hour={true}
+                display="spinner"
+                onChange={handleTimeChange}
+                minuteInterval={30}
+                textColor="#1646A9"
+              />
+            )}
+            {errors.eventTime && touched.eventTime && (
+              <Text style={styles.errorText}>{errors.eventTime}</Text>
+            )}
+            <View style={styles.justifyLeft}>
+              <Text style={styles.dateLabel}>Thời lượng (Phút)</Text>
+            </View>
+            <TextInput
+              textContentType="telephoneNumber"
+              mode="outlined"
+              activeUnderlineColor="#1646A9"
+              textColor="#1646A9"
+              value={values.duration}
+              onChangeText={(text) => setFieldValue("duration", text)}
+              placeholder="Nhập thời lượng sự kiện..."
+              style={styles.textInput}
+              outlineColor="#1646A9"
+              placeholderTextColor="#1646A9"
+              keyboardType="numeric"
+            />
+            {errors.duration && touched.duration && (
+              <Text style={styles.errorText}>{errors.duration}</Text>
+            )}
+            <TouchableOpacity
+              style={styles.dropdown}
+              onPress={() => setShowSportPicker(true)}
+            >
+              <View style={styles.justifyLeft}>
+                <Text style={styles.dateLabel}>Môn thể thao</Text>
               </View>
-            ) : (
-              <View style={{ flex: 1 }}>
-                <Text style={styles.placeholderText}>Chọn môn thể thao</Text>
+              <View style={styles.selectedSportContainer}>
+                {values.selectedSport ? (
+                  <View style={{ flex: 1 }}>
+                    <Icon
+                      name={values.selectedSport.icon}
+                      size={30}
+                      style={{
+                        marginTop: 10,
+                        textAlign: "center",
+                        color: "white",
+                      }}
+                    />
+                    <Text
+                      style={{
+                        color: "white",
+                        fontSize: 14,
+                        textAlign: "center",
+                      }}
+                    >
+                      {values.selectedSport.label}
+                    </Text>
+                  </View>
+                ) : (
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.placeholderText}>
+                      Chọn môn thể thao
+                    </Text>
+                  </View>
+                )}
               </View>
+            </TouchableOpacity>
+            <SportSelectionPopup
+              visible={showSportPicker}
+              onClose={() => setShowSportPicker(false)}
+              onSelectSport={(sport) => setFieldValue("selectedSport", sport)}
+            />
+            {errors.selectedSport && touched.selectedSport && (
+              <Text style={styles.errorText}>{errors.selectedSport}</Text>
             )}
           </View>
-        </TouchableOpacity>
-        <SportSelectionPopup
-          visible={showSportPicker}
-          onClose={() => setShowSportPicker(false)}
-          onSelectSport={(sport) => setFieldValue("selectedSport", sport)}
-        />
-        {errors.selectedSport && touched.selectedSport && (
-          <Text style={styles.errorText}>{errors.selectedSport}</Text>
-        )}
-      </View>
-    </ScrollView>
+        </ScrollView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
