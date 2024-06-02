@@ -15,10 +15,11 @@ import { screenHeight, screenWidth } from "../component/style";
 import { useDispatch } from "react-redux";
 import { login } from "../redux/slices/userSlice";
 import { api } from "../services/api";
+import { createEvent } from "../redux/slices/eventSlice";
 
 const LoginScreen = ({ navigation }) => {
   const [loginForm, setLoginForm] = useState({
-    phone: "0825999873",
+    phone: "0825999871",
     password: "123456",
   });
   const [errorMessage, setErrorMessage] = useState(null);
@@ -27,13 +28,29 @@ const LoginScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const handleLogin = async () => {
+    console.log("handleLogin");
     try {
       // Handle login logic here, such as sending login credentials to server
-
       if (loginForm.phone === "" || loginForm.password === "") {
         setErrorMessage("Vui lòng không bỏ trống!");
       }
       dispatch(login(loginForm));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleCreateEvent = async () => {
+    console.log("handleCreateEvent");
+    try {
+      const eventForm = {
+        match_name: "Vui vẻ 5-5",
+        place_id: "ChIJa-nS17FrCzERjDFvhpcd85o",
+        sport_name: "Bóng đá",
+        maximum_join: 10,
+        start_time: "2024-05-30T20:09:08",
+        end_time: "2024-05-30T21:06:08",
+      };
+      dispatch(createEvent(eventForm));
     } catch (error) {
       console.log(error);
     }
@@ -69,7 +86,7 @@ const LoginScreen = ({ navigation }) => {
                 marginVertical: "auto",
                 padding: 5,
               }}
-              onPress={() => console.log("Pressed")}
+              onPress={() => handleCreateEvent()}
             >
               <View
                 style={{

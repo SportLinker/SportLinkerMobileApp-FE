@@ -82,7 +82,6 @@ const StepOne = ({ values, setFieldValue, errors, touched }) => {
           onPress={() => setShowTimePicker(true)}
         >
           <Text style={styles.dateValue}>
-            {/* tranform 7:00:00 to 7:00 */}
             {new Date(values.eventTime).toLocaleTimeString([], {
               hour: "2-digit",
               minute: "2-digit",
@@ -101,6 +100,28 @@ const StepOne = ({ values, setFieldValue, errors, touched }) => {
             minuteInterval={30}
             textColor="#1646A9"
           />
+        )}
+        {errors.eventTime && touched.eventTime && (
+          <Text style={styles.errorText}>{errors.eventTime}</Text>
+        )}
+        <View style={styles.justifyLeft}>
+          <Text style={styles.dateLabel}>Thời lượng (Phút)</Text>
+        </View>
+        <TextInput
+          textContentType="telephoneNumber"
+          mode="outlined"
+          activeUnderlineColor="#1646A9"
+          textColor="#1646A9"
+          value={values.duration}
+          onChangeText={(text) => setFieldValue("duration", text)}
+          placeholder="Nhập thời lượng sự kiện..."
+          style={styles.textInput}
+          outlineColor="#1646A9"
+          placeholderTextColor="#1646A9"
+          keyboardType="numeric"
+        />
+        {errors.duration && touched.duration && (
+          <Text style={styles.errorText}>{errors.duration}</Text>
         )}
         <TouchableOpacity
           style={styles.dropdown}
