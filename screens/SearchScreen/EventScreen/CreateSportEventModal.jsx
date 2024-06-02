@@ -13,6 +13,7 @@ import * as Yup from "yup";
 import StepOne from "./Step/StepOne";
 import StepTwo from "./Step/StepTwo";
 import StepThree from "./Step/StepThree";
+import { calculateEventTimes } from "../../../utils";
 
 const CreateSportEventModal = ({ visible, onClose }) => {
   const [step, setStep] = React.useState(1);
@@ -26,6 +27,7 @@ const CreateSportEventModal = ({ visible, onClose }) => {
       time.setHours(7, 0, 0, 0); // Đặt giờ là 7:00 sáng
       return time;
     })(),
+    duration: "",
     selectedSport: null,
     participants: 0,
     budget: 0,
@@ -43,6 +45,14 @@ const CreateSportEventModal = ({ visible, onClose }) => {
         "Không chọn ngày quá 1 năm sau"
       )
       .required("Hãy chọn ngày của sự kiện"),
+    duration: Yup.number()
+      .min(30, "Thời lượng tối thiểu là 30 phút")
+      .test(
+        "is-multiple-of-30",
+        "Thời lượng phải là bội số của 30 phút",
+        (value) => value % 30 === 0
+      )
+      .required("Hãy nhập thời lượng sự kiện"),
     selectedSport: Yup.object()
       .shape({
         label: Yup.string().required("Sport label is required"),
@@ -87,7 +97,7 @@ const CreateSportEventModal = ({ visible, onClose }) => {
       setStep(3);
       actions.setTouched({});
     } else if (step === 3 && validationSchemaStepThree.isValidSync(values)) {
-      onClose();
+      handleSubmit(values);
     } else {
       actions.validateForm().then(() => {
         actions.setTouched({
@@ -104,6 +114,36 @@ const CreateSportEventModal = ({ visible, onClose }) => {
     if (step > 1) {
       setStep(step - 1);
     }
+  };
+
+  const handleSubmit = (values) => {
+    const formattedDate = values.eventDate
+      ? new Date(values.eventDate).toLocaleDateString()
+      : "";
+
+    const formattedTime = values.eventTime
+      ? values.eventTime.toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true,
+        })
+      : "";
+    const times = calculateEventTimes(
+      formattedDate,
+      formattedTime,
+      values.duration
+    );
+    const filterData = {
+      match_name: values.eventName,
+      place_id: values.selectedLocation.cid,
+      sport_name: values.selectedSport.label,
+      maximum_join: values.participants,
+      start_time: times.start_time,
+      end_time: times.end_time,
+    };
+    console.log(filterData);
+
+    // onClose();
   };
 
   return (

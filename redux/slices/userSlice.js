@@ -18,6 +18,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export const login = createAsyncThunk(
   "userSlice/login",
   async ({ phone, password }, { rejectWithValue }) => {
+    console.log("login");
+
     try {
       const data = await api.post(`/authen/login?type=phone`, {
         phone,
@@ -77,6 +79,7 @@ export const userSlice = createSlice({
           "refreshToken",
           action.payload.token.refreshToken
         );
+        await AsyncStorage.setItem("xClientId", action.payload.user.id);
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
