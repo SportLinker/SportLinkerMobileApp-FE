@@ -1,39 +1,91 @@
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const API_URL = "http://localhost:8080/v1/api";
-// let accessToken =
-// 	localStorage.getItem('user') && JSON.parse(localStorage.getItem('user')).accessToken;
-// let refreshToken =
-// 	localStorage.getItem('user') && JSON.parse(localStorage.getItem('user')).refreshToken;
-// let email = localStorage.getItem('user') && JSON.parse(localStorage.getItem('user')).userMail;
+const API_URL = "http://192.168.x.x:8080/v1/api"; // Replace with your IP address
 
-export const api_mockoi = axios.create({
-  baseURL: API_URL,
-});
 export const api = axios.create({
   baseURL: API_URL,
-  // headers: {
-  // 	'x-authentication': accessToken,
-  // 	'x-api-email': email,
-  // 	'x-refresh-token': refreshToken,
-  // },
 });
 
-// Axios response interceptor to handle token expiration and renewal
+// let isRefreshing = false;
+// let failedQueue = [];
+
+// const processQueue = (error, token = null) => {
+//   failedQueue.forEach((prom) => {
+//     if (token) {
+//       prom.resolve(token);
+//     } else {
+//       prom.reject(error);
+//     }
+//   });
+
+//   failedQueue = [];
+// };
+
+// api.interceptors.request.use(
+//   async (config) => {
+//     const accessToken = await AsyncStorage.getItem("accessToken");
+//     if (accessToken) {
+//       config.headers["x-authentication"] = accessToken;
+//     }
+//     return config;
+//   },
+//   (error) => {
+//     return Promise.reject(error);
+//   }
+// );
+
 // api.interceptors.response.use(
-// 	(response) => {
-// 		return response;
-// 	},
-// 	async (error) => {
-// 		if (error.response.status === 401) {
-// 			console.log('401 error');
-// 			window.location.href = '/login';
-// 		}
-// 		if (error.response.status === 403) {
-// 			console.log('403 error');
-// 			window.location.href = '/permission-denied';
-// 			toast.error('403 error');
-// 		}
-// 		return Promise.reject(error);
-// 	}
+//   (response) => response,
+//   async (error) => {
+//     const originalRequest = error.config;
+
+//     if (error.response.status === 401 && !originalRequest._retry) {
+//       if (isRefreshing) {
+//         return new Promise((resolve, reject) => {
+//           failedQueue.push({ resolve, reject });
+//         })
+//           .then((token) => {
+//             originalRequest.headers["x-authentication"] = token;
+//             return api(originalRequest);
+//           })
+//           .catch((err) => {
+//             return Promise.reject(err);
+//           });
+//       }
+
+//       originalRequest._retry = true;
+//       isRefreshing = true;
+
+//       const refreshToken = await user.token.refreshToken;
+//       return new Promise((resolve, reject) => {
+//         axios
+//           .post(`${API_URL}/authen/refresh-token`, { refreshToken })
+//           .then(async ({ data }) => {
+//             // Store tokens in AsyncStorage
+//             await AsyncStorage.setItem(
+//               "accessToken",
+//               data.metadata.token.accessToken
+//             );
+//             await AsyncStorage.setItem(
+//               "refreshToken",
+//               data.metadata.token.refreshToken
+//             );
+//             api.defaults.headers["x-authentication"] = data.accessToken;
+//             originalRequest.headers["x-authentication"] = data.accessToken;
+//             processQueue(null, data.accessToken);
+//             resolve(api(originalRequest));
+//           })
+//           .catch((err) => {
+//             processQueue(err, null);
+//             reject(err);
+//           })
+//           .finally(() => {
+//             isRefreshing = false;
+//           });
+//       });
+//     }
+
+//     return Promise.reject(error);
+//   }
 // );
