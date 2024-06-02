@@ -92,7 +92,10 @@ const StepThree = ({ values, setFieldValue, errors, touched }) => {
             <TouchableOpacity
               key={i}
               style={styles.locationItem}
-              onPress={() => setFieldValue("selectedLocation", location)}
+              onPress={() => {
+                console.log(location);
+                setFieldValue("selectedLocation", location);
+              }}
             >
               <Icon
                 name="map-marker-radius-outline"
