@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Modal,
@@ -6,17 +6,23 @@ import {
   Text,
   TouchableOpacity,
   Alert,
+  Dimensions,
 } from "react-native";
-import { Button } from "react-native-paper";
+import { Button, Snackbar } from "react-native-paper";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import StepOne from "./Step/StepOne";
 import StepTwo from "./Step/StepTwo";
 import StepThree from "./Step/StepThree";
 import { calculateEventTimes } from "../../../utils";
+import { useDispatch } from "react-redux";
+import { createEvent } from "../../../redux/slices/eventSlice";
 
 const CreateSportEventModal = ({ visible, onClose }) => {
   const [step, setStep] = React.useState(1);
+  const [successMessage, setSuccessMessage] = useState("");
+
+  const dispatch = useDispatch();
 
   const initialValues = {
     eventName: "",
@@ -122,7 +128,7 @@ const CreateSportEventModal = ({ visible, onClose }) => {
       : "";
 
     const formattedTime = values.eventTime
-      ? values.eventTime.toLocaleTimeString([], {
+      ? new Date(values.eventTime).toLocaleTimeString([], {
           hour: "2-digit",
           minute: "2-digit",
           hour12: true,
@@ -133,17 +139,28 @@ const CreateSportEventModal = ({ visible, onClose }) => {
       formattedTime,
       values.duration
     );
-    const filterData = {
-      match_name: values.eventName,
-      place_id: values.selectedLocation.cid,
-      sport_name: values.selectedSport.label,
-      maximum_join: values.participants,
-      start_time: times.start_time,
-      end_time: times.end_time,
-    };
-    console.log(filterData);
-
-    // onClose();
+    try {
+      const eventForm = {
+        match_name: values.eventName,
+        place_id: values.selectedLocation.cid,
+        sport_name: values.selectedSport.label,
+        maximum_join: parseInt(values.participants),
+        start_time: times.start_time,
+        end_time: times.end_time,
+        // budget: values.budget,
+        // note: values.note,
+      };
+      dispatch(createEvent(eventForm)).then((res) => {
+        console.log("createEvent: ", res);
+        if (res.payload.status == "error") {
+          console.log("res: " + JSON.stringify(res.payload.message));
+          // console.log("res: " + JSON.stringify(res));
+          setSuccessMessage(res.payload.message);
+        }
+      });
+    } catch (error) {
+      console.log("error: ", JSON.stringify(error));
+    }
   };
 
   return (
@@ -222,11 +239,21 @@ const CreateSportEventModal = ({ visible, onClose }) => {
           </View>
         )}
       </Formik>
+      <Snackbar
+        visible={successMessage !== ""}
+        onDismiss={() => setSuccessMessage("")}
+        duration={2000}
+        style={styles.snackbarContainer}
+      >
+        {successMessage}
+      </Snackbar>
     </Modal>
   );
 };
 
 export default CreateSportEventModal;
+export const { width: screenWidth, height: screenHeight } =
+  Dimensions.get("window");
 
 const styles = StyleSheet.create({
   modalContainer: {
@@ -256,5 +283,17 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     textColor: "#1646A9",
     backgroundColor: "#fff",
+  },
+  snackbarContainer: {
+    borderRadius: 10,
+    // position: "absolute",
+    // bottom: "50%",
+    // left: "50%",
+    textAlign: "center",
+    transform: [
+      { translateX: 0 * screenWidth },
+      { translateY: 0 * screenHeight },
+    ],
+    backgroundColor: "red",
   },
 });

@@ -11,7 +11,7 @@ export const createEvent = createAsyncThunk(
     console.log("createEvent");
 
     try {
-      const data = await api.post(`/matches`, {
+      const response = await api.post(`/matches`, {
         match_name,
         place_id,
         sport_name,
@@ -20,10 +20,10 @@ export const createEvent = createAsyncThunk(
         end_time,
       });
 
-      console.log(" data:", data.data.metadata);
-      return data.data.metadata;
+      console.log("Response data: ", response.data);
+      return response.data; // Trả về dữ liệu phản hồi trực tiếp
     } catch (error) {
-      console.log("error", error);
+      console.log("Error: ", JSON.stringify(error.response.data));
       return rejectWithValue(error.response.data);
     }
   }
