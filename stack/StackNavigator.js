@@ -20,6 +20,7 @@ import BottomTabNavigator from "../tabs/BottomTabNavigator";
 import BottomTabYardOwnerNavigator from "../tabs/BottomTabYardOwnerNavigator";
 import EventDetailTabs from "../tabs/EventDetailTabs";
 import WithDrawScreen from "../screens/YardOwner/WithDrawScreen";
+import WalletHome from "../screens/WalletScreen/WalletHomeScreen";
 
 const Stack = createStackNavigator();
 
@@ -92,6 +93,16 @@ const StackNavigator = () => (
         headerStyle: { backgroundColor: "#1646a9" },
         headerTintColor: "white",
         headerBackTitle: " ",
+      }}
+    />
+    <Stack.Screen
+      name="WalletHomeScreen"
+      component={WalletHome}
+      options={{
+        title: "Ví tiền",
+        headerStyle: { backgroundColor: "#1646a9" },
+        headerTintColor: "white",
+        // headerBackTitle: " ",
       }}
     />
     <Stack.Screen
