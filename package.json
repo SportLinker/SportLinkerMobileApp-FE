@@ -26,6 +26,7 @@
     "expo-location": "~17.0.1",
     "expo-status-bar": "~1.12.1",
     "formik": "^2.4.6",
+    "moment-timezone": "^0.5.45",
     "react": "18.2.0",
     "react-native": "^0.74.1",
     "react-native-autolink": "^4.2.0",

@@ -27,9 +27,29 @@ export const createEvent = createAsyncThunk(
   }
 );
 
+export const getEventList = createAsyncThunk(
+  "eventSlice/getEventList",
+  async () => {
+    console.log("getEventList");
+
+    try {
+      const data = await api.get(
+        `/matches?lat=11.3169917&long=106.1031225&distance=10000000&start_time=0&end_time=23&sport_name=Bóng đá`
+      );
+
+      console.log(" data:", data.data.metadata);
+      return data.data.metadata;
+    } catch (error) {
+      console.log("error", error);
+      // return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const eventSlice = createSlice({
   name: "eventSlice",
   initialState: {
+    eventList: null,
     event: {
       id: null,
     },
@@ -54,6 +74,17 @@ export const eventSlice = createSlice({
       .addCase(createEvent.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload; // Use action.payload for error
+      })
+      .addCase(getEventList.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getEventList.fulfilled, async (state, action) => {
+        state.loading = false;
+        state.eventList = action.payload;
+      })
+      .addCase(getEventList.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error;
       });
   },
 });
