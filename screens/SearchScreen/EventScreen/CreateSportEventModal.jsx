@@ -17,11 +17,14 @@ import StepThree from "./Step/StepThree";
 import { calculateEventTimes } from "../../../utils";
 import { useDispatch } from "react-redux";
 import { createEvent } from "../../../redux/slices/eventSlice";
+import { useNavigation } from "@react-navigation/native";
 
 const CreateSportEventModal = ({ visible, onClose }) => {
   const [step, setStep] = React.useState(1);
   const [successMessage, setSuccessMessage] = useState("");
+  const [failMessage, setFailMessage] = useState("");
 
+  const { navigate } = useNavigation();
   const dispatch = useDispatch();
 
   const initialValues = {
@@ -142,7 +145,7 @@ const CreateSportEventModal = ({ visible, onClose }) => {
     try {
       const eventForm = {
         match_name: values.eventName,
-        place_id: values.selectedLocation.cid,
+        cid: values.selectedLocation.cid,
         sport_name: values.selectedSport.label,
         maximum_join: parseInt(values.participants),
         start_time: times.start_time,
@@ -150,12 +153,24 @@ const CreateSportEventModal = ({ visible, onClose }) => {
         // budget: values.budget,
         // note: values.note,
       };
+
       dispatch(createEvent(eventForm)).then((res) => {
-        console.log("createEvent: ", res);
-        if (res.payload.status == "error") {
-          console.log("res: " + JSON.stringify(res.payload.message));
+        if (res.type === "eventSlice/createEvent/fulfilled") {
+          console.log("Event created successfully: ", res.payload);
+          setSuccessMessage("Bạn đã tạo kèo thành công !!!");
+          setTimeout(() => {
+            setStep(1);
+            onClose();
+          }, 4000);
+        } else {
           // console.log("res: " + JSON.stringify(res));
-          setSuccessMessage(res.payload.message);
+          if (res.payload.message == "Not found") {
+            setFailMessage("Hãy đăng nhập lại !!!");
+            navigate("Login");
+          }
+          if (res.payload.message == "You have a match upcomming!") {
+            setFailMessage("Bạn đã tạo kèo ngày giờ này rồi");
+          }
         }
       });
     } catch (error) {
@@ -242,10 +257,18 @@ const CreateSportEventModal = ({ visible, onClose }) => {
       <Snackbar
         visible={successMessage !== ""}
         onDismiss={() => setSuccessMessage("")}
-        duration={2000}
+        duration={3000}
         style={styles.snackbarContainer}
       >
         {successMessage}
+      </Snackbar>
+      <Snackbar
+        visible={failMessage !== ""}
+        onDismiss={() => setFailMessage("")}
+        duration={2000}
+        style={[styles.snackbarContainer, styles.snackbarContainerFail]}
+      >
+        {failMessage}
       </Snackbar>
     </Modal>
   );
@@ -294,6 +317,9 @@ const styles = StyleSheet.create({
       { translateX: 0 * screenWidth },
       { translateY: 0 * screenHeight },
     ],
+    backgroundColor: "#1646A9",
+  },
+  snackbarContainerFail: {
     backgroundColor: "red",
   },
 });
