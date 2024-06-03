@@ -20,7 +20,10 @@ export default function FuncHomeYard() {
         <AntDesign name="checksquareo" size={70} color="#1646a9" />
         <Text style={styles.cardText}>Đơn Đặt Sân</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.card}>
+      <TouchableOpacity
+        style={styles.card}
+        onPress={() => navigation.navigate("RatingYardListScreen")}
+      >
         <FontAwesome name="star-o" size={70} color="#1646a9" />
         <Text style={styles.cardText}>Đánh Giá</Text>
       </TouchableOpacity>
