@@ -1,9 +1,11 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { Avatar } from "react-native-paper";
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 export default function HeaderHomeYard() {
+  const navigation = useNavigation();
   const [image, setImage] = useState(
     "https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcQlj3rCfLHry58AtJ8ZyBEAFPtChMddDSUSjt7C7nV3Nhsni9RIx5b0-n7LxfgerrPS6b-P-u3BOM3abuY"
   );
@@ -24,10 +26,13 @@ export default function HeaderHomeYard() {
             <Text>Danh sách sân</Text>
           </View>
 
-          <View style={styles.actionButton}>
+          <TouchableOpacity
+            style={styles.actionButton}
+            onPress={() => navigation.navigate("WalletHomeScreen")}
+          >
             <AntDesign name="wallet" size={24} color="black" />
             <Text>Ví</Text>
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
