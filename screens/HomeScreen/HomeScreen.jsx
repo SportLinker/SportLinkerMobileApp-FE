@@ -58,13 +58,6 @@ const HomeScreen = ({ navigation }) => {
             />
           </View>
           <View style={styles.buttonsContainer}>
-            <Entypo
-              name="switch"
-              color="black"
-              size={24}
-              style={[styles.buttonHeader, styles.mr5]}
-              onPress={() => navigation.navigate("HomeYardScreen")}
-            />
             <FAB
               icon="plus-circle-outline"
               color="black"
