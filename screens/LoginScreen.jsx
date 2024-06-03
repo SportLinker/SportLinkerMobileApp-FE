@@ -39,22 +39,6 @@ const LoginScreen = ({ navigation }) => {
       console.log(error);
     }
   };
-  const handleCreateEvent = async () => {
-    console.log("handleCreateEvent");
-    try {
-      const eventForm = {
-        match_name: "Vui vẻ 5-5",
-        place_id: "ChIJa-nS17FrCzERjDFvhpcd85o",
-        sport_name: "Bóng đá",
-        maximum_join: 10,
-        start_time: "2024-05-30T20:09:08",
-        end_time: "2024-05-30T21:06:08",
-      };
-      dispatch(createEvent(eventForm));
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return (
     <SafeAreaView style={{ backgroundColor: "white", flex: 1 }}>
@@ -86,7 +70,7 @@ const LoginScreen = ({ navigation }) => {
                 marginVertical: "auto",
                 padding: 5,
               }}
-              onPress={() => handleCreateEvent()}
+              onPress={() => console.log("presss")}
             >
               <View
                 style={{
