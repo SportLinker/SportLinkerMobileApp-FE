@@ -17,6 +17,8 @@ import WelcomeScreen from "../screens/WelcomeScreen";
 import BottomTabNavigator from "../tabs/BottomTabNavigator";
 import EventDetailTabs from "../tabs/EventDetailTabs";
 import NotificationScreen from "../screens/NotificationScreen/NotificationScreen";
+import BottomTabYardOwnerNavigator from "../tabs/BottomTabYardOwnerNavigator";
+import BottomTabCoachNavigator from "../tabs/BottomTabCoachNavigator";
 
 const Stack = createStackNavigator();
 
@@ -56,6 +58,20 @@ const StackNavigator = () => (
         headerShown: false,
       }}
       component={BottomTabNavigator}
+    />
+    <Stack.Screen
+      name="BottomTabYardOwnerNavigator"
+      options={{
+        headerShown: false,
+      }}
+      component={BottomTabYardOwnerNavigator}
+    />
+    <Stack.Screen
+      name="BottomTabCoachNavigator"
+      options={{
+        headerShown: false,
+      }}
+      component={BottomTabCoachNavigator}
     />
     <Stack.Screen
       name="NotificationScreen"
