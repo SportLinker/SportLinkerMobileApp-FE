@@ -21,6 +21,7 @@ import BottomTabYardOwnerNavigator from "../tabs/BottomTabYardOwnerNavigator";
 import EventDetailTabs from "../tabs/EventDetailTabs";
 import WithDrawScreen from "../screens/YardOwner/WithDrawScreen";
 import WalletHome from "../screens/WalletScreen/WalletHomeScreen";
+import RatingYardList from "../screens/YardOwner/RatingYardScreen/RatingYardList";
 
 const Stack = createStackNavigator();
 
@@ -90,6 +91,16 @@ const StackNavigator = () => (
       component={WithDrawScreen}
       options={{
         title: "Rút tiền",
+        headerStyle: { backgroundColor: "#1646a9" },
+        headerTintColor: "white",
+        headerBackTitle: " ",
+      }}
+    />
+    <Stack.Screen
+      name="RatingYardListScreen"
+      component={RatingYardList}
+      options={{
+        title: "Đáng giá sân",
         headerStyle: { backgroundColor: "#1646a9" },
         headerTintColor: "white",
         headerBackTitle: " ",
