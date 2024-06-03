@@ -194,9 +194,24 @@ const LoginScreen = ({ navigation }) => {
 
             <Button
               mode="outlined"
+              style={{ marginBottom: 10 }}
               onPress={() => navigation.navigate("BottomTabs")}
             >
-              Go to Authentabs
+              Go to User
+            </Button>
+            <Button
+              mode="outlined"
+              style={{ marginBottom: 10 }}
+              onPress={() => navigation.push("BottomTabYardOwnerNavigator")}
+            >
+              Go to Yard Owner
+            </Button>
+            <Button
+              mode="outlined"
+              style={{ marginBottom: 10 }}
+              onPress={() => navigation.navigate("BottomTabCoachNavigator")}
+            >
+              Go to Coach
             </Button>
           </View>
         </ScrollView>
