@@ -8,17 +8,18 @@ import PasswordScreen from "../screens/AccountScreen/PasswordScreen";
 import ChatDetail from "../screens/ChatScreen/ChatDetail";
 import ListLikeScreen from "../screens/HomeScreen/ListLikeScreen";
 import LoginScreen from "../screens/LoginScreen";
+import NotificationScreen from "../screens/NotificationScreen/NotificationScreen";
 import OTPInputScreen from "../screens/OTPScreen";
 import PostLinkerScreen from "../screens/PostLinkerScreen/PostLinkerScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import DetailCoachScreen from "../screens/SearchScreen/CoachScreen/DetailCoachScreen";
 import DetailYardScreen from "../screens/SearchScreen/YardScreen/DetailYardScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
-import BottomTabNavigator from "../tabs/BottomTabNavigator";
-import EventDetailTabs from "../tabs/EventDetailTabs";
-import NotificationScreen from "../screens/NotificationScreen/NotificationScreen";
-import BottomTabYardOwnerNavigator from "../tabs/BottomTabYardOwnerNavigator";
 import BottomTabCoachNavigator from "../tabs/BottomTabCoachNavigator";
+import BottomTabNavigator from "../tabs/BottomTabNavigator";
+import BottomTabYardOwnerNavigator from "../tabs/BottomTabYardOwnerNavigator";
+import EventDetailTabs from "../tabs/EventDetailTabs";
+import WithDrawScreen from "../screens/YardOwner/WithDrawScreen";
 
 const Stack = createStackNavigator();
 
@@ -78,6 +79,16 @@ const StackNavigator = () => (
       component={NotificationScreen}
       options={{
         title: "Thông Báo",
+        headerStyle: { backgroundColor: "#1646a9" },
+        headerTintColor: "white",
+        headerBackTitle: " ",
+      }}
+    />
+    <Stack.Screen
+      name="WithDrawScreen"
+      component={WithDrawScreen}
+      options={{
+        title: "Rút tiền",
         headerStyle: { backgroundColor: "#1646a9" },
         headerTintColor: "white",
         headerBackTitle: " ",
