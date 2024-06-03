@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { FAB } from "react-native-paper";
 import PostItem from "./PostItem";
+import { Entypo } from "@expo/vector-icons";
 
 const HomeScreen = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);

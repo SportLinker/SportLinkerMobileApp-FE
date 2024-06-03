@@ -4,12 +4,6 @@ import React from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 // Import screen components
-import { Image } from "react-native";
-import AccountTabs from "./AccountTabs";
-import ChatTabs from "./ChatTabs";
-import HomeTabs from "./HomeTabs";
-import SearchTopTabNavigator from "./SearchTopTabNavigator";
-import HomeYardOwnerScreen from "../screens/YardOwner/HomeYardOwnerScreen";
 import HomeCoach from "../screens/Coach/HomeCoach";
 import WithDraw from "../screens/Coach/WithDrawScreen";
 
