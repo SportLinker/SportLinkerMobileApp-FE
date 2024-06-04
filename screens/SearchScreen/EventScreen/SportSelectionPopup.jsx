@@ -27,7 +27,7 @@ const SportSelectionPopup = ({ visible, onClose, onSelectSport }) => {
               <View style={styles.sportItem}>
                 <Icon name={item.icon} size={20} color={"white"} />
                 <Text style={{ marginLeft: 10, color: "white" }}>
-                  {item.label}
+                  {item.sport_name}
                 </Text>
               </View>
             </TouchableOpacity>

@@ -158,7 +158,7 @@ const StepOne = ({ values, setFieldValue, errors, touched }) => {
                         textAlign: "center",
                       }}
                     >
-                      {values.selectedSport.label}
+                      {values.selectedSport.sport_name}
                     </Text>
                   </View>
                 ) : (

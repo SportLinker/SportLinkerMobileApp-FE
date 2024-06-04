@@ -29,19 +29,25 @@ export const createEvent = createAsyncThunk(
 
 export const getEventList = createAsyncThunk(
   "eventSlice/getEventList",
-  async () => {
+  async (
+    { lat, long, distance, start_time, end_time, sport_name },
+    { rejectWithValue }
+  ) => {
     console.log("getEventList");
 
     try {
+      console.log(
+        `/matches?lat=${lat}&long=${long}&distance=${distance}&start_time=${start_time}&end_time=${end_time}&sport_name=${sport_name}`
+      );
       const data = await api.get(
-        `/matches?lat=11.3169917&long=106.1031225&distance=10000000&start_time=0&end_time=23&sport_name=Bóng đá`
+        `/matches?lat=${lat}&long=${long}&distance=${distance}&start_time=${start_time}&end_time=${end_time}&sport_name=${sport_name}`
       );
 
       console.log(" data:", data.data.metadata);
       return data.data.metadata;
     } catch (error) {
       console.log("error", error);
-      // return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response.data);
     }
   }
 );
