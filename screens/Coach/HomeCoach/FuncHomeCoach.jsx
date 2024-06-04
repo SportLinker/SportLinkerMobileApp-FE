@@ -8,7 +8,7 @@ import {
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 
-export default function FuncHomeYard() {
+export default function FuncHomeCoach() {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
@@ -61,11 +61,6 @@ export default function FuncHomeYard() {
 const styles = StyleSheet.create({
   container: {
     marginVertical: 40,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    flexWrap: "wrap",
-    columnGap: 20,
   },
   card: {
     borderRadius: 20,
