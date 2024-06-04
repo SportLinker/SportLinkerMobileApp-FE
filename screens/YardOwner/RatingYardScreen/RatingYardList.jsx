@@ -1,4 +1,11 @@
-import { FlatList, Image, StyleSheet, Text, View } from "react-native";
+import {
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
 const fakeData = {
@@ -42,10 +49,13 @@ const fakeData = {
   ],
 };
 
-const RatingYardList = () => {
+const RatingYardList = ({ navigation }) => {
   const YardItem = ({ item }) => {
     return (
-      <View style={styles.yardItemContainer}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("RatingYardItemScreen")}
+        style={styles.yardItemContainer}
+      >
         <Image
           style={styles.yardItemImage}
           source={{
@@ -59,7 +69,7 @@ const RatingYardList = () => {
             <AntDesign name="star" size={24} color="#F9A825" />
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
 

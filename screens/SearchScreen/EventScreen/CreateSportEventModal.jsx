@@ -64,7 +64,7 @@ const CreateSportEventModal = ({ visible, onClose }) => {
       .required("Hãy nhập thời lượng sự kiện"),
     selectedSport: Yup.object()
       .shape({
-        label: Yup.string().required("Sport label is required"),
+        sport_name: Yup.string().required("Sport label is required"),
         value: Yup.string().required("Sport value is required"),
         icon: Yup.string().required("Sport icon is required"),
       })
@@ -146,7 +146,7 @@ const CreateSportEventModal = ({ visible, onClose }) => {
       const eventForm = {
         match_name: values.eventName,
         cid: values.selectedLocation.cid,
-        sport_name: values.selectedSport.label,
+        sport_name: values.selectedSport.sport_name,
         maximum_join: parseInt(values.participants),
         start_time: times.start_time,
         end_time: times.end_time,

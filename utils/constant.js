@@ -1,33 +1,35 @@
 import { Dimensions } from "react-native";
 
+export const DEFAULT_DISTACNCE = 10000000;
+
 export const sports = [
   {
-    label: "Bóng đá",
+    sport_name: "Bóng đá",
     value: "soccer",
     icon: "soccer",
   },
   {
-    label: "Bóng rổ",
+    sport_name: "Bóng rổ",
     value: "basketball",
     icon: "basketball",
   },
   {
-    label: "Bóng chuyền",
+    sport_name: "Bóng chuyền",
     value: "volleyball",
     icon: "volleyball",
   },
   {
-    label: "Cầu lông",
+    sport_name: "Cầu lông",
     value: "badminton",
     icon: "badminton",
   },
   {
-    label: "Bơi lội",
+    sport_name: "Bơi lội",
     value: "swimming",
     icon: "swim",
   },
   {
-    label: "Đua xe",
+    sport_name: "Đua xe",
     value: "racing",
     icon: "bike",
   },
