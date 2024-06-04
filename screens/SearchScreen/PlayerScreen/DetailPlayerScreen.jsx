@@ -201,7 +201,13 @@ export default function DetailPlayerScreen({ navigation }) {
         modalClose={handleCloseModal}
       />
       <Modal visible={showMenu} animationType="fade" transparent={true}>
-        <View style={styles.modalContainer}>
+        <TouchableOpacity
+          activeOpacity={1}
+          onPressOut={() => {
+            setShowMenu(false);
+          }}
+          style={styles.modalContainer}
+        >
           <View style={styles.menu}>
             <TouchableOpacity style={styles.menuItem}>
               <Text style={styles.textTitleSport}>Bóng đá</Text>
@@ -268,31 +274,8 @@ export default function DetailPlayerScreen({ navigation }) {
                 borderColor: "#C4C4C4",
               }}
             />
-            <TouchableOpacity
-              onPress={() => {
-                setShowMenu(false);
-              }}
-              style={[styles.menuItem, styles.flexRowStyle]}
-            >
-              <AntDesign
-                name="close"
-                size={24}
-                color="red"
-                style={{ paddingRight: 8, paddingTop: 2 }}
-              />
-              <Text style={[styles.textMenuItem, styles.cancelText]}>
-                Hủy bỏ
-              </Text>
-            </TouchableOpacity>
-            <View
-              style={{
-                borderBottomWidth: 1,
-                marginVertical: 5,
-                borderColor: "#C4C4C4",
-              }}
-            />
           </View>
-        </View>
+        </TouchableOpacity>
       </Modal>
     </>
   );

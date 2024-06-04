@@ -1,6 +1,8 @@
 import { Avatar } from "react-native-paper";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import { formatCurrency } from "../../utils";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { useNavigation } from "@react-navigation/native";
 
 const fakeData = [
   {
@@ -51,9 +53,13 @@ const fakeData = [
 ];
 
 const TransactionReview = () => {
+  const navigation = useNavigation();
   const TransactionItem = ({ item }) => {
     return (
-      <View style={styles.transactionContainer}>
+      <TouchableOpacity
+        style={styles.transactionContainer}
+        onPress={() => navigation.navigate("DetailTransaction")}
+      >
         <Avatar.Image
           size={50}
           source={{
@@ -69,7 +75,7 @@ const TransactionReview = () => {
         <Text style={styles.transactionValue}>
           +{formatCurrency(item.value, "VND", "vi-VN")}
         </Text>
-      </View>
+      </TouchableOpacity>
     );
   };
 
