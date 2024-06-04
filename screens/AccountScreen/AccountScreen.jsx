@@ -80,31 +80,6 @@ export default function AccountScreen() {
     }
   };
 
-  //  const captureImage = async () => {
-  //    const { status } = await ImagePicker.requestCameraPermissionsAsync();
-  //    if (status !== "granted") {
-  //      // Hiển thị thông báo tùy chỉnh nếu quyền bị từ chối
-  //      Alert.alert(
-  //        "Yêu cầu quyền truy cập camera",
-  //        "Ứng dụng cần quyền truy cập camera để chụp ảnh.",
-  //        [{ text: "OK", onPress: () => console.log("OK Pressed") }]
-  //      );
-  //      return;
-  //    }
-
-  //    const result = await ImagePicker.launchCameraAsync({
-  //      allowsEditing: true,
-  //      aspect: [1, 1],
-  //      quality: 1,
-  //    });
-
-  //    if (!result.canceled) {
-  //      setImage(result.assets[0].uri);
-  //      setShowImagePickerOptions(false);
-  //      setSuccessMessage("Chụp ảnh thành công!");
-  //    }
-  //  };
-
   return (
     <SafeAreaView style={{ flex: 1, paddingTop: 20, backgroundColor: "#fff" }}>
       <ScrollView>
@@ -190,9 +165,18 @@ export default function AccountScreen() {
           visible={!!showImagePickerOptions}
           animationType="fade"
           transparent={true}
+          onRequestClose={() => setShowImagePickerOptions(false)}
         >
-          <View style={styles.modalContainer}>
-            <View style={styles.menuAccount}>
+          <TouchableOpacity
+            style={styles.modalContainer}
+            activeOpacity={1}
+            onPressOut={() => setShowImagePickerOptions(false)}
+          >
+            <TouchableOpacity
+              style={styles.menuAccount}
+              activeOpacity={1}
+              onPress={() => {}}
+            >
               <TouchableOpacity onPress={pickImage} style={styles.menuItem}>
                 <Text style={styles.textMenuItem}>Chọn ảnh từ thư viện</Text>
               </TouchableOpacity>
@@ -213,23 +197,8 @@ export default function AccountScreen() {
                   borderColor: "#C4C4C4",
                 }}
               />
-              <TouchableOpacity
-                onPress={() => setShowImagePickerOptions(false)}
-                style={styles.menuItem}
-              >
-                <Text style={[styles.textMenuItem, styles.cancelText]}>
-                  Hủy bỏ
-                </Text>
-              </TouchableOpacity>
-              <View
-                style={{
-                  borderBottomWidth: 1,
-                  marginVertical: 5,
-                  borderColor: "#C4C4C4",
-                }}
-              />
-            </View>
-          </View>
+            </TouchableOpacity>
+          </TouchableOpacity>
         </Modal>
       </ScrollView>
       <Snackbar

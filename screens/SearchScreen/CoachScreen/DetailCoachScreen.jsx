@@ -1,12 +1,19 @@
 import { AntDesign, FontAwesome6, Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import {
+  Modal,
+  Pressable,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { Avatar } from "react-native-paper";
 import { styles } from "../../../component/style";
+import CoachMatch from "./CoachMatch";
 import CoachProfile from "./CoachProfile";
 import CoachTrain from "./CoachTrain";
-import { useNavigation } from "@react-navigation/native";
-import CoachMatch from "./CoachMatch";
 
 export default function DetailCoachScreen() {
   const [image, setImage] = useState(
@@ -15,8 +22,28 @@ export default function DetailCoachScreen() {
   const [liked, setLiked] = useState("");
   const [addUser, setAddUser] = useState("");
   const [activeTab, setActiveTab] = useState("train");
+  const [rating, setRating] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+
+  console.log("rating coach", rating);
 
   const navigation = useNavigation();
+
+  const renderStars = (currentRating) => {
+    return (
+      <View style={{ flexDirection: "row" }}>
+        {[1, 2, 3, 4, 5].map((star) => (
+          <TouchableOpacity key={star} onPress={() => setRating(star)}>
+            <AntDesign
+              name={star <= currentRating ? "star" : "staro"}
+              size={30}
+              color="#F9A825"
+            />
+          </TouchableOpacity>
+        ))}
+      </View>
+    );
+  };
 
   return (
     <View style={styles.modalCoachContainer}>
@@ -111,6 +138,9 @@ export default function DetailCoachScreen() {
               </TouchableOpacity>
             </View>
           </View>
+          <TouchableOpacity onPress={() => setModalVisible(true)}>
+            <Text style={{ fontWeight: 700 }}>Đánh giá</Text>
+          </TouchableOpacity>
         </View>
         <View
           style={{
@@ -244,6 +274,36 @@ export default function DetailCoachScreen() {
         {activeTab === "match" && <CoachMatch />}
         {activeTab === "train" && <CoachTrain />}
       </ScrollView>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <TouchableOpacity
+          style={styles.centeredView}
+          activeOpacity={1}
+          onPressOut={() => setModalVisible(false)}
+        >
+          <TouchableOpacity
+            style={styles.modalView}
+            activeOpacity={1}
+            onPress={() => {}}
+          >
+            <Text style={{ fontSize: 20, marginBottom: 15 }}>Đánh giá</Text>
+            {renderStars(rating)}
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => setModalVisible(!modalVisible)}
+            >
+              <Text style={styles.textStyle}>Xong</Text>
+            </Pressable>
+          </TouchableOpacity>
+        </TouchableOpacity>
+      </Modal>
     </View>
   );
 }
