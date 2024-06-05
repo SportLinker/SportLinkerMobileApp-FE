@@ -25,9 +25,12 @@ export default function FuncHomeYard() {
           <FontAwesome name="calendar" size={70} color="#1646a9" />
           <Text style={styles.cardText}>Xem Lịch</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.card}>
+        <TouchableOpacity
+          style={styles.card}
+          onPress={() => navigation.navigate("OrderYardScreen")}
+        >
           <AntDesign name="checksquareo" size={70} color="#1646a9" />
-          <Text style={styles.cardText}>Huấn Luyện</Text>
+          <Text style={styles.cardText}>Đơn đặt sân</Text>
         </TouchableOpacity>
       </View>
       <View
