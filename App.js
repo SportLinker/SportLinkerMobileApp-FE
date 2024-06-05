@@ -1,4 +1,3 @@
-// App.js
 import React from "react";
 import { StatusBar } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -8,16 +7,19 @@ import { store, persistor } from "./redux/store";
 import { PaperProvider } from "react-native-paper";
 import StackNavigator from "./stack/StackNavigator";
 import { NavigationContainer } from "@react-navigation/native";
+import { MenuProvider } from "react-native-popup-menu"; // Thêm import
 
 const App = () => (
   <SafeAreaProvider>
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <PaperProvider>
-          <StatusBar style="dark" />
-          <NavigationContainer>
-            <StackNavigator />
-          </NavigationContainer>
+          <MenuProvider>
+            <StatusBar style="dark" />
+            <NavigationContainer>
+              <StackNavigator />
+            </NavigationContainer>
+          </MenuProvider>
         </PaperProvider>
       </PersistGate>
     </Provider>

@@ -14,15 +14,17 @@ import PostLinkerScreen from "../screens/PostLinkerScreen/PostLinkerScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import DetailCoachScreen from "../screens/SearchScreen/CoachScreen/DetailCoachScreen";
 import DetailYardScreen from "../screens/SearchScreen/YardScreen/DetailYardScreen";
+import DetailTransaction from "../screens/WalletScreen/DetailTransaction";
+import WalletHome from "../screens/WalletScreen/WalletHomeScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
+import RatingYardList from "../screens/YardOwner/RatingYardScreen/RatingYardList";
 import BottomTabCoachNavigator from "../tabs/BottomTabCoachNavigator";
 import BottomTabNavigator from "../tabs/BottomTabNavigator";
 import BottomTabYardOwnerNavigator from "../tabs/BottomTabYardOwnerNavigator";
 import EventDetailTabs from "../tabs/EventDetailTabs";
 import WithDrawScreen from "../screens/YardOwner/WithDrawScreen";
-import WalletHome from "../screens/WalletScreen/WalletHomeScreen";
-import RatingYardList from "../screens/YardOwner/RatingYardScreen/RatingYardList";
 import RatingYardItem from "../screens/YardOwner/RatingYardScreen/RatingYardItem";
+import CoachCoursesScreen from "../screens/Coach/CourseCoach/CoachCoursesScreen";
 
 const Stack = createStackNavigator();
 
@@ -194,6 +196,27 @@ const StackNavigator = () => (
         headerStyle: { backgroundColor: "#1646a9" },
         headerTitleAlign: "center",
         headerTintColor: "white",
+      }}
+    />
+    <Stack.Screen
+      name="DetailTransaction"
+      component={DetailTransaction}
+      options={{
+        title: "Chi tiết giao dịch",
+        headerStyle: { backgroundColor: "#1646a9" },
+        headerTitleAlign: "center",
+        headerTintColor: "white",
+      }}
+    />
+    <Stack.Screen
+      name="CoachCoursesScreen"
+      component={CoachCoursesScreen}
+      options={{
+        title: "Danh sách khóa học",
+        headerStyle: { backgroundColor: "#1646a9" },
+        headerTitleAlign: "center",
+        headerTintColor: "white",
+        headerBackTitle: " ",
       }}
     />
   </Stack.Navigator>

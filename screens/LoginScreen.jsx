@@ -35,6 +35,7 @@ const LoginScreen = ({ navigation }) => {
         setErrorMessage("Vui lòng không bỏ trống!");
       }
       dispatch(login(loginForm));
+      // navigation.navigate("BottomTabs");
     } catch (error) {
       console.log(error);
     }
@@ -54,7 +55,7 @@ const LoginScreen = ({ navigation }) => {
                 width: 150,
                 marginTop: 50,
               }}
-              source={require("./../assets/sportlinker_logo.png")}
+              source={require("./../assets/logo.png")}
             />
             <Text style={styles.title}>Chào mừng quay lại!</Text>
             <Text style={styles.secondaryText}>
@@ -68,7 +69,7 @@ const LoginScreen = ({ navigation }) => {
                 justifyContent: "center",
                 alignItems: "center",
                 marginVertical: "auto",
-                padding: 5,
+                padding: 8,
               }}
               onPress={() => console.log("presss")}
             >

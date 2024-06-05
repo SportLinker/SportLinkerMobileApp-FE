@@ -8,7 +8,7 @@ import {
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 
-export default function FuncHomeYard() {
+export default function FuncHomeCoach() {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
@@ -25,7 +25,10 @@ export default function FuncHomeYard() {
           <FontAwesome name="calendar" size={70} color="#1646a9" />
           <Text style={styles.cardText}>Xem Lịch</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.card}>
+        <TouchableOpacity
+          style={styles.card}
+          onPress={() => navigation.navigate("CoachCoursesScreen")}
+        >
           <AntDesign name="checksquareo" size={70} color="#1646a9" />
           <Text style={styles.cardText}>Huấn Luyện</Text>
         </TouchableOpacity>
@@ -61,11 +64,6 @@ export default function FuncHomeYard() {
 const styles = StyleSheet.create({
   container: {
     marginVertical: 40,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    flexWrap: "wrap",
-    columnGap: 20,
   },
   card: {
     borderRadius: 20,
