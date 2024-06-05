@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Text,
   SafeAreaView,
@@ -11,6 +11,8 @@ import {
 import { FAB } from "react-native-paper";
 import PostItem from "./PostItem";
 import { Entypo } from "@expo/vector-icons";
+import { useSelector } from "react-redux";
+import { getUserSelector } from "../../redux/selectors";
 
 const HomeScreen = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
