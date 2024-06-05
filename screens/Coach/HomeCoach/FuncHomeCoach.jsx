@@ -25,7 +25,10 @@ export default function FuncHomeCoach() {
           <FontAwesome name="calendar" size={70} color="#1646a9" />
           <Text style={styles.cardText}>Xem Lịch</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.card}>
+        <TouchableOpacity
+          style={styles.card}
+          onPress={() => navigation.navigate("CoachCoursesScreen")}
+        >
           <AntDesign name="checksquareo" size={70} color="#1646a9" />
           <Text style={styles.cardText}>Huấn Luyện</Text>
         </TouchableOpacity>
