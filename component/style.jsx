@@ -92,6 +92,12 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "rgba(72, 120, 217, 0.5)",
   },
+  modalLogout: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(72, 120, 217, 0.5)",
+  },
   menu: {
     backgroundColor: "#FDFDFD",
     paddingHorizontal: 20,
@@ -108,6 +114,14 @@ export const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     width: "100%",
+  },
+  confirmLogout: {
+    backgroundColor: "#FDFDFD",
+    paddingHorizontal: 5,
+    paddingVertical: 20,
+    borderRadius: 15,
+
+    width: "80%",
   },
   menuCoach: {
     backgroundColor: "#FDFDFD",
@@ -137,6 +151,7 @@ export const styles = StyleSheet.create({
     padding: 10,
   },
   textMenuItem: { fontSize: 20, fontWeight: "bold" },
+  textMenuLogout: { fontSize: 20, fontWeight: "bold" },
   textTitleSport: { fontSize: 13, fontWeight: "bold", color: "#707070" },
   cancelText: {
     color: "red",
@@ -153,7 +168,6 @@ export const styles = StyleSheet.create({
   },
   modalCoachContainer: {
     backgroundColor: "#fff",
-
     height: "100%",
     paddingTop: 20,
   },
@@ -393,5 +407,39 @@ export const styles = StyleSheet.create({
     resizeMode: "cover",
     height: "100%",
     width: "100%",
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });
