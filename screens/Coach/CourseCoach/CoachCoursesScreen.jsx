@@ -158,7 +158,7 @@ const CoursesListScreen = () => {
       <Modal visible={modalVisible} animationType="slide">
         <View style={styles.modalContainer}>
           {selectedCourse && (
-            <>
+            <View style={{ alignItems: "flex-start" }}>
               <Title style={styles.modalTitle}>{selectedCourse.title}</Title>
               <View style={styles.detailItem}>
                 <Icon
@@ -222,21 +222,22 @@ const CoursesListScreen = () => {
               </View>
               <View style={styles.buttonContainer}>
                 <Button
-                  mode="outlined"
+                  mode="contained"
                   onPress={() => setModalVisible(false)}
-                  style={styles.button}
+                  style={[styles.button, styles.buttonClose]}
                 >
                   Đóng
                 </Button>
                 <Button
-                  mode="contained"
+                  mode="outlined"
                   onPress={handleDelete}
                   style={styles.button}
+                  textColor="#1646a9"
                 >
                   Xóa
                 </Button>
               </View>
-            </>
+            </View>
           )}
         </View>
       </Modal>
@@ -263,6 +264,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: "#1646a9",
+    fontWeight: "600",
   },
   description: {
     color: "#333333",
@@ -277,7 +279,7 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: 20,
     textAlign: "center",
     color: "#1646a9",
   },
@@ -308,12 +310,16 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     marginTop: 20,
+    width: "100%",
   },
   button: {
     width: "40%",
-    marginRight: 10,
+    marginLeft: 10,
+  },
+  buttonClose: {
+    backgroundColor: "#1646a9",
   },
 });
 
