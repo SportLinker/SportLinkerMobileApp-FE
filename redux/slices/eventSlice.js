@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { api } from "../../services/api";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const createEvent = createAsyncThunk(
   "eventSlice/createEvent",
@@ -29,12 +28,9 @@ export const createEvent = createAsyncThunk(
 
 export const getEventList = createAsyncThunk(
   "eventSlice/getEventList",
-  async (
-    { lat, long, distance, start_time, end_time, sport_name },
-    { rejectWithValue }
-  ) => {
+  async (formData, { rejectWithValue }) => {
     console.log("getEventList");
-
+    const { lat, long, distance, start_time, end_time, sport_name } = formData;
     try {
       console.log(
         `/matches?lat=${lat}&long=${long}&distance=${distance}&start_time=${start_time}&end_time=${end_time}&sport_name=${sport_name}`
@@ -43,7 +39,6 @@ export const getEventList = createAsyncThunk(
         `/matches?lat=${lat}&long=${long}&distance=${distance}&start_time=${start_time}&end_time=${end_time}&sport_name=${sport_name}`
       );
 
-      console.log(" data:", data.data.metadata);
       return data.data.metadata;
     } catch (error) {
       console.log("error", error);
@@ -84,9 +79,9 @@ export const eventSlice = createSlice({
       .addCase(getEventList.pending, (state) => {
         state.loading = true;
       })
-      .addCase(getEventList.fulfilled, async (state, action) => {
+      .addCase(getEventList.fulfilled, (state, action) => {
         state.loading = false;
-        state.eventList = action.payload;
+        state.eventList = action.payload; // Correctly updating state without returning new state
       })
       .addCase(getEventList.rejected, (state, action) => {
         state.loading = false;
@@ -95,4 +90,4 @@ export const eventSlice = createSlice({
   },
 });
 
-export default eventSlice.reducer;
+export default eventSlice;
