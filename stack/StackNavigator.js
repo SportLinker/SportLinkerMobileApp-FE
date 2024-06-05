@@ -186,6 +186,7 @@ const StackNavigator = () => (
         title: "Chi Tiết Sân",
         headerStyle: { backgroundColor: "#1646a9" },
         headerTintColor: "white",
+        headerBackTitle: " ",
       }}
     />
     <Stack.Screen
