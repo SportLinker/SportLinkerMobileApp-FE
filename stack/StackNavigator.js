@@ -25,6 +25,9 @@ import EventDetailTabs from "../tabs/EventDetailTabs";
 import WithDrawScreen from "../screens/YardOwner/WithDrawScreen";
 import RatingYardItem from "../screens/YardOwner/RatingYardScreen/RatingYardItem";
 import CoachCoursesScreen from "../screens/Coach/CourseCoach/CoachCoursesScreen";
+import OrderYardScreen from "../screens/YardOwner/OrderYardScreen/OrderYardScreen";
+import BookingScreen from "../screens/YardOwner/OrderYardScreen/BookingScreen";
+import CreateBookingScreen from "../screens/YardOwner/OrderYardScreen/CreateBookingScreen";
 
 const Stack = createStackNavigator();
 
@@ -214,6 +217,39 @@ const StackNavigator = () => (
       component={CoachCoursesScreen}
       options={{
         title: "Danh sách khóa học",
+        headerStyle: { backgroundColor: "#1646a9" },
+        headerTitleAlign: "center",
+        headerTintColor: "white",
+        headerBackTitle: " ",
+      }}
+    />
+    <Stack.Screen
+      name="OrderYardScreen"
+      component={OrderYardScreen}
+      options={{
+        title: "Đơn đặt sân",
+        headerStyle: { backgroundColor: "#1646a9" },
+        headerTitleAlign: "center",
+        headerTintColor: "white",
+        headerBackTitle: " ",
+      }}
+    />
+    <Stack.Screen
+      name="Booking"
+      component={BookingScreen}
+      options={{
+        title: "",
+        headerStyle: { backgroundColor: "#1646a9" },
+        headerTitleAlign: "center",
+        headerTintColor: "white",
+        headerBackTitle: " ",
+      }}
+    />
+    <Stack.Screen
+      name="CreateBooking"
+      component={CreateBookingScreen}
+      options={{
+        title: "Đơn đặt sân",
         headerStyle: { backgroundColor: "#1646a9" },
         headerTitleAlign: "center",
         headerTintColor: "white",
