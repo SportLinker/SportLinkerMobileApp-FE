@@ -24,6 +24,7 @@ import BottomTabYardOwnerNavigator from "../tabs/BottomTabYardOwnerNavigator";
 import EventDetailTabs from "../tabs/EventDetailTabs";
 import WithDrawScreen from "../screens/YardOwner/WithDrawScreen";
 import RatingYardItem from "../screens/YardOwner/RatingYardScreen/RatingYardItem";
+import CoachCoursesScreen from "../screens/Coach/CourseCoach/CoachCoursesScreen";
 
 const Stack = createStackNavigator();
 
@@ -205,6 +206,17 @@ const StackNavigator = () => (
         headerStyle: { backgroundColor: "#1646a9" },
         headerTitleAlign: "center",
         headerTintColor: "white",
+      }}
+    />
+    <Stack.Screen
+      name="CoachCoursesScreen"
+      component={CoachCoursesScreen}
+      options={{
+        title: "Danh sách khóa học",
+        headerStyle: { backgroundColor: "#1646a9" },
+        headerTitleAlign: "center",
+        headerTintColor: "white",
+        headerBackTitle: " ",
       }}
     />
   </Stack.Navigator>
