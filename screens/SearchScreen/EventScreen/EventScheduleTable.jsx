@@ -14,669 +14,671 @@ import { DashCircle } from "../../../component/DashCircle";
 import { useEffect } from "react";
 import { useState } from "react";
 import Loading from "../../../component/Loading";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getUserSelector } from "../../../redux/selectors";
+import { getDetailEvent } from "../../../redux/slices/eventSlice";
 
-const listData = [
-  {
-    date: "Monday, July 15",
-    match_group_by_date: [
-      {
-        time: "07:30",
-        matches: [
-          {
-            match_id: "clwyoaaz30015vz3u17zdvbon",
-            match_name: "D",
-            cid: "12022315892551549787",
-            sport_name: "Bóng đá",
-            total_join: 1,
-            maximum_join: 40,
-            start_time: "2024-07-15T00:30:00.000Z",
-            status: "upcomming",
-            user_create_id: "clwxu3soj000014ox8yfejzg3",
-            match_join: [
-              {
-                user_join: {
-                  id: "clwxu3soj000014ox8yfejzg3",
-                  name: "bảo",
-                  avatar_url: null,
-                },
-              },
-            ],
-            is_owner: false,
-            place_detail: {
-              position: 1,
-              title: "Sân Bóng Đá Cỏ Nhân Tạo Hòa Thảo",
-              address:
-                "25 Chu Mạnh Trinh, P. Hội Phú, Thành phố Pleiku, Gia Lai, Vietnam",
-              latitude: 13.9607689,
-              longitude: 107.9947693,
-              rating: 3.7,
-              ratingCount: 6,
-              type: "Athletic field",
-              types: ["Athletic field"],
-              phoneNumber: "+84 903 603 697",
-              thumbnailUrl:
-                "https://lh5.googleusercontent.com/p/AF1QipM8Da8SfIagchUyqBaVQ-dboEALO7Ljz7yoEY90",
-              cid: "12022315892551549787",
-              placeId: "ChIJIVTkH9IhbDERW4MReZvY16Y",
-            },
-            distance: {
-              text: "525.35 km",
-              value: 525353,
-            },
-          },
-        ],
-      },
-    ],
-  },
-  {
-    date: "Wednesday, July 31",
-    match_group_by_date: [
-      {
-        time: "07:30",
-        matches: [
-          {
-            match_id: "clwyoby480019vz3ukvjdyi7q",
-            match_name: "Ninh",
-            cid: "12022315892551549787",
-            sport_name: "Bóng đá",
-            total_join: 1,
-            maximum_join: 40,
-            start_time: "2024-07-31T00:30:00.000Z",
-            status: "upcomming",
-            user_create_id: "clwxu3soj000014ox8yfejzg3",
-            match_join: [
-              {
-                user_join: {
-                  id: "clwxu3soj000014ox8yfejzg3",
-                  name: "bảo",
-                  avatar_url: null,
-                },
-              },
-            ],
-            is_owner: false,
-            place_detail: {
-              position: 1,
-              title: "Sân Bóng Đá Cỏ Nhân Tạo Hòa Thảo",
-              address:
-                "25 Chu Mạnh Trinh, P. Hội Phú, Thành phố Pleiku, Gia Lai, Vietnam",
-              latitude: 13.9607689,
-              longitude: 107.9947693,
-              rating: 3.7,
-              ratingCount: 6,
-              type: "Athletic field",
-              types: ["Athletic field"],
-              phoneNumber: "+84 903 603 697",
-              thumbnailUrl:
-                "https://lh5.googleusercontent.com/p/AF1QipM8Da8SfIagchUyqBaVQ-dboEALO7Ljz7yoEY90",
-              cid: "12022315892551549787",
-              placeId: "ChIJIVTkH9IhbDERW4MReZvY16Y",
-            },
-            distance: {
-              text: "525.35 km",
-              value: 525353,
-            },
-          },
-        ],
-      },
-    ],
-  },
-  {
-    date: "Saturday, August 3",
-    match_group_by_date: [
-      {
-        time: "07:30",
-        matches: [
-          {
-            match_id: "clwynqboe000dvz3ud8uojm7y",
-            match_name: "D",
-            cid: "12022315892551549787",
-            sport_name: "Bóng đá",
-            total_join: 1,
-            maximum_join: 40,
-            start_time: "2024-08-03T00:30:00.000Z",
-            status: "upcomming",
-            user_create_id: "clwxu3soj000014ox8yfejzg3",
-            match_join: [
-              {
-                user_join: {
-                  id: "clwxu3soj000014ox8yfejzg3",
-                  name: "bảo",
-                  avatar_url: null,
-                },
-              },
-            ],
-            is_owner: false,
-            place_detail: {
-              position: 1,
-              title: "Sân Bóng Đá Cỏ Nhân Tạo Hòa Thảo",
-              address:
-                "25 Chu Mạnh Trinh, P. Hội Phú, Thành phố Pleiku, Gia Lai, Vietnam",
-              latitude: 13.9607689,
-              longitude: 107.9947693,
-              rating: 3.7,
-              ratingCount: 6,
-              type: "Athletic field",
-              types: ["Athletic field"],
-              phoneNumber: "+84 903 603 697",
-              thumbnailUrl:
-                "https://lh5.googleusercontent.com/p/AF1QipM8Da8SfIagchUyqBaVQ-dboEALO7Ljz7yoEY90",
-              cid: "12022315892551549787",
-              placeId: "ChIJIVTkH9IhbDERW4MReZvY16Y",
-            },
-            distance: {
-              text: "525.35 km",
-              value: 525353,
-            },
-          },
-        ],
-      },
-      {
-        time: "10:00",
-        matches: [
-          {
-            match_id: "clwynuhur000hvz3uzzsk60yn",
-            match_name: "D",
-            cid: "12022315892551549787",
-            sport_name: "Bóng đá",
-            total_join: 1,
-            maximum_join: 40,
-            start_time: "2024-08-03T03:00:00.000Z",
-            status: "upcomming",
-            user_create_id: "clwxu3soj000014ox8yfejzg3",
-            match_join: [
-              {
-                user_join: {
-                  id: "clwxu3soj000014ox8yfejzg3",
-                  name: "bảo",
-                  avatar_url: null,
-                },
-              },
-            ],
-            is_owner: false,
-            place_detail: {
-              position: 1,
-              title: "Sân Bóng Đá Cỏ Nhân Tạo Hòa Thảo",
-              address:
-                "25 Chu Mạnh Trinh, P. Hội Phú, Thành phố Pleiku, Gia Lai, Vietnam",
-              latitude: 13.9607689,
-              longitude: 107.9947693,
-              rating: 3.7,
-              ratingCount: 6,
-              type: "Athletic field",
-              types: ["Athletic field"],
-              phoneNumber: "+84 903 603 697",
-              thumbnailUrl:
-                "https://lh5.googleusercontent.com/p/AF1QipM8Da8SfIagchUyqBaVQ-dboEALO7Ljz7yoEY90",
-              cid: "12022315892551549787",
-              placeId: "ChIJIVTkH9IhbDERW4MReZvY16Y",
-            },
-            distance: {
-              text: "525.35 km",
-              value: 525353,
-            },
-          },
-        ],
-      },
-    ],
-  },
-  {
-    date: "Saturday, August 17",
-    match_group_by_date: [
-      {
-        time: "08:00",
-        matches: [
-          {
-            match_id: "clwyoec2x001jvz3uclg10652",
-            match_name: "D",
-            cid: "12022315892551549787",
-            sport_name: "Bóng đá",
-            total_join: 1,
-            maximum_join: 40,
-            start_time: "2024-08-17T01:00:00.000Z",
-            status: "upcomming",
-            user_create_id: "clwxu3soj000014ox8yfejzg3",
-            match_join: [
-              {
-                user_join: {
-                  id: "clwxu3soj000014ox8yfejzg3",
-                  name: "bảo",
-                  avatar_url: null,
-                },
-              },
-            ],
-            is_owner: false,
-            place_detail: {
-              position: 1,
-              title: "Sân Bóng Đá Cỏ Nhân Tạo Hòa Thảo",
-              address:
-                "25 Chu Mạnh Trinh, P. Hội Phú, Thành phố Pleiku, Gia Lai, Vietnam",
-              latitude: 13.9607689,
-              longitude: 107.9947693,
-              rating: 3.7,
-              ratingCount: 6,
-              type: "Athletic field",
-              types: ["Athletic field"],
-              phoneNumber: "+84 903 603 697",
-              thumbnailUrl:
-                "https://lh5.googleusercontent.com/p/AF1QipM8Da8SfIagchUyqBaVQ-dboEALO7Ljz7yoEY90",
-              cid: "12022315892551549787",
-              placeId: "ChIJIVTkH9IhbDERW4MReZvY16Y",
-            },
-            distance: {
-              text: "525.35 km",
-              value: 525353,
-            },
-          },
-        ],
-      },
-    ],
-  },
-  {
-    date: "Thursday, August 29",
-    match_group_by_date: [
-      {
-        time: "13:00",
-        matches: [
-          {
-            match_id: "clwye601l0001v14txjenvr9o",
-            match_name: "Vui vẻ 5-5",
-            cid: "12022315892551549787",
-            sport_name: "Bóng đá",
-            total_join: 1,
-            maximum_join: 10,
-            start_time: "2024-08-29T06:00:00.576Z",
-            status: "upcomming",
-            user_create_id: "clwxu3soj000014ox8yfejzg3",
-            match_join: [
-              {
-                user_join: {
-                  id: "clwxu3soj000014ox8yfejzg3",
-                  name: "bảo",
-                  avatar_url: null,
-                },
-              },
-            ],
-            is_owner: false,
-            place_detail: {
-              position: 1,
-              title: "Sân Bóng Đá Cỏ Nhân Tạo Hòa Thảo",
-              address:
-                "25 Chu Mạnh Trinh, P. Hội Phú, Thành phố Pleiku, Gia Lai, Vietnam",
-              latitude: 13.9607689,
-              longitude: 107.9947693,
-              rating: 3.7,
-              ratingCount: 6,
-              type: "Athletic field",
-              types: ["Athletic field"],
-              phoneNumber: "+84 903 603 697",
-              thumbnailUrl:
-                "https://lh5.googleusercontent.com/p/AF1QipM8Da8SfIagchUyqBaVQ-dboEALO7Ljz7yoEY90",
-              cid: "12022315892551549787",
-              placeId: "ChIJIVTkH9IhbDERW4MReZvY16Y",
-            },
-            distance: {
-              text: "525.35 km",
-              value: 525353,
-            },
-          },
-          {
-            match_id: "clwynlaze0009vz3ubbqee4bg",
-            match_name: "Vui vẻ 5-5",
-            cid: "12022315892551549787",
-            sport_name: "Bóng đá",
-            total_join: 1,
-            maximum_join: 10,
-            start_time: "2024-08-29T06:00:00.576Z",
-            status: "upcomming",
-            user_create_id: "clwxu3soj000014ox8yfejzg3",
-            match_join: [
-              {
-                user_join: {
-                  id: "clwxu3soj000014ox8yfejzg3",
-                  name: "bảo",
-                  avatar_url: null,
-                },
-              },
-            ],
-            is_owner: false,
-            place_detail: {
-              position: 1,
-              title: "Sân Bóng Đá Cỏ Nhân Tạo Hòa Thảo",
-              address:
-                "25 Chu Mạnh Trinh, P. Hội Phú, Thành phố Pleiku, Gia Lai, Vietnam",
-              latitude: 13.9607689,
-              longitude: 107.9947693,
-              rating: 3.7,
-              ratingCount: 6,
-              type: "Athletic field",
-              types: ["Athletic field"],
-              phoneNumber: "+84 903 603 697",
-              thumbnailUrl:
-                "https://lh5.googleusercontent.com/p/AF1QipM8Da8SfIagchUyqBaVQ-dboEALO7Ljz7yoEY90",
-              cid: "12022315892551549787",
-              placeId: "ChIJIVTkH9IhbDERW4MReZvY16Y",
-            },
-            distance: {
-              text: "525.35 km",
-              value: 525353,
-            },
-          },
-        ],
-      },
-    ],
-  },
-  {
-    date: "Friday, August 30",
-    match_group_by_date: [
-      {
-        time: "15:00",
-        matches: [
-          {
-            match_id: "clwyczroe000l57d2rfholqw3",
-            match_name: "Vui vẻ 5-5",
-            cid: "12022315892551549787",
-            sport_name: "Bóng đá",
-            total_join: 1,
-            maximum_join: 10,
-            start_time: "2024-08-30T08:00:00.000Z",
-            status: "upcomming",
-            user_create_id: "clwxu3soj000014ox8yfejzg3",
-            match_join: [
-              {
-                user_join: {
-                  id: "clwxu3soj000014ox8yfejzg3",
-                  name: "bảo",
-                  avatar_url: null,
-                },
-              },
-            ],
-            is_owner: false,
-            place_detail: {
-              position: 1,
-              title: "Sân Bóng Đá Cỏ Nhân Tạo Hòa Thảo",
-              address:
-                "25 Chu Mạnh Trinh, P. Hội Phú, Thành phố Pleiku, Gia Lai, Vietnam",
-              latitude: 13.9607689,
-              longitude: 107.9947693,
-              rating: 3.7,
-              ratingCount: 6,
-              type: "Athletic field",
-              types: ["Athletic field"],
-              phoneNumber: "+84 903 603 697",
-              thumbnailUrl:
-                "https://lh5.googleusercontent.com/p/AF1QipM8Da8SfIagchUyqBaVQ-dboEALO7Ljz7yoEY90",
-              cid: "12022315892551549787",
-              placeId: "ChIJIVTkH9IhbDERW4MReZvY16Y",
-            },
-            distance: {
-              text: "525.35 km",
-              value: 525353,
-            },
-          },
-        ],
-      },
-    ],
-  },
-  {
-    date: "Thursday, October 3",
-    match_group_by_date: [
-      {
-        time: "10:00",
-        matches: [
-          {
-            match_id: "clwynvvjm000lvz3uf40bc1ty",
-            match_name: "D",
-            cid: "12022315892551549787",
-            sport_name: "Bóng đá",
-            total_join: 1,
-            maximum_join: 40,
-            start_time: "2024-10-03T03:00:00.000Z",
-            status: "upcomming",
-            user_create_id: "clwxu3soj000014ox8yfejzg3",
-            match_join: [
-              {
-                user_join: {
-                  id: "clwxu3soj000014ox8yfejzg3",
-                  name: "bảo",
-                  avatar_url: null,
-                },
-              },
-            ],
-            is_owner: false,
-            place_detail: {
-              position: 1,
-              title: "Sân Bóng Đá Cỏ Nhân Tạo Hòa Thảo",
-              address:
-                "25 Chu Mạnh Trinh, P. Hội Phú, Thành phố Pleiku, Gia Lai, Vietnam",
-              latitude: 13.9607689,
-              longitude: 107.9947693,
-              rating: 3.7,
-              ratingCount: 6,
-              type: "Athletic field",
-              types: ["Athletic field"],
-              phoneNumber: "+84 903 603 697",
-              thumbnailUrl:
-                "https://lh5.googleusercontent.com/p/AF1QipM8Da8SfIagchUyqBaVQ-dboEALO7Ljz7yoEY90",
-              cid: "12022315892551549787",
-              placeId: "ChIJIVTkH9IhbDERW4MReZvY16Y",
-            },
-            distance: {
-              text: "525.35 km",
-              value: 525353,
-            },
-          },
-        ],
-      },
-      {
-        time: "11:00",
-        matches: [
-          {
-            match_id: "clwynz85g000pvz3u8wv7voxd",
-            match_name: "D",
-            cid: "12022315892551549787",
-            sport_name: "Bóng đá",
-            total_join: 1,
-            maximum_join: 40,
-            start_time: "2024-10-03T04:00:00.000Z",
-            status: "upcomming",
-            user_create_id: "clwxu3soj000014ox8yfejzg3",
-            match_join: [
-              {
-                user_join: {
-                  id: "clwxu3soj000014ox8yfejzg3",
-                  name: "bảo",
-                  avatar_url: null,
-                },
-              },
-            ],
-            is_owner: false,
-            place_detail: {
-              position: 1,
-              title: "Sân Bóng Đá Cỏ Nhân Tạo Hòa Thảo",
-              address:
-                "25 Chu Mạnh Trinh, P. Hội Phú, Thành phố Pleiku, Gia Lai, Vietnam",
-              latitude: 13.9607689,
-              longitude: 107.9947693,
-              rating: 3.7,
-              ratingCount: 6,
-              type: "Athletic field",
-              types: ["Athletic field"],
-              phoneNumber: "+84 903 603 697",
-              thumbnailUrl:
-                "https://lh5.googleusercontent.com/p/AF1QipM8Da8SfIagchUyqBaVQ-dboEALO7Ljz7yoEY90",
-              cid: "12022315892551549787",
-              placeId: "ChIJIVTkH9IhbDERW4MReZvY16Y",
-            },
-            distance: {
-              text: "525.35 km",
-              value: 525353,
-            },
-          },
-        ],
-      },
-    ],
-  },
-  {
-    date: "Sunday, November 3",
-    match_group_by_date: [
-      {
-        time: "11:00",
-        matches: [
-          {
-            match_id: "clwyo394u000tvz3uyxoc938a",
-            match_name: "D",
-            cid: "12022315892551549787",
-            sport_name: "Bóng đá",
-            total_join: 1,
-            maximum_join: 40,
-            start_time: "2024-11-03T04:00:00.000Z",
-            status: "upcomming",
-            user_create_id: "clwxu3soj000014ox8yfejzg3",
-            match_join: [
-              {
-                user_join: {
-                  id: "clwxu3soj000014ox8yfejzg3",
-                  name: "bảo",
-                  avatar_url: null,
-                },
-              },
-            ],
-            is_owner: false,
-            place_detail: {
-              position: 1,
-              title: "Sân Bóng Đá Cỏ Nhân Tạo Hòa Thảo",
-              address:
-                "25 Chu Mạnh Trinh, P. Hội Phú, Thành phố Pleiku, Gia Lai, Vietnam",
-              latitude: 13.9607689,
-              longitude: 107.9947693,
-              rating: 3.7,
-              ratingCount: 6,
-              type: "Athletic field",
-              types: ["Athletic field"],
-              phoneNumber: "+84 903 603 697",
-              thumbnailUrl:
-                "https://lh5.googleusercontent.com/p/AF1QipM8Da8SfIagchUyqBaVQ-dboEALO7Ljz7yoEY90",
-              cid: "12022315892551549787",
-              placeId: "ChIJIVTkH9IhbDERW4MReZvY16Y",
-            },
-            distance: {
-              text: "525.35 km",
-              value: 525353,
-            },
-          },
-        ],
-      },
-    ],
-  },
-  {
-    date: "Tuesday, December 3",
-    match_group_by_date: [
-      {
-        time: "11:00",
-        matches: [
-          {
-            match_id: "clwyo3pg9000xvz3uu2iadle5",
-            match_name: "D",
-            cid: "12022315892551549787",
-            sport_name: "Bóng đá",
-            total_join: 1,
-            maximum_join: 40,
-            start_time: "2024-12-03T04:00:00.000Z",
-            status: "upcomming",
-            user_create_id: "clwxu3soj000014ox8yfejzg3",
-            match_join: [
-              {
-                user_join: {
-                  id: "clwxu3soj000014ox8yfejzg3",
-                  name: "bảo",
-                  avatar_url: null,
-                },
-              },
-            ],
-            is_owner: false,
-            place_detail: {
-              position: 1,
-              title: "Sân Bóng Đá Cỏ Nhân Tạo Hòa Thảo",
-              address:
-                "25 Chu Mạnh Trinh, P. Hội Phú, Thành phố Pleiku, Gia Lai, Vietnam",
-              latitude: 13.9607689,
-              longitude: 107.9947693,
-              rating: 3.7,
-              ratingCount: 6,
-              type: "Athletic field",
-              types: ["Athletic field"],
-              phoneNumber: "+84 903 603 697",
-              thumbnailUrl:
-                "https://lh5.googleusercontent.com/p/AF1QipM8Da8SfIagchUyqBaVQ-dboEALO7Ljz7yoEY90",
-              cid: "12022315892551549787",
-              placeId: "ChIJIVTkH9IhbDERW4MReZvY16Y",
-            },
-            distance: {
-              text: "525.35 km",
-              value: 525353,
-            },
-          },
-        ],
-      },
-    ],
-  },
-  {
-    date: "Friday, December 6",
-    match_group_by_date: [
-      {
-        time: "11:00",
-        matches: [
-          {
-            match_id: "clwyo5mug0011vz3u7lc0hf57",
-            match_name: "D",
-            cid: "12022315892551549787",
-            sport_name: "Bóng đá",
-            total_join: 1,
-            maximum_join: 40,
-            start_time: "2024-12-06T04:00:00.000Z",
-            status: "upcomming",
-            user_create_id: "clwxu3soj000014ox8yfejzg3",
-            match_join: [
-              {
-                user_join: {
-                  id: "clwxu3soj000014ox8yfejzg3",
-                  name: "bảo",
-                  avatar_url: null,
-                },
-              },
-            ],
-            is_owner: false,
-            place_detail: {
-              position: 1,
-              title: "Sân Bóng Đá Cỏ Nhân Tạo Hòa Thảo",
-              address:
-                "25 Chu Mạnh Trinh, P. Hội Phú, Thành phố Pleiku, Gia Lai, Vietnam",
-              latitude: 13.9607689,
-              longitude: 107.9947693,
-              rating: 3.7,
-              ratingCount: 6,
-              type: "Athletic field",
-              types: ["Athletic field"],
-              phoneNumber: "+84 903 603 697",
-              thumbnailUrl:
-                "https://lh5.googleusercontent.com/p/AF1QipM8Da8SfIagchUyqBaVQ-dboEALO7Ljz7yoEY90",
-              cid: "12022315892551549787",
-              placeId: "ChIJIVTkH9IhbDERW4MReZvY16Y",
-            },
-            distance: {
-              text: "525.35 km",
-              value: 525353,
-            },
-          },
-        ],
-      },
-    ],
-  },
-];
+// const listData = [
+//   {
+//     date: "Monday, July 15",
+//     match_group_by_date: [
+//       {
+//         time: "07:30",
+//         matches: [
+//           {
+//             match_id: "clwyoaaz30015vz3u17zdvbon",
+//             match_name: "D",
+//             cid: "12022315892551549787",
+//             sport_name: "Bóng đá",
+//             total_join: 1,
+//             maximum_join: 40,
+//             start_time: "2024-07-15T00:30:00.000Z",
+//             status: "upcomming",
+//             user_create_id: "clwxu3soj000014ox8yfejzg3",
+//             match_join: [
+//               {
+//                 user_join: {
+//                   id: "clwxu3soj000014ox8yfejzg3",
+//                   name: "bảo",
+//                   avatar_url: null,
+//                 },
+//               },
+//             ],
+//             is_owner: false,
+//             place_detail: {
+//               position: 1,
+//               title: "Sân Bóng Đá Cỏ Nhân Tạo Hòa Thảo",
+//               address:
+//                 "25 Chu Mạnh Trinh, P. Hội Phú, Thành phố Pleiku, Gia Lai, Vietnam",
+//               latitude: 13.9607689,
+//               longitude: 107.9947693,
+//               rating: 3.7,
+//               ratingCount: 6,
+//               type: "Athletic field",
+//               types: ["Athletic field"],
+//               phoneNumber: "+84 903 603 697",
+//               thumbnailUrl:
+//                 "https://lh5.googleusercontent.com/p/AF1QipM8Da8SfIagchUyqBaVQ-dboEALO7Ljz7yoEY90",
+//               cid: "12022315892551549787",
+//               placeId: "ChIJIVTkH9IhbDERW4MReZvY16Y",
+//             },
+//             distance: {
+//               text: "525.35 km",
+//               value: 525353,
+//             },
+//           },
+//         ],
+//       },
+//     ],
+//   },
+//   {
+//     date: "Wednesday, July 31",
+//     match_group_by_date: [
+//       {
+//         time: "07:30",
+//         matches: [
+//           {
+//             match_id: "clwyoby480019vz3ukvjdyi7q",
+//             match_name: "Ninh",
+//             cid: "12022315892551549787",
+//             sport_name: "Bóng đá",
+//             total_join: 1,
+//             maximum_join: 40,
+//             start_time: "2024-07-31T00:30:00.000Z",
+//             status: "upcomming",
+//             user_create_id: "clwxu3soj000014ox8yfejzg3",
+//             match_join: [
+//               {
+//                 user_join: {
+//                   id: "clwxu3soj000014ox8yfejzg3",
+//                   name: "bảo",
+//                   avatar_url: null,
+//                 },
+//               },
+//             ],
+//             is_owner: false,
+//             place_detail: {
+//               position: 1,
+//               title: "Sân Bóng Đá Cỏ Nhân Tạo Hòa Thảo",
+//               address:
+//                 "25 Chu Mạnh Trinh, P. Hội Phú, Thành phố Pleiku, Gia Lai, Vietnam",
+//               latitude: 13.9607689,
+//               longitude: 107.9947693,
+//               rating: 3.7,
+//               ratingCount: 6,
+//               type: "Athletic field",
+//               types: ["Athletic field"],
+//               phoneNumber: "+84 903 603 697",
+//               thumbnailUrl:
+//                 "https://lh5.googleusercontent.com/p/AF1QipM8Da8SfIagchUyqBaVQ-dboEALO7Ljz7yoEY90",
+//               cid: "12022315892551549787",
+//               placeId: "ChIJIVTkH9IhbDERW4MReZvY16Y",
+//             },
+//             distance: {
+//               text: "525.35 km",
+//               value: 525353,
+//             },
+//           },
+//         ],
+//       },
+//     ],
+//   },
+//   {
+//     date: "Saturday, August 3",
+//     match_group_by_date: [
+//       {
+//         time: "07:30",
+//         matches: [
+//           {
+//             match_id: "clwynqboe000dvz3ud8uojm7y",
+//             match_name: "D",
+//             cid: "12022315892551549787",
+//             sport_name: "Bóng đá",
+//             total_join: 1,
+//             maximum_join: 40,
+//             start_time: "2024-08-03T00:30:00.000Z",
+//             status: "upcomming",
+//             user_create_id: "clwxu3soj000014ox8yfejzg3",
+//             match_join: [
+//               {
+//                 user_join: {
+//                   id: "clwxu3soj000014ox8yfejzg3",
+//                   name: "bảo",
+//                   avatar_url: null,
+//                 },
+//               },
+//             ],
+//             is_owner: false,
+//             place_detail: {
+//               position: 1,
+//               title: "Sân Bóng Đá Cỏ Nhân Tạo Hòa Thảo",
+//               address:
+//                 "25 Chu Mạnh Trinh, P. Hội Phú, Thành phố Pleiku, Gia Lai, Vietnam",
+//               latitude: 13.9607689,
+//               longitude: 107.9947693,
+//               rating: 3.7,
+//               ratingCount: 6,
+//               type: "Athletic field",
+//               types: ["Athletic field"],
+//               phoneNumber: "+84 903 603 697",
+//               thumbnailUrl:
+//                 "https://lh5.googleusercontent.com/p/AF1QipM8Da8SfIagchUyqBaVQ-dboEALO7Ljz7yoEY90",
+//               cid: "12022315892551549787",
+//               placeId: "ChIJIVTkH9IhbDERW4MReZvY16Y",
+//             },
+//             distance: {
+//               text: "525.35 km",
+//               value: 525353,
+//             },
+//           },
+//         ],
+//       },
+//       {
+//         time: "10:00",
+//         matches: [
+//           {
+//             match_id: "clwynuhur000hvz3uzzsk60yn",
+//             match_name: "D",
+//             cid: "12022315892551549787",
+//             sport_name: "Bóng đá",
+//             total_join: 1,
+//             maximum_join: 40,
+//             start_time: "2024-08-03T03:00:00.000Z",
+//             status: "upcomming",
+//             user_create_id: "clwxu3soj000014ox8yfejzg3",
+//             match_join: [
+//               {
+//                 user_join: {
+//                   id: "clwxu3soj000014ox8yfejzg3",
+//                   name: "bảo",
+//                   avatar_url: null,
+//                 },
+//               },
+//             ],
+//             is_owner: false,
+//             place_detail: {
+//               position: 1,
+//               title: "Sân Bóng Đá Cỏ Nhân Tạo Hòa Thảo",
+//               address:
+//                 "25 Chu Mạnh Trinh, P. Hội Phú, Thành phố Pleiku, Gia Lai, Vietnam",
+//               latitude: 13.9607689,
+//               longitude: 107.9947693,
+//               rating: 3.7,
+//               ratingCount: 6,
+//               type: "Athletic field",
+//               types: ["Athletic field"],
+//               phoneNumber: "+84 903 603 697",
+//               thumbnailUrl:
+//                 "https://lh5.googleusercontent.com/p/AF1QipM8Da8SfIagchUyqBaVQ-dboEALO7Ljz7yoEY90",
+//               cid: "12022315892551549787",
+//               placeId: "ChIJIVTkH9IhbDERW4MReZvY16Y",
+//             },
+//             distance: {
+//               text: "525.35 km",
+//               value: 525353,
+//             },
+//           },
+//         ],
+//       },
+//     ],
+//   },
+//   {
+//     date: "Saturday, August 17",
+//     match_group_by_date: [
+//       {
+//         time: "08:00",
+//         matches: [
+//           {
+//             match_id: "clwyoec2x001jvz3uclg10652",
+//             match_name: "D",
+//             cid: "12022315892551549787",
+//             sport_name: "Bóng đá",
+//             total_join: 1,
+//             maximum_join: 40,
+//             start_time: "2024-08-17T01:00:00.000Z",
+//             status: "upcomming",
+//             user_create_id: "clwxu3soj000014ox8yfejzg3",
+//             match_join: [
+//               {
+//                 user_join: {
+//                   id: "clwxu3soj000014ox8yfejzg3",
+//                   name: "bảo",
+//                   avatar_url: null,
+//                 },
+//               },
+//             ],
+//             is_owner: false,
+//             place_detail: {
+//               position: 1,
+//               title: "Sân Bóng Đá Cỏ Nhân Tạo Hòa Thảo",
+//               address:
+//                 "25 Chu Mạnh Trinh, P. Hội Phú, Thành phố Pleiku, Gia Lai, Vietnam",
+//               latitude: 13.9607689,
+//               longitude: 107.9947693,
+//               rating: 3.7,
+//               ratingCount: 6,
+//               type: "Athletic field",
+//               types: ["Athletic field"],
+//               phoneNumber: "+84 903 603 697",
+//               thumbnailUrl:
+//                 "https://lh5.googleusercontent.com/p/AF1QipM8Da8SfIagchUyqBaVQ-dboEALO7Ljz7yoEY90",
+//               cid: "12022315892551549787",
+//               placeId: "ChIJIVTkH9IhbDERW4MReZvY16Y",
+//             },
+//             distance: {
+//               text: "525.35 km",
+//               value: 525353,
+//             },
+//           },
+//         ],
+//       },
+//     ],
+//   },
+//   {
+//     date: "Thursday, August 29",
+//     match_group_by_date: [
+//       {
+//         time: "13:00",
+//         matches: [
+//           {
+//             match_id: "clwye601l0001v14txjenvr9o",
+//             match_name: "Vui vẻ 5-5",
+//             cid: "12022315892551549787",
+//             sport_name: "Bóng đá",
+//             total_join: 1,
+//             maximum_join: 10,
+//             start_time: "2024-08-29T06:00:00.576Z",
+//             status: "upcomming",
+//             user_create_id: "clwxu3soj000014ox8yfejzg3",
+//             match_join: [
+//               {
+//                 user_join: {
+//                   id: "clwxu3soj000014ox8yfejzg3",
+//                   name: "bảo",
+//                   avatar_url: null,
+//                 },
+//               },
+//             ],
+//             is_owner: false,
+//             place_detail: {
+//               position: 1,
+//               title: "Sân Bóng Đá Cỏ Nhân Tạo Hòa Thảo",
+//               address:
+//                 "25 Chu Mạnh Trinh, P. Hội Phú, Thành phố Pleiku, Gia Lai, Vietnam",
+//               latitude: 13.9607689,
+//               longitude: 107.9947693,
+//               rating: 3.7,
+//               ratingCount: 6,
+//               type: "Athletic field",
+//               types: ["Athletic field"],
+//               phoneNumber: "+84 903 603 697",
+//               thumbnailUrl:
+//                 "https://lh5.googleusercontent.com/p/AF1QipM8Da8SfIagchUyqBaVQ-dboEALO7Ljz7yoEY90",
+//               cid: "12022315892551549787",
+//               placeId: "ChIJIVTkH9IhbDERW4MReZvY16Y",
+//             },
+//             distance: {
+//               text: "525.35 km",
+//               value: 525353,
+//             },
+//           },
+//           {
+//             match_id: "clwynlaze0009vz3ubbqee4bg",
+//             match_name: "Vui vẻ 5-5",
+//             cid: "12022315892551549787",
+//             sport_name: "Bóng đá",
+//             total_join: 1,
+//             maximum_join: 10,
+//             start_time: "2024-08-29T06:00:00.576Z",
+//             status: "upcomming",
+//             user_create_id: "clwxu3soj000014ox8yfejzg3",
+//             match_join: [
+//               {
+//                 user_join: {
+//                   id: "clwxu3soj000014ox8yfejzg3",
+//                   name: "bảo",
+//                   avatar_url: null,
+//                 },
+//               },
+//             ],
+//             is_owner: false,
+//             place_detail: {
+//               position: 1,
+//               title: "Sân Bóng Đá Cỏ Nhân Tạo Hòa Thảo",
+//               address:
+//                 "25 Chu Mạnh Trinh, P. Hội Phú, Thành phố Pleiku, Gia Lai, Vietnam",
+//               latitude: 13.9607689,
+//               longitude: 107.9947693,
+//               rating: 3.7,
+//               ratingCount: 6,
+//               type: "Athletic field",
+//               types: ["Athletic field"],
+//               phoneNumber: "+84 903 603 697",
+//               thumbnailUrl:
+//                 "https://lh5.googleusercontent.com/p/AF1QipM8Da8SfIagchUyqBaVQ-dboEALO7Ljz7yoEY90",
+//               cid: "12022315892551549787",
+//               placeId: "ChIJIVTkH9IhbDERW4MReZvY16Y",
+//             },
+//             distance: {
+//               text: "525.35 km",
+//               value: 525353,
+//             },
+//           },
+//         ],
+//       },
+//     ],
+//   },
+//   {
+//     date: "Friday, August 30",
+//     match_group_by_date: [
+//       {
+//         time: "15:00",
+//         matches: [
+//           {
+//             match_id: "clwyczroe000l57d2rfholqw3",
+//             match_name: "Vui vẻ 5-5",
+//             cid: "12022315892551549787",
+//             sport_name: "Bóng đá",
+//             total_join: 1,
+//             maximum_join: 10,
+//             start_time: "2024-08-30T08:00:00.000Z",
+//             status: "upcomming",
+//             user_create_id: "clwxu3soj000014ox8yfejzg3",
+//             match_join: [
+//               {
+//                 user_join: {
+//                   id: "clwxu3soj000014ox8yfejzg3",
+//                   name: "bảo",
+//                   avatar_url: null,
+//                 },
+//               },
+//             ],
+//             is_owner: false,
+//             place_detail: {
+//               position: 1,
+//               title: "Sân Bóng Đá Cỏ Nhân Tạo Hòa Thảo",
+//               address:
+//                 "25 Chu Mạnh Trinh, P. Hội Phú, Thành phố Pleiku, Gia Lai, Vietnam",
+//               latitude: 13.9607689,
+//               longitude: 107.9947693,
+//               rating: 3.7,
+//               ratingCount: 6,
+//               type: "Athletic field",
+//               types: ["Athletic field"],
+//               phoneNumber: "+84 903 603 697",
+//               thumbnailUrl:
+//                 "https://lh5.googleusercontent.com/p/AF1QipM8Da8SfIagchUyqBaVQ-dboEALO7Ljz7yoEY90",
+//               cid: "12022315892551549787",
+//               placeId: "ChIJIVTkH9IhbDERW4MReZvY16Y",
+//             },
+//             distance: {
+//               text: "525.35 km",
+//               value: 525353,
+//             },
+//           },
+//         ],
+//       },
+//     ],
+//   },
+//   {
+//     date: "Thursday, October 3",
+//     match_group_by_date: [
+//       {
+//         time: "10:00",
+//         matches: [
+//           {
+//             match_id: "clwynvvjm000lvz3uf40bc1ty",
+//             match_name: "D",
+//             cid: "12022315892551549787",
+//             sport_name: "Bóng đá",
+//             total_join: 1,
+//             maximum_join: 40,
+//             start_time: "2024-10-03T03:00:00.000Z",
+//             status: "upcomming",
+//             user_create_id: "clwxu3soj000014ox8yfejzg3",
+//             match_join: [
+//               {
+//                 user_join: {
+//                   id: "clwxu3soj000014ox8yfejzg3",
+//                   name: "bảo",
+//                   avatar_url: null,
+//                 },
+//               },
+//             ],
+//             is_owner: false,
+//             place_detail: {
+//               position: 1,
+//               title: "Sân Bóng Đá Cỏ Nhân Tạo Hòa Thảo",
+//               address:
+//                 "25 Chu Mạnh Trinh, P. Hội Phú, Thành phố Pleiku, Gia Lai, Vietnam",
+//               latitude: 13.9607689,
+//               longitude: 107.9947693,
+//               rating: 3.7,
+//               ratingCount: 6,
+//               type: "Athletic field",
+//               types: ["Athletic field"],
+//               phoneNumber: "+84 903 603 697",
+//               thumbnailUrl:
+//                 "https://lh5.googleusercontent.com/p/AF1QipM8Da8SfIagchUyqBaVQ-dboEALO7Ljz7yoEY90",
+//               cid: "12022315892551549787",
+//               placeId: "ChIJIVTkH9IhbDERW4MReZvY16Y",
+//             },
+//             distance: {
+//               text: "525.35 km",
+//               value: 525353,
+//             },
+//           },
+//         ],
+//       },
+//       {
+//         time: "11:00",
+//         matches: [
+//           {
+//             match_id: "clwynz85g000pvz3u8wv7voxd",
+//             match_name: "D",
+//             cid: "12022315892551549787",
+//             sport_name: "Bóng đá",
+//             total_join: 1,
+//             maximum_join: 40,
+//             start_time: "2024-10-03T04:00:00.000Z",
+//             status: "upcomming",
+//             user_create_id: "clwxu3soj000014ox8yfejzg3",
+//             match_join: [
+//               {
+//                 user_join: {
+//                   id: "clwxu3soj000014ox8yfejzg3",
+//                   name: "bảo",
+//                   avatar_url: null,
+//                 },
+//               },
+//             ],
+//             is_owner: false,
+//             place_detail: {
+//               position: 1,
+//               title: "Sân Bóng Đá Cỏ Nhân Tạo Hòa Thảo",
+//               address:
+//                 "25 Chu Mạnh Trinh, P. Hội Phú, Thành phố Pleiku, Gia Lai, Vietnam",
+//               latitude: 13.9607689,
+//               longitude: 107.9947693,
+//               rating: 3.7,
+//               ratingCount: 6,
+//               type: "Athletic field",
+//               types: ["Athletic field"],
+//               phoneNumber: "+84 903 603 697",
+//               thumbnailUrl:
+//                 "https://lh5.googleusercontent.com/p/AF1QipM8Da8SfIagchUyqBaVQ-dboEALO7Ljz7yoEY90",
+//               cid: "12022315892551549787",
+//               placeId: "ChIJIVTkH9IhbDERW4MReZvY16Y",
+//             },
+//             distance: {
+//               text: "525.35 km",
+//               value: 525353,
+//             },
+//           },
+//         ],
+//       },
+//     ],
+//   },
+//   {
+//     date: "Sunday, November 3",
+//     match_group_by_date: [
+//       {
+//         time: "11:00",
+//         matches: [
+//           {
+//             match_id: "clwyo394u000tvz3uyxoc938a",
+//             match_name: "D",
+//             cid: "12022315892551549787",
+//             sport_name: "Bóng đá",
+//             total_join: 1,
+//             maximum_join: 40,
+//             start_time: "2024-11-03T04:00:00.000Z",
+//             status: "upcomming",
+//             user_create_id: "clwxu3soj000014ox8yfejzg3",
+//             match_join: [
+//               {
+//                 user_join: {
+//                   id: "clwxu3soj000014ox8yfejzg3",
+//                   name: "bảo",
+//                   avatar_url: null,
+//                 },
+//               },
+//             ],
+//             is_owner: false,
+//             place_detail: {
+//               position: 1,
+//               title: "Sân Bóng Đá Cỏ Nhân Tạo Hòa Thảo",
+//               address:
+//                 "25 Chu Mạnh Trinh, P. Hội Phú, Thành phố Pleiku, Gia Lai, Vietnam",
+//               latitude: 13.9607689,
+//               longitude: 107.9947693,
+//               rating: 3.7,
+//               ratingCount: 6,
+//               type: "Athletic field",
+//               types: ["Athletic field"],
+//               phoneNumber: "+84 903 603 697",
+//               thumbnailUrl:
+//                 "https://lh5.googleusercontent.com/p/AF1QipM8Da8SfIagchUyqBaVQ-dboEALO7Ljz7yoEY90",
+//               cid: "12022315892551549787",
+//               placeId: "ChIJIVTkH9IhbDERW4MReZvY16Y",
+//             },
+//             distance: {
+//               text: "525.35 km",
+//               value: 525353,
+//             },
+//           },
+//         ],
+//       },
+//     ],
+//   },
+//   {
+//     date: "Tuesday, December 3",
+//     match_group_by_date: [
+//       {
+//         time: "11:00",
+//         matches: [
+//           {
+//             match_id: "clwyo3pg9000xvz3uu2iadle5",
+//             match_name: "D",
+//             cid: "12022315892551549787",
+//             sport_name: "Bóng đá",
+//             total_join: 1,
+//             maximum_join: 40,
+//             start_time: "2024-12-03T04:00:00.000Z",
+//             status: "upcomming",
+//             user_create_id: "clwxu3soj000014ox8yfejzg3",
+//             match_join: [
+//               {
+//                 user_join: {
+//                   id: "clwxu3soj000014ox8yfejzg3",
+//                   name: "bảo",
+//                   avatar_url: null,
+//                 },
+//               },
+//             ],
+//             is_owner: false,
+//             place_detail: {
+//               position: 1,
+//               title: "Sân Bóng Đá Cỏ Nhân Tạo Hòa Thảo",
+//               address:
+//                 "25 Chu Mạnh Trinh, P. Hội Phú, Thành phố Pleiku, Gia Lai, Vietnam",
+//               latitude: 13.9607689,
+//               longitude: 107.9947693,
+//               rating: 3.7,
+//               ratingCount: 6,
+//               type: "Athletic field",
+//               types: ["Athletic field"],
+//               phoneNumber: "+84 903 603 697",
+//               thumbnailUrl:
+//                 "https://lh5.googleusercontent.com/p/AF1QipM8Da8SfIagchUyqBaVQ-dboEALO7Ljz7yoEY90",
+//               cid: "12022315892551549787",
+//               placeId: "ChIJIVTkH9IhbDERW4MReZvY16Y",
+//             },
+//             distance: {
+//               text: "525.35 km",
+//               value: 525353,
+//             },
+//           },
+//         ],
+//       },
+//     ],
+//   },
+//   {
+//     date: "Friday, December 6",
+//     match_group_by_date: [
+//       {
+//         time: "11:00",
+//         matches: [
+//           {
+//             match_id: "clwyo5mug0011vz3u7lc0hf57",
+//             match_name: "D",
+//             cid: "12022315892551549787",
+//             sport_name: "Bóng đá",
+//             total_join: 1,
+//             maximum_join: 40,
+//             start_time: "2024-12-06T04:00:00.000Z",
+//             status: "upcomming",
+//             user_create_id: "clwxu3soj000014ox8yfejzg3",
+//             match_join: [
+//               {
+//                 user_join: {
+//                   id: "clwxu3soj000014ox8yfejzg3",
+//                   name: "bảo",
+//                   avatar_url: null,
+//                 },
+//               },
+//             ],
+//             is_owner: false,
+//             place_detail: {
+//               position: 1,
+//               title: "Sân Bóng Đá Cỏ Nhân Tạo Hòa Thảo",
+//               address:
+//                 "25 Chu Mạnh Trinh, P. Hội Phú, Thành phố Pleiku, Gia Lai, Vietnam",
+//               latitude: 13.9607689,
+//               longitude: 107.9947693,
+//               rating: 3.7,
+//               ratingCount: 6,
+//               type: "Athletic field",
+//               types: ["Athletic field"],
+//               phoneNumber: "+84 903 603 697",
+//               thumbnailUrl:
+//                 "https://lh5.googleusercontent.com/p/AF1QipM8Da8SfIagchUyqBaVQ-dboEALO7Ljz7yoEY90",
+//               cid: "12022315892551549787",
+//               placeId: "ChIJIVTkH9IhbDERW4MReZvY16Y",
+//             },
+//             distance: {
+//               text: "525.35 km",
+//               value: 525353,
+//             },
+//           },
+//         ],
+//       },
+//     ],
+//   },
+// ];
 
 const EventScheduleTable = ({ eventListData, loading }) => {
+  const dispatch = useDispatch();
   const [eventList, setEventList] = useState(null);
   const navigation = useNavigation();
   const userSelctor = useSelector(getUserSelector);
@@ -716,7 +718,13 @@ const EventScheduleTable = ({ eventListData, loading }) => {
     }
 
     return (
-      <Pressable onPress={() => navigation.navigate("EventDetailScreen")}>
+      <Pressable
+        onPress={() => {
+          dispatch(getDetailEvent(item.match_id)).then((res) => {
+            navigation.navigate("EventDetailScreen");
+          });
+        }}
+      >
         <View
           style={[
             {
@@ -848,12 +856,12 @@ const EventScheduleTable = ({ eventListData, loading }) => {
                   } else {
                     return (
                       <Avatar.Image
-                        key={newItem?.id + index}
+                        key={index}
                         size={30}
                         source={{
-                          uri:
-                            newItem?.avatar_url ||
-                            "https://www.redditstatic.com/avatars/avatar_default_03_FF8717.png",
+                          uri: newItem.user_join?.avatar_url
+                            ? newItem.user_join?.avatar_url
+                            : "https://www.redditstatic.com/avatars/avatar_default_03_FF8717.png",
                         }}
                       />
                     );
