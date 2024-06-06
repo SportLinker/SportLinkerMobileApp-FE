@@ -1,81 +1,40 @@
 import { useState } from "react";
 import { FlatList, SectionList, StyleSheet, Text, View } from "react-native";
 import { Avatar, Button } from "react-native-paper";
-
-const fakeData = [
-  {
-    title: "Người tổ chức",
-    data: [
-      {
-        id: "owner1",
-        name: "Pham Long",
-        avatar:
-          "https://www.redditstatic.com/avatars/avatar_default_03_FF8717.png",
-      },
-    ],
-  },
-  {
-    title: "Xác nhận tham gia",
-    totalMember: 10,
-    data: [
-      {
-        id: "m1",
-        name: "Pham Long",
-        avatar:
-          "https://www.redditstatic.com/avatars/avatar_default_03_FF8717.png",
-      },
-      {
-        id: "m2",
-        name: "Pham Long",
-        avatar:
-          "https://www.redditstatic.com/avatars/avatar_default_03_FF8717.png",
-      },
-      {
-        id: "m3",
-        name: "Pham Long",
-        avatar:
-          "https://www.redditstatic.com/avatars/avatar_default_03_FF8717.png",
-      },
-      {
-        id: "m4",
-        name: "Pham Long",
-        avatar:
-          "https://www.redditstatic.com/avatars/avatar_default_03_FF8717.png",
-      },
-      {
-        id: "m5",
-        name: "Pham Long",
-        avatar:
-          "https://www.redditstatic.com/avatars/avatar_default_03_FF8717.png",
-      },
-      {
-        id: "m6",
-        name: "Pham Long",
-        avatar:
-          "https://www.redditstatic.com/avatars/avatar_default_03_FF8717.png",
-      },
-      {
-        id: "m7",
-        name: "Pham Long",
-        avatar:
-          "https://www.redditstatic.com/avatars/avatar_default_03_FF8717.png",
-      },
-      {
-        id: "m8",
-        name: "Pham Long",
-        avatar:
-          "https://www.redditstatic.com/avatars/avatar_default_03_FF8717.png",
-      },
-    ],
-  },
-];
+import { useSelector } from "react-redux";
+import { getEventSelector } from "../../../redux/selectors";
 
 const EventMember = () => {
+  const eventDetail = useSelector(getEventSelector);
+  const fakeData = [
+    {
+      title: "Người tổ chức",
+      data: [eventDetail.user_create],
+    },
+    {
+      title: "Xác nhận tham gia",
+      totalMember: 10,
+      data: eventDetail.match_join,
+    },
+  ];
+
   const MemberItem = ({ item }) => {
     return (
       <View style={styles.itemContainer}>
-        <Avatar.Image size={50} source={{ uri: item.avatar }} />
-        <Text style={styles.itemText}>{item.name}</Text>
+        {item.user_join ? (
+          <>
+            <Avatar.Image
+              size={50}
+              source={{ uri: item.user_join.avatar_url }}
+            />
+            <Text style={styles.itemText}>{item.user_join.name}</Text>
+          </>
+        ) : (
+          <>
+            <Avatar.Image size={50} source={{ uri: item.avatar_url }} />
+            <Text style={styles.itemText}>{item.name}</Text>
+          </>
+        )}
       </View>
     );
   };
@@ -86,8 +45,8 @@ const EventMember = () => {
         <Text style={styles.sectionHeader}>{title}</Text>
       </View>
       <View style={styles.avatarContainer}>
-        {data.map((item) => {
-          return <MemberItem item={item} key={item.id} />;
+        {data.map((item, index) => {
+          return <MemberItem item={item} key={index} />;
         })}
       </View>
     </View>
@@ -110,7 +69,7 @@ const EventMember = () => {
           backgroundColor: "white",
           paddingBottom: 150,
         }}
-        keyExtractor={(item, index) => item.id + index}
+        keyExtractor={(item, index) => index}
         renderItem={() => {
           return null;
         }}
