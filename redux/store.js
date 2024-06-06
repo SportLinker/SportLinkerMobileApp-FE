@@ -7,7 +7,7 @@ import { eventSlice } from "./slices/eventSlice";
 const rootPersistConfig = {
   key: "root",
   storage,
-  safelist: ["userSlice", "eventSlice"], // name of reducer which will be stored in the local storage
+  safelist: ["userSlice"], // name of reducer which will be stored in the local storage
 };
 
 const rootReducer = combineReducers({
