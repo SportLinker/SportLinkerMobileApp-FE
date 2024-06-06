@@ -8,8 +8,8 @@ const Loading = ({ visible, message }) => {
 
   return (
     <View style={styles.container}>
-      <ActivityIndicator animating={true} size="large" color="#1646A9" />
-      {message && <Text style={styles.message}>{message}</Text>}
+      <ActivityIndicator animating={true} size={80} color="#1646A9" />
+      {/* {message && <Text style={styles.message}>{message}</Text>} */}
     </View>
   );
 };
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.4)",
+    backgroundColor: "white",
     position: "absolute",
     top: 0,
     bottom: 0,

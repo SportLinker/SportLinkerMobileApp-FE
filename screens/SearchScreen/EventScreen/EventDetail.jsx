@@ -1,8 +1,10 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { Avatar, Button } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { formatCurrency } from "../../../utils";
+import { convertUTCToVietnamTime, formatCurrency } from "../../../utils";
 import { DashCircle } from "../../../component/DashCircle";
+import { getEventSelector } from "../../../redux/selectors";
+import { useSelector } from "react-redux";
 
 const fakeData = {
   id: "e1",
@@ -30,6 +32,8 @@ const fakeData = {
 };
 
 const EventDetail = ({ navigation }) => {
+  const eventDetail = useSelector(getEventSelector);
+
   const MemberView = ({ members }) => {
     console.log("members", members);
     //handle render member avatar
@@ -51,6 +55,7 @@ const EventDetail = ({ navigation }) => {
         remaining: members.length - maxItems,
       });
     }
+
     return (
       <View
         style={{
@@ -83,10 +88,10 @@ const EventDetail = ({ navigation }) => {
           } else {
             return (
               <Avatar.Image
-                key={newItem.id + index}
+                key={newItem.user_join.id + index}
                 size={50}
                 source={{
-                  uri: newItem.avatar,
+                  uri: newItem.user_join.avatar_url,
                 }}
               />
             );
@@ -99,20 +104,28 @@ const EventDetail = ({ navigation }) => {
   return (
     <View style={{ position: "relative", flex: 1, zIndex: 0 }}>
       <ScrollView style={styles.container}>
-        <MemberView members={fakeData.members} />
+        <MemberView members={eventDetail.match_join} />
         <View style={styles.itemWrapper}>
           <Icon name="calendar-check-outline" size={30} color={"black"} />
 
           <View style={styles.textWrapper}>
-            <Text style={styles.boldText}>{fakeData.eventTime}</Text>
-            <Text style={styles.subText}>{fakeData.duration}</Text>
+            <Text style={styles.boldText}>
+              {convertUTCToVietnamTime(eventDetail.start_time)}
+            </Text>
+            <Text style={styles.subText}>
+              {convertUTCToVietnamTime(eventDetail.end_time)}
+            </Text>
           </View>
         </View>
         <View style={styles.itemWrapper}>
           <Icon name="map-marker-outline" size={30} color={"black"} />
           <View style={styles.textWrapper}>
-            <Text style={styles.boldText}>{fakeData.addressName}</Text>
-            <Text style={styles.subText}>{fakeData.location}</Text>
+            <Text style={styles.boldText}>
+              {eventDetail.place_detail.title}
+            </Text>
+            <Text style={styles.subText}>
+              {eventDetail.place_detail.address}
+            </Text>
           </View>
         </View>
         <View style={styles.itemWrapper}>
@@ -148,7 +161,9 @@ const EventDetail = ({ navigation }) => {
             <View style={styles.inlineTextWrapper}>
               <Text style={styles.boldText}>Mỗi người: </Text>
               <Text style={styles.subText}>
-                {formatCurrency(fakeData.participationFee, "VND", "vi-vn")}
+                {eventDetail.option
+                  ? formatCurrency(eventDetail.option.budget, "VND", "vi-vn")
+                  : "Chưa yêu cầu"}
               </Text>
             </View>
           </View>
