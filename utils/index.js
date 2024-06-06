@@ -92,3 +92,30 @@ const formatDateString = (timestamp) => {
     }`;
   }
 };
+
+export function convertUTCToVietnamTime(utcStr) {
+  // Tạo đối tượng Date từ chuỗi UTC
+  let utcDate = new Date(utcStr);
+
+  // Lấy giờ và phút theo giờ Việt Nam (GMT+7)
+  let vietnamHours = utcDate.getUTCHours() + 7;
+  let vietnamMinutes = utcDate.getUTCMinutes();
+
+  // Nếu giờ vượt quá 24, chuyển sang ngày tiếp theo
+  if (vietnamHours >= 24) {
+    vietnamHours -= 24;
+    utcDate.setUTCDate(utcDate.getUTCDate() + 1);
+  }
+
+  // Định dạng lại giờ và phút
+  let hours = vietnamHours.toString().padStart(2, "0");
+  let minutes = vietnamMinutes.toString().padStart(2, "0");
+
+  // Lấy ngày tháng năm
+  let year = utcDate.getUTCFullYear();
+  let month = (utcDate.getUTCMonth() + 1).toString().padStart(2, "0"); // Tháng bắt đầu từ 0
+  let day = utcDate.getUTCDate().toString().padStart(2, "0");
+
+  // Kết hợp thành chuỗi kết quả
+  return `${year}-${month}-${day} ${hours}h${minutes}`;
+}

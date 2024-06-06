@@ -3,19 +3,9 @@ import { api } from "../../services/api";
 
 export const createEvent = createAsyncThunk(
   "eventSlice/createEvent",
-  async (
-    { match_name, cid, sport_name, maximum_join, start_time, end_time },
-    { rejectWithValue }
-  ) => {
+  async (eventForm, { rejectWithValue }) => {
     try {
-      const response = await api.post(`/matches`, {
-        match_name,
-        cid,
-        sport_name,
-        maximum_join,
-        start_time,
-        end_time,
-      });
+      const response = await api.post(`/matches`, eventForm);
 
       console.log("API Response: ", response.data); // Log the API response
       return response.data; // Return the response data
@@ -47,13 +37,27 @@ export const getEventList = createAsyncThunk(
   }
 );
 
+export const getDetailEvent = createAsyncThunk(
+  "eventSlice/getDetailEvent",
+  async (eventID, { rejectWithValue }) => {
+    console.log("eventID: " + eventID);
+    try {
+      const response = await api.get(`/matches/${eventID}`, eventID);
+
+      console.log("API getDetailEvent: ", response.data); // Log the API response
+      return response.data.metadata; // Return the response data
+    } catch (error) {
+      console.log("Error: ", JSON.stringify(error.response.data));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const eventSlice = createSlice({
   name: "eventSlice",
   initialState: {
     eventList: null,
-    event: {
-      id: null,
-    },
+    event: {},
     loading: false,
     error: null,
   },
@@ -84,6 +88,17 @@ export const eventSlice = createSlice({
         state.eventList = action.payload; // Correctly updating state without returning new state
       })
       .addCase(getEventList.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error;
+      })
+      .addCase(getDetailEvent.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getDetailEvent.fulfilled, (state, action) => {
+        state.loading = false;
+        state.event = action.payload; // Correctly updating state without returning new state
+      })
+      .addCase(getDetailEvent.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error;
       });

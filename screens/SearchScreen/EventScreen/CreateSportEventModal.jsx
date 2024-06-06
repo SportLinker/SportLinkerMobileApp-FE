@@ -75,10 +75,9 @@ const CreateSportEventModal = ({ visible, onClose }) => {
     participants: Yup.number()
       .min(2, "Người tham gia phải lớn hơn 1")
       .required("Hãy chọn số lượng người tham gia"),
-    budget: Yup.number()
-      .min(1000, "Ngân sách mỗi người mang lớn hơn 1000")
-      .required("Hãy chọn số tiền"),
-    note: Yup.string().required("Hãy viết lưu ý"),
+    // budget: Yup.number().min(1000, "Ngân sách mỗi người mang lớn hơn 1000"),
+    // .required("Hãy chọn số tiền"),
+    // note: Yup.string().required("Hãy viết lưu ý"),
   });
 
   const validationSchemaStepThree = Yup.object().shape({
@@ -150,10 +149,13 @@ const CreateSportEventModal = ({ visible, onClose }) => {
         maximum_join: parseInt(values.participants),
         start_time: times.start_time,
         end_time: times.end_time,
-        // budget: values.budget,
-        // note: values.note,
+        option: {
+          budget: values.budget ? values.budget : null,
+          note: values.note ? values.note : null,
+        },
       };
 
+      console.log(eventForm);
       dispatch(createEvent(eventForm)).then((res) => {
         if (res.type === "eventSlice/createEvent/fulfilled") {
           console.log("Event created successfully: ", res.payload);
@@ -170,6 +172,8 @@ const CreateSportEventModal = ({ visible, onClose }) => {
           }
           if (res.payload.message == "You have a match upcomming!") {
             setFailMessage("Bạn đã tạo kèo ngày giờ này rồi");
+          } else {
+            setFailMessage(res.payload.message);
           }
         }
       });
