@@ -21,10 +21,13 @@ export default function HeaderHomeYard() {
           <Text style={styles.profileName}>Tài Võ</Text>
         </View>
         <View style={styles.actionContainer}>
-          <View style={styles.actionButton}>
+          <TouchableOpacity
+            style={styles.actionButton}
+            onPress={() => navigation.navigate("ListYard")}
+          >
             <FontAwesome name="list-ul" size={24} color="black" />
             <Text>Danh sách sân</Text>
-          </View>
+          </TouchableOpacity>
 
           <TouchableOpacity
             style={styles.actionButton}
