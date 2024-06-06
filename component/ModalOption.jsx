@@ -7,7 +7,7 @@ import {
   ScrollView,
 } from "react-native";
 
-const ModalOption = ({ title, options, onOptionPress }) => {
+const ModalOption = ({ title, optionItem, onOptionPress }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
@@ -24,13 +24,13 @@ const ModalOption = ({ title, options, onOptionPress }) => {
         style={styles.scrollView}
       >
         <View style={styles.optionsContainer}>
-          {options.map((option, index) => (
+          {optionItem?.options?.map((option, index) => (
             <TouchableOpacity
               key={index}
               style={styles.optionButton}
-              onPress={() => onOptionPress(option)}
+              onPress={() => onOptionPress(optionItem?.type, option.value)}
             >
-              <Text style={styles.optionText}>{option}</Text>
+              <Text style={styles.optionText}>{option?.label}</Text>
             </TouchableOpacity>
           ))}
         </View>
