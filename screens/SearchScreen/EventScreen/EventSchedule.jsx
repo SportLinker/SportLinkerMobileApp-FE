@@ -16,6 +16,12 @@ const EventSchedule = () => {
   const [location, setLocation] = useState(null);
   const [address, setAddress] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [filterOptions, setFilterOptions] = useState({
+    distance: DEFAULT_DISTACNCE,
+    start_time: 0,
+    end_time: 23,
+    sport_name: "",
+  });
 
   const eventListSelecter = useSelector(getEventListSelector);
   const eventLoadingtSelector = useSelector(getEventLoadingtSelector);
@@ -25,10 +31,7 @@ const EventSchedule = () => {
       const formData = {
         long: address.longitude,
         lat: address.latitude,
-        distance: DEFAULT_DISTACNCE,
-        start_time: 0,
-        end_time: 23,
-        sport_name: "",
+        ...filterOptions,
       };
       dispatch(getEventList(formData));
     } catch (error) {
@@ -64,6 +67,10 @@ const EventSchedule = () => {
   }, []);
 
   useEffect(() => {
+    console.log("Filter options changed");
+  }, [filterOptions]);
+
+  useEffect(() => {
     // Set a timeout to execute the logic after 500 milliseconds
     const getListTimeOut = setTimeout(() => {
       if (address != null) {
@@ -74,11 +81,11 @@ const EventSchedule = () => {
     }, 500);
 
     return () => clearTimeout(getListTimeOut);
-  }, [address]);
+  }, [address, filterOptions]);
   return (
     <View style={{ display: "flex", flexDirection: "column" }}>
       <View style={{ height: "10%" }}>
-        <FilterEventOptionList />
+        <FilterEventOptionList setFilterOptions={setFilterOptions} />
       </View>
       <View style={{ height: "90%" }}>
         <EventScheduleTable
