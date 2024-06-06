@@ -16,21 +16,76 @@ const fakeData = [
 
 const options = {
   "Khoảng cách": {
+    type: "distance",
     title: "Lọc khoảng cách",
-    options: ["<5km", "<10km", "<15km", "<20km"],
+    options: [
+      {
+        label: "<5km",
+        value: 5,
+      },
+      {
+        label: "<10km",
+        value: 10,
+      },
+      {
+        label: "<15km",
+        value: 15,
+      },
+      {
+        label: "<20km",
+        value: 20,
+      },
+    ],
   },
   "Thời gian": {
+    type: "time",
     title: "Lọc thời gian",
-    options: ["4h - 11h", "11h - 17h", "17h - 0h"],
+    options: [
+      {
+        label: "4h - 11h",
+        value: "4-11",
+      },
+      {
+        label: "11h - 17h",
+        value: "11-17",
+      },
+      {
+        label: "17h - 0h",
+        value: "17-0",
+      },
+    ],
   },
 };
 
-export const FilterEventOptionList = () => {
+export const FilterEventOptionList = ({ setFilterOptions }) => {
   const [activeOption, setActiveOption] = useState(null);
 
-  const handleOptionPress = (option) => {
-    console.log("Selected option:", option);
+  const handleSelectSport = (sport) => {
+    console.log("Select sport", sport);
+  };
+
+  const handleOptionPress = (type, optionValue) => {
+    console.log("Selected option:", optionValue);
     // Handle the option selection here
+    if (type == "distance") {
+      const newDistance = optionValue * 1000; // convert to meters
+      setFilterOptions((prevState) => ({
+        ...prevState,
+        distance: newDistance,
+      }));
+    }
+    if (type == "time") {
+      const timeParts = optionValue.split("-"); // split optionValue to get two time parts
+      const start_time = parseInt(timeParts[0], 10); // parse string to integer
+      const end_time = parseInt(timeParts[1], 10); // parse string to integer
+      console.log("time: " + start_time, end_time);
+      setFilterOptions((prevState) => ({
+        ...prevState,
+        start_time: start_time,
+        end_time: end_time,
+      }));
+    }
+
     setActiveOption(null); // Close the modal after selecting an option
   };
 
@@ -55,6 +110,13 @@ export const FilterEventOptionList = () => {
         )}
       />
       <Portal>
+        {activeOption == "Thể thao" && (
+          <SportSelectionPopup
+            onSelectSport={handleSelectSport}
+            onClose={() => setActiveOption(null)}
+            visible={!!activeOption}
+          />
+        )}
         <Modal
           visible={!!activeOption}
           onDismiss={() => setActiveOption(null)}
@@ -63,10 +125,10 @@ export const FilterEventOptionList = () => {
             justifyContent: "flex-end",
           }}
         >
-          {activeOption && (
+          {activeOption != "Thể thao" && (
             <ModalOption
-              title={options[activeOption].title}
-              options={options[activeOption].options}
+              title={options[activeOption]?.title}
+              optionItem={options[activeOption]}
               onOptionPress={handleOptionPress}
             />
           )}
@@ -82,13 +144,13 @@ const styles = StyleSheet.create({
   },
   buttonLabel: {
     marginVertical: 0,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
     marginHorizontal: 0,
   },
   button: {
     marginHorizontal: 5,
     marginVertical: 10,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
     height: 40,
     backgroundColor: "#707070",
   },

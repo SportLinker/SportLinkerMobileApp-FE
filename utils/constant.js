@@ -36,6 +36,14 @@ export const sports = [
   // Add more sports as needed
 ];
 
+// find icon base on label name
+export function getSportIcon(sportName) {
+  // Tìm môn thể thao trong mảng sports
+  const sport = sports.find((s) => s.sport_name === sportName);
+
+  return sport ? sport.icon : "soccer";
+}
+
 export const locations = [
   { id: 1, name: "Gò Vấp", description: "Gò Vấp, Ho Chi Minh, Viet Nam" },
   { id: 2, name: "Phú Nhuận", description: "Phú Nhuận, Ho Chi Minh, Viet Nam" },
