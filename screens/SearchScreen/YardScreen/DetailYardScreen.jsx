@@ -1,6 +1,13 @@
-import { View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  Modal,
+  StyleSheet,
+} from "react-native";
 import React, { useState } from "react";
-import { styles } from "../../../component/style";
 import { Avatar } from "react-native-paper";
 import {
   AntDesign,
@@ -12,16 +19,19 @@ import {
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { styles } from "../../../component/style";
+import RatingModal from "./RatingModal";
 
 export default function DetailYardScreen() {
   const [image, setImage] = useState(
     "https://i.pinimg.com/236x/71/db/24/71db24f6798f1a208b7fe8a503365458.jpg"
   );
   const [liked, setLiked] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
 
   const navigation = useNavigation();
-
   const rating = 3.5;
+
   const renderStars = (rating) => {
     const stars = [];
     for (let i = 1; i <= 5; i++) {
@@ -121,6 +131,20 @@ export default function DetailYardScreen() {
           </TouchableOpacity>
         </View>
         <View>
+          <TouchableOpacity
+            onPress={() => {
+              setModalVisible(true);
+            }}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Ionicons name="reader-outline" size={30} color="black" />
+          </TouchableOpacity>
+        </View>
+        <View>
           {liked === "liked" ? (
             <TouchableOpacity
               onPress={() => setLiked("unliked")}
@@ -163,19 +187,13 @@ export default function DetailYardScreen() {
       </View>
       <View style={{ borderBottomWidth: 1, borderBottomColor: "#C4C4C4" }} />
       <View style={{ marginVertical: 20 }}>
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-          }}
-        >
+        <View style={{ display: "flex", flexDirection: "row" }}>
           <Entypo
             name="location-pin"
             size={30}
             color="black"
             style={{ marginHorizontal: 30 }}
           />
-
           <View
             style={{
               marginVertical: "auto",
@@ -189,20 +207,13 @@ export default function DetailYardScreen() {
             </Text>
           </View>
         </View>
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            marginTop: 20,
-          }}
-        >
+        <View style={{ display: "flex", flexDirection: "row", marginTop: 20 }}>
           <FontAwesome
             name="phone"
             size={30}
             color="black"
             style={{ marginHorizontal: 33 }}
           />
-
           <View
             style={{
               marginVertical: "auto",
@@ -215,20 +226,13 @@ export default function DetailYardScreen() {
             <Text style={{ fontSize: 16, fontWeight: 700 }}>0123456789</Text>
           </View>
         </View>
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            marginTop: 20,
-          }}
-        >
+        <View style={{ display: "flex", flexDirection: "row", marginTop: 20 }}>
           <Feather
             name="clock"
             size={30}
             color="black"
             style={{ marginHorizontal: 29 }}
           />
-
           <View
             style={{
               marginVertical: "auto",
@@ -239,20 +243,13 @@ export default function DetailYardScreen() {
             <Text style={{ fontSize: 16 }}>Thứ 2 - Thứ 7 | Mở cả ngày</Text>
           </View>
         </View>
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            marginTop: 20,
-          }}
-        >
+        <View style={{ display: "flex", flexDirection: "row", marginTop: 20 }}>
           <FontAwesome5
             name="coins"
             size={30}
             color="black"
             style={{ marginHorizontal: 30 }}
           />
-
           <View
             style={{
               marginVertical: "auto",
@@ -265,20 +262,13 @@ export default function DetailYardScreen() {
             <Text style={{ fontSize: 16, fontWeight: 700 }}>30000 vnđ</Text>
           </View>
         </View>
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            marginTop: 20,
-          }}
-        >
+        <View style={{ display: "flex", flexDirection: "row", marginTop: 20 }}>
           <AntDesign
             name="star"
             size={30}
             color="#F9A825"
             style={{ marginHorizontal: 30 }}
           />
-
           <View
             style={{
               marginVertical: "auto",
@@ -294,6 +284,10 @@ export default function DetailYardScreen() {
           </View>
         </View>
       </View>
+      <RatingModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+      />
     </ScrollView>
   );
 }
