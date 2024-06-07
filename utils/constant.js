@@ -2,6 +2,101 @@ import { Dimensions } from "react-native";
 
 export const DEFAULT_DISTACNCE = 10000000;
 
+export const courses = [
+  {
+    id: 1,
+    title: "Bài tập toàn thân",
+    description:
+      "Kế hoạch tập luyện toàn thân toàn diện để tăng cường sức mạnh và sức bền.",
+    duration: "4 tuần",
+    benefits: "Tăng cường sức mạnh, đốt cháy mỡ, cải thiện sức khỏe tim mạch",
+    price: "$49.99",
+  },
+  {
+    id: 2,
+    title: "Yoga cho người mới bắt đầu",
+    description:
+      "Khóa học yoga dành cho người mới bắt đầu giúp cải thiện linh hoạt và giảm căng thẳng.",
+    duration: "6 tuần",
+    benefits: "Tăng cường sự linh hoạt, giảm căng thẳng, cải thiện tinh thần",
+    price: "$29.99",
+  },
+  {
+    id: 3,
+    title: "Nền tảng Gymnastics",
+    description:
+      "Học cách làm các động tác cơ bản của gymnastics bao gồm nhảy, lăn, và đứng trên tay.",
+    duration: "8 tuần",
+    benefits: "Tăng cường độ linh hoạt, sức mạnh, và cân bằng",
+    price: "$39.99",
+  },
+  {
+    id: 4,
+    title: "Chạy dành cho người mới bắt đầu",
+    description:
+      "Một hướng dẫn cho người mới bắt đầu về chạy, bao gồm mọi thứ từ kiểu dáng chính xác đến việc tăng cường sức bền.",
+    duration: "3 tháng",
+    benefits: "Cải thiện sức khỏe tim mạch, giảm cân, giảm căng thẳng",
+    price: "$19.99",
+  },
+  {
+    id: 5,
+    title: "Thiền và Tâm lý học",
+    description:
+      "Học các kỹ thuật thiền và tâm lý học để giảm căng thẳng và tạo ra sự bình an bên trong.",
+    duration: "6 tuần",
+    benefits:
+      "Giảm căng thẳng, tăng cảnh giác về bản thân, tăng trạng thái tâm trí",
+    price: "$34.99",
+  },
+  {
+    id: 6,
+    title: "Tập thể dục cường độ cao (HIIT)",
+    description:
+      "Một lịch trình tập thể dục nhanh chóng kết hợp các đợt tập luyện cường độ cao với các đợt nghỉ hoặc tập luyện cường độ thấp hơn.",
+    duration: "4 tuần",
+    benefits:
+      "Đốt cháy calo, cải thiện sức khỏe tim mạch, tăng cường trao đổi chất",
+    price: "$44.99",
+  },
+  {
+    id: 7,
+    title: "Pilates cho Sức mạnh Cơ bản",
+    description:
+      "Tập trung vào việc xây dựng sức mạnh cơ bản và cải thiện tư thế qua các bài tập Pilates.",
+    duration: "5 tuần",
+    benefits: "Sức mạnh cơ bản, linh hoạt, tư thế tốt hơn",
+    price: "$39.99",
+  },
+  {
+    id: 8,
+    title: "Dinh dưỡng Cơ bản",
+    description:
+      "Học các kiến thức cơ bản về dinh dưỡng bao gồm các chất dinh dưỡng lớn, các chất dinh dưỡng vi lượng, và thói quen ăn uống lành mạnh.",
+    duration: "6 tuần",
+    benefits: "Cải thiện sức khỏe tổng thể, quản lý cân nặng, tăng năng lượng",
+    price: "$49.99",
+  },
+  {
+    id: 9,
+    title: "Tập Luyện Sức mạnh cho Phụ nữ",
+    description:
+      "Một chương trình tập luyện sức mạnh được thiết kế đặc biệt cho phụ nữ để xây dựng cơ bắp và tăng sức mạnh.",
+    duration: "3 tháng",
+    benefits: "Tạo hình cơ bắp, tăng trao đổi chất, cải thiện độ dày của xương",
+    price: "$54.99",
+  },
+  {
+    id: 10,
+    title: "Thái Cực Đạo để Giảm Căng Thẳng",
+    description:
+      "Học các động tác dịu dàng của Thái Cực Đạo để giảm căng thẳng và tạo ra sự thư giãn.",
+    duration: "8 tuần",
+    benefits: "Giảm căng thẳng, cải thiện cân bằng, rõ ràng tinh thần",
+    price: "$29.99",
+  },
+];
+
 export const sports = [
   {
     sport_name: "Bóng đá",
