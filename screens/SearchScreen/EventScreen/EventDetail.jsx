@@ -1,10 +1,20 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { Avatar, Button } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { convertUTCToVietnamTime, formatCurrency } from "../../../utils";
 import { DashCircle } from "../../../component/DashCircle";
-import { getEventSelector } from "../../../redux/selectors";
-import { useSelector } from "react-redux";
+import {
+  getEventLoadingtSelector,
+  getEventSelector,
+} from "../../../redux/selectors";
+import { useDispatch, useSelector } from "react-redux";
+import { joinEventByUser } from "../../../redux/slices/eventSlice";
 
 const fakeData = {
   id: "e1",
@@ -33,6 +43,9 @@ const fakeData = {
 
 const EventDetail = ({ navigation }) => {
   const eventDetail = useSelector(getEventSelector);
+  const loading = useSelector(getEventLoadingtSelector);
+  console.log(eventDetail.is_attendend);
+  const dispatch = useDispatch();
 
   const MemberView = ({ members }) => {
     console.log("members", members);
@@ -187,25 +200,65 @@ const EventDetail = ({ navigation }) => {
         )}
       </ScrollView>
       <View style={styles.floatContainer}>
-        <Button
-          style={[styles.floatBtn, { borderColor: "#1646A9", borderWidth: 2 }]}
-          labelStyle={[styles.floatBtnLabel, { color: "#1646A9" }]}
-          mode="outlined"
-          rippleColor="#4a69a9"
-        >
-          Chat với host
-        </Button>
-        <Button
-          style={[styles.floatBtn, { backgroundColor: "#1646A9" }]}
-          labelStyle={[
-            styles.floatBtnLabel,
-            { color: "white", paddingVertical: 10 },
-          ]}
-          mode="contained"
-          rippleColor="#4a69a9"
-        >
-          Yêu cầu tham gia
-        </Button>
+        {eventDetail.is_owner ? (
+          <TouchableOpacity>
+            <Button
+              style={[
+                styles.floatBtn,
+                { borderColor: "#EE0000", borderWidth: 2 },
+              ]}
+              labelStyle={[styles.floatBtnLabel, { color: "#EE0000" }]}
+              mode="outlined"
+              rippleColor="#EE0000"
+            >
+              Hủy sự kiện
+            </Button>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity>
+            <Button
+              style={[
+                styles.floatBtn,
+                { borderColor: "#1646A9", borderWidth: 2 },
+              ]}
+              labelStyle={[styles.floatBtnLabel, { color: "#1646A9" }]}
+              mode="outlined"
+              rippleColor="#4a69a9"
+            >
+              Chat với host
+            </Button>
+          </TouchableOpacity>
+        )}
+        {eventDetail.is_attendend ? (
+          <TouchableOpacity>
+            <Button
+              style={[styles.floatBtn, { backgroundColor: "#EE0000" }]}
+              labelStyle={[
+                styles.floatBtnLabel,
+                { color: "white", paddingVertical: 10 },
+              ]}
+              mode="contained"
+              rippleColor="#4a69a9"
+            >
+              Hủy tham gia
+            </Button>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity>
+            <Button
+              style={[styles.floatBtn, { backgroundColor: "#1646A9" }]}
+              labelStyle={[
+                styles.floatBtnLabel,
+                { color: "white", paddingVertical: 10 },
+              ]}
+              mode="contained"
+              rippleColor="#4a69a9"
+              onPress={() => dispatch(joinEventByUser(eventDetail.match_id))}
+            >
+              {loading ? "Đang xử lí..." : "Yêu cầu tham gia"}
+            </Button>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
