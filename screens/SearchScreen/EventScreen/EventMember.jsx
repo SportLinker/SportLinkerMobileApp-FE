@@ -75,7 +75,7 @@ const EventMember = () => {
         }}
         renderSectionHeader={renderSection}
       />
-      <View style={styles.floatContainer}>
+      {/* <View style={styles.floatContainer}>
         <Button
           style={[styles.floatBtn, { borderColor: "#1646A9", borderWidth: 2 }]}
           labelStyle={[styles.floatBtnLabel, { color: "#1646A9" }]}
@@ -95,7 +95,7 @@ const EventMember = () => {
         >
           Yêu cầu tham gia
         </Button>
-      </View>
+      </View> */}
     </View>
   );
 };

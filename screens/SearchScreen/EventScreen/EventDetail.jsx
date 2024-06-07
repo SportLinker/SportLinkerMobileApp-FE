@@ -1,11 +1,12 @@
 import {
+  Alert,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import { Avatar, Button } from "react-native-paper";
+import { Avatar, Button, Snackbar } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { convertUTCToVietnamTime, formatCurrency } from "../../../utils";
 import { DashCircle } from "../../../component/DashCircle";
@@ -14,7 +15,9 @@ import {
   getEventSelector,
 } from "../../../redux/selectors";
 import { useDispatch, useSelector } from "react-redux";
-import { joinEventByUser } from "../../../redux/slices/eventSlice";
+import { deleteEvent, joinEventByUser } from "../../../redux/slices/eventSlice";
+import { useState } from "react";
+import { Dimensions } from "react-native";
 
 const fakeData = {
   id: "e1",
@@ -44,7 +47,9 @@ const fakeData = {
 const EventDetail = ({ navigation }) => {
   const eventDetail = useSelector(getEventSelector);
   const loading = useSelector(getEventLoadingtSelector);
-  console.log(eventDetail.is_attendend);
+
+  const [anttendend, setAttended] = useState(eventDetail.is_attendend);
+  const [successMessage, setSuccessMessage] = useState("");
   const dispatch = useDispatch();
 
   const MemberView = ({ members }) => {
@@ -114,6 +119,29 @@ const EventDetail = ({ navigation }) => {
     );
   };
 
+  const handleCancelEvent = () => {
+    Alert.alert(
+      "Xác nhận hủy sự kiện",
+      "Bạn có chắc chắn muốn hủy sự kiện này không?",
+      [
+        {
+          text: "Không",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        {
+          text: "Có",
+          onPress: () => {
+            dispatch(deleteEvent(eventDetail.match_id)).then((res) => {
+              setSuccessMessage("Hủy sự kiện thành công !!!");
+            });
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
   return (
     <View style={{ position: "relative", flex: 1, zIndex: 0 }}>
       <ScrollView style={styles.container}>
@@ -134,10 +162,10 @@ const EventDetail = ({ navigation }) => {
           <Icon name="map-marker-outline" size={30} color={"black"} />
           <View style={styles.textWrapper}>
             <Text style={styles.boldText}>
-              {eventDetail.place_detail.title}
+              {eventDetail?.place_detail?.title}
             </Text>
             <Text style={styles.subText}>
-              {eventDetail.place_detail.address}
+              {eventDetail?.place_detail?.address}
             </Text>
           </View>
         </View>
@@ -201,7 +229,7 @@ const EventDetail = ({ navigation }) => {
       </ScrollView>
       <View style={styles.floatContainer}>
         {eventDetail.is_owner ? (
-          <TouchableOpacity>
+          <TouchableOpacity onPress={handleCancelEvent}>
             <Button
               style={[
                 styles.floatBtn,
@@ -229,7 +257,7 @@ const EventDetail = ({ navigation }) => {
             </Button>
           </TouchableOpacity>
         )}
-        {eventDetail.is_attendend ? (
+        {anttendend ? (
           <TouchableOpacity>
             <Button
               style={[styles.floatBtn, { backgroundColor: "#EE0000" }]}
@@ -253,16 +281,32 @@ const EventDetail = ({ navigation }) => {
               ]}
               mode="contained"
               rippleColor="#4a69a9"
-              onPress={() => dispatch(joinEventByUser(eventDetail.match_id))}
+              onPress={() =>
+                dispatch(joinEventByUser(eventDetail.match_id)).then((res) => {
+                  setAttended(true);
+                  setSuccessMessage("Tham gia kèo thành công");
+                })
+              }
             >
-              {loading ? "Đang xử lí..." : "Yêu cầu tham gia"}
+              Yêu cầu tham gia
             </Button>
           </TouchableOpacity>
         )}
       </View>
+      <Snackbar
+        visible={successMessage !== ""}
+        onDismiss={() => setSuccessMessage("")}
+        duration={3000}
+        style={styles.snackbarContainer}
+      >
+        {successMessage}
+      </Snackbar>
     </View>
   );
 };
+
+export const { width: screenWidth, height: screenHeight } =
+  Dimensions.get("window");
 
 const styles = StyleSheet.create({
   container: {
@@ -308,7 +352,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 20,
     gap: 10,
-    zIndex: 1,
+    zIndex: 0,
     backgroundColor: "rgba(255, 255, 255, 0.9)",
   },
   floatBtnLabel: {
@@ -319,6 +363,19 @@ const styles = StyleSheet.create({
   },
   floatBtn: {
     borderRadius: 12,
+  },
+  snackbarContainer: {
+    borderRadius: 10,
+    // position: "absolute",
+    // bottom: "50%",
+    // left: "50%",
+    textAlign: "center",
+    transform: [
+      { translateX: 0 * screenWidth },
+      { translateY: 0 * screenHeight },
+    ],
+    backgroundColor: "#1646A9",
+    textAlign: "center",
   },
 });
 
