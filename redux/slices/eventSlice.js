@@ -72,6 +72,23 @@ export const joinEventByUser = createAsyncThunk(
   }
 );
 
+export const deleteEvent = createAsyncThunk(
+  "eventSlice/deleteEvent",
+  async (match_id, { rejectWithValue }) => {
+    console.log("deleteEvent: " + match_id);
+    try {
+      const response = await api.delete(`/matches/${match_id}`);
+
+      console.log("API Response: ", response.data); // Log the API response
+      return response.data; // Return the response data
+    } catch (error) {
+      console.log("Error: ", error); // Log the error
+      console.log("Error: ", JSON.stringify(error.response.data));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const eventSlice = createSlice({
   name: "eventSlice",
   initialState: {
@@ -126,9 +143,18 @@ export const eventSlice = createSlice({
       })
       .addCase(joinEventByUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.event = action.payload; // Correctly updating state without returning new state
       })
       .addCase(joinEventByUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error;
+      })
+      .addCase(deleteEvent.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteEvent.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(deleteEvent.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error;
       });
