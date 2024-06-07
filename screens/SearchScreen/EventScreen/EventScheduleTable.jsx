@@ -941,7 +941,21 @@ const EventScheduleTable = ({ eventListData, loading }) => {
         />
       )}
 
-      {!loading && !eventList && <Text>Không tìm thấy trận đấu nào!</Text>}
+      {!loading && !eventList && (
+        <View>
+          <Text
+            style={{
+              color: "#1646A9",
+              fontSize: 20,
+              fontWeight: "bold",
+              textAlign: "center",
+              paddingTop: 30,
+            }}
+          >
+            Không tìm thấy trận đấu nào!
+          </Text>
+        </View>
+      )}
     </View>
   );
 };
