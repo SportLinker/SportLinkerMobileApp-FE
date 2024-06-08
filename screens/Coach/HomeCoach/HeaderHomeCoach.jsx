@@ -23,7 +23,7 @@ export default function HeaderHomeCoach() {
         <View style={styles.actionContainer}>
           <View style={styles.actionButton}>
             <FontAwesome name="list-ul" size={24} color="black" />
-            <Text style={{ textAlign: "center" }}>Ds học viên</Text>
+            <Text style={{ textAlign: "center" }}>Khóa huấn luyện</Text>
           </View>
 
           <TouchableOpacity
