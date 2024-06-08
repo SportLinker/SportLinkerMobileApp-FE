@@ -9,10 +9,10 @@ import {
 import { Calendar } from "react-native-calendars";
 
 const ScheduleScreen = ({ navigation }) => {
-  const [selectedField, setSelectedField] = useState({
+  const [currentUser, setCurrentUser] = useState({
     id: "1",
-    name: "Sân A",
-  }); // Sân đã chọn để xem lịch
+    name: "Huấn luyện viên A",
+  }); // Người dùng hiện tại (huấn luyện viên)
   const [bookings, setBookings] = useState({}); // Dữ liệu lịch
   const [selectedDates, setSelectedDates] = useState([]); // Ngày đã chọn
 
@@ -39,18 +39,16 @@ const ScheduleScreen = ({ navigation }) => {
     },
   };
 
-  const fields = [
-    { id: "1", name: "Sân 1" },
-    { id: "2", name: "Sân 2" },
-    { id: "3", name: "Sân 3" },
-  ];
+  console.log("currentUser", currentUser);
+  console.log("selectedDates", selectedDates);
+  console.log("bookings", bookings);
 
   useEffect(() => {
-    // Load booking data for selected field
-    if (selectedField) {
-      setBookings(sampleBookings[selectedField.id] || {});
+    // Load booking data for current user
+    if (currentUser) {
+      setBookings(sampleBookings[currentUser.id] || {});
     }
-  }, [selectedField]);
+  }, [currentUser]);
 
   useEffect(() => {
     // Initialize selected dates from bookings data
@@ -59,18 +57,13 @@ const ScheduleScreen = ({ navigation }) => {
     }
   }, [bookings]);
 
-  useEffect(() => {
-    // Auto select Sân A when entering ScheduleScreen
-    setSelectedField({ id: "1", name: "Sân A" });
-  }, []);
-
   const renderBookingDetail = ({ item }) => (
     <View style={styles.bookingDetail}>
       <Text style={styles.bookingDate}>{item.date}</Text>
       {item.slots.map((slot, index) => (
         <Text key={index} style={styles.bookingSlot}>
           {slot.startTime} - {slot.endTime} (
-          {slot.booked ? "Booked" : "Available"})
+          {slot.booked ? "Taught" : "Available"})
         </Text>
       ))}
     </View>
@@ -81,77 +74,32 @@ const ScheduleScreen = ({ navigation }) => {
     slots: bookings[date] || [],
   }));
 
+  console.log("bookingDetails", bookingDetails);
+
   return (
     <View style={styles.container}>
-      <FlatList
-        data={fields}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={[
-              styles.fieldButton,
-              selectedField.id === item.id && styles.selectedFieldButton,
-              { marginHorizontal: 5 },
-            ]}
-            onPress={() => setSelectedField(item)}
-          >
-            <Text style={styles.fieldButtonText}>{item.name}</Text>
-          </TouchableOpacity>
-        )}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.fieldList}
+      {/* <Text style={styles.title}>Lịch Dạy Của Bạn</Text> */}
+      <Calendar
+        markedDates={selectedDates.reduce((acc, date) => {
+          const bookedSlots = bookings[date] || [];
+          const allBooked =
+            bookedSlots.length > 0 && bookedSlots.every((slot) => slot.booked);
+          const color = allBooked ? "#1646a9" : "#ff0000";
+          acc[date] = {
+            selected: true,
+            marked: true,
+            selectedColor: color,
+          };
+          return acc;
+        }, {})}
+        style={styles.calendar}
       />
-      {selectedField && (
-        <>
-          <Text style={styles.title}>Lịch - {selectedField.name}</Text>
-          <Calendar
-            markedDates={selectedDates.reduce((acc, date) => {
-              const bookedSlots = bookings[date] || [];
-              const allBooked =
-                bookedSlots.length > 0 &&
-                bookedSlots.every((slot) => slot.booked);
-              const color = allBooked ? "#1646a9" : "#ff0000";
-              acc[date] = {
-                selected: true,
-                marked: true,
-                selectedColor: color,
-              };
-              return acc;
-            }, {})}
-            style={styles.calendar}
-          />
-          <Text style={styles.legendTitle}>Legend</Text>
-          <View style={styles.legend}>
-            <View style={styles.legendItem}>
-              <View
-                style={[styles.legendColor, { backgroundColor: "#1646a9" }]}
-              />
-              <Text>All Slots Booked</Text>
-            </View>
-            <View style={styles.legendItem}>
-              <View
-                style={[styles.legendColor, { backgroundColor: "#ff0000" }]}
-              />
-              <Text>Partially Booked</Text>
-            </View>
-          </View>
-          <FlatList
-            data={bookingDetails}
-            keyExtractor={(item) => item.date}
-            renderItem={renderBookingDetail}
-            style={styles.bookingList}
-          />
-          {/* <TouchableOpacity
-            style={styles.button}
-            onPress={() =>
-              navigation.navigate("Booking", { fieldId: selectedField.id })
-            }
-          >
-            <Text style={styles.buttonText}>Go to Booking Screen</Text>
-          </TouchableOpacity> */}
-        </>
-      )}
+      <FlatList
+        data={bookingDetails}
+        keyExtractor={(item) => item.date}
+        renderItem={renderBookingDetail}
+        style={styles.bookingList}
+      />
     </View>
   );
 };
@@ -168,50 +116,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     textAlign: "center",
   },
-  fieldList: {
-    paddingVertical: 10,
-    flexGrow: 0,
-    marginBottom: 5,
-  },
-  fieldButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 20,
-    backgroundColor: "#1E90FF",
-    marginRight: 10,
-    // height: 40,
-    justifyContent: "center", // Để các sân được căn giữa
-    alignItems: "center", // Để các sân được căn giữa
-  },
-  selectedFieldButton: {
-    backgroundColor: "#4169E1",
-  },
-  fieldButtonText: {
-    color: "#ffffff",
-    fontWeight: "bold",
-    padding: 5,
-  },
   calendar: {
     marginVertical: 10,
-  },
-  legendTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
-    marginTop: 10,
-  },
-  legend: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    marginVertical: 10,
-  },
-  legendItem: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  legendColor: {
-    width: 20,
-    height: 20,
-    marginRight: 5,
   },
   bookingList: {
     flex: 1,
@@ -235,18 +141,7 @@ const styles = StyleSheet.create({
   bookingSlot: {
     fontSize: 14,
     color: "#333",
-  },
-  button: {
-    backgroundColor: "#1E90FF",
-    padding: 15,
-    borderRadius: 8,
-    alignItems: "center",
-    marginVertical: 10,
-  },
-  buttonText: {
-    color: "#ffffff",
-    fontSize: 16,
-    fontWeight: "bold",
+    paddingVertical: 1,
   },
 });
 
