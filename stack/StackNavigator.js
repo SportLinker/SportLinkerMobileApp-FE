@@ -144,6 +144,7 @@ const StackNavigator = () => (
       name="EventDetailScreen"
       options={{
         title: "Event Detail",
+        headerBackTitle: "Quay về",
       }}
       component={EventDetailTabs}
     />
