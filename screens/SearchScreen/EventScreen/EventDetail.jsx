@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteEvent, joinEventByUser } from "../../../redux/slices/eventSlice";
 import { useState } from "react";
 import { Dimensions } from "react-native";
+import ConfirmPopup from "../../../component/ConfirmPopup";
 
 const fakeData = {
   id: "e1",
@@ -46,14 +47,20 @@ const fakeData = {
 
 const EventDetail = ({ navigation }) => {
   const eventDetail = useSelector(getEventSelector);
-  const loading = useSelector(getEventLoadingtSelector);
-
   const [anttendend, setAttended] = useState(eventDetail.is_attendend);
   const [successMessage, setSuccessMessage] = useState("");
+  const [confirmCancelEventByOwner, setConfirmCancelEventByOwner] =
+    useState(false);
+  const [confirmCancelEventByUser, setConfirmCancelEventByUser] =
+    useState(false);
+  const [
+    confirmJoinEventByoinEventByUser,
+    setConfirmJoinEventByoinEventByUser,
+  ] = useState(false);
+
   const dispatch = useDispatch();
 
   const MemberView = ({ members }) => {
-    console.log("members", members);
     //handle render member avatar
     const maxItems = 5;
     // Prepare the data to render
@@ -120,27 +127,25 @@ const EventDetail = ({ navigation }) => {
   };
 
   const handleCancelEvent = () => {
-    Alert.alert(
-      "Xác nhận hủy sự kiện",
-      "Bạn có chắc chắn muốn hủy sự kiện này không?",
-      [
-        {
-          text: "Không",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel",
-        },
-        {
-          text: "Có",
-          onPress: () => {
-            dispatch(deleteEvent(eventDetail.match_id)).then((res) => {
-              setSuccessMessage("Hủy sự kiện thành công !!!");
-            });
-          },
-        },
-      ],
-      { cancelable: false }
-    );
+    dispatch(deleteEvent(eventDetail.match_id)).then((res) => {
+      setSuccessMessage("Hủy sự kiện thành công !!!");
+      setConfirmCancelEventByOwner(false);
+      setTimeout(() => {
+        navigation.goBack();
+      }, 4000);
+    });
   };
+  const handleCancelEventByUser = () => {
+    setSuccessMessage("Hủy tham gia thành công !!!");
+    setConfirmCancelEventByUser(false);
+  };
+
+  const handleJoinEvent = () =>
+    dispatch(joinEventByUser(eventDetail.match_id)).then((res) => {
+      setAttended(true);
+      setSuccessMessage("Tham gia kèo thành công");
+      setConfirmJoinEventByoinEventByUser(false);
+    });
 
   return (
     <View style={{ position: "relative", flex: 1, zIndex: 0 }}>
@@ -229,7 +234,11 @@ const EventDetail = ({ navigation }) => {
       </ScrollView>
       <View style={styles.floatContainer}>
         {eventDetail.is_owner ? (
-          <TouchableOpacity onPress={handleCancelEvent}>
+          <TouchableOpacity
+            onPress={() => {
+              setConfirmCancelEventByOwner(true);
+            }}
+          >
             <Button
               style={[
                 styles.floatBtn,
@@ -258,7 +267,7 @@ const EventDetail = ({ navigation }) => {
           </TouchableOpacity>
         )}
         {anttendend ? (
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => setConfirmCancelEventByUser(true)}>
             <Button
               style={[styles.floatBtn, { backgroundColor: "#EE0000" }]}
               labelStyle={[
@@ -281,12 +290,7 @@ const EventDetail = ({ navigation }) => {
               ]}
               mode="contained"
               rippleColor="#4a69a9"
-              onPress={() =>
-                dispatch(joinEventByUser(eventDetail.match_id)).then((res) => {
-                  setAttended(true);
-                  setSuccessMessage("Tham gia kèo thành công");
-                })
-              }
+              onPress={() => setConfirmJoinEventByoinEventByUser(true)}
             >
               Yêu cầu tham gia
             </Button>
@@ -301,6 +305,30 @@ const EventDetail = ({ navigation }) => {
       >
         {successMessage}
       </Snackbar>
+      <ConfirmPopup
+        visible={confirmCancelEventByOwner}
+        title={"Bạn muốn hủy sự kiện"}
+        description={"Nhấn đồng ý nếu bạn muốn hủy sự kiện này !!!"}
+        type={"danger"}
+        onConfirm={handleCancelEvent}
+        onCancel={() => setConfirmCancelEventByOwner(false)}
+      />
+      <ConfirmPopup
+        visible={confirmCancelEventByUser}
+        title={"Bạn không muốn tham gia"}
+        description={"Nhấn đồng ý nếu bạn không muốn tham gia !!!"}
+        type={"danger"}
+        onConfirm={handleCancelEventByUser}
+        onCancel={() => setConfirmCancelEventByUser(false)}
+      />
+      <ConfirmPopup
+        visible={confirmJoinEventByoinEventByUser}
+        title={"Bạn muốn tham gia sự kiện"}
+        description={"Nhấn đồng ý để tham gia sự kiện !!!"}
+        type={"success"}
+        onConfirm={handleJoinEvent}
+        onCancel={() => setConfirmJoinEventByoinEventByUser(false)}
+      />
     </View>
   );
 };
