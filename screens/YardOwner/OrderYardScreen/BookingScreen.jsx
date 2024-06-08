@@ -13,9 +13,21 @@ import { Calendar } from "react-native-calendars";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 const BookingScreen = ({ route, navigation }) => {
-  const { fieldId } = route.params;
-  const [bookings, setBookings] = useState({});
-  const [selectedDates, setSelectedDates] = useState([]);
+  const { fieldId } = route.params || {};
+
+  // Initial sample booking data
+  const initialBookings = {
+    "2024-06-10": [
+      { startTime: "08:00", endTime: "10:00", booked: true },
+      { startTime: "10:00", endTime: "12:00", booked: false },
+    ],
+    "2024-06-12": [{ startTime: "14:00", endTime: "16:00", booked: true }],
+  };
+
+  const [bookings, setBookings] = useState(initialBookings);
+  const [selectedDates, setSelectedDates] = useState(
+    Object.keys(initialBookings)
+  );
   const [showCalendar, setShowCalendar] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState(null);
@@ -156,7 +168,7 @@ const BookingScreen = ({ route, navigation }) => {
             style={{
               marginBottom: 15,
               padding: 15,
-              backgroundColor: "rgb(240, 240, 240, 0.5)",
+              backgroundColor: "rgba(240, 240, 240, 0.5)",
             }}
           >
             <Text style={styles.dateText}>{date}</Text>
