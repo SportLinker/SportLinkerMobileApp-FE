@@ -8,6 +8,8 @@ import { Image } from "react-native";
 import HomeCoachScreen from "../screens/Coach/HomeCoach/HomeCoach";
 import AccountTabs from "./AccountTabs";
 import ChatTabs from "./ChatTabs";
+import CoachProfile from "../screens/Coach/Profile/CoachProfile";
+import AccountCoachTabs from "./AccountCoachTabs";
 
 const Tab = createBottomTabNavigator();
 
@@ -49,8 +51,8 @@ const BottomTabCoachNavigator = () => (
       }}
     />
     <Tab.Screen
-      name="Account"
-      component={AccountTabs}
+      name="AccountCoachTabs"
+      component={AccountCoachTabs}
       options={{
         headerShown: false,
         tabBarLabel: "Tài Khoản",
