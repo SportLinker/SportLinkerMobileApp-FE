@@ -29,6 +29,8 @@ import OrderYardScreen from "../screens/YardOwner/OrderYardScreen/OrderYardScree
 import BookingScreen from "../screens/YardOwner/OrderYardScreen/BookingScreen";
 import CreateBookingScreen from "../screens/YardOwner/OrderYardScreen/CreateBookingScreen";
 import ListYardScreen from "../screens/YardOwner/ListYardScreen/ListYardScreen";
+import ScheduleScreen from "../screens/Coach/ScheduleScreen/ScheduleScreen";
+import ScheduleYardScreen from "../screens/YardOwner/ScheduleYardScreen/ScheduleYardScreen";
 
 const Stack = createStackNavigator();
 
@@ -263,6 +265,28 @@ const StackNavigator = () => (
       component={ListYardScreen}
       options={{
         title: "Danh sách sân",
+        headerStyle: { backgroundColor: "#1646a9" },
+        headerTitleAlign: "center",
+        headerTintColor: "white",
+        headerBackTitle: " ",
+      }}
+    />
+    <Stack.Screen
+      name="Schedule"
+      component={ScheduleScreen}
+      options={{
+        title: "Lịch Dạy Của Bạn",
+        headerStyle: { backgroundColor: "#1646a9" },
+        headerTitleAlign: "center",
+        headerTintColor: "white",
+        headerBackTitle: " ",
+      }}
+    />
+    <Stack.Screen
+      name="ScheduleYard"
+      component={ScheduleYardScreen}
+      options={{
+        title: "Lịch Đặt Sân",
         headerStyle: { backgroundColor: "#1646a9" },
         headerTitleAlign: "center",
         headerTintColor: "white",
