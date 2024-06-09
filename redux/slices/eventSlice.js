@@ -89,6 +89,31 @@ export const deleteEvent = createAsyncThunk(
   }
 );
 
+export const unjoinEventByUserOrOwner = createAsyncThunk(
+  "eventSlice/unjoinEventByUserOrOwner",
+  async ({ match_id, user_id }, { rejectWithValue }) => {
+    const body = {
+      user_id,
+    };
+
+    try {
+      // Since DELETE requests usually don't accept a body, we use params instead
+      const response = await api.delete(`/matchJoin/${match_id}`, {
+        data: body, // This is the correct way to send body data in a DELETE request
+      });
+      console.log("API Response:", response.data); // Log the API response
+      return response.data; // Return the response data
+    } catch (error) {
+      console.log("Error:", error); // Log the error
+      console.log(
+        "Error:",
+        JSON.stringify(error.response?.data || error.message)
+      );
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
 export const eventSlice = createSlice({
   name: "eventSlice",
   initialState: {
@@ -155,6 +180,16 @@ export const eventSlice = createSlice({
         state.loading = false;
       })
       .addCase(deleteEvent.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error;
+      })
+      .addCase(unjoinEventByUserOrOwner.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(unjoinEventByUserOrOwner.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(unjoinEventByUserOrOwner.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error;
       });

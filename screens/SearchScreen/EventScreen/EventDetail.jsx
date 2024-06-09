@@ -15,10 +15,15 @@ import {
   getEventSelector,
 } from "../../../redux/selectors";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteEvent, joinEventByUser } from "../../../redux/slices/eventSlice";
+import {
+  deleteEvent,
+  joinEventByUser,
+  unjoinEventByUserOrOwner,
+} from "../../../redux/slices/eventSlice";
 import { useState } from "react";
 import { Dimensions } from "react-native";
 import ConfirmPopup from "../../../component/ConfirmPopup";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const fakeData = {
   id: "e1",
@@ -135,9 +140,18 @@ const EventDetail = ({ navigation }) => {
       }, 4000);
     });
   };
-  const handleCancelEventByUser = () => {
-    setSuccessMessage("Hủy tham gia thành công !!!");
-    setConfirmCancelEventByUser(false);
+  const handleCancelEventByUser = async () => {
+    const clientId = await AsyncStorage.getItem("xClientId");
+    const formCancel = {
+      match_id: eventDetail.match_id,
+      user_id: clientId,
+    };
+
+    dispatch(unjoinEventByUserOrOwner(formCancel)).then((res) => {
+      setSuccessMessage("Hủy tham gia thành công !!!");
+      setConfirmCancelEventByUser(false);
+      setAttended(false);
+    });
   };
 
   const handleJoinEvent = () =>
@@ -179,7 +193,7 @@ const EventDetail = ({ navigation }) => {
 
           <View style={styles.inlineTextWrapper}>
             <Text style={{ fontWeight: "bold", fontSize: 18 }}>
-              {fakeData.matchType}
+              Tổng số người tham gia
             </Text>
             <Text
               style={{
@@ -189,7 +203,7 @@ const EventDetail = ({ navigation }) => {
                 paddingLeft: 5,
               }}
             >
-              • {fakeData.requireLevel}
+              • {eventDetail.maximum_join}
             </Text>
           </View>
         </View>
