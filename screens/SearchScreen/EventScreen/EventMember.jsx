@@ -1,11 +1,26 @@
-import { useState } from "react";
-import { FlatList, SectionList, StyleSheet, Text, View } from "react-native";
-import { Avatar, Button } from "react-native-paper";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import {
+  Dimensions,
+  FlatList,
+  SectionList,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import { Avatar, Button, Snackbar } from "react-native-paper";
+import { useDispatch, useSelector } from "react-redux";
 import { getEventSelector } from "../../../redux/selectors";
+import ConfirmPopup from "../../../component/ConfirmPopup";
+import { TouchableOpacity } from "react-native";
+import { unjoinEventByUserOrOwner } from "../../../redux/slices/eventSlice";
 
-const EventMember = () => {
+const EventMember = ({ navigation }) => {
   const eventDetail = useSelector(getEventSelector);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [confirmDeleteUserByOwner, setConfirmDeleteUserByOwner] =
+    useState(false);
+  const [dataMember, setDataMember] = useState([]);
+  const dispatch = useDispatch();
   const fakeData = [
     {
       title: "Người tổ chức",
@@ -18,22 +33,75 @@ const EventMember = () => {
     },
   ];
 
+  useEffect(() => {
+    setDataMember(fakeData);
+    console.log(eventDetail);
+  }, [eventDetail.match_join]);
+
+  const handleDeleteUserByOwner = () => {
+    const formCancel = {
+      match_id: eventDetail.match_id,
+      user_id: confirmDeleteUserByOwner.id,
+    };
+
+    dispatch(unjoinEventByUserOrOwner(formCancel)).then((res) => {
+      setSuccessMessage("Xóa người tham gia thành công");
+      setTimeout(() => {
+        navigation.goBack();
+        setConfirmDeleteUserByOwner(false);
+      }, 4000);
+    });
+  };
+
   const MemberItem = ({ item }) => {
     return (
-      <View style={styles.itemContainer}>
-        {item.user_join ? (
-          <>
-            <Avatar.Image
-              size={50}
-              source={{ uri: item.user_join.avatar_url }}
-            />
-            <Text style={styles.itemText}>{item.user_join.name}</Text>
-          </>
+      <View>
+        {eventDetail.is_owner ? (
+          <TouchableOpacity
+            onPress={() => setConfirmDeleteUserByOwner(item.user_join)}
+          >
+            <View style={styles.itemContainer}>
+              {item.user_join ? (
+                <>
+                  <View
+                    style={{
+                      backgroundColor: "red",
+                      padding: 5,
+                      borderRadius: 50,
+                    }}
+                  >
+                    <Avatar.Image
+                      size={50}
+                      source={{ uri: item.user_join.avatar_url }}
+                    />
+                  </View>
+                  <Text style={styles.itemText}>{item.user_join.name}</Text>
+                </>
+              ) : (
+                <>
+                  <Avatar.Image size={50} source={{ uri: item.avatar_url }} />
+                  <Text style={styles.itemText}>{item.name}</Text>
+                </>
+              )}
+            </View>
+          </TouchableOpacity>
         ) : (
-          <>
-            <Avatar.Image size={50} source={{ uri: item.avatar_url }} />
-            <Text style={styles.itemText}>{item.name}</Text>
-          </>
+          <View style={styles.itemContainer}>
+            {item.user_join ? (
+              <>
+                <Avatar.Image
+                  size={50}
+                  source={{ uri: item.user_join.avatar_url }}
+                />
+                <Text style={styles.itemText}>{item.user_join.name}</Text>
+              </>
+            ) : (
+              <>
+                <Avatar.Image size={50} source={{ uri: item.avatar_url }} />
+                <Text style={styles.itemText}>{item.name}</Text>
+              </>
+            )}
+          </View>
         )}
       </View>
     );
@@ -63,7 +131,7 @@ const EventMember = () => {
     >
       <SectionList
         stickySectionHeadersEnabled
-        sections={fakeData}
+        sections={dataMember}
         contentContainerStyle={{
           paddingTop: 20,
           backgroundColor: "white",
@@ -74,6 +142,22 @@ const EventMember = () => {
           return null;
         }}
         renderSectionHeader={renderSection}
+      />
+      <Snackbar
+        visible={successMessage !== ""}
+        onDismiss={() => setSuccessMessage("")}
+        duration={3000}
+        style={styles.snackbarContainer}
+      >
+        {successMessage}
+      </Snackbar>
+      <ConfirmPopup
+        visible={confirmDeleteUserByOwner}
+        title={"Bạn không muốn người này tham gia"}
+        description={"Nhấn đồng ý để xóa họ !!!"}
+        type={"danger"}
+        onConfirm={handleDeleteUserByOwner}
+        onCancel={() => setConfirmDeleteUserByOwner(false)}
       />
       {/* <View style={styles.floatContainer}>
         <Button
@@ -99,6 +183,9 @@ const EventMember = () => {
     </View>
   );
 };
+
+export const { width: screenWidth, height: screenHeight } =
+  Dimensions.get("window");
 
 const styles = StyleSheet.create({
   avatarContainer: {
@@ -163,6 +250,19 @@ const styles = StyleSheet.create({
   },
   floatBtn: {
     borderRadius: 12,
+  },
+  snackbarContainer: {
+    borderRadius: 10,
+    // position: "absolute",
+    // bottom: "50%",
+    // left: "50%",
+    textAlign: "center",
+    transform: [
+      { translateX: 0 * screenWidth },
+      { translateY: 0 * screenHeight },
+    ],
+    backgroundColor: "#1646A9",
+    textAlign: "center",
   },
 });
 
