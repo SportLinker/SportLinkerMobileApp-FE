@@ -21,7 +21,10 @@ export default function FuncHomeYard() {
           marginHorizontal: "auto",
         }}
       >
-        <TouchableOpacity style={styles.card}>
+        <TouchableOpacity
+          style={styles.card}
+          onPress={() => navigation.navigate("ScheduleYard")}
+        >
           <FontAwesome name="calendar" size={70} color="#1646a9" />
           <Text style={styles.cardText}>Xem Lịch</Text>
         </TouchableOpacity>

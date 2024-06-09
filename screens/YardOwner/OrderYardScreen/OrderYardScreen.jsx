@@ -2,8 +2,9 @@ import React from "react";
 import { View, Text, Button, FlatList, StyleSheet } from "react-native";
 
 const fields = [
-  { id: "1", name: "Sân A" },
-  { id: "2", name: "Sân B" },
+  { id: "1", name: "Sân 1" },
+  { id: "2", name: "Sân 2" },
+  { id: "3", name: "Sân 3" },
   // Thêm các sân khác vào đây
 ];
 
@@ -17,7 +18,7 @@ const OrderYardScreen = ({ navigation }) => {
           <View style={styles.fieldContainer}>
             <Text style={styles.fieldName}>{item.name}</Text>
             <Button
-              title="Xem lịch đặt"
+              title="Đặt lịch"
               color="#1E90FF"
               onPress={() =>
                 navigation.navigate("Booking", { fieldId: item.id })
