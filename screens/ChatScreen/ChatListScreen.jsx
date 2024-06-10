@@ -1,14 +1,39 @@
-import { View, Text, SafeAreaView, StyleSheet, ScrollView } from "react-native";
-import React, { useState } from "react";
+import {
+  View,
+  Text,
+  SafeAreaView,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
+import React, { useEffect, useState } from "react";
 import { Searchbar } from "react-native-paper";
 import ChatListItem from "./ChatListItem";
+import { useDispatch, useSelector } from "react-redux";
+import { getListMessage } from "../../redux/slices/messageSlice";
+import { getListMessageSelector } from "../../redux/selectors";
+import Loading from "../../component/Loading";
 
 export default function ChatListScreen({ navigation }) {
   const [searchQuery, setSearchQuery] = useState("");
+  const dispatch = useDispatch();
+  const { chatList, loading, error } = useSelector(
+    (state) => state.messageSlice
+  );
+  useEffect(() => {
+    dispatch(getListMessage());
+  }, [dispatch]);
+
+  if (error) {
+    return <Text>Error: {error}</Text>;
+  }
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.chatHeader}>
-        <Text style={styles.titleHeader}>Trò Chuyện</Text>
+        <TouchableOpacity onPress={() => dispatch(getListMessage())}>
+          <Text style={styles.titleHeader}>Trò Chuyện</Text>
+        </TouchableOpacity>
         <Searchbar
           placeholder="Tìm bạn trò chuyện"
           onChangeText={setSearchQuery}
@@ -20,14 +45,20 @@ export default function ChatListScreen({ navigation }) {
         />
       </View>
       <View style={styles.chatBody}>
-        <ScrollView>
-          <ChatListItem seen={false} navigation={navigation} />
-          <ChatListItem seen={false} navigation={navigation} />
-          <ChatListItem seen={false} navigation={navigation} />
-          <ChatListItem seen={true} navigation={navigation} />
-          <ChatListItem seen={true} navigation={navigation} />
-          <ChatListItem seen={true} navigation={navigation} />
-        </ScrollView>
+        {loading ? (
+          <Loading visible={loading} />
+        ) : (
+          <ScrollView>
+            {chatList.map((chatItem, index) => (
+              <ChatListItem
+                key={chatItem}
+                seen={false}
+                chatItem={chatItem}
+                navigation={navigation}
+              />
+            ))}
+          </ScrollView>
+        )}
       </View>
     </SafeAreaView>
   );
