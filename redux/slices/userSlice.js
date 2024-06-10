@@ -40,6 +40,8 @@ export const userSlice = createSlice({
       updatedAt: null,
       last_active_time: null,
       status: "active",
+      longitude: null,
+      latitude: null,
     },
     loading: false,
     error: null,
@@ -47,6 +49,12 @@ export const userSlice = createSlice({
   reducers: {
     setUser: (state, action) => {
       state.userInfo = action.payload;
+    },
+    setUserLocation: (state, action) => {
+      console.log("setUserLocation");
+      const { longitude, latitude } = action.payload;
+      state.userInfo.longitude = longitude;
+      state.userInfo.latitude = latitude;
     },
   },
   extraReducers: (builder) => {
@@ -68,4 +76,4 @@ export const userSlice = createSlice({
   },
 });
 
-export default userSlice.reducer;
+export default userSlice;
