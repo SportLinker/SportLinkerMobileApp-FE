@@ -9,6 +9,8 @@ import AccountTabs from "./AccountTabs";
 import ChatTabs from "./ChatTabs";
 import HomeTabs from "./HomeTabs";
 import SearchTopTabNavigator from "./SearchTopTabNavigator";
+import { color } from "react-native-elements/dist/helpers";
+import UpgradeScreen from "../screens/UpgradeScreen/UpgradeScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -45,6 +47,17 @@ const BottomTabNavigator = () => (
         ),
       }}
     />
+    {/* <Tab.Screen
+      name="Upgrade"
+      component={UpgradeScreen}
+      options={{
+        headerShown: false,
+        tabBarLabel: "Nâng Cấp",
+        tabBarIcon: ({ color, size }) => (
+          <Icon name={"transfer-up"} color={color} size={50} />
+        ),
+      }}
+    /> */}
     <Tab.Screen
       name="Chat"
       component={ChatTabs}

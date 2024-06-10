@@ -10,10 +10,7 @@ import { Avatar, Button, Snackbar } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { convertUTCToVietnamTime, formatCurrency } from "../../../utils";
 import { DashCircle } from "../../../component/DashCircle";
-import {
-  getEventLoadingtSelector,
-  getEventSelector,
-} from "../../../redux/selectors";
+import { getEventSelector } from "../../../redux/selectors";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deleteEvent,
