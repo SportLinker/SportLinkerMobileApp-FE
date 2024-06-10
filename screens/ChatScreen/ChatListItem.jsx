@@ -1,27 +1,30 @@
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import React from "react";
 import { Avatar } from "react-native-paper";
+import { convertTo12HourFormat } from "../../utils";
 
-export default function ChatListItem({ seen, navigation }) {
+export default function ChatListItem({ seen, navigation, chatItem }) {
   return (
     <TouchableOpacity onPress={() => navigation.navigate("ChatDetailScreen")}>
       <View style={styles.chatItem}>
         <Avatar.Image
           size={45}
           source={{
-            uri: "https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcQlj3rCfLHry58AtJ8ZyBEAFPtChMddDSUSjt7C7nV3Nhsni9RIx5b0-n7LxfgerrPS6b-P-u3BOM3abuY",
+            uri: chatItem.group_message_thumnail,
           }}
           style={{ marginRight: 10 }}
         />
         <View>
           <View style={styles.chatTop}>
-            <Text style={styles.userName}>Tài Võ</Text>
+            <Text style={styles.userName}>{chatItem.group_message_name}</Text>
             <Text
               style={
-                seen ? styles.textContent : [styles.textContent, styles.seen]
+                chatItem.is_seen
+                  ? styles.textContent
+                  : [styles.textContent, styles.seen]
               }
             >
-              10:10 am
+              {convertTo12HourFormat(chatItem.last_active_time)}
             </Text>
           </View>
           <Text
@@ -30,7 +33,7 @@ export default function ChatListItem({ seen, navigation }) {
             }
             numberOfLines={1}
           >
-            Chiều đi đá bóng nha ông Chiều đi đá bóng nha ông
+            {chatItem.last_message}
           </Text>
         </View>
       </View>
