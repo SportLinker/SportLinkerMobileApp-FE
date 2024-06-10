@@ -31,7 +31,7 @@ export const styles = StyleSheet.create({
   innerInfoSport: {
     borderRadius: 20,
     backgroundColor: "#fff", // Màu nền của phần tử
-    width: "95%",
+    width: "90%",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,

@@ -6,6 +6,9 @@ import React from "react";
 import EditAccountScreen from "../screens/AccountScreen/EditAccountScreen";
 import PasswordScreen from "../screens/AccountScreen/PasswordScreen";
 import ChatDetail from "../screens/ChatScreen/ChatDetail";
+import CoachCoursesScreen from "../screens/Coach/CourseCoach/CoachCoursesScreen";
+import CourseSelectionScreen from "../screens/Coach/Profile/SelectCourseModal/CourseSelectionModal";
+import ScheduleScreen from "../screens/Coach/ScheduleScreen/ScheduleScreen";
 import ListLikeScreen from "../screens/HomeScreen/ListLikeScreen";
 import LoginScreen from "../screens/LoginScreen";
 import NotificationScreen from "../screens/NotificationScreen/NotificationScreen";
@@ -17,20 +20,18 @@ import DetailYardScreen from "../screens/SearchScreen/YardScreen/DetailYardScree
 import DetailTransaction from "../screens/WalletScreen/DetailTransaction";
 import WalletHome from "../screens/WalletScreen/WalletHomeScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
+import ListYardScreen from "../screens/YardOwner/ListYardScreen/ListYardScreen";
+import BookingScreen from "../screens/YardOwner/OrderYardScreen/BookingScreen";
+import CreateBookingScreen from "../screens/YardOwner/OrderYardScreen/CreateBookingScreen";
+import OrderYardScreen from "../screens/YardOwner/OrderYardScreen/OrderYardScreen";
+import RatingYardItem from "../screens/YardOwner/RatingYardScreen/RatingYardItem";
 import RatingYardList from "../screens/YardOwner/RatingYardScreen/RatingYardList";
+import ScheduleYardScreen from "../screens/YardOwner/ScheduleYardScreen/ScheduleYardScreen";
+import WithDrawScreen from "../screens/YardOwner/WithDrawScreen";
 import BottomTabCoachNavigator from "../tabs/BottomTabCoachNavigator";
 import BottomTabNavigator from "../tabs/BottomTabNavigator";
 import BottomTabYardOwnerNavigator from "../tabs/BottomTabYardOwnerNavigator";
 import EventDetailTabs from "../tabs/EventDetailTabs";
-import WithDrawScreen from "../screens/YardOwner/WithDrawScreen";
-import RatingYardItem from "../screens/YardOwner/RatingYardScreen/RatingYardItem";
-import CoachCoursesScreen from "../screens/Coach/CourseCoach/CoachCoursesScreen";
-import OrderYardScreen from "../screens/YardOwner/OrderYardScreen/OrderYardScreen";
-import BookingScreen from "../screens/YardOwner/OrderYardScreen/BookingScreen";
-import CreateBookingScreen from "../screens/YardOwner/OrderYardScreen/CreateBookingScreen";
-import ListYardScreen from "../screens/YardOwner/ListYardScreen/ListYardScreen";
-import ScheduleScreen from "../screens/Coach/ScheduleScreen/ScheduleScreen";
-import ScheduleYardScreen from "../screens/YardOwner/ScheduleYardScreen/ScheduleYardScreen";
 
 const Stack = createStackNavigator();
 
@@ -287,6 +288,17 @@ const StackNavigator = () => (
       component={ScheduleYardScreen}
       options={{
         title: "Lịch Đặt Sân",
+        headerStyle: { backgroundColor: "#1646a9" },
+        headerTitleAlign: "center",
+        headerTintColor: "white",
+        headerBackTitle: " ",
+      }}
+    />
+    <Stack.Screen
+      name="CourseSelection"
+      component={CourseSelectionScreen}
+      options={{
+        title: "Chọn Khóa Học",
         headerStyle: { backgroundColor: "#1646a9" },
         headerTitleAlign: "center",
         headerTintColor: "white",
