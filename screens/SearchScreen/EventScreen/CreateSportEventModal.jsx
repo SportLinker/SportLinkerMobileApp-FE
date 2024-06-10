@@ -18,6 +18,7 @@ import { calculateEventTimes } from "../../../utils";
 import { useDispatch } from "react-redux";
 import { createEvent } from "../../../redux/slices/eventSlice";
 import { useNavigation } from "@react-navigation/native";
+import { getListMessage } from "../../../redux/slices/messageSlice";
 
 const CreateSportEventModal = ({ visible, onClose }) => {
   const [step, setStep] = React.useState(1);
@@ -150,7 +151,7 @@ const CreateSportEventModal = ({ visible, onClose }) => {
         start_time: times.start_time,
         end_time: times.end_time,
         option: {
-          budget: values.budget ? values.budget : null,
+          budget: values.budget ? parseInt(values.budget) : null,
           note: values.note ? values.note : null,
         },
       };
@@ -163,6 +164,7 @@ const CreateSportEventModal = ({ visible, onClose }) => {
           setTimeout(() => {
             setStep(1);
             onClose();
+            dispatch(getListMessage());
           }, 4000);
         } else {
           // console.log("res: " + JSON.stringify(res));
