@@ -10,6 +10,7 @@ import {
   getEventListSelector,
   getEventLoadingtSelector,
 } from "../../../redux/selectors";
+import userSlice from "../../../redux/slices/userSlice";
 
 const EventSchedule = () => {
   const dispatch = useDispatch();
@@ -54,6 +55,12 @@ const EventSchedule = () => {
       if (location) {
         console.log("latitude: ", location.coords.latitude);
         console.log("longitude: ", location.coords.longitude);
+        dispatch(
+          userSlice.actions.setUserLocation({
+            longitude: location.coords.longitude,
+            latitude: location.coords.latitude,
+          })
+        );
         const userLocation = {
           latitude: location.coords.latitude,
           longitude: location.coords.longitude,
