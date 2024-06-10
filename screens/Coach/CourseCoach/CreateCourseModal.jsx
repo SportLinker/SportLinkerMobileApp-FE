@@ -30,7 +30,7 @@ const CreateCourseModal = ({ visible, onClose, onCreate }) => {
     setShowDatePicker(false);
     const currentDate = selectedDate || newCourse.duration;
     setNewCourse({ ...newCourse, duration: currentDate });
-    setSelectedDate(currentDate); // Cập nhật giá trị đã chọn
+    setSelectedDate(currentDate); // Update selected date
   };
 
   return (
@@ -42,6 +42,8 @@ const CreateCourseModal = ({ visible, onClose, onCreate }) => {
           value={newCourse.title}
           onChangeText={(text) => setNewCourse({ ...newCourse, title: text })}
           style={styles.input}
+          underlineColor="#1646a9"
+          theme={{ colors: { primary: "#1646a9" } }}
         />
         <TextInput
           label="Mô tả"
@@ -50,9 +52,11 @@ const CreateCourseModal = ({ visible, onClose, onCreate }) => {
             setNewCourse({ ...newCourse, description: text })
           }
           style={styles.input}
+          underlineColor="#1646a9"
+          theme={{ colors: { primary: "#1646a9" } }}
         />
         <View style={styles.dateTimeContainer}>
-          <Button onPress={() => setShowDatePicker(true)}>
+          <Button onPress={() => setShowDatePicker(true)} color="#1646a9">
             Chọn thời gian (tuần)
           </Button>
           {showDatePicker && (
@@ -65,7 +69,6 @@ const CreateCourseModal = ({ visible, onClose, onCreate }) => {
               style={styles.dateTimePicker}
             />
           )}
-          {/* Hiển thị giá trị đã chọn từ date picker */}
           <Text style={styles.selectedDate}>{formatDate(selectedDate)}</Text>
         </View>
         <TextInput
@@ -75,6 +78,8 @@ const CreateCourseModal = ({ visible, onClose, onCreate }) => {
             setNewCourse({ ...newCourse, benefits: text })
           }
           style={styles.input}
+          underlineColor="#1646a9"
+          theme={{ colors: { primary: "#1646a9" } }}
         />
         <TextInput
           label="Giá"
@@ -82,16 +87,24 @@ const CreateCourseModal = ({ visible, onClose, onCreate }) => {
           onChangeText={(text) => setNewCourse({ ...newCourse, price: text })}
           style={styles.input}
           keyboardType="number-pad"
+          underlineColor="#1646a9"
+          theme={{ colors: { primary: "#1646a9" } }}
         />
         <View style={styles.buttonContainer}>
           <Button
             mode="contained"
             onPress={handleCreate}
             style={styles.buttonCreate}
+            color="#1646a9"
           >
             Tạo
           </Button>
-          <Button mode="outlined" onPress={onClose} style={styles.buttonClose}>
+          <Button
+            mode="outlined"
+            onPress={onClose}
+            style={styles.buttonClose}
+            color="#1646a9"
+          >
             Hủy
           </Button>
         </View>
@@ -105,11 +118,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#ffffff",
+    backgroundColor: "#f8f9fa",
     padding: 20,
+    borderRadius: 10,
+    margin: 10,
   },
   modalTitle: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: "bold",
     marginBottom: 20,
     textAlign: "center",
@@ -117,13 +132,13 @@ const styles = StyleSheet.create({
   },
   input: {
     width: "100%",
-    marginBottom: 10,
-    backgroundColor: "#fff",
+    marginBottom: 15,
+    backgroundColor: "#ffffff",
+    borderRadius: 5,
   },
   dateTimeContainer: {
-    flexDirection: "column",
-    alignItems: "flex-start",
-    marginBottom: 10,
+    width: "100%",
+    marginBottom: 15,
   },
   buttonContainer: {
     flexDirection: "row",
@@ -132,20 +147,22 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   buttonCreate: {
-    backgroundColor: "#28a745",
-    width: "45%",
-  },
-  buttonClose: {
     backgroundColor: "#1646a9",
     width: "45%",
+    paddingVertical: 5,
+  },
+  buttonClose: {
+    borderColor: "#1646a9",
+    width: "45%",
+    paddingVertical: 5,
   },
   dateTimePicker: {
-    marginBottom: 10,
+    width: "100%",
   },
   selectedDate: {
     fontSize: 16,
-    marginBottom: 10,
-    color: "#333333",
+    marginTop: 10,
+    color: "#495057",
   },
 });
 
