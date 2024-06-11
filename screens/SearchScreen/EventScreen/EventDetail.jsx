@@ -10,10 +10,16 @@ import { Avatar, Button, Snackbar } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { convertUTCToVietnamTime, formatCurrency } from "../../../utils";
 import { DashCircle } from "../../../component/DashCircle";
-import { getEventSelector } from "../../../redux/selectors";
+import {
+  getEventLoadingtSelector,
+  getEventSelector,
+  getUserSelector,
+} from "../../../redux/selectors";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deleteEvent,
+  getDetailEvent,
+  getEventList,
   joinEventByUser,
   unjoinEventByUserOrOwner,
 } from "../../../redux/slices/eventSlice";
@@ -21,6 +27,8 @@ import { useState } from "react";
 import { Dimensions } from "react-native";
 import ConfirmPopup from "../../../component/ConfirmPopup";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Loading from "../../../component/Loading";
+import { DEFAULT_DISTACNCE } from "../../../utils/constant";
 
 const fakeData = {
   id: "e1",
@@ -49,6 +57,8 @@ const fakeData = {
 
 const EventDetail = ({ navigation }) => {
   const eventDetail = useSelector(getEventSelector);
+  const getEventLoading = useSelector(getEventLoadingtSelector);
+  const getUserInfo = useSelector(getUserSelector);
   const [anttendend, setAttended] = useState(eventDetail.is_attendend);
   const [successMessage, setSuccessMessage] = useState("");
   const [confirmCancelEventByOwner, setConfirmCancelEventByOwner] =
@@ -133,6 +143,15 @@ const EventDetail = ({ navigation }) => {
       setSuccessMessage("Hủy sự kiện thành công !!!");
       setConfirmCancelEventByOwner(false);
       setTimeout(() => {
+        const formData = {
+          long: getUserInfo.longitude,
+          lat: getUserInfo.latitude,
+          distance: DEFAULT_DISTACNCE,
+          start_time: 0,
+          end_time: 23,
+          sport_name: "",
+        };
+        dispatch(getEventList(formData));
         navigation.goBack();
       }, 4000);
     });
@@ -145,6 +164,7 @@ const EventDetail = ({ navigation }) => {
     };
 
     dispatch(unjoinEventByUserOrOwner(formCancel)).then((res) => {
+      dispatch(getDetailEvent(eventDetail.match_id));
       setSuccessMessage("Hủy tham gia thành công !!!");
       setConfirmCancelEventByUser(false);
       setAttended(false);
@@ -154,9 +174,14 @@ const EventDetail = ({ navigation }) => {
   const handleJoinEvent = () =>
     dispatch(joinEventByUser(eventDetail.match_id)).then((res) => {
       setAttended(true);
+      dispatch(getDetailEvent(eventDetail.match_id));
       setSuccessMessage("Tham gia kèo thành công");
       setConfirmJoinEventByoinEventByUser(false);
     });
+
+  if (getEventLoading) {
+    return <Loading visible={getEventLoading} />;
+  }
 
   return (
     <View style={{ position: "relative", flex: 1, zIndex: 0 }}>

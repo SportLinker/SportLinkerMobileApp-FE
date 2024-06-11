@@ -686,12 +686,11 @@ const EventScheduleTable = ({ eventListData, loading }) => {
   useEffect(() => {
     //convert data to suitable format data for the section list
     if (eventListData) {
-      console.log("eventListData", eventListData);
+      // console.log("eventListData", eventListData);
       const newData = eventListData?.map((event) => ({
         title: event.date,
         data: event.match_group_by_date,
       }));
-      console.log("newData", newData);
       setEventList(newData);
     }
   }, [eventListData]);
