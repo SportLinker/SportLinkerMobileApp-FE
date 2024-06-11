@@ -15,12 +15,15 @@ import StepOne from "./Step/StepOne";
 import StepTwo from "./Step/StepTwo";
 import StepThree from "./Step/StepThree";
 import { calculateEventTimes } from "../../../utils";
-import { useDispatch } from "react-redux";
-import { createEvent } from "../../../redux/slices/eventSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { createEvent, getEventList } from "../../../redux/slices/eventSlice";
 import { useNavigation } from "@react-navigation/native";
 import { getListMessage } from "../../../redux/slices/messageSlice";
+import { getUserSelector } from "../../../redux/selectors";
+import { DEFAULT_DISTACNCE } from "../../../utils/constant";
 
 const CreateSportEventModal = ({ visible, onClose }) => {
+  const getUserInfo = useSelector(getUserSelector);
   const [step, setStep] = React.useState(1);
   const [successMessage, setSuccessMessage] = useState("");
   const [failMessage, setFailMessage] = useState("");
@@ -161,13 +164,21 @@ const CreateSportEventModal = ({ visible, onClose }) => {
         if (res.type === "eventSlice/createEvent/fulfilled") {
           console.log("Event created successfully: ", res.payload);
           setSuccessMessage("Bạn đã tạo kèo thành công !!!");
+          const formData = {
+            long: getUserInfo.longitude,
+            lat: getUserInfo.latitude,
+            distance: DEFAULT_DISTACNCE,
+            start_time: 0,
+            end_time: 23,
+            sport_name: "",
+          };
           setTimeout(() => {
+            dispatch(getEventList(formData));
             setStep(1);
             onClose();
             dispatch(getListMessage());
           }, 4000);
         } else {
-          // console.log("res: " + JSON.stringify(res));
           if (res.payload.message == "Not found") {
             setFailMessage("Hãy đăng nhập lại !!!");
             navigate("Login");
