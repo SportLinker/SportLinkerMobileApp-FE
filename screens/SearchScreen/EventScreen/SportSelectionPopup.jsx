@@ -10,6 +10,9 @@ const SportSelectionPopup = ({ visible, onClose, onSelectSport }) => {
       transparent={true}
       animationType="slide"
       onRequestClose={onClose}
+      style={{
+        justifyContent: "center",
+      }}
     >
       <View style={styles.modalContainer}>
         {/* <TouchableOpacity onPress={onClose} style={styles.closeButton}>

@@ -143,7 +143,7 @@ export default function YardScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <FilterEventOptionList />
+      {/* <FilterEventOptionList /> */}
       <View style={styles.locationWrapper}>
         {address ? (
           <Text style={styles.locationText}>

@@ -65,7 +65,7 @@ export default function CoachScreen({ navigation }) {
 
   return (
     <SafeAreaView style={{ backgroundColor: "#fff" }}>
-      <FilterEventOptionList />
+      {/* <FilterEventOptionList /> */}
       <ScrollView>
         <View style={[styles.centerStyle, styles.marginTopText]}>
           {fakeData.map((item, index) => (
