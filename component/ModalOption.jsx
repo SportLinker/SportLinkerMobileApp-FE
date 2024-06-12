@@ -7,7 +7,17 @@ import {
   ScrollView,
 } from "react-native";
 
-const ModalOption = ({ title, optionItem, onOptionPress }) => {
+const ModalOption = ({ title, optionItem, onOptionPress, filterOptions }) => {
+  const checkActiveBtn = (button) => {
+    if (title == "Lọc thời gian") {
+      return (
+        `${filterOptions.start_time}-${filterOptions.end_time}` == button.value
+      );
+    }
+    if (title == "Lọc khoảng cách") {
+      return filterOptions.distance == button.value * 1000;
+    }
+  };
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
@@ -30,7 +40,14 @@ const ModalOption = ({ title, optionItem, onOptionPress }) => {
               style={styles.optionButton}
               onPress={() => onOptionPress(optionItem?.type, option.value)}
             >
-              <Text style={styles.optionText}>{option?.label}</Text>
+              <Text
+                style={[
+                  styles.optionText,
+                  checkActiveBtn(option) && styles.buttonActive,
+                ]}
+              >
+                {option?.label}
+              </Text>
             </TouchableOpacity>
           ))}
         </View>
@@ -59,6 +76,10 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     backgroundColor: "#e0e0e0",
     borderRadius: 5,
+  },
+  buttonActive: {
+    backgroundColor: "#4878D9",
+    color: "#fff",
   },
 });
 

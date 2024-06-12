@@ -128,6 +128,11 @@ export const sports = [
     value: "racing",
     icon: "bike",
   },
+  {
+    sport_name: "Bóng bàn",
+    value: "table-tennis",
+    icon: "table-tennis",
+  },
   // Add more sports as needed
 ];
 
