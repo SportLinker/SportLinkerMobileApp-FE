@@ -47,17 +47,21 @@ export default function FuncHomeYard() {
       >
         <TouchableOpacity
           style={styles.card}
+          onPress={() => navigation.navigate("Stadium")}
+        >
+          <MaterialCommunityIcons
+            name="soccer-field"
+            size={70}
+            color="#1646a9"
+          />
+          <Text style={styles.cardText}>Stadium</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.card}
           onPress={() => navigation.navigate("RatingYardListScreen")}
         >
           <FontAwesome name="star-o" size={70} color="#1646a9" />
           <Text style={styles.cardText}>Đánh Giá</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.card}
-          onPress={() => navigation.navigate("WithDrawScreen")}
-        >
-          <MaterialCommunityIcons name="export" size={70} color="#1646a9" />
-          <Text style={styles.cardText}>Rút Tiền</Text>
         </TouchableOpacity>
       </View>
     </View>
