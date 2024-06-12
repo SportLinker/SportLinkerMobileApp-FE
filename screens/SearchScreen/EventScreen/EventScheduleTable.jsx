@@ -17,6 +17,7 @@ import Loading from "../../../component/Loading";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserSelector } from "../../../redux/selectors";
 import { getDetailEvent } from "../../../redux/slices/eventSlice";
+import { getSportIcon } from "../../../utils/constant";
 
 // const listData = [
 //   {
@@ -738,7 +739,7 @@ const EventScheduleTable = ({ eventListData, loading }) => {
         >
           <View style={{ display: "flex", flexDirection: "row", gap: 10 }}>
             <Icon2
-              name={item?.sport_name == "Bóng đá" && "soccer"}
+              name={getSportIcon(item?.sport_name)}
               size={30}
               style={{
                 color: "black",

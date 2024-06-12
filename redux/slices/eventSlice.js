@@ -118,7 +118,7 @@ export const eventSlice = createSlice({
   name: "eventSlice",
   initialState: {
     eventList: null,
-    event: {},
+    event: null,
     loading: false,
     error: null,
   },

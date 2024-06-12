@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { FlatList, View, StyleSheet } from "react-native";
 import { Button, Modal, Portal } from "react-native-paper";
 import ModalOption from "../../../component/ModalOption";
+import { DEFAULT_DISTACNCE, sports } from "../../../utils/constant";
+import SportSelectOptions from "../../../component/SportSelectOptions";
 
 const fakeData = [
   {
@@ -11,6 +13,10 @@ const fakeData = [
   {
     id: 2,
     label: "Thời gian",
+  },
+  {
+    id: 3,
+    label: "Thể thao",
   },
 ];
 
@@ -42,6 +48,10 @@ const options = {
     title: "Lọc thời gian",
     options: [
       {
+        label: "0h - 23h",
+        value: "0-23",
+      },
+      {
         label: "4h - 11h",
         value: "4-11",
       },
@@ -55,24 +65,38 @@ const options = {
       },
     ],
   },
+  "Thể thao": {
+    type: "sport",
+    title: "Lọc môn thể thao",
+    options: sports,
+  },
 };
 
-export const FilterEventOptionList = ({ setFilterOptions }) => {
+export const FilterEventOptionList = ({
+  filterOptions,
+  setFilterOptions,
+  sportFilter,
+  setSportFilter,
+}) => {
   const [activeOption, setActiveOption] = useState(null);
-
-  const handleSelectSport = (sport) => {
-    console.log("Select sport", sport);
-  };
 
   const handleOptionPress = (type, optionValue) => {
     console.log("Selected option:", optionValue);
     // Handle the option selection here
     if (type == "distance") {
       const newDistance = optionValue * 1000; // convert to meters
-      setFilterOptions((prevState) => ({
-        ...prevState,
-        distance: newDistance,
-      }));
+      if (newDistance == filterOptions.distance) {
+        //if select to the aldready selected option will remove this option and using default option
+        setFilterOptions((prevState) => ({
+          ...prevState,
+          distance: DEFAULT_DISTACNCE,
+        }));
+      } else {
+        setFilterOptions((prevState) => ({
+          ...prevState,
+          distance: newDistance,
+        }));
+      }
     }
     if (type == "time") {
       const timeParts = optionValue.split("-"); // split optionValue to get two time parts
@@ -89,6 +113,22 @@ export const FilterEventOptionList = ({ setFilterOptions }) => {
     setActiveOption(null); // Close the modal after selecting an option
   };
 
+  const checkActiveBtn = (button) => {
+    let result = false;
+
+    //check the filter value with the default filter if different then active
+    if (button.label == "Khoảng cách") {
+      result = filterOptions.distance != DEFAULT_DISTACNCE;
+    }
+    if (button.label == "Thời gian") {
+      result = filterOptions.start_time != 0 && filterOptions.end_time != 23;
+    }
+    if (button.label == "Thể thao") {
+      result = filterOptions.sport_name != "";
+    }
+    return result;
+  };
+
   return (
     <View>
       <FlatList
@@ -100,8 +140,11 @@ export const FilterEventOptionList = ({ setFilterOptions }) => {
         renderItem={({ item }) => (
           <Button
             textColor="white"
-            mode="outlined"
-            labelStyle={styles.buttonLabel}
+            mode="contained"
+            labelStyle={[
+              styles.buttonLabel,
+              checkActiveBtn(item) && styles.buttonActive,
+            ]}
             style={styles.button}
             onPress={() => setActiveOption(item.label)}
           >
@@ -109,30 +152,34 @@ export const FilterEventOptionList = ({ setFilterOptions }) => {
           </Button>
         )}
       />
+
       <Portal>
         {activeOption == "Thể thao" && (
-          <SportSelectionPopup
-            onSelectSport={handleSelectSport}
+          <SportSelectOptions
+            sportFilter={sportFilter}
+            setSportFilter={setSportFilter}
             onClose={() => setActiveOption(null)}
+            onDismiss={() => setActiveOption(null)}
             visible={!!activeOption}
           />
         )}
-        <Modal
-          visible={!!activeOption}
-          onDismiss={() => setActiveOption(null)}
-          contentContainerStyle={styles.modalContainer}
-          style={{
-            justifyContent: "flex-end",
-          }}
-        >
-          {activeOption != "Thể thao" && (
+        {activeOption && activeOption != "Thể thao" && (
+          <Modal
+            visible={!!activeOption}
+            onDismiss={() => setActiveOption(null)}
+            contentContainerStyle={styles.modalContainer}
+            style={{
+              justifyContent: "flex-end",
+            }}
+          >
             <ModalOption
+              filterOptions={filterOptions}
               title={options[activeOption]?.title}
               optionItem={options[activeOption]}
               onOptionPress={handleOptionPress}
             />
-          )}
-        </Modal>
+          </Modal>
+        )}
       </Portal>
     </View>
   );
@@ -160,6 +207,9 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     marginHorizontal: 10,
     borderRadius: 10,
+  },
+  buttonActive: {
+    backgroundColor: "#4878D9",
   },
 });
 
