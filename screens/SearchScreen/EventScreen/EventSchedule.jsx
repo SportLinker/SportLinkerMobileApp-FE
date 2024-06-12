@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Location from "expo-location";
 import { getEventList } from "../../../redux/slices/eventSlice";
-import { DEFAULT_DISTACNCE } from "../../../utils/constant";
+import { DEFAULT_DISTACNCE, sports } from "../../../utils/constant";
 import {
   getEventListSelector,
   getEventLoadingtSelector,
@@ -17,6 +17,7 @@ const EventSchedule = () => {
   const [location, setLocation] = useState(null);
   const [address, setAddress] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [sportFilter, setSportFilter] = useState(sports);
   const [filterOptions, setFilterOptions] = useState({
     distance: DEFAULT_DISTACNCE,
     start_time: 0,
@@ -38,6 +39,21 @@ const EventSchedule = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  //get a string which match name of sport items together
+  const getStringSportName = (sportArrObj) => {
+    let sportNameString = "";
+    const sportNameArr = sportArrObj.map((sport) => {
+      if (sportNameString == "") {
+        sportNameString = sportNameString + sport.sport_name;
+      } else {
+        //if have sport name before will add ',' after
+        sportNameString = sportNameString + "," + sport.sport_name;
+      }
+    });
+    console.log("sportNameString", sportNameString);
+    return sportNameString;
   };
 
   useEffect(() => {
@@ -74,8 +90,12 @@ const EventSchedule = () => {
   }, []);
 
   useEffect(() => {
-    console.log("Filter options changed");
-  }, [filterOptions]);
+    let newSportName = "";
+    if (sportFilter.length != sports.length && sportFilter.length > 0) {
+      newSportName = getStringSportName(sportFilter);
+    }
+    setFilterOptions({ ...filterOptions, sport_name: newSportName });
+  }, [sportFilter]);
 
   useEffect(() => {
     // Set a timeout to execute the logic after 500 milliseconds
@@ -92,7 +112,12 @@ const EventSchedule = () => {
   return (
     <View style={{ display: "flex", flexDirection: "column" }}>
       <View style={{ height: "10%" }}>
-        <FilterEventOptionList setFilterOptions={setFilterOptions} />
+        <FilterEventOptionList
+          filterOptions={filterOptions}
+          setSportFilter={setSportFilter}
+          sportFilter={sportFilter}
+          setFilterOptions={setFilterOptions}
+        />
       </View>
       <View style={{ height: "90%" }}>
         <EventScheduleTable

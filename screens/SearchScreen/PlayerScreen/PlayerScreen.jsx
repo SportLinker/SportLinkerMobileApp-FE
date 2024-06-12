@@ -26,7 +26,7 @@ export const mock_data = [
 export default function PlayerScreen({ navigation }) {
   return (
     <SafeAreaView style={{ backgroundColor: "#fff" }}>
-      <FilterEventOptionList />
+      {/* <FilterEventOptionList /> */}
       <ScrollView>
         <View style={{ alignItems: "center", marginTop: 20 }}>
           {mock_data.map((item) => (
