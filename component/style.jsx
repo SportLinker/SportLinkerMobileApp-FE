@@ -332,7 +332,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     paddingTop: 10,
     width: "100%",
-    justifyContent: "center",
+    justifyContent: "left",
   },
   title: {
     fontSize: 16,
@@ -350,7 +350,7 @@ export const styles = StyleSheet.create({
     // padding: 10,
   },
   avatarSpacer: {
-    width: 80,
+    width: 100,
   },
   rating: {
     fontWeight: "600",

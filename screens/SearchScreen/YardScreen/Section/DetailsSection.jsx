@@ -30,7 +30,7 @@ export function DetailsSection({ rating }) {
           </Text>
         </View>
       </View>
-      <View style={{ display: "flex", flexDirection: "row", marginTop: 20 }}>
+      {/* <View style={{ display: "flex", flexDirection: "row", marginTop: 20 }}>
         <FontAwesome
           name="phone"
           size={30}
@@ -48,7 +48,7 @@ export function DetailsSection({ rating }) {
           <Text style={{ marginHorizontal: 6 }}>●</Text>
           <Text style={{ fontSize: 16, fontWeight: 700 }}>0123456789</Text>
         </View>
-      </View>
+      </View> */}
       <View style={{ display: "flex", flexDirection: "row", marginTop: 20 }}>
         <Feather
           name="clock"

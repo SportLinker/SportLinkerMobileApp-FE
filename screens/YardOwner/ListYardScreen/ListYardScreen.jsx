@@ -1,23 +1,23 @@
+import * as ImagePicker from "expo-image-picker";
+import React, { useEffect, useState } from "react";
 import {
-  View,
-  Text,
-  ScrollView,
-  SafeAreaView,
-  StyleSheet,
-  TouchableOpacity,
-  Modal,
-  TextInput,
   Button,
-  Platform,
   Image,
   KeyboardAvoidingView,
+  Modal,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
-import ListYardItem from "./ListYardItem";
-import FilterOptionList from "./FilterOption";
-import * as ImagePicker from "expo-image-picker";
 import Icon from "react-native-vector-icons/Ionicons";
 import { listYardData } from "../../../utils/constant";
+import FilterOptionList from "./FilterOption";
+import ListYardItem from "./ListYardItem";
 
 const ListYardScreen = () => {
   const [filterOptions, setFilterOptions] = useState({ status: "all" });
@@ -28,7 +28,7 @@ const ListYardScreen = () => {
     description: "",
     address: "",
     openTime: "",
-    phoneNumber: "",
+    openDay: "",
     price: "",
     status: "active", // Default status
   });
@@ -47,10 +47,6 @@ const ListYardScreen = () => {
   }, []);
 
   // Helper function to validate phone number
-  const isValidPhoneNumber = (phoneNumber) => {
-    const phoneRegex = /^0[0-9]{9}$/;
-    return phoneRegex.test(phoneNumber);
-  };
 
   // Function to go to the next step
   const goToNextStep = () => {
@@ -76,11 +72,6 @@ const ListYardScreen = () => {
 
   // Function to handle saving a new yard
   const handleSaveNewYard = () => {
-    if (!isValidPhoneNumber(newYard.phoneNumber)) {
-      alert("Số điện thoại không hợp lệ!");
-      return;
-    }
-
     listYardData.push({ ...newYard, id: listYardData.length + 1 });
     // console.log(listYardData);
     setIsModalVisible(false);
@@ -90,7 +81,7 @@ const ListYardScreen = () => {
       description: "",
       address: "",
       openTime: "",
-      phoneNumber: "",
+      openDay: "",
       price: "",
       status: "active", // Reset default status
     });
@@ -160,16 +151,15 @@ const ListYardScreen = () => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Số điện thoại liên hệ"
-                    value={newYard.phoneNumber}
-                    keyboardType="number-pad"
+                    placeholder="Ngày hoạt động (Chọn Thứ Hai/Thứ Ba/Thứ Tư/Thứ Năm/Thứ Sáu/Thứ Bảy/Chủ Nhật)"
+                    value={newYard.openDay}
                     onChangeText={(text) =>
-                      setNewYard({ ...newYard, phoneNumber: text })
+                      setNewYard({ ...newYard, openDay: text })
                     }
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Giá Thuê"
+                    placeholder="Giá Thuê (ngàn VNĐ)/giờ"
                     value={newYard.price}
                     keyboardType="numeric"
                     onChangeText={(text) =>
@@ -186,22 +176,6 @@ const ListYardScreen = () => {
                 </>
               )}
               {currentStep === 2 && (
-                <>
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Địa Chỉ"
-                    value={newYard.address}
-                    onChangeText={(text) =>
-                      setNewYard({ ...newYard, address: text })
-                    }
-                  />
-                  <View style={styles.buttonContainer}>
-                    <Button title="Quay lại" onPress={goToPreviousStep} />
-                    <Button title="Tiếp tục" onPress={goToNextStep} />
-                  </View>
-                </>
-              )}
-              {currentStep === 3 && (
                 <>
                   <TouchableOpacity
                     onPress={pickImage}
