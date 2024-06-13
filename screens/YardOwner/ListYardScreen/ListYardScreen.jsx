@@ -1,199 +1,23 @@
+import * as ImagePicker from "expo-image-picker";
+import React, { useEffect, useState } from "react";
 import {
-  View,
-  Text,
-  ScrollView,
-  SafeAreaView,
-  StyleSheet,
-  TouchableOpacity,
-  Modal,
-  TextInput,
   Button,
-  Platform,
   Image,
   KeyboardAvoidingView,
+  Modal,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
-import ListYardItem from "./ListYardItem";
-import FilterOptionList from "./FilterOption";
-import * as ImagePicker from "expo-image-picker";
 import Icon from "react-native-vector-icons/Ionicons";
-
-const fake_data = [
-  {
-    id: 1,
-    image:
-      "https://www.nhavanhoasinhvien.vn/wp-content/uploads/2022/12/%E1%BA%A2nh-ch%E1%BB%A5p-M%C3%A0n-h%C3%ACnh-2022-12-08-l%C3%BAc-10.09.05.png",
-    yardName: "SÂN 1",
-    openTime: "7h00 - 22h00",
-    openDay: "T2 đến CN mỗi tuần",
-    status: "active",
-  },
-  {
-    id: 2,
-    image: "https://ipsc.edu.vn/uploads/news/2020_07/hoi-boi-dhqg-hcm-3a.jpg",
-    yardName: "SÂN 2",
-    openTime: "6h00 - 21h00",
-    openDay: "T2 đến T7",
-    status: "inactive",
-  },
-  {
-    id: 3,
-    image:
-      "https://yousport.vn/Media/Blog/san-bong-ro-tp-hcm/san-bong-ro-hcm-17.jpg",
-    yardName: "SÂN 3",
-    openTime: "5h30 - 23h00",
-    openDay: "Cả tuần",
-    status: "active",
-  },
-  {
-    id: 4,
-    image:
-      "https://tinyfilms.vn/wp-content/uploads/2018/08/TinyFilms_L%E1%BB%85-khai-tr%C6%B0%C6%A1ng-s%C3%A2n-tennis-Ho%C3%A0ng-Gia.jpg",
-    yardName: "SÂN 4",
-    openTime: "6h00 - 22h00",
-    openDay: "T2 đến CN",
-    status: "inactive",
-  },
-  {
-    id: 5,
-    image: "https://ts.huit.edu.vn/tttstt/images/tin-tuc/rlsk9.jpg",
-    yardName: "SÂN 5",
-    openTime: "7h00 - 20h00",
-    openDay: "T2 đến T6",
-    status: "active",
-  },
-  {
-    id: 6,
-    image: "https://sieuthicaulong.vn/userfiles/files/san-cau-long-mega.jpg",
-    yardName: "SÂN 6",
-    openTime: "6h30 - 21h30",
-    openDay: "T2 đến CN",
-    status: "inactive",
-  },
-  {
-    id: 7,
-    image:
-      "https://www.nhavanhoasinhvien.vn/wp-content/uploads/2022/12/%E1%BA%A2nh-ch%E1%BB%A5p-M%C3%A0n-h%C3%ACnh-2022-12-08-l%C3%BAc-10.09.05.png",
-    yardName: "SÂN 7",
-    openTime: "6h00 - 22h00",
-    openDay: "T2 đến CN",
-    status: "active",
-  },
-  {
-    id: 8,
-    image:
-      "https://sport360.vn/wp-content/uploads/2019/08/Kich-thuoc-san-bong-chuyen-hoi-tieu-chuan-sport360vn-4.jpg",
-    yardName: "SÂN 8",
-    openTime: "6h00 - 21h00",
-    openDay: "Cả tuần",
-    status: "inactive",
-  },
-  {
-    id: 9,
-    image:
-      "https://www.myuc.vn/uploads/products/2019/01/28/pvcredcolortabletennisfloor.jpg",
-    yardName: "SÂN 9",
-    openTime: "6h00 - 23h00",
-    openDay: "T2 đến CN",
-    status: "active",
-  },
-  {
-    id: 10,
-    image:
-      "https://sport360.vn/wp-content/uploads/2019/08/Kich-thuoc-san-bong-chuyen-hoi-tieu-chuan-sport360vn-4.jpg",
-    yardName: "SÂN 10",
-    openTime: "5h00 - 22h00",
-    openDay: "Cả tuần",
-    status: "inactive",
-  },
-  {
-    id: 11,
-    image:
-      "https://www.nhavanhoasinhvien.vn/wp-content/uploads/2022/12/%E1%BA%A2nh-ch%E1%BB%A5p-M%C3%A0n-h%C3%ACnh-2022-12-08-l%C3%BAc-10.09.05.png",
-    yardName: "SÂN 11",
-    openTime: "6h00 - 21h00",
-    openDay: "T2 đến T7",
-    status: "active",
-  },
-  {
-    id: 12,
-    image:
-      "https://www.nhavanhoasinhvien.vn/wp-content/uploads/2022/12/%E1%BA%A2nh-ch%E1%BB%A5p-M%C3%A0n-h%C3%ACnh-2022-12-08-l%C3%BAc-10.09.05.png",
-    yardName: "SÂN 12",
-    openTime: "7h00 - 22h00",
-    openDay: "T2 đến CN mỗi tuần",
-    status: "inactive",
-  },
-  {
-    id: 13,
-    image: "https://ipsc.edu.vn/uploads/news/2020_07/hoi-boi-dhqg-hcm-3a.jpg",
-    yardName: "SÂN 13",
-    openTime: "6h00 - 21h00",
-    openDay: "T2 đến T7",
-    status: "active",
-  },
-  {
-    id: 14,
-    image:
-      "https://yousport.vn/Media/Blog/san-bong-ro-tp-hcm/san-bong-ro-hcm-17.jpg",
-    yardName: "SÂN 14",
-    openTime: "5h30 - 23h00",
-    openDay: "Cả tuần",
-    status: "inactive",
-  },
-  {
-    id: 15,
-    image:
-      "https://tinyfilms.vn/wp-content/uploads/2018/08/TinyFilms_L%E1%BB%85-khai-tr%C6%B0%C6%A1ng-s%C3%A2n-tennis-Ho%C3%A0ng-Gia.jpg",
-    yardName: "SÂN 15",
-    openTime: "6h00 - 22h00",
-    openDay: "T2 đến CN",
-    status: "active",
-  },
-  {
-    id: 16,
-    image: "https://ts.huit.edu.vn/tttstt/images/tin-tuc/rlsk9.jpg",
-    yardName: "SÂN 16",
-    openTime: "7h00 - 20h00",
-    openDay: "T2 đến T6",
-    status: "inactive",
-  },
-  {
-    id: 17,
-    image: "https://sieuthicaulong.vn/userfiles/files/san-cau-long-mega.jpg",
-    yardName: "SÂN 17",
-    openTime: "6h30 - 21h30",
-    openDay: "T2 đến CN",
-    status: "active",
-  },
-  {
-    id: 18,
-    image:
-      "https://www.nhavanhoasinhvien.vn/wp-content/uploads/2022/12/%E1%BA%A2nh-ch%E1%BB%A5p-M%C3%A0n-h%C3%ACnh-2022-12-08-l%C3%BAc-10.09.05.png",
-    yardName: "SÂN 18",
-    openTime: "6h00 - 22h00",
-    openDay: "T2 đến CN",
-    status: "inactive",
-  },
-  {
-    id: 19,
-    image:
-      "https://sport360.vn/wp-content/uploads/2019/08/Kich-thuoc-san-bong-chuyen-hoi-tieu-chuan-sport360vn-4.jpg",
-    yardName: "SÂN 19",
-    openTime: "6h00 - 21h00",
-    openDay: "Cả tuần",
-    status: "active",
-  },
-  {
-    id: 20,
-    image:
-      "https://www.myuc.vn/uploads/products/2019/01/28/pvcredcolortabletennisfloor.jpg",
-    yardName: "SÂN 20",
-    openTime: "6h00 - 23h00",
-    openDay: "T2 đến CN",
-    status: "inactive",
-  },
-];
+import { listYardData } from "../../../utils/constant";
+import FilterOptionList from "./FilterOption";
+import ListYardItem from "./ListYardItem";
 
 const ListYardScreen = () => {
   const [filterOptions, setFilterOptions] = useState({ status: "all" });
@@ -204,7 +28,7 @@ const ListYardScreen = () => {
     description: "",
     address: "",
     openTime: "",
-    phoneNumber: "",
+    openDay: "",
     price: "",
     status: "active", // Default status
   });
@@ -223,10 +47,6 @@ const ListYardScreen = () => {
   }, []);
 
   // Helper function to validate phone number
-  const isValidPhoneNumber = (phoneNumber) => {
-    const phoneRegex = /^0[0-9]{9}$/;
-    return phoneRegex.test(phoneNumber);
-  };
 
   // Function to go to the next step
   const goToNextStep = () => {
@@ -239,7 +59,7 @@ const ListYardScreen = () => {
   };
 
   // Filter data based on filter options
-  const filteredData = fake_data.filter((item) => {
+  const filteredData = listYardData.filter((item) => {
     if (filterOptions.status === "all") return true;
     return item.status === filterOptions.status;
   });
@@ -252,13 +72,8 @@ const ListYardScreen = () => {
 
   // Function to handle saving a new yard
   const handleSaveNewYard = () => {
-    if (!isValidPhoneNumber(newYard.phoneNumber)) {
-      alert("Số điện thoại không hợp lệ!");
-      return;
-    }
-
-    fake_data.push({ ...newYard, id: fake_data.length + 1 });
-    console.log(fake_data); // Log the updated fake_data array
+    listYardData.push({ ...newYard, id: listYardData.length + 1 });
+    // console.log(listYardData);
     setIsModalVisible(false);
     setNewYard({
       image: "",
@@ -266,7 +81,7 @@ const ListYardScreen = () => {
       description: "",
       address: "",
       openTime: "",
-      phoneNumber: "",
+      openDay: "",
       price: "",
       status: "active", // Reset default status
     });
@@ -336,16 +151,15 @@ const ListYardScreen = () => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Số điện thoại liên hệ"
-                    value={newYard.phoneNumber}
-                    keyboardType="number-pad"
+                    placeholder="Ngày hoạt động (Chọn Thứ Hai/Thứ Ba/Thứ Tư/Thứ Năm/Thứ Sáu/Thứ Bảy/Chủ Nhật)"
+                    value={newYard.openDay}
                     onChangeText={(text) =>
-                      setNewYard({ ...newYard, phoneNumber: text })
+                      setNewYard({ ...newYard, openDay: text })
                     }
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Giá Thuê"
+                    placeholder="Giá Thuê (ngàn VNĐ)/giờ"
                     value={newYard.price}
                     keyboardType="numeric"
                     onChangeText={(text) =>
@@ -362,22 +176,6 @@ const ListYardScreen = () => {
                 </>
               )}
               {currentStep === 2 && (
-                <>
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Địa Chỉ"
-                    value={newYard.address}
-                    onChangeText={(text) =>
-                      setNewYard({ ...newYard, address: text })
-                    }
-                  />
-                  <View style={styles.buttonContainer}>
-                    <Button title="Quay lại" onPress={goToPreviousStep} />
-                    <Button title="Tiếp tục" onPress={goToNextStep} />
-                  </View>
-                </>
-              )}
-              {currentStep === 3 && (
                 <>
                   <TouchableOpacity
                     onPress={pickImage}

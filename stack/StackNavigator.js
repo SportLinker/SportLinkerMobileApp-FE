@@ -35,6 +35,7 @@ import EventDetailTabs from "../tabs/EventDetailTabs";
 import StadiumScreen from "../screens/YardOwner/StadiumScreen/StadiumScreen";
 import CreateStadium from "../screens/YardOwner/StadiumScreen/CreateStadium/CreateStadium";
 import NoStadiumScreen from "../screens/YardOwner/StadiumScreen/InfoStadium/NoStadiumScreen";
+import InfoYard from "../screens/YardOwner/ListYardScreen/InfoYard/InfoYard";
 
 const Stack = createStackNavigator();
 
@@ -196,8 +197,8 @@ const StackNavigator = () => (
       options={{
         title: "Chi Tiết Sân",
         headerStyle: { backgroundColor: "#1646a9" },
+        headerTitleAlign: "center",
         headerTintColor: "white",
-        headerBackTitle: " ",
       }}
     />
     <Stack.Screen
@@ -324,6 +325,17 @@ const StackNavigator = () => (
       component={CreateStadium}
       options={{
         title: "Tạo Sân Của Bạn",
+        headerStyle: { backgroundColor: "#1646a9" },
+        headerTitleAlign: "center",
+        headerTintColor: "white",
+        headerBackTitle: " ",
+      }}
+    />
+    <Stack.Screen
+      name="InfoYard"
+      component={InfoYard}
+      options={{
+        title: "Thông tin sân",
         headerStyle: { backgroundColor: "#1646a9" },
         headerTitleAlign: "center",
         headerTintColor: "white",
