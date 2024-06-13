@@ -10,8 +10,6 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { getSportIcon, sports } from "../utils/constant";
 import { useState } from "react";
 
-const my_sport = ["Bóng đá", "Bóng chuyền"];
-
 //count total sport of the system
 const TOTAL_SPORT = sports.length;
 
@@ -21,14 +19,16 @@ const SportSelectOptions = ({
   onClose,
   setSportFilter,
   sportFilter,
+  favSport,
 }) => {
   //Favorite sports of user
-  const mySport = sports.filter((sport) => my_sport.includes(sport.sport_name));
+  const mySport =
+    favSport && sports.filter((sport) => favSport.includes(sport.sport_name));
 
   //Other sports of the system
-  const otherSport = sports.filter(
-    (sport) => !my_sport.includes(sport.sport_name)
-  );
+  const otherSport = favSport
+    ? sports.filter((sport) => !favSport.includes(sport.sport_name))
+    : sports;
 
   //temporary save the sport selected
   const [sportSelected, setSportSelected] = useState(sportFilter);
@@ -152,18 +152,20 @@ const SportSelectOptions = ({
             >
               Tất cả
             </Button>
-            <Button
-              labelStyle={styles.buttonLabel}
-              style={[
-                styles.button,
-                isTwoArrSportEqual(sportSelected, mySport) &&
-                  styles.buttonActive,
-              ]}
-              mode="contained"
-              onPress={() => handleOptionPress("Của tôi")}
-            >
-              Của tôi
-            </Button>
+            {mySport && (
+              <Button
+                labelStyle={styles.buttonLabel}
+                style={[
+                  styles.button,
+                  isTwoArrSportEqual(sportSelected, mySport) &&
+                    styles.buttonActive,
+                ]}
+                mode="contained"
+                onPress={() => handleOptionPress("Của tôi")}
+              >
+                Của tôi
+              </Button>
+            )}
             {sportSelectedCount != TOTAL_SPORT && (
               <Button
                 labelStyle={styles.buttonLabel}
@@ -205,7 +207,9 @@ const SportSelectOptions = ({
           )}
           {otherSport && otherSport?.length > 0 && (
             <View style={[styles.sectionContainer, { borderBottomWidth: 0 }]}>
-              <Text style={styles.subTitle}>Các môn khác</Text>
+              <Text style={styles.subTitle}>
+                {favSport ? "Các môn khác" : "Môn thể thao"}
+              </Text>
               <View style={styles.sportItemContainer}>
                 {otherSport.map((sport, index) => (
                   <TouchableOpacity
