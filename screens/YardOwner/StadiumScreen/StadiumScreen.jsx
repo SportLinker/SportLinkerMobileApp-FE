@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { SafeAreaView, StyleSheet } from "react-native";
 import NoStadiumScreen from "./InfoStadium/NoStadiumScreen";
+import InfoStadium from "./InfoStadium/InfoStadium";
 
 const StadiumScreen = () => {
   const navigation = useNavigation();
@@ -9,6 +10,7 @@ const StadiumScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <NoStadiumScreen />
+      {/* <InfoStadium /> */}
     </SafeAreaView>
   );
 };
