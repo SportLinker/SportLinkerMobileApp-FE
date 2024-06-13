@@ -13,8 +13,24 @@ export const login = createAsyncThunk(
         password,
       });
 
-      console.log("login data:", data.data.metadata);
-      return data.data.metadata;
+      console.log("login data:", data.data);
+      return data.data;
+    } catch (error) {
+      console.log("error", error);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+export const register = createAsyncThunk(
+  "userSlice/register",
+  async (formData, { rejectWithValue }) => {
+    console.log("register");
+
+    try {
+      const data = await api.post(`/authen/register?type=phone`, formData);
+
+      console.log("login data:", data);
+      return data.data;
     } catch (error) {
       console.log("error", error);
       return rejectWithValue(error.response.data);
@@ -64,12 +80,28 @@ export const userSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false;
-        state.userInfo = action.payload.user;
-        AsyncStorage.setItem("accessToken", action.payload.token.accessToken);
-        AsyncStorage.setItem("refreshToken", action.payload.token.refreshToken);
-        AsyncStorage.setItem("xClientId", action.payload.user.id);
+        state.userInfo = action.payload.metadata.user;
+        AsyncStorage.setItem(
+          "accessToken",
+          action.payload.metadata.token.accessToken
+        );
+        AsyncStorage.setItem(
+          "refreshToken",
+          action.payload.metadata.token.refreshToken
+        );
+        AsyncStorage.setItem("xClientId", action.payload.metadata.user.id);
       })
       .addCase(login.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload; // Ensure consistent error handling
+      })
+      .addCase(register.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(register.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(register.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload; // Ensure consistent error handling
       });
