@@ -33,30 +33,36 @@ export default function InfoStadium() {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    padding: 16,
-    backgroundColor: "#f5f5f5",
+    padding: 20,
+    backgroundColor: "#f0f0f0",
+    alignItems: "center",
   },
   image: {
     width: "100%",
     height: 200,
-    borderRadius: 10,
-    marginBottom: 16,
+    borderRadius: 15,
+    marginBottom: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
   },
   name: {
-    fontSize: 18,
+    fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 8,
+    marginBottom: 10,
+    color: "#333",
   },
   location: {
-    fontSize: 16,
-    marginBottom: 8,
-  },
-  capacity: {
-    fontSize: 16,
-    marginBottom: 16,
+    fontSize: 18,
+    marginBottom: 10,
+    color: "#555",
   },
   description: {
     fontSize: 16,
     color: "#666",
+    textAlign: "justify",
+    lineHeight: 22,
   },
 });
