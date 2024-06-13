@@ -5,6 +5,8 @@ import ModalOption from "../../../component/ModalOption";
 import { DEFAULT_DISTACNCE, sports } from "../../../utils/constant";
 import SportSelectOptions from "../../../component/SportSelectOptions";
 
+const my_sport = ["Bóng đá", "Bóng chuyền"];
+
 const fakeData = [
   {
     id: 1,
@@ -161,6 +163,7 @@ export const FilterEventOptionList = ({
             onClose={() => setActiveOption(null)}
             onDismiss={() => setActiveOption(null)}
             visible={!!activeOption}
+            favSport={my_sport}
           />
         )}
         {activeOption && activeOption != "Thể thao" && (

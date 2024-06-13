@@ -12,10 +12,12 @@ import {
 } from "react-native";
 import { TextInput, Button, Divider, Snackbar } from "react-native-paper";
 import { screenHeight, screenWidth } from "../component/style";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../redux/slices/userSlice";
 import { api } from "../services/api";
 import { createEvent } from "../redux/slices/eventSlice";
+import { getUserLoadingSelector } from "../redux/selectors";
+import Loading from "../component/Loading";
 
 const LoginScreen = ({ navigation }) => {
   const [loginForm, setLoginForm] = useState({
@@ -23,7 +25,10 @@ const LoginScreen = ({ navigation }) => {
     password: "123456",
   });
   const [errorMessage, setErrorMessage] = useState(null);
+  const [successMessage, setSuccessMessage] = useState("");
   const [isHidePassword, setIsHidePassword] = useState(true);
+
+  const loadingSelector = useSelector(getUserLoadingSelector);
 
   const dispatch = useDispatch();
 
@@ -34,7 +39,31 @@ const LoginScreen = ({ navigation }) => {
       if (loginForm.phone === "" || loginForm.password === "") {
         setErrorMessage("Vui lòng không bỏ trống!");
       }
-      dispatch(login(loginForm));
+      dispatch(login(loginForm)).then((response) => {
+        console.log(response);
+
+        //login failed
+        if (response.error) {
+          setErrorMessage("Số điện thoại hoặc mật khẩu không đúng!");
+        }
+
+        //login successful
+        if (
+          response?.payload?.message &&
+          response.payload.message == "Login sucessfully"
+        ) {
+          setSuccessMessage("Đăng nhập thành công!");
+          setTimeout(() => {
+            if (response.payload.metadata.user.role == "player") {
+              navigation.navigate("BottomTabs");
+            }
+            if (response.payload.metadata.user.role == "stadium") {
+              navigation.navigate("BottomTabYardOwnerNavigator");
+            }
+          }, 1000);
+        }
+      });
+
       // navigation.navigate("BottomTabs");
     } catch (error) {
       console.log(error);
@@ -46,6 +75,7 @@ const LoginScreen = ({ navigation }) => {
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
+        {loadingSelector && <Loading visible={loadingSelector} />}
         <ScrollView>
           <View style={styles.container}>
             <Image
@@ -220,9 +250,17 @@ const LoginScreen = ({ navigation }) => {
           visible={!!errorMessage}
           duration={2000}
           onDismiss={() => setErrorMessage(null)}
-          style={styles.snackbarContainer}
+          style={[styles.snackbarContainer, styles.snackbarContainerFail]}
         >
           {errorMessage}
+        </Snackbar>
+        <Snackbar
+          visible={successMessage !== ""}
+          onDismiss={() => setSuccessMessage("")}
+          duration={1000}
+          style={styles.snackbarContainer}
+        >
+          {successMessage}
         </Snackbar>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -267,11 +305,15 @@ const styles = StyleSheet.create({
   snackbarContainer: {
     borderRadius: 10,
     alignItems: "center",
+    backgroundColor: "#1646A9",
     textAlign: "center",
     transform: [
       { translateX: 0 * screenWidth },
       { translateY: -0.02 * screenHeight },
     ],
+  },
+  snackbarContainerFail: {
+    backgroundColor: "red",
   },
 });
 
