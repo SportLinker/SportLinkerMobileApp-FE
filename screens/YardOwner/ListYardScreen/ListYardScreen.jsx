@@ -328,25 +328,6 @@ const ListYardScreen = () => {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Địa Chỉ"
-                    value={newYard.address}
-                    onChangeText={(text) =>
-                      setNewYard({ ...newYard, address: text })
-                    }
-                  />
-                  <View style={styles.buttonContainer}>
-                    <Button
-                      title="Thoát"
-                      onPress={() => setIsModalVisible(false)}
-                    />
-                    <Button title="Tiếp tục" onPress={goToNextStep} />
-                  </View>
-                </>
-              )}
-              {currentStep === 2 && (
-                <>
-                  <TextInput
-                    style={styles.input}
                     placeholder="Giờ mở cửa"
                     value={newYard.openTime}
                     onChangeText={(text) =>
@@ -369,6 +350,25 @@ const ListYardScreen = () => {
                     keyboardType="numeric"
                     onChangeText={(text) =>
                       setNewYard({ ...newYard, price: text })
+                    }
+                  />
+                  <View style={styles.buttonContainer}>
+                    <Button
+                      title="Thoát"
+                      onPress={() => setIsModalVisible(false)}
+                    />
+                    <Button title="Tiếp tục" onPress={goToNextStep} />
+                  </View>
+                </>
+              )}
+              {currentStep === 2 && (
+                <>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Địa Chỉ"
+                    value={newYard.address}
+                    onChangeText={(text) =>
+                      setNewYard({ ...newYard, address: text })
                     }
                   />
                   <View style={styles.buttonContainer}>
