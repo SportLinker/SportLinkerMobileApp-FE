@@ -130,9 +130,10 @@ const CreateStadium = () => {
         )}
       </TouchableOpacity>
       <TextInput
+        label="Tên Sân Vận Động"
         style={styles.input}
-        mode="outlined"
-        placeholder="Tên Sân Vận Động"
+        mode="flat"
+        placeholder=""
         value={stadiumData.stadium_name}
         onChangeText={(text) =>
           setStadiumData({ ...stadiumData, stadium_name: text })

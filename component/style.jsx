@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Animated, Dimensions, StyleSheet } from "react-native";
+import { Animated, Dimensions, Platform, StyleSheet } from "react-native";
 
 export const { width: screenWidth, height: screenHeight } =
   Dimensions.get("window");
@@ -172,10 +172,10 @@ export const styles = StyleSheet.create({
     paddingTop: 20,
   },
   iconContainer: {
-    flexDirection: "row",
+    flexDirection: "column",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: 20,
+    padding: 15,
   },
   iconCoachContainer: {
     flexDirection: "row",
@@ -237,6 +237,24 @@ export const styles = StyleSheet.create({
       { translateY: 0 * screenHeight },
     ],
     backgroundColor: "#1646a9",
+  },
+  actionButtonsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    backgroundColor: "#fff",
+    marginTop: 26,
+    // padding: 5,
+    ...Platform.select({
+      ios: {
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 2,
+      },
+      android: {
+        elevation: 5,
+      },
+    }),
   },
   header: {
     marginTop: 30,
@@ -322,7 +340,7 @@ export const styles = StyleSheet.create({
   },
   starsContainer: {
     flexDirection: "row",
-    marginTop: 2,
+    marginTop: 4,
     fontSize: 16,
   },
   containerYardDetail: {
@@ -508,5 +526,30 @@ export const styles = StyleSheet.create({
   continueButtonText: {
     color: "#fff",
     fontWeight: "bold",
+  },
+  iosShadow: {
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+  },
+  androidShadow: {
+    elevation: 5,
+  },
+  avatarShadow: {
+    position: "absolute",
+    bottom: -55,
+    backgroundColor: "#fff", // Ensure a background color that blends with the parent view
+    ...Platform.select({
+      ios: {
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 2,
+      },
+      android: {
+        elevation: 5,
+      },
+    }),
   },
 });

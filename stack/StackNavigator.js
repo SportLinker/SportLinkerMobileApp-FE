@@ -196,8 +196,8 @@ const StackNavigator = () => (
       options={{
         title: "Chi Tiết Sân",
         headerStyle: { backgroundColor: "#1646a9" },
+        headerTitleAlign: "center",
         headerTintColor: "white",
-        headerBackTitle: " ",
       }}
     />
     <Stack.Screen
