@@ -6,7 +6,7 @@ const RadioButton = ({ label, value, selected, onPress }) => {
   return (
     <TouchableOpacity
       onPress={() => onPress(value)}
-      style={styles.radioButtonContainer}
+      style={[styles.radioButtonContainer]}
     >
       <View
         style={[styles.radioButton, selected && styles.radioButtonSelected]}
