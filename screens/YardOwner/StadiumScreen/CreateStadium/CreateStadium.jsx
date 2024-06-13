@@ -1,19 +1,11 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import {
-  View,
-  Text,
-  StyleSheet,
-  ActivityIndicator,
-  FlatList,
-  TouchableOpacity,
-  SafeAreaView,
-  Image,
-} from "react-native";
-import * as ImagePicker from "expo-image-picker";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { Searchbar, TextInput } from "react-native-paper";
+import React, { useState } from "react";
+import { SafeAreaView, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
+import * as ImagePicker from "expo-image-picker";
+import Step1 from "./Step/Step1";
+import Step2 from "./Step/Step2";
+import Step3 from "./Step/Step3";
 
 const fetchLocationData = async (query, setIsLoading, setLocations) => {
   setIsLoading(true);
@@ -31,7 +23,6 @@ const fetchLocationData = async (query, setIsLoading, setLocations) => {
 
   try {
     const response = await axios(config);
-    // console.log("API Response:", response.data);
     setLocations(response.data.places || []);
   } catch (error) {
     if (error.response) {
@@ -44,15 +35,6 @@ const fetchLocationData = async (query, setIsLoading, setLocations) => {
   }
 };
 
-const LocationItem = ({ item, onSelect }) => (
-  <TouchableOpacity onPress={() => onSelect(item)}>
-    <View style={styles.locationItem}>
-      <Text style={styles.locationTitle}>{item.title}</Text>
-      <Text>{item.address}</Text>
-    </View>
-  </TouchableOpacity>
-);
-
 const CreateStadium = () => {
   const navigation = useNavigation();
 
@@ -62,28 +44,13 @@ const CreateStadium = () => {
     stadium_thumbnail: null,
     stadium_lat: "",
     stadium_long: "",
-    stadium_cid: "",
+    stadium_time: "",
+    stadium_description: "",
   });
+
   const [locations, setLocations] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    if (stadiumData.stadium_address) {
-      const delayDebounceFn = setTimeout(() => {
-        fetchLocationData(
-          stadiumData.stadium_address,
-          setIsLoading,
-          setLocations
-        );
-      }, 500);
-      return () => clearTimeout(delayDebounceFn);
-    }
-  }, [stadiumData.stadium_address]);
-
-  const handleCreateStadium = () => {
-    console.log(stadiumData);
-    navigation.goBack();
-  };
+  const [currentStep, setCurrentStep] = useState(1);
 
   const handleSelectImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -107,72 +74,50 @@ const CreateStadium = () => {
     }
   };
 
-  const handleSelectLocation = (item) => {
-    setStadiumData({
-      ...stadiumData,
-      stadium_address: item.address,
-      stadium_lat: item.latitude,
-      stadium_long: item.longitude,
-      stadium_cid: item.cid,
-    });
+  const handleCreateStadium = () => {
+    console.log(stadiumData);
+    navigation.goBack();
+  };
+
+  const nextStep = () => {
+    setCurrentStep((prevStep) => prevStep + 1);
+  };
+
+  const previousStep = () => {
+    setCurrentStep((prevStep) => prevStep - 1);
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity onPress={handleSelectImage}>
-        {stadiumData.stadium_thumbnail ? (
-          <Image
-            source={{ uri: stadiumData.stadium_thumbnail }}
-            style={styles.thumbnail}
-          />
-        ) : (
-          <Image
-            source={require("../../../../assets/default_img.png")}
-            style={styles.thumbnail}
-          />
-        )}
-      </TouchableOpacity>
-      <TextInput
-        label="Tên Sân Vận Động"
-        style={styles.input}
-        mode="outlined"
-        placeholder=""
-        value={stadiumData.stadium_name}
-        onChangeText={(text) =>
-          setStadiumData({ ...stadiumData, stadium_name: text })
-        }
-      />
-      <Searchbar
-        placeholder="Địa chỉ Sân Vận Động"
-        value={stadiumData.stadium_address}
-        onChangeText={(text) =>
-          setStadiumData({ ...stadiumData, stadium_address: text })
-        }
-        clearIcon={() => (
-          <Icon
-            name="close-circle"
-            size={20}
-            color="gray"
-            onPress={() =>
-              setStadiumData({ ...stadiumData, stadium_address: "" })
-            }
-          />
-        )}
-        style={styles.searchbar}
-      />
-      {isLoading && <ActivityIndicator size="large" color="#0000ff" />}
-      <FlatList
-        data={locations}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => (
-          <LocationItem item={item} onSelect={handleSelectLocation} />
-        )}
-      />
-      <TouchableOpacity onPress={handleCreateStadium}>
-        <View style={styles.button}>
-          <Text style={styles.buttonLabel}>Tạo Sân Vận Động</Text>
-        </View>
-      </TouchableOpacity>
+      {currentStep === 1 && (
+        <Step1
+          stadiumData={stadiumData}
+          setStadiumData={setStadiumData}
+          nextStep={nextStep}
+        />
+      )}
+      {currentStep === 2 && (
+        <Step2
+          stadiumData={stadiumData}
+          setStadiumData={setStadiumData}
+          locations={locations}
+          setLocations={setLocations}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
+          nextStep={nextStep}
+          previousStep={previousStep}
+          fetchLocationData={fetchLocationData}
+        />
+      )}
+      {currentStep === 3 && (
+        <Step3
+          stadiumData={stadiumData}
+          setStadiumData={setStadiumData}
+          handleSelectImage={handleSelectImage}
+          previousStep={previousStep}
+          handleCreateStadium={handleCreateStadium}
+        />
+      )}
     </SafeAreaView>
   );
 };
@@ -182,43 +127,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     backgroundColor: "#f5f5f5",
-  },
-  input: {
-    // height: 40,
-    // borderColor: "#fff",
-    // borderWidth: 1,
-    marginBottom: 12,
-    paddingHorizontal: 8,
-  },
-  button: {
-    alignItems: "center",
-    justifyContent: "center",
-    height: 40,
-    marginBottom: 12,
-    backgroundColor: "#1646a9",
-  },
-  buttonLabel: {
-    color: "#ffffff",
-  },
-  thumbnail: {
-    width: "100%",
-    height: 200,
-    aspectRatio: 4 / 3,
-    marginHorizontal: "auto",
-    marginBottom: 12,
-  },
-  locationItem: {
-    padding: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-  },
-  locationTitle: {
-    fontWeight: "bold",
-  },
-  searchbar: {
-    borderRadius: 12,
-    backgroundColor: "#EEEEEE",
-    marginBottom: 20,
   },
 });
 
