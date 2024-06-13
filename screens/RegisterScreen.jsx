@@ -9,18 +9,51 @@ import React, { useState } from "react";
 import { SafeAreaView } from "react-native";
 import { StyleSheet } from "react-native";
 import { Image } from "react-native";
-import { Button, TextInput } from "react-native-paper";
+import { Button, Portal, Snackbar, TextInput } from "react-native-paper";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import RadioButtonGroup from "../component/RadioButtonGroup";
+import SportSelectOptions from "../component/SportSelectOptions";
+import { useDispatch, useSelector } from "react-redux";
+import { register } from "../redux/slices/userSlice";
+import { WINDOW_HEIGHT, WINDOW_WIDTH } from "../utils/constant";
+import { getUserLoadingSelector } from "../redux/selectors";
+import Loading from "../component/Loading";
 
 const phoneRegExp = /^0\d{9}$/;
+
+const genderOptions = [
+  {
+    label: "Nam",
+    value: "men",
+  },
+  {
+    label: "Nữ",
+    value: "women",
+  },
+];
+
+const roleOptions = [
+  {
+    label: "Người dùng",
+    value: "player",
+  },
+  {
+    label: "Chủ sân",
+    value: "stadium",
+  },
+  // {
+  //   label: "Huấn luyện viên",
+  //   value: "coach",
+  // },
+];
 
 const RegisterSchema = Yup.object().shape({
   phone: Yup.string()
     .matches(phoneRegExp, "Số điện thoại không hợp lệ!")
     .required("Vui lòng không bỏ trống thông tin này!"),
-  fullname: Yup.string()
+  name: Yup.string()
     .min(2, "Tên quá ngắn!")
     .max(50, "Tên quá dài!")
     .required("Vui lòng không bỏ trống thông tin này!"),
@@ -32,9 +65,33 @@ const RegisterSchema = Yup.object().shape({
   confirmPassword: Yup.string()
     .required("Vui lòng không bỏ trống thông tin này!")
     .oneOf([Yup.ref("password"), null], "Xác nhận mật khẩu không khớp!"),
+  gender: Yup.string().required("Vui lòng không bỏ trống thông tin này!"),
+  role: Yup.string().required("Vui lòng không bỏ trống thông tin này!"),
+  favSport: Yup.array()
+    .of(
+      Yup.object().shape({
+        sport_name: Yup.string().required("Chọn môn thể thao!"),
+        value: Yup.string().required("Chọn môn thể thao!"),
+        icon: Yup.string().required("Chọn môn thể thao!"),
+      })
+    )
+    .min(1, "Vui lòng chọn ít nhất một môn thể thao!"),
 });
 
 export default function RegisterScreen({ navigation }) {
+  const [isOpenSportModal, setIsOpenSportModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [failMessage, setFailMessage] = useState("");
+  const dispatch = useDispatch();
+  const loadingSelector = useSelector(getUserLoadingSelector);
+
+  //get an array string sport name from array sport object
+  const getArrStringSportName = (sportArrObj) => {
+    const sportNameArr = sportArrObj.map((sport) => sport.sport_name);
+    console.log("sportNameArr", sportNameArr);
+    return sportNameArr;
+  };
+
   return (
     <SafeAreaView
       style={{
@@ -44,17 +101,52 @@ export default function RegisterScreen({ navigation }) {
       <Formik
         initialValues={{
           phone: "",
-          fullname: "",
+          name: "",
           password: "",
           confirmPassword: "",
+          gender: "men",
+          role: "player",
+          favSport: [],
         }}
         validationSchema={RegisterSchema}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={(values) => {
+          console.log(values);
+          const formData = {
+            phone: values.phone,
+            password: values.password,
+            name: values.name,
+            gender: values.gender,
+            role: values.role,
+            favorite: getArrStringSportName(values.favSport),
+          };
+          console.log(formData);
+          try {
+            dispatch(register(formData)).then((response) => {
+              if (response.error) {
+                console.log("error response");
+                setFailMessage(response.payload.message);
+              }
+              if (
+                response?.payload?.message &&
+                response.payload.message == "Register sucessfully"
+              ) {
+                console.log("success");
+                setSuccessMessage("Đăng ký thành công!");
+                setTimeout(() => {
+                  navigation.navigate("Login");
+                }, 3000);
+              }
+            });
+          } catch (error) {
+            console.log("error", error);
+          }
+        }}
       >
         {({
           handleChange,
           handleBlur,
           handleSubmit,
+          setFieldValue,
           values,
           errors,
           touched,
@@ -62,6 +154,8 @@ export default function RegisterScreen({ navigation }) {
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
           >
+            {loadingSelector && <Loading visible={loadingSelector} />}
+
             <ScrollView style={styles.container}>
               <Image
                 style={{
@@ -97,13 +191,13 @@ export default function RegisterScreen({ navigation }) {
                 mode="outlined"
                 inputMode="text"
                 placeholder="Họ và tên"
-                onChangeText={handleChange("fullname")}
-                onBlur={handleBlur("fullname")}
-                value={values.fullname}
-                outlineColor={touched.fullname && errors.fullname && "red"}
+                onChangeText={handleChange("name")}
+                onBlur={handleBlur("name")}
+                value={values.name}
+                outlineColor={touched.name && errors.name && "red"}
               />
               <Text style={styles.errorMessage}>
-                {touched.fullname && errors.fullname && errors.fullname}
+                {touched.name && errors.name && errors.name}
               </Text>
 
               <Text style={styles.label}>Mật khẩu:</Text>
@@ -137,6 +231,48 @@ export default function RegisterScreen({ navigation }) {
                 {touched.confirmPassword &&
                   errors.confirmPassword &&
                   errors.confirmPassword}
+              </Text>
+
+              <Text style={styles.label}>Giới tính:</Text>
+              <RadioButtonGroup
+                options={genderOptions}
+                selected={values.gender}
+                setSelected={handleChange("gender")}
+              />
+              <Text style={styles.errorMessage}>
+                {touched.gender && errors.gender && errors.gender}
+              </Text>
+
+              <Text style={styles.label}>Bạn là:</Text>
+              <RadioButtonGroup
+                options={roleOptions}
+                selected={values.role}
+                setSelected={handleChange("role")}
+              />
+              <Text style={styles.errorMessage}>
+                {touched.role && errors.role && errors.role}
+              </Text>
+
+              <Text style={styles.label}>Môn thể thao yêu thích:</Text>
+              <Button
+                mode="contained"
+                style={styles.buttonSport}
+                labelStyle={styles.buttonText}
+                onPress={() => setIsOpenSportModal(true)}
+              >
+                Chọn môn thể thao
+              </Button>
+              <Portal>
+                <SportSelectOptions
+                  visible={isOpenSportModal}
+                  onDismiss={() => setIsOpenSportModal(false)}
+                  onClose={() => setIsOpenSportModal(false)}
+                  setSportFilter={(sports) => setFieldValue("favSport", sports)}
+                  sportFilter={values.favSport}
+                />
+              </Portal>
+              <Text style={styles.errorMessage}>
+                {touched.favSport && errors.favSport && errors.favSport}
               </Text>
 
               <Button
@@ -186,6 +322,22 @@ export default function RegisterScreen({ navigation }) {
           </KeyboardAvoidingView>
         )}
       </Formik>
+      <Snackbar
+        visible={successMessage !== ""}
+        onDismiss={() => setSuccessMessage("")}
+        duration={3000}
+        style={styles.snackbarContainer}
+      >
+        {successMessage}
+      </Snackbar>
+      <Snackbar
+        visible={failMessage !== ""}
+        onDismiss={() => setFailMessage("")}
+        duration={4000}
+        style={[styles.snackbarContainer, styles.snackbarContainerFail]}
+      >
+        {failMessage}
+      </Snackbar>
     </SafeAreaView>
   );
 }
@@ -223,13 +375,33 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: "#1646A9",
-    width: "100%",
     borderRadius: 20,
     paddingVertical: 4,
     marginTop: 20,
   },
+  buttonSport: {
+    backgroundColor: "#1646A9",
+    borderRadius: 20,
+    marginTop: 10,
+    height: 80,
+    display: "flex",
+    justifyContent: "center",
+  },
   buttonText: {
     color: "#fff",
+    textAlign: "center",
     fontSize: 18,
+  },
+  snackbarContainer: {
+    borderRadius: 10,
+    textAlign: "center",
+    transform: [
+      { translateX: 0 * WINDOW_WIDTH },
+      { translateY: 0 * WINDOW_HEIGHT },
+    ],
+    backgroundColor: "#1646A9",
+  },
+  snackbarContainerFail: {
+    backgroundColor: "red",
   },
 });
