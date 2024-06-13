@@ -32,6 +32,9 @@ import BottomTabCoachNavigator from "../tabs/BottomTabCoachNavigator";
 import BottomTabNavigator from "../tabs/BottomTabNavigator";
 import BottomTabYardOwnerNavigator from "../tabs/BottomTabYardOwnerNavigator";
 import EventDetailTabs from "../tabs/EventDetailTabs";
+import StadiumScreen from "../screens/YardOwner/StadiumScreen/StadiumScreen";
+import CreateStadium from "../screens/YardOwner/StadiumScreen/CreateStadium/CreateStadium";
+import NoStadiumScreen from "../screens/YardOwner/StadiumScreen/InfoStadium/NoStadiumScreen";
 
 const Stack = createStackNavigator();
 
@@ -299,6 +302,28 @@ const StackNavigator = () => (
       component={CourseSelectionScreen}
       options={{
         title: "Chọn Khóa Học",
+        headerStyle: { backgroundColor: "#1646a9" },
+        headerTitleAlign: "center",
+        headerTintColor: "white",
+        headerBackTitle: " ",
+      }}
+    />
+    <Stack.Screen
+      name="Stadium"
+      component={StadiumScreen}
+      options={{
+        title: "Thông Tin Sân Của Bạn",
+        headerStyle: { backgroundColor: "#1646a9" },
+        headerTitleAlign: "center",
+        headerTintColor: "white",
+        headerBackTitle: " ",
+      }}
+    />
+    <Stack.Screen
+      name="CreateStadium"
+      component={CreateStadium}
+      options={{
+        title: "Tạo Sân Của Bạn",
         headerStyle: { backgroundColor: "#1646a9" },
         headerTitleAlign: "center",
         headerTintColor: "white",
