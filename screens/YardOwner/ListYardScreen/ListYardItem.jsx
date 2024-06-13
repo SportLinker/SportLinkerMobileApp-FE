@@ -1,20 +1,38 @@
 import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
-import { styles } from "../../../component/style";
 import { useNavigation } from "@react-navigation/native";
+import { styles } from "../../../component/style";
 
-export default function ListYardItem({ data }) {
+const ListYardItem = ({ data }) => {
   const navigation = useNavigation();
+
+  // console.log("data", data);
+
   return (
     <View style={{ marginTop: 20, marginHorizontal: "auto" }}>
       {data.map((yard) => (
         <TouchableOpacity
           key={yard.id}
           style={styles.containerYard}
-          onPress={() => navigation.navigate("DetailYardScreen")}
+          onPress={() =>
+            navigation.navigate("InfoYard", {
+              yardName: yard.yardName,
+              yardDescription: yard.description,
+              yardPrice: yard.price,
+              openTime: yard.openTime,
+              openDay: yard.openDay,
+              yardImage: yard.image,
+            })
+          }
         >
           <View>
-            <Image source={{ uri: yard.image }} style={styles.imageYard} />
+            {yard.image ? (
+              <Image source={{ uri: yard.image }} style={styles.imageYard} />
+            ) : (
+              <View style={styles.placeholderImage}>
+                <Text style={styles.placeholderText}>No Image</Text>
+              </View>
+            )}
           </View>
           <View
             style={{
@@ -31,11 +49,12 @@ export default function ListYardItem({ data }) {
                   fontSize: 16,
                   color: "#4878d9",
                   paddingVertical: 5,
+                  paddingHorizontal: 5,
                 }}
               >
                 {yard.yardName}
               </Text>
-              <Text style={{ paddingBottom: 10 }}>
+              <Text style={{ paddingBottom: 10, paddingHorizontal: 5 }}>
                 Thời gian:{" "}
                 <Text style={{ fontWeight: "bold" }}>
                   {yard.openTime} | {yard.openDay}
@@ -47,4 +66,6 @@ export default function ListYardItem({ data }) {
       ))}
     </View>
   );
-}
+};
+
+export default ListYardItem;

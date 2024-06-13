@@ -3,7 +3,6 @@ import axios from "axios";
 import {
   View,
   Text,
-  TextInput,
   StyleSheet,
   ActivityIndicator,
   FlatList,
@@ -13,7 +12,8 @@ import {
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { Searchbar } from "react-native-paper";
+import { Searchbar, TextInput } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 
 const fetchLocationData = async (query, setIsLoading, setLocations) => {
   setIsLoading(true);
@@ -54,6 +54,8 @@ const LocationItem = ({ item, onSelect }) => (
 );
 
 const CreateStadium = () => {
+  const navigation = useNavigation();
+
   const [stadiumData, setStadiumData] = useState({
     stadium_name: "",
     stadium_address: "",
@@ -80,6 +82,7 @@ const CreateStadium = () => {
 
   const handleCreateStadium = () => {
     console.log(stadiumData);
+    navigation.goBack();
   };
 
   const handleSelectImage = async () => {
@@ -130,9 +133,10 @@ const CreateStadium = () => {
         )}
       </TouchableOpacity>
       <TextInput
+        label="Tên Sân Vận Động"
         style={styles.input}
         mode="outlined"
-        placeholder="Tên Sân Vận Động"
+        placeholder=""
         value={stadiumData.stadium_name}
         onChangeText={(text) =>
           setStadiumData({ ...stadiumData, stadium_name: text })
@@ -180,9 +184,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#f5f5f5",
   },
   input: {
-    height: 40,
-    borderColor: "#ccc",
-    borderWidth: 1,
+    // height: 40,
+    // borderColor: "#fff",
+    // borderWidth: 1,
     marginBottom: 12,
     paddingHorizontal: 8,
   },

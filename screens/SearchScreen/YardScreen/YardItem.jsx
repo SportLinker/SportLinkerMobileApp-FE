@@ -24,6 +24,7 @@ export default function YardItem({ data }) {
               flexDirection: "row",
               justifyContent: "space-between",
               marginTop: 10,
+              padding: 5,
             }}
           >
             <View>
