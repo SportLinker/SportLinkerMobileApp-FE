@@ -212,6 +212,7 @@ export const CourtSelectionModal = ({ visible, onClose }) => {
           mode="time"
           is24Hour={true}
           display="spinner"
+          minuteInterval={30}
           onChange={handleTimePickerChange}
         />
       )}
