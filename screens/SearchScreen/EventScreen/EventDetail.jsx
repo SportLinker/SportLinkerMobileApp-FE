@@ -139,9 +139,9 @@ const EventDetail = ({ navigation }) => {
   };
 
   const handleCancelEvent = () => {
+    setConfirmCancelEventByOwner(false);
     dispatch(deleteEvent(eventDetail.match_id)).then((res) => {
       setSuccessMessage("Hủy sự kiện thành công !!!");
-      setConfirmCancelEventByOwner(false);
       setTimeout(() => {
         const formData = {
           long: getUserInfo.longitude,
@@ -162,22 +162,23 @@ const EventDetail = ({ navigation }) => {
       match_id: eventDetail.match_id,
       user_id: clientId,
     };
+    setConfirmCancelEventByUser(false);
 
     dispatch(unjoinEventByUserOrOwner(formCancel)).then((res) => {
       dispatch(getDetailEvent(eventDetail.match_id));
       setSuccessMessage("Hủy tham gia thành công !!!");
-      setConfirmCancelEventByUser(false);
       setAttended(false);
     });
   };
 
-  const handleJoinEvent = () =>
+  const handleJoinEvent = () => {
+    setConfirmJoinEventByoinEventByUser(false);
     dispatch(joinEventByUser(eventDetail.match_id)).then((res) => {
       setAttended(true);
       dispatch(getDetailEvent(eventDetail.match_id));
       setSuccessMessage("Tham gia kèo thành công");
-      setConfirmJoinEventByoinEventByUser(false);
     });
+  };
 
   if (getEventLoading) {
     return <Loading visible={getEventLoading} />;
@@ -377,8 +378,7 @@ const styles = StyleSheet.create({
     flex: 1,
     display: "flex",
     gap: 20,
-    paddingTop: 30,
-    paddingBottom: 150,
+    paddingBottom: 100,
     paddingHorizontal: 20,
     backgroundColor: "white",
   },

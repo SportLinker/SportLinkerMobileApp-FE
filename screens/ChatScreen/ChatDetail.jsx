@@ -23,31 +23,7 @@ export default function ChatDetail({ navigation }) {
     (state) => state.messageSlice
   );
   const dispatch = useDispatch();
-  console.log("group_message_id: " + JSON.stringify(group_message_id));
   const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([
-    { text: "hello", sender: "guest" },
-    {
-      text: "I'm doing well, thank you!  Hello! I'm doing well, thank you!  Hello! I'm doing well, thank you!  Hello!I'm doing well, thank you!  Hello!",
-      sender: "me",
-    },
-    {
-      text: "I'm doing well, thank you!  Hello! I'm doing well, thank you!  Hello! I'm doing well, thank you!  Hello!I'm doing well, thank you!  Hello!",
-      sender: "me",
-    },
-    {
-      text: "I'm doing well, thank you!  Hello! I'm doing well, thank you!  Hello! I'm doing well, thank you!  Hello!I'm doing well, thank you!  Hello!",
-      sender: "me",
-    },
-    {
-      text: "I'm doing well, thank you!  Hello! I'm doing well, thank you!  Hello! I'm doing well, thank you!  Hello!I'm doing well, thank you!  Hello!",
-      sender: "me",
-    },
-    {
-      text: "I'm doing well, thank you!  Hello! I'm doing well, thank you!  Hello! I'm doing well, thank you!  Hello!I'm doing well, thank you!  Hello!",
-      sender: "guest",
-    },
-  ]);
 
   const scrollViewRef = useRef(null);
 
