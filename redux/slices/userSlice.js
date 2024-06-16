@@ -66,6 +66,9 @@ export const userSlice = createSlice({
     setUser: (state, action) => {
       state.userInfo = action.payload;
     },
+    setUserLoading: (state, action) => {
+      state.loading = action.payload;
+    },
     setUserLocation: (state, action) => {
       console.log("setUserLocation");
       const { longitude, latitude } = action.payload;
