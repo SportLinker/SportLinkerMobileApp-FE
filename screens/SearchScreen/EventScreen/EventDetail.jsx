@@ -153,7 +153,7 @@ const EventDetail = ({ navigation }) => {
         };
         dispatch(getEventList(formData));
         navigation.goBack();
-      }, 4000);
+      }, 3000);
     });
   };
   const handleCancelEventByUser = async () => {
@@ -337,7 +337,7 @@ const EventDetail = ({ navigation }) => {
       <Snackbar
         visible={successMessage !== ""}
         onDismiss={() => setSuccessMessage("")}
-        duration={3000}
+        duration={2000}
         style={styles.snackbarContainer}
       >
         {successMessage}
