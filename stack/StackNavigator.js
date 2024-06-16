@@ -163,6 +163,7 @@ const StackNavigator = () => (
         headerMode: "screen",
         headerStyle: { backgroundColor: "#1646a9" },
         headerTintColor: "white",
+        headerBackTitle: " ",
       }}
     />
     <Stack.Screen
@@ -172,6 +173,7 @@ const StackNavigator = () => (
         title: "",
         headerStyle: { backgroundColor: "#1646a9" },
         headerTintColor: "white",
+        headerBackTitle: " ",
       }}
     />
     <Stack.Screen
@@ -209,6 +211,7 @@ const StackNavigator = () => (
         headerStyle: { backgroundColor: "#1646a9" },
         headerTitleAlign: "center",
         headerTintColor: "white",
+        headerBackTitle: " ",
       }}
     />
     <Stack.Screen

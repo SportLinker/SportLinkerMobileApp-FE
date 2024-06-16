@@ -177,7 +177,7 @@ const CreateSportEventModal = ({ visible, onClose }) => {
             setStep(1);
             onClose();
             dispatch(getListMessage());
-          }, 4000);
+          }, 3000);
         } else {
           if (res.payload.message == "Not found") {
             setFailMessage("Hãy đăng nhập lại !!!");
@@ -274,7 +274,7 @@ const CreateSportEventModal = ({ visible, onClose }) => {
       <Snackbar
         visible={successMessage !== ""}
         onDismiss={() => setSuccessMessage("")}
-        duration={3000}
+        duration={2000}
         style={styles.snackbarContainer}
       >
         {successMessage}
