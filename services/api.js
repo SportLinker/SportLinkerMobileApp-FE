@@ -1,9 +1,9 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// const API_URL = "https://fine-special-ram.ngrok-free.app/v1/api"; // Replace with your IP address
+const API_URL = "https://fine-special-ram.ngrok-free.app/v1/api"; // Replace with your IP address
 // const API_URL = "http://192.168.1.52:8080/v1/api"; // Replace with your IP address
-const API_URL = "http://192.168.1.6:8080/v1/api"; // Replace with your IP address
+// const API_URL = "http://192.168.1.6:8080/v1/api"; // Replace with your IP address
 // const API_URL = "http://192.168.92.184:8080/v1/api"; // Replace with your IP address
 
 export const api = axios.create({

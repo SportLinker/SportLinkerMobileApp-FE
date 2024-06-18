@@ -16,9 +16,40 @@ export const createStadium = createAsyncThunk(
   }
 );
 
+export const getStadiumByOwner = createAsyncThunk(
+  "bookingSlice/getStadiumByOwner",
+  async (_, { rejectWithValue }) => {
+    // console.log("API Response: ", stadiumData);
+    try {
+      const response = await api.get(`/stadiums/getByOnwer`);
+      console.log("API Response: ", response.data.metadata);
+      return response.data.metadata;
+    } catch (error) {
+      console.log("Error: ", JSON.stringify(error.response.data));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const getDetailStadiumById = createAsyncThunk(
+  "bookingSlice/getDetailStadiumById",
+  async (stadiumId, { rejectWithValue }) => {
+    // console.log("API Response: ", stadiumData);
+    try {
+      const response = await api.get(`/stadiums/${stadiumId}`);
+      console.log("API Response: ", response.data.metadata);
+      return response.data.metadata;
+    } catch (error) {
+      console.log("Error: ", JSON.stringify(error.response.data));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const bookingSlice = createSlice({
   name: "bookingSlice",
   initialState: {
+    stadiumList: null,
     stadium: null,
     loading: false,
     error: null,
@@ -35,9 +66,31 @@ export const bookingSlice = createSlice({
       })
       .addCase(createStadium.fulfilled, (state, action) => {
         state.loading = false;
-        state.stadium = action.payload;
+        // state.stadium = action.payload;
       })
       .addCase(createStadium.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getStadiumByOwner.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getStadiumByOwner.fulfilled, (state, action) => {
+        state.loading = false;
+        state.stadiumList = action.payload;
+      })
+      .addCase(getStadiumByOwner.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getDetailStadiumById.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getDetailStadiumById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.stadium = action.payload;
+      })
+      .addCase(getDetailStadiumById.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
