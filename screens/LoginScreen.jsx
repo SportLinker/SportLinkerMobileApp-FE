@@ -13,11 +13,12 @@ import {
 import { TextInput, Button, Divider, Snackbar } from "react-native-paper";
 import { screenHeight, screenWidth } from "../component/style";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../redux/slices/userSlice";
+import userSlice, { login } from "../redux/slices/userSlice";
 import { api } from "../services/api";
 import { createEvent } from "../redux/slices/eventSlice";
 import { getUserLoadingSelector } from "../redux/selectors";
 import Loading from "../component/Loading";
+import { useEffect } from "react";
 
 const LoginScreen = ({ navigation }) => {
   const [loginForm, setLoginForm] = useState({
@@ -31,6 +32,10 @@ const LoginScreen = ({ navigation }) => {
   const loadingSelector = useSelector(getUserLoadingSelector);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(userSlice.actions.setUserLoading(false));
+  }, []);
 
   const handleLogin = async () => {
     console.log("handleLogin");
