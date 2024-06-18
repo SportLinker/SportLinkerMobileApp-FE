@@ -4,7 +4,7 @@ import EventScheduleTable from "./EventScheduleTable";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Location from "expo-location";
-import { getEventList } from "../../../redux/slices/eventSlice";
+import eventSlice, { getEventList } from "../../../redux/slices/eventSlice";
 import { DEFAULT_DISTACNCE, sports } from "../../../utils/constant";
 import {
   getEventListSelector,
@@ -59,6 +59,7 @@ const EventSchedule = () => {
   useEffect(() => {
     console.log("get permission");
     const getLocationPermission = async () => {
+      dispatch(eventSlice.actions.setLoading(true));
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
         setErrorMsg("Permission to access location was denied");
@@ -86,6 +87,8 @@ const EventSchedule = () => {
         }
       }
     };
+    dispatch(eventSlice.actions.setLoading(false));
+
     getLocationPermission();
   }, []);
 
