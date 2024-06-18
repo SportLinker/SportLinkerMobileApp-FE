@@ -26,31 +26,66 @@ export function formatCurrency(amount, currency = "USD", locale = "en-US") {
 
   return formatter.format(amount);
 }
-
 export function calculateEventTimes(eventDate, eventTime, duration) {
-  // Chuyển đổi eventDate và eventTime sang đối tượng Date
-  const [day, month, year] = eventDate.split("/");
-  const [time, period] = eventTime.split(" ");
+  // Clean up input strings
+  const cleanedEventDate = eventDate.trim();
+  const cleanedEventTime = eventTime.trim().replace(/\u202F/g, " "); // Replace non-breaking spaces
+
+  // Debugging checks
+  console.log(`Cleaned Event Date: ${cleanedEventDate}`);
+  console.log(`Cleaned Event Time: ${cleanedEventTime}`);
+  console.log(`Duration: ${duration}`);
+
+  // Parse eventDate (expected format: MM/DD/YYYY)
+  const [month, day, year] = cleanedEventDate.split("/").map(Number);
+
+  // Parse eventTime (expected format: hh:mm AM/PM)
+  const [time, period] = cleanedEventTime.split(" ");
   let [hours, minutes] = time.split(":").map(Number);
 
-  // Chuyển đổi thời gian AM/PM sang 24 giờ
+  // Debugging checks
+  console.log(`Parsed Date: Year ${year}, Month ${month}, Day ${day}`);
+  console.log(
+    `Parsed Time: Hours ${hours}, Minutes ${minutes}, Period ${period}`
+  );
+
+  // Validate date components
+  if (isNaN(year) || isNaN(month) || isNaN(day)) {
+    throw new Error("Invalid date components");
+  }
+
+  // Validate time components
+  if (isNaN(hours) || isNaN(minutes) || !period) {
+    throw new Error("Invalid time components");
+  }
+
+  // Convert 12-hour time to 24-hour time
   if (period === "PM" && hours < 12) {
     hours += 12;
-  }
-  if (period === "AM" && hours === 12) {
+  } else if (period === "AM" && hours === 12) {
     hours = 0;
   }
 
-  // Tạo đối tượng Date cho thời gian bắt đầu
+  // Validate hour and minute ranges
+  if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {
+    throw new Error("Invalid time range");
+  }
+
+  // Create Date object for start time
   const startDate = new Date(year, month - 1, day, hours, minutes);
 
-  // Tạo đối tượng Date cho thời gian kết thúc bằng cách thêm thời lượng (phút) vào thời gian bắt đầu
-  const endDate = new Date(startDate.getTime() + duration * 60000);
+  // Validate start date
+  if (isNaN(startDate.getTime())) {
+    throw new Error("Invalid start date");
+  }
 
-  // Trả về thời gian bắt đầu và kết thúc dưới dạng ISO 8601
+  // Calculate end time by adding duration (in minutes)
+  const endTime = new Date(startDate.getTime() + duration * 60000);
+
+  // Return ISO 8601 formatted strings for start and end time
   return {
     start_time: startDate.toISOString(),
-    end_time: endDate.toISOString(),
+    end_time: endTime.toISOString(),
   };
 }
 
