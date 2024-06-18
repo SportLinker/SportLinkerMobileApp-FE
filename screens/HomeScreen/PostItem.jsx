@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Linking,
+  Animated,
 } from "react-native";
 import { Avatar } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -15,7 +16,6 @@ import LoadVideo from "./LoadVideo";
 import LoadImage from "./LoadImage";
 import Autolink from "react-native-autolink";
 import { LinkPreview } from "@flyerhq/react-native-link-preview";
-import { useEffect } from "react";
 
 export default function PostItem({ navigation, index, caption }) {
   const [liked, setLiked] = useState(false);
@@ -34,8 +34,22 @@ export default function PostItem({ navigation, index, caption }) {
     "https://res.cloudinary.com/dcbsbl9zg/video/upload/v1716902043/Test/8b665e16-8e46-4fab-91da-8bacd2b2f7b3_mykxqt.mp4",
   ];
 
+  const scaleAnim = useRef(new Animated.Value(1)).current;
+
   const handleToggleLike = () => {
     setLiked(!liked);
+    Animated.sequence([
+      Animated.timing(scaleAnim, {
+        toValue: 1.2,
+        duration: 150,
+        useNativeDriver: true,
+      }),
+      Animated.timing(scaleAnim, {
+        toValue: 1,
+        duration: 150,
+        useNativeDriver: true,
+      }),
+    ]).start();
   };
 
   useEffect(() => {
@@ -104,7 +118,7 @@ export default function PostItem({ navigation, index, caption }) {
 
       {(images || listVideo) && (
         <View>
-          {index % 2 == 0 ? (
+          {index % 2 === 0 ? (
             <LoadVideo listVideo={listVideo} />
           ) : (
             <LoadImage listImages={images} />
@@ -115,7 +129,13 @@ export default function PostItem({ navigation, index, caption }) {
       <View style={styles.bottomWrap}>
         <View style={{ flexDirection: "row" }}>
           <TouchableOpacity onPress={handleToggleLike} style={styles.mr5}>
-            <Icon name={liked ? "heart" : "heart-outline"} size={30} />
+            <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
+              <Icon
+                name={liked ? "heart" : "heart-outline"}
+                color={liked ? "#ff3300" : "black"}
+                size={30}
+              />
+            </Animated.View>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => setModalVisible(true)}
