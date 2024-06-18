@@ -128,3 +128,16 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Ignore credentials.json
+credentials.json
+
+# Android build directories and IDE files
+/android/app/build/
+/android/.gradle/
+/android/.idea/
+/android/local.properties
+/android/*.iml
+
+# Ignore keystore file if it's located in the android directory
+/android/keystore.jks
