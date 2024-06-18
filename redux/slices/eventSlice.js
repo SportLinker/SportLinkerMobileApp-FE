@@ -126,6 +126,9 @@ export const eventSlice = createSlice({
     setUser: (state, action) => {
       state.userInfo = action.payload;
     },
+    setLoading: (state, action) => {
+      state.loading = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
