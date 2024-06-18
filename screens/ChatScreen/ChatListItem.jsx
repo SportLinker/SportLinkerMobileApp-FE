@@ -2,10 +2,24 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import React from "react";
 import { Avatar } from "react-native-paper";
 import { convertTo12HourFormat } from "../../utils";
+import { useDispatch } from "react-redux";
+import messageSlice, {
+  getMessageDetail,
+} from "../../redux/slices/messageSlice";
 
 export default function ChatListItem({ seen, navigation, chatItem }) {
+  const dispatch = useDispatch();
   return (
-    <TouchableOpacity onPress={() => navigation.navigate("ChatDetailScreen")}>
+    <TouchableOpacity
+      onPress={() => {
+        dispatch(getMessageDetail(chatItem.group_message_id)).then((res) => {
+          navigation.navigate("ChatDetailScreen");
+          dispatch(
+            messageSlice.actions.setGroupMessageID(chatItem.group_message_id)
+          );
+        });
+      }}
+    >
       <View style={styles.chatItem}>
         <Avatar.Image
           size={45}
@@ -29,7 +43,9 @@ export default function ChatListItem({ seen, navigation, chatItem }) {
           </View>
           <Text
             style={
-              seen ? styles.textContent : [styles.textContent, styles.seen]
+              chatItem.is_seen
+                ? styles.textContent
+                : [styles.textContent, styles.seen]
             }
             numberOfLines={1}
           >

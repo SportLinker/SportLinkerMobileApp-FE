@@ -12,38 +12,24 @@ import {
 import React, { useState, useRef, useEffect } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Avatar, FAB } from "react-native-paper";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getMessageDetail,
+  sendMessageByUser,
+} from "../../redux/slices/messageSlice";
 
 export default function ChatDetail({ navigation }) {
+  const { chatDetail, group_message_id, loading, error } = useSelector(
+    (state) => state.messageSlice
+  );
+  const dispatch = useDispatch();
   const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([
-    { text: "hello", sender: "guest" },
-    {
-      text: "I'm doing well, thank you!  Hello! I'm doing well, thank you!  Hello! I'm doing well, thank you!  Hello!I'm doing well, thank you!  Hello!",
-      sender: "me",
-    },
-    {
-      text: "I'm doing well, thank you!  Hello! I'm doing well, thank you!  Hello! I'm doing well, thank you!  Hello!I'm doing well, thank you!  Hello!",
-      sender: "me",
-    },
-    {
-      text: "I'm doing well, thank you!  Hello! I'm doing well, thank you!  Hello! I'm doing well, thank you!  Hello!I'm doing well, thank you!  Hello!",
-      sender: "me",
-    },
-    {
-      text: "I'm doing well, thank you!  Hello! I'm doing well, thank you!  Hello! I'm doing well, thank you!  Hello!I'm doing well, thank you!  Hello!",
-      sender: "me",
-    },
-    {
-      text: "I'm doing well, thank you!  Hello! I'm doing well, thank you!  Hello! I'm doing well, thank you!  Hello!I'm doing well, thank you!  Hello!",
-      sender: "guest",
-    },
-  ]);
 
   const scrollViewRef = useRef(null);
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [chatDetail]);
 
   const scrollToBottom = () => {
     if (scrollViewRef.current) {
@@ -53,9 +39,16 @@ export default function ChatDetail({ navigation }) {
 
   const sendMessage = () => {
     if (message.trim() !== "") {
-      setMessages([...messages, { text: message, sender: "me" }]);
-      setMessage("");
-      Keyboard.dismiss();
+      dispatch(
+        sendMessageByUser({
+          group_message_id: group_message_id,
+          content: message,
+        })
+      ).then((res) => {
+        setMessage("");
+        dispatch(getMessageDetail(group_message_id));
+        Keyboard.dismiss();
+      });
     }
   };
 
@@ -88,24 +81,27 @@ export default function ChatDetail({ navigation }) {
           contentContainerStyle={{ paddingTop: 20 }}
           onLayout={scrollToBottom} // Scroll to the end when ScrollView is rendered
         >
-          {messages.map((msg, index) => (
-            <View
-              key={index}
-              style={
-                msg.sender === "me"
-                  ? [styles.message, styles.myMessage]
-                  : [styles.message, styles.guestMessage]
-              }
-            >
-              <Text
+          {chatDetail
+            .slice()
+            .reverse()
+            .map((msg, index) => (
+              <View
+                key={msg.message_id}
                 style={
-                  msg.sender === "me" ? { color: "white" } : { color: "black" }
+                  msg.is_me === true
+                    ? [styles.message, styles.myMessage]
+                    : [styles.message, styles.guestMessage]
                 }
               >
-                {msg.text}
-              </Text>
-            </View>
-          ))}
+                <Text
+                  style={
+                    msg.is_me === true ? { color: "white" } : { color: "black" }
+                  }
+                >
+                  {msg.content}
+                </Text>
+              </View>
+            ))}
         </ScrollView>
       </View>
       <KeyboardAvoidingView
