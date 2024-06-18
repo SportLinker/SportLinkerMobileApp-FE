@@ -20,9 +20,9 @@ import { createEvent, getEventList } from "../../../redux/slices/eventSlice";
 import { useNavigation } from "@react-navigation/native";
 import { getListMessage } from "../../../redux/slices/messageSlice";
 import { getUserSelector } from "../../../redux/selectors";
-import { DEFAULT_DISTACNCE } from "../../../utils/constant";
+import { DEFAULT_DISTACNCE, getSportObj } from "../../../utils/constant";
 
-const CreateSportEventModal = ({ visible, onClose }) => {
+const CreateSportEventModal = ({ visible, onClose, eventDetail }) => {
   const getUserInfo = useSelector(getUserSelector);
   const [step, setStep] = React.useState(1);
   const [successMessage, setSuccessMessage] = useState("");
@@ -31,23 +31,55 @@ const CreateSportEventModal = ({ visible, onClose }) => {
   const { navigate } = useNavigation();
   const dispatch = useDispatch();
 
-  const initialValues = {
-    eventName: "",
-    clubName: "",
-    eventDate: new Date(),
-    eventTime: (() => {
-      const time = new Date();
-      time.setHours(7, 0, 0, 0); // Đặt giờ là 7:00 sáng
-      return time;
-    })(),
-    duration: "",
-    selectedSport: null,
-    participants: 0,
-    budget: 0,
-    note: "",
-    searchQuery: "",
-    selectedLocation: null,
+  //Get duration time from start time and end time
+  const getDurationTime = (startTime, endTime) => {
+    const time1 = new Date(startTime);
+    const time2 = new Date(endTime);
+    let durationInMilliseconds = Math.abs(time2 - time1);
+    let durationInMinutes = durationInMilliseconds / (1000 * 60);
+    console.log(durationInMinutes);
+    return durationInMinutes;
   };
+
+  const initialValues = eventDetail
+    ? {
+        eventName: eventDetail.match_name,
+        clubName: "",
+        eventDate: new Date(eventDetail.start_time),
+        eventTime: (() => {
+          const time = new Date(eventDetail.start_time);
+          return time;
+        })(),
+        duration:
+          getDurationTime(eventDetail?.start_time, eventDetail?.end_time) + "",
+        selectedSport: getSportObj(eventDetail?.sport_name),
+        participants: eventDetail?.maximum_join + "",
+        budget: eventDetail?.option?.budget + "",
+        note: "",
+        searchQuery: "",
+        selectedLocation: {
+          cid: eventDetail?.place_detail?.cid,
+          address: eventDetail?.place_detail?.address,
+          title: eventDetail?.place_detail?.title,
+        },
+      }
+    : {
+        eventName: "",
+        clubName: "",
+        eventDate: new Date(),
+        eventTime: (() => {
+          const time = new Date();
+          time.setHours(7, 0, 0, 0); // Đặt giờ là 7:00 sáng
+          return time;
+        })(),
+        duration: "",
+        selectedSport: null,
+        participants: 0,
+        budget: 0,
+        note: "",
+        searchQuery: "",
+        selectedLocation: null,
+      };
 
   const validationSchemaStepOne = Yup.object().shape({
     eventName: Yup.string().required("Hãy chọn tên sự kiện"),
