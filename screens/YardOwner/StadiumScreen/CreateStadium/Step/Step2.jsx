@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
+  ScrollView,
 } from "react-native";
 import { Searchbar } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -49,6 +50,21 @@ const Step2 = ({
 
   return (
     <View>
+      <View style={styles.navigationButtons}>
+        <TouchableOpacity onPress={previousStep} style={styles.buttonContainer}>
+          <View style={styles.button}>
+            <Text style={styles.buttonLabel}>Quay lại</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={validateStep2}
+          style={styles.buttonContainer}
+        >
+          <View style={styles.button}>
+            <Text style={styles.buttonLabel}>Tiếp theo</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
       <Searchbar
         placeholder="Địa chỉ Sân Vận Động"
         value={stadiumData.stadium_address}
@@ -69,6 +85,7 @@ const Step2 = ({
       />
       {isLoading && <ActivityIndicator size="large" color="#0000ff" />}
       <FlatList
+        scrollEnabled
         data={locations}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
@@ -85,21 +102,6 @@ const Step2 = ({
           />
         )}
       />
-      <View style={styles.navigationButtons}>
-        <TouchableOpacity onPress={previousStep} style={styles.buttonContainer}>
-          <View style={styles.button}>
-            <Text style={styles.buttonLabel}>Quay lại</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={validateStep2}
-          style={styles.buttonContainer}
-        >
-          <View style={styles.button}>
-            <Text style={styles.buttonLabel}>Tiếp theo</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
     </View>
   );
 };
