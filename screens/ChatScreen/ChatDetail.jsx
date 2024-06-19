@@ -165,9 +165,9 @@ const styles = StyleSheet.create({
   chatBody: {
     flex: 1,
     backgroundColor: "#FDFDFD",
-    borderRadius: 40,
-    borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0,
+    // borderRadius: 40,
+    // borderBottomLeftRadius: 0,
+    // borderBottomRightRadius: 0,
     paddingHorizontal: 10,
     marginTop: -45,
   },
