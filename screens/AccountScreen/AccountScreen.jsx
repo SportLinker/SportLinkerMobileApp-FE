@@ -13,6 +13,8 @@ import { Avatar, Snackbar } from "react-native-paper";
 import { styles } from "../../component/style";
 import Profile from "./Profile";
 import MyPost from "./MyPost";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import Recharge from "./Recharge/Recharge";
 
 const fakeData = [
   {
@@ -113,10 +115,8 @@ export default function AccountScreen() {
             <Text style={{ marginTop: 5, fontWeight: "bold" }}>
               Nam ● Người lớn
             </Text>
-            <Text style={{ marginTop: 5, color: "#707070" }}>
-              Nói đôi điều về bạn
-            </Text>
           </View>
+          <Recharge />
         </View>
 
         <View style={styles.tabView}>
