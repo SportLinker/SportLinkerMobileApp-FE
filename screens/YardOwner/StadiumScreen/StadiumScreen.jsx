@@ -1,9 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   SafeAreaView,
   StyleSheet,
-  ActivityIndicator,
   View,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,7 +11,6 @@ import { getByOwner, getLoading } from "../../../redux/selectors";
 import { getStadiumByOwner } from "../../../redux/slices/bookingSlice";
 import NoStadiumScreen from "./InfoStadium/NoStadiumScreen";
 import StadiumList from "./StadiumList/StadiumList";
-import { FAB } from "react-native-paper";
 
 const StadiumScreen = () => {
   const navigation = useNavigation();
@@ -32,11 +31,6 @@ const StadiumScreen = () => {
       setStadiumList(stadium);
     }
   }, [stadium]);
-
-  const handleAddStadium = () => {
-    // Navigate to the screen for adding a new stadium
-    navigation.navigate("Create");
-  };
 
   return (
     <SafeAreaView style={styles.container}>
