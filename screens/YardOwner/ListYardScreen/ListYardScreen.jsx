@@ -2,14 +2,12 @@ import * as ImagePicker from "expo-image-picker";
 import React, { useEffect, useState } from "react";
 import {
   Button,
-  Image,
   KeyboardAvoidingView,
   Modal,
   Platform,
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
   View,
@@ -23,40 +21,36 @@ const ListYardScreen = () => {
   const [filterOptions, setFilterOptions] = useState({ status: "all" });
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [newYard, setNewYard] = useState({
-    image: "",
-    yardName: "",
-    description: "",
-    address: "",
-    openTime: "",
-    openDay: "",
-    price: "",
-    status: "active", // Default status
+    yard_name: "",
+    yard_description: "",
+    yard_sport: "",
+    price_per_hour: "",
   });
-  const [currentStep, setCurrentStep] = useState(1);
+  // const [currentStep, setCurrentStep] = useState(1);
 
-  useEffect(() => {
-    (async () => {
-      if (Platform.OS !== "web") {
-        const { status } =
-          await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if (status !== "granted") {
-          alert("Sorry, we need camera roll permissions to make this work!");
-        }
-      }
-    })();
-  }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     if (Platform.OS !== "web") {
+  //       const { status } =
+  //         await ImagePicker.requestMediaLibraryPermissionsAsync();
+  //       if (status !== "granted") {
+  //         alert("Sorry, we need camera roll permissions to make this work!");
+  //       }
+  //     }
+  //   })();
+  // }, []);
 
   // Helper function to validate phone number
 
-  // Function to go to the next step
-  const goToNextStep = () => {
-    setCurrentStep(currentStep + 1);
-  };
+  // // Function to go to the next step
+  // const goToNextStep = () => {
+  //   setCurrentStep(currentStep + 1);
+  // };
 
-  // Function to go to the previous step
-  const goToPreviousStep = () => {
-    setCurrentStep(currentStep - 1);
-  };
+  // // Function to go to the previous step
+  // const goToPreviousStep = () => {
+  //   setCurrentStep(currentStep - 1);
+  // };
 
   // Filter data based on filter options
   const filteredData = listYardData.filter((item) => {
@@ -67,7 +61,6 @@ const ListYardScreen = () => {
   // Function to handle adding a new yard
   const handleAddNewYard = () => {
     setIsModalVisible(true);
-    setCurrentStep(1); // Reset current step when opening modal
   };
 
   // Function to handle saving a new yard
@@ -76,30 +69,26 @@ const ListYardScreen = () => {
     // console.log(listYardData);
     setIsModalVisible(false);
     setNewYard({
-      image: "",
-      yardName: "",
-      description: "",
-      address: "",
-      openTime: "",
-      openDay: "",
-      price: "",
-      status: "active", // Reset default status
+      yard_name: "",
+      yard_description: "",
+      yard_sport: "",
+      price_per_hour: "",
     });
   };
 
   // Function to pick an image from the library
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
+  // const pickImage = async () => {
+  //   let result = await ImagePicker.launchImageLibraryAsync({
+  //     mediaTypes: ImagePicker.MediaTypeOptions.All,
+  //     allowsEditing: true,
+  //     aspect: [4, 3],
+  //     quality: 1,
+  //   });
 
-    if (!result.canceled) {
-      setNewYard({ ...newYard, image: result.assets[0].uri });
-    }
-  };
+  //   if (!result.canceled) {
+  //     setNewYard({ ...newYard, image: result.assets[0].uri });
+  //   }
+  // };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -123,78 +112,48 @@ const ListYardScreen = () => {
         >
           <View style={styles.modalContainer}>
             <View style={styles.modalView}>
-              {currentStep === 1 && (
-                <>
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Tên Sân"
-                    value={newYard.yardName}
-                    onChangeText={(text) =>
-                      setNewYard({ ...newYard, yardName: text })
-                    }
+              <>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Tên Sân"
+                  value={newYard.yard_name}
+                  onChangeText={(text) =>
+                    setNewYard({ ...newYard, yard_name: text })
+                  }
+                />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Giới thiệu"
+                  value={newYard.yard_description}
+                  onChangeText={(text) =>
+                    setNewYard({ ...newYard, yard_description: text })
+                  }
+                />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Giờ mở cửa"
+                  value={newYard.openTime}
+                  onChangeText={(text) =>
+                    setNewYard({ ...newYard, openTime: text })
+                  }
+                />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Giá Thuê (ngàn VNĐ)/giờ"
+                  value={newYard.price_per_hour}
+                  keyboardType="numeric"
+                  onChangeText={(text) =>
+                    setNewYard({ ...newYard, price_per_hour: text })
+                  }
+                />
+                <View style={styles.buttonContainer}>
+                  <Button
+                    title="Thoát"
+                    onPress={() => setIsModalVisible(false)}
                   />
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Giới thiệu"
-                    value={newYard.description}
-                    onChangeText={(text) =>
-                      setNewYard({ ...newYard, description: text })
-                    }
-                  />
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Giờ mở cửa"
-                    value={newYard.openTime}
-                    onChangeText={(text) =>
-                      setNewYard({ ...newYard, openTime: text })
-                    }
-                  />
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Ngày hoạt động (Chọn Thứ Hai/Thứ Ba/Thứ Tư/Thứ Năm/Thứ Sáu/Thứ Bảy/Chủ Nhật)"
-                    value={newYard.openDay}
-                    onChangeText={(text) =>
-                      setNewYard({ ...newYard, openDay: text })
-                    }
-                  />
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Giá Thuê (ngàn VNĐ)/giờ"
-                    value={newYard.price}
-                    keyboardType="numeric"
-                    onChangeText={(text) =>
-                      setNewYard({ ...newYard, price: text })
-                    }
-                  />
-                  <View style={styles.buttonContainer}>
-                    <Button
-                      title="Thoát"
-                      onPress={() => setIsModalVisible(false)}
-                    />
-                    <Button title="Tiếp tục" onPress={goToNextStep} />
-                  </View>
-                </>
-              )}
-              {currentStep === 2 && (
-                <>
-                  <TouchableOpacity
-                    onPress={pickImage}
-                    style={styles.imagePickerButton}
-                  >
-                    <Text style={styles.imagePickerButtonText}>Chọn Ảnh</Text>
-                  </TouchableOpacity>
-                  {newYard.image && (
-                    <Image
-                      source={{ uri: newYard.image }}
-                      style={styles.pickedImage}
-                    />
-                  )}
-                  <View style={styles.buttonContainer}>
-                    <Button title="Quay lại" onPress={goToPreviousStep} />
-                    <Button title="Hoàn thành" onPress={handleSaveNewYard} />
-                  </View>
-                </>
-              )}
+                  <Button title="Tạo" onPress={handleSaveNewYard} />
+                </View>
+              </>
             </View>
           </View>
         </KeyboardAvoidingView>

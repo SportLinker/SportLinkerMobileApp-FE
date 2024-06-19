@@ -4,6 +4,7 @@ import storage from "@react-native-async-storage/async-storage";
 import { persistReducer, persistStore } from "redux-persist";
 import { eventSlice } from "./slices/eventSlice";
 import { messageSlice } from "./slices/messageSlice";
+import { bookingSlice } from "./slices/bookingSlice";
 
 const rootPersistConfig = {
   key: "root",
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   userSlice: userSlice.reducer,
   eventSlice: eventSlice.reducer,
   messageSlice: messageSlice.reducer,
+  bookingSlice: bookingSlice.reducer,
 
   //add more reducer here
   //...

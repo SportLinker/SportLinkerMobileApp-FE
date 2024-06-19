@@ -9,3 +9,8 @@ export const getEventLoadingtSelector = (state) => state.eventSlice.loading;
 
 // MESSAGE / CHAT
 export const getListMessageSelector = (state) => state.messageSlice;
+
+//YARD OWNER
+export const getByOwner = (state) => state.bookingSlice.stadiumList;
+export const getDetailByOwner = (state) => state.bookingSlice.stadium;
+export const getLoading = (state) => state.bookingSlice.loading;

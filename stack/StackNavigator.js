@@ -20,22 +20,22 @@ import DetailYardScreen from "../screens/SearchScreen/YardScreen/DetailYardScree
 import DetailTransaction from "../screens/WalletScreen/DetailTransaction";
 import WalletHome from "../screens/WalletScreen/WalletHomeScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
+import InfoYard from "../screens/YardOwner/ListYardScreen/InfoYard/InfoYard";
 import ListYardScreen from "../screens/YardOwner/ListYardScreen/ListYardScreen";
 import BookingScreen from "../screens/YardOwner/OrderYardScreen/BookingScreen";
 import CreateBookingScreen from "../screens/YardOwner/OrderYardScreen/CreateBookingScreen";
 import OrderYardScreen from "../screens/YardOwner/OrderYardScreen/OrderYardScreen";
 import RatingYardItem from "../screens/YardOwner/RatingYardScreen/RatingYardItem";
 import RatingYardList from "../screens/YardOwner/RatingYardScreen/RatingYardList";
+import InfoStadium from "../screens/YardOwner/StadiumScreen/InfoStadium/InfoStadium";
 import ScheduleYardScreen from "../screens/YardOwner/ScheduleYardScreen/ScheduleYardScreen";
+import CreateStadium from "../screens/YardOwner/StadiumScreen/CreateStadium/CreateStadium";
+import StadiumScreen from "../screens/YardOwner/StadiumScreen/StadiumScreen";
 import WithDrawScreen from "../screens/YardOwner/WithDrawScreen";
 import BottomTabCoachNavigator from "../tabs/BottomTabCoachNavigator";
 import BottomTabNavigator from "../tabs/BottomTabNavigator";
 import BottomTabYardOwnerNavigator from "../tabs/BottomTabYardOwnerNavigator";
 import EventDetailTabs from "../tabs/EventDetailTabs";
-import StadiumScreen from "../screens/YardOwner/StadiumScreen/StadiumScreen";
-import CreateStadium from "../screens/YardOwner/StadiumScreen/CreateStadium/CreateStadium";
-import NoStadiumScreen from "../screens/YardOwner/StadiumScreen/InfoStadium/NoStadiumScreen";
-import InfoYard from "../screens/YardOwner/ListYardScreen/InfoYard/InfoYard";
 
 const Stack = createStackNavigator();
 
@@ -339,6 +339,17 @@ const StackNavigator = () => (
       component={InfoYard}
       options={{
         title: "Thông tin sân",
+        headerStyle: { backgroundColor: "#1646a9" },
+        headerTitleAlign: "center",
+        headerTintColor: "white",
+        headerBackTitle: " ",
+      }}
+    />
+    <Stack.Screen
+      name="InfoStadium"
+      component={InfoStadium}
+      options={{
+        title: "Chi tiết sân",
         headerStyle: { backgroundColor: "#1646a9" },
         headerTitleAlign: "center",
         headerTintColor: "white",
