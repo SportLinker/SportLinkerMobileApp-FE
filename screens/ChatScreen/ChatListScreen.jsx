@@ -24,10 +24,6 @@ export default function ChatListScreen({ navigation }) {
     dispatch(getListMessage());
   }, [dispatch]);
 
-  if (error) {
-    return <Text>Error: {error}</Text>;
-  }
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.chatHeader}>
@@ -94,9 +90,9 @@ const styles = StyleSheet.create({
   chatBody: {
     flex: 1,
     backgroundColor: "#FDFDFD",
-    borderRadius: 40,
-    borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0,
+    // borderRadius: 40,
+    // borderBottomLeftRadius: 0,
+    // borderBottomRightRadius: 0,
     paddingTop: 30,
     paddingHorizontal: 10,
     marginTop: -45,
