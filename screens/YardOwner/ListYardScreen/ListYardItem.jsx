@@ -25,7 +25,7 @@ const ListYardItem = ({ data }) => {
             })
           }
         >
-          <View>
+          {/* <View>
             {yard.image ? (
               <Image source={{ uri: yard.image }} style={styles.imageYard} />
             ) : (
@@ -33,7 +33,7 @@ const ListYardItem = ({ data }) => {
                 <Text style={styles.placeholderText}>No Image</Text>
               </View>
             )}
-          </View>
+          </View> */}
           <View
             style={{
               display: "flex",

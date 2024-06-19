@@ -6,6 +6,11 @@ import * as ImagePicker from "expo-image-picker";
 import Step1 from "./Step/Step1";
 import Step2 from "./Step/Step2";
 import Step3 from "./Step/Step3";
+import { useDispatch } from "react-redux";
+import {
+  createStadium,
+  getStadiumByOwner,
+} from "../../../../redux/slices/bookingSlice";
 
 const fetchLocationData = async (query, setIsLoading, setLocations) => {
   setIsLoading(true);
@@ -37,11 +42,12 @@ const fetchLocationData = async (query, setIsLoading, setLocations) => {
 
 const CreateStadium = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const [stadiumData, setStadiumData] = useState({
     stadium_name: "",
     stadium_address: "",
-    stadium_thumbnail: null,
+    stadium_thumnail: null,
     stadium_lat: "",
     stadium_long: "",
     stadium_time: "",
@@ -51,6 +57,9 @@ const CreateStadium = () => {
   const [locations, setLocations] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
+
+  // console.log("Type long", typeof stadiumData.stadium_long);
+  // console.log("Type lat", typeof stadiumData.stadium_lat);
 
   const handleSelectImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -64,7 +73,7 @@ const CreateStadium = () => {
       if (result.assets && result.assets.length > 0 && result.assets[0].uri) {
         setStadiumData({
           ...stadiumData,
-          stadium_thumbnail: result.assets[0].uri,
+          stadium_thumnail: result.assets[0].uri,
         });
       } else {
         console.log("Image uri not found in result:", result);
@@ -76,7 +85,10 @@ const CreateStadium = () => {
 
   const handleCreateStadium = () => {
     console.log(stadiumData);
-    navigation.goBack();
+    dispatch(createStadium(stadiumData)).then(() => {
+      dispatch(getStadiumByOwner());
+      navigation.goBack();
+    });
   };
 
   const nextStep = () => {

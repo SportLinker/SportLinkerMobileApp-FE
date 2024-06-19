@@ -10,7 +10,7 @@ const Step3 = ({
   handleCreateStadium,
 }) => {
   //   const validateStep3 = () => {
-  //     if (stadiumData.stadium_thumbnail) {
+  //     if (stadiumData.stadium_thumnail) {
   //       handleCreateStadium();
   //     } else {
   //       alert("Please upload an image of the stadium.");
@@ -22,9 +22,9 @@ const Step3 = ({
         onPress={handleSelectImage}
         style={styles.uploadContainer}
       >
-        {stadiumData.stadium_thumbnail ? (
+        {stadiumData.stadium_thumnail ? (
           <Image
-            source={{ uri: stadiumData.stadium_thumbnail }}
+            source={{ uri: stadiumData.stadium_thumnail }}
             style={styles.thumbnail}
           />
         ) : (
