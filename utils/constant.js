@@ -354,12 +354,19 @@ export const sports = [
   // Add more sports as needed
 ];
 
-// find icon base on label name
+// find icon base on sport name
 export function getSportIcon(sportName) {
   // Tìm môn thể thao trong mảng sports
   const sport = sports.find((s) => s.sport_name === sportName);
 
   return sport ? sport.icon : "soccer";
+}
+
+//find sport onject from sport name
+export function getSportObj(sportName) {
+  const sport = sports.find((s) => s.sport_name === sportName);
+
+  return sport ? sport : null;
 }
 
 export const locations = [

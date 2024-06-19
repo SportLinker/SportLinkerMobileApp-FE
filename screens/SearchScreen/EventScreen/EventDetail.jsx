@@ -28,7 +28,8 @@ import { Dimensions } from "react-native";
 import ConfirmPopup from "../../../component/ConfirmPopup";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Loading from "../../../component/Loading";
-import { DEFAULT_DISTACNCE } from "../../../utils/constant";
+import { DEFAULT_DISTACNCE, getSportIcon } from "../../../utils/constant";
+import CreateSportEventModal from "./CreateSportEventModal";
 
 const fakeData = {
   id: "e1",
@@ -69,6 +70,7 @@ const EventDetail = ({ navigation }) => {
     confirmJoinEventByoinEventByUser,
     setConfirmJoinEventByoinEventByUser,
   ] = useState(false);
+  const [isOpenUpdateModal, setIsOpenUpdateModal] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -212,7 +214,11 @@ const EventDetail = ({ navigation }) => {
           </View>
         </View>
         <View style={styles.itemWrapper}>
-          <Icon name={fakeData.sportType} size={30} color={"black"} />
+          <Icon
+            name={getSportIcon(eventDetail?.sport_name)}
+            size={30}
+            color={"black"}
+          />
 
           <View style={styles.inlineTextWrapper}>
             <Text style={{ fontWeight: "bold", fontSize: 18 }}>
@@ -304,34 +310,48 @@ const EventDetail = ({ navigation }) => {
           </TouchableOpacity>
         )}
         {anttendend ? (
-          <TouchableOpacity onPress={() => setConfirmCancelEventByUser(true)}>
-            <Button
-              style={[styles.floatBtn, { backgroundColor: "#EE0000" }]}
-              labelStyle={[
-                styles.floatBtnLabel,
-                { color: "white", paddingVertical: 10 },
-              ]}
-              mode="contained"
-              rippleColor="#4a69a9"
-            >
-              Hủy tham gia
-            </Button>
-          </TouchableOpacity>
+          eventDetail.is_owner ? (
+            <TouchableOpacity onPress={() => setIsOpenUpdateModal(true)}>
+              <Button
+                style={[styles.floatBtn, { backgroundColor: "#1646A9" }]}
+                labelStyle={[
+                  styles.floatBtnLabel,
+                  { color: "white", paddingVertical: 10 },
+                ]}
+                mode="contained"
+                rippleColor="#4a69a9"
+              >
+                Chỉnh sửa sự kiện
+              </Button>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity onPress={() => setConfirmCancelEventByUser(true)}>
+              <Button
+                style={[styles.floatBtn, { backgroundColor: "#EE0000" }]}
+                labelStyle={[
+                  styles.floatBtnLabel,
+                  { color: "white", paddingVertical: 10 },
+                ]}
+                mode="contained"
+                rippleColor="#4a69a9"
+              >
+                Hủy tham gia
+              </Button>
+            </TouchableOpacity>
+          )
         ) : (
-          <TouchableOpacity>
-            <Button
-              style={[styles.floatBtn, { backgroundColor: "#1646A9" }]}
-              labelStyle={[
-                styles.floatBtnLabel,
-                { color: "white", paddingVertical: 10 },
-              ]}
-              mode="contained"
-              rippleColor="#4a69a9"
-              onPress={() => setConfirmJoinEventByoinEventByUser(true)}
-            >
-              Yêu cầu tham gia
-            </Button>
-          </TouchableOpacity>
+          <Button
+            style={[styles.floatBtn, { backgroundColor: "#1646A9" }]}
+            labelStyle={[
+              styles.floatBtnLabel,
+              { color: "white", paddingVertical: 10 },
+            ]}
+            mode="contained"
+            rippleColor="#4a69a9"
+            onPress={() => setConfirmJoinEventByoinEventByUser(true)}
+          >
+            Yêu cầu tham gia
+          </Button>
         )}
       </View>
       <Snackbar
@@ -365,6 +385,11 @@ const EventDetail = ({ navigation }) => {
         type={"success"}
         onConfirm={handleJoinEvent}
         onCancel={() => setConfirmJoinEventByoinEventByUser(false)}
+      />
+      <CreateSportEventModal
+        visible={isOpenUpdateModal}
+        onClose={() => setIsOpenUpdateModal(false)}
+        eventDetail={eventDetail}
       />
     </View>
   );
