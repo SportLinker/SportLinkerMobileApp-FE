@@ -37,6 +37,8 @@ export default function ChatDetail({ navigation }) {
     }
   };
 
+  console.log("chatDetail: " + JSON.stringify(chatDetail.group_message_detail));
+
   const sendMessage = () => {
     if (message.trim() !== "") {
       dispatch(
@@ -65,12 +67,14 @@ export default function ChatDetail({ navigation }) {
             <Avatar.Image
               size={60}
               source={{
-                uri: "https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcQlj3rCfLHry58AtJ8ZyBEAFPtChMddDSUSjt7C7nV3Nhsni9RIx5b0-n7LxfgerrPS6b-P-u3BOM3abuY",
+                uri: chatDetail.group_message_detail.group_message_thumnail,
               }}
               style={{ marginRight: 10 }}
             />
             <View>
-              <Text style={styles.userName}>Tài Võ</Text>
+              <Text style={styles.userName}>
+                {chatDetail.group_message_detail.group_message_name}
+              </Text>
               <Text style={styles.userActive}>Đang hoạt động</Text>
             </View>
           </View>
@@ -81,7 +85,7 @@ export default function ChatDetail({ navigation }) {
           contentContainerStyle={{ paddingTop: 20 }}
           onLayout={scrollToBottom} // Scroll to the end when ScrollView is rendered
         >
-          {chatDetail
+          {chatDetail.messages
             .slice()
             .reverse()
             .map((msg, index) => (
