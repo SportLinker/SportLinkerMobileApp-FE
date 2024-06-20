@@ -7,20 +7,24 @@ import {
   View,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { getByOwner, getLoading } from "../../../redux/selectors";
-import { getStadiumByOwner } from "../../../redux/slices/bookingSlice";
+import {
+  getByOwnerSelector,
+  getLoadingSelector,
+} from "../../../redux/selectors";
 import NoStadiumScreen from "./InfoStadium/NoStadiumScreen";
 import StadiumList from "./StadiumList/StadiumList";
+import { getStadiumByOwner } from "../../../redux/slices/yardSlice";
 
 const StadiumScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const stadium = useSelector(getByOwner);
-  const loading = useSelector(getLoading);
+  const stadium = useSelector(getByOwnerSelector);
+  const loading = useSelector(getLoadingSelector);
 
   const [stadiumList, setStadiumList] = useState([]);
 
-  console.log("stadiumList", stadiumList);
+  // console.log("stadium", stadium);
+  // console.log("stadiumList", stadiumList);
 
   useEffect(() => {
     dispatch(getStadiumByOwner());
