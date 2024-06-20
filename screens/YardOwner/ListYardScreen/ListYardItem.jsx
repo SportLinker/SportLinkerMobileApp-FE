@@ -1,6 +1,6 @@
-import React from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import React from "react";
+import { Text, TouchableOpacity, View } from "react-native";
 import { styles } from "../../../component/style";
 
 const ListYardItem = ({ data }) => {
@@ -25,15 +25,6 @@ const ListYardItem = ({ data }) => {
             })
           }
         >
-          {/* <View>
-            {yard.image ? (
-              <Image source={{ uri: yard.image }} style={styles.imageYard} />
-            ) : (
-              <View style={styles.placeholderImage}>
-                <Text style={styles.placeholderText}>No Image</Text>
-              </View>
-            )}
-          </View> */}
           <View
             style={{
               display: "flex",
