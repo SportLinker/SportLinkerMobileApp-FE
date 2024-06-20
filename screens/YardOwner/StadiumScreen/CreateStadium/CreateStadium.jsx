@@ -1,16 +1,16 @@
-import React, { useState } from "react";
-import { SafeAreaView, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import * as ImagePicker from "expo-image-picker";
-import Step1 from "./Step/Step1";
-import Step2 from "./Step/Step2";
-import Step3 from "./Step/Step3";
+import React, { useState } from "react";
+import { SafeAreaView, StyleSheet } from "react-native";
 import { useDispatch } from "react-redux";
 import {
   createStadium,
   getStadiumByOwner,
-} from "../../../../redux/slices/bookingSlice";
+} from "../../../../redux/slices/yardSlice";
+import Step1 from "./Step/Step1";
+import Step2 from "./Step/Step2";
+import Step3 from "./Step/Step3";
 
 const fetchLocationData = async (query, setIsLoading, setLocations) => {
   setIsLoading(true);
@@ -57,9 +57,6 @@ const CreateStadium = () => {
   const [locations, setLocations] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
-
-  // console.log("Type long", typeof stadiumData.stadium_long);
-  // console.log("Type lat", typeof stadiumData.stadium_lat);
 
   const handleSelectImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
