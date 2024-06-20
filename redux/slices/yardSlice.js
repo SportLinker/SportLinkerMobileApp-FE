@@ -7,6 +7,22 @@ export const createStadium = createAsyncThunk(
     // console.log("API Response: ", stadiumData);
     try {
       const response = await api.post(`/stadiums`, stadiumData);
+      // console.log("API Response: ", response.data);
+      return response.data;
+    } catch (error) {
+      console.log("Error: ", JSON.stringify(error.response.data));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const updateStadium = createAsyncThunk(
+  "yardSlice/updateStadium",
+  async ({ stadium_id, stadiumData }, { rejectWithValue }) => {
+    console.log("stadium_id: ", stadium_id);
+    console.log("API Response: ", stadiumData);
+    try {
+      const response = await api.put(`/stadiums/${stadium_id}`, stadiumData);
       console.log("API Response: ", response.data);
       return response.data;
     } catch (error) {
@@ -19,10 +35,10 @@ export const createStadium = createAsyncThunk(
 export const createYardInStadium = createAsyncThunk(
   "yardSlice/createYardInStadium",
   async ({ stadium_id, yardData }, { rejectWithValue }) => {
-    console.log("API Response: ", stadium_id);
+    // console.log("API Response: ", stadium_id);
     try {
       const response = await api.post(`/yards/${stadium_id}`, yardData);
-      console.log("API Response: ", response.data);
+      // console.log("API Response: ", response.data);
       return response.data;
     } catch (error) {
       console.log("Error: ", JSON.stringify(error.response.data));
@@ -36,7 +52,7 @@ export const getStadiumByOwner = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     // console.log("API Response: ", stadiumData);
     try {
-      const response = await api.get(`/stadiums/getByOnwer`);
+      const response = await api.get(`/stadiums/getByOwner`);
       console.log("API Response: ", response.data);
       return response.data.metadata;
     } catch (error) {
@@ -51,7 +67,7 @@ export const getAllSport = createAsyncThunk(
     // console.log("API Response: ", stadiumData);
     try {
       const response = await api.get(`/sports`);
-      console.log("API Response: ", response.data);
+      // console.log("API Response: ", response.data);
       return response.data.metadata;
     } catch (error) {
       console.log("Error: ", JSON.stringify(error.response.data));
@@ -66,7 +82,7 @@ export const getDetailStadiumById = createAsyncThunk(
     // console.log("API Response: ", stadiumData);
     try {
       const response = await api.get(`/stadiums/${stadiumId}`);
-      console.log("API Response: ", response.data.metadata);
+      // console.log("API Response: ", response.data.metadata);
       return response.data.metadata;
     } catch (error) {
       console.log("Error: ", JSON.stringify(error.response.data));
@@ -99,6 +115,17 @@ export const yardSlice = createSlice({
         // state.stadium = action.payload;
       })
       .addCase(createStadium.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(updateStadium.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateStadium.fulfilled, (state, action) => {
+        state.loading = false;
+        // state.stadium = action.payload;
+      })
+      .addCase(updateStadium.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })

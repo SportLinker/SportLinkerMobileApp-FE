@@ -1,10 +1,10 @@
-import { FontAwesome, Ionicons } from "@expo/vector-icons";
+import { AntDesign, FontAwesome, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Platform, Text, TouchableOpacity, View } from "react-native";
 import { styles } from "../../../../../component/style";
 
-export const ActionButtons = ({ stadiumId }) => {
+export const ActionButtons = ({ stadiumId, stadiumDetail }) => {
   const navigation = useNavigation();
 
   return (
@@ -16,10 +16,10 @@ export const ActionButtons = ({ stadiumId }) => {
     >
       <TouchableOpacity
         style={styles.iconContainer}
-        onPress={() => navigation.navigate("")}
+        // onPress={() => navigation.navigate("")}
       >
         <FontAwesome name="list-ul" size={30} color="black" />
-        <Text>Danh sách sân nhỏ</Text>
+        <Text>Ds sân nhỏ</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.iconContainer}
@@ -34,6 +34,30 @@ export const ActionButtons = ({ stadiumId }) => {
           style={{ paddingBottom: 3 }}
         />
         <Text>Tạo sân nhỏ</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.iconContainer}
+        onPress={() =>
+          navigation.navigate("CreateStadium", {
+            stadiumId: stadiumId,
+            stadiumDetail: stadiumDetail,
+          })
+        }
+      >
+        <AntDesign name="edit" size={30} color="black" />
+        <Text>Cập nhật sân</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.iconContainer}
+        // onPress={() =>
+        //   navigation.navigate("CreateStadium", {
+        //     stadiumId: stadiumId,
+        //     stadiumDetail: stadiumDetail,
+        //   })
+        // }
+      >
+        <AntDesign name="delete" size={30} color="black" />
+        <Text>Xóa sân</Text>
       </TouchableOpacity>
     </View>
   );

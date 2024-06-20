@@ -14,35 +14,38 @@ export default function StadiumList({ stadiumList }) {
   const navigation = useNavigation();
 
   const handleAddStadium = () => {
-    // Navigate to the screen for adding a new stadium
     navigation.navigate("CreateStadium");
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      {stadiumList.map((stadium) => (
-        <TouchableOpacity
-          key={stadium.id}
-          style={styles.card}
-          onPress={() =>
-            navigation.navigate("InfoStadium", { stadiumId: stadium.id })
-          }
-        >
-          <Image
-            source={{
-              uri:
-                stadium.stadium_thumnail ||
-                "https://example.com/default-stadium.jpg",
-            }}
-            style={styles.image}
-          />
-          <View style={styles.infoContainer}>
-            <Text style={styles.name}>{stadium.stadium_name}</Text>
-            <Text style={styles.time}>{stadium.stadium_time}</Text>
-            <Text style={styles.rating}>Rating: {stadium.stadium_rating}</Text>
-          </View>
-        </TouchableOpacity>
-      ))}
+    <>
+      <ScrollView contentContainerStyle={styles.container}>
+        {stadiumList.map((stadium) => (
+          <TouchableOpacity
+            key={stadium.id}
+            style={styles.card}
+            onPress={() =>
+              navigation.navigate("InfoStadium", { stadiumId: stadium.id })
+            }
+          >
+            <Image
+              source={{
+                uri:
+                  stadium.stadium_thumnail ||
+                  "https://example.com/default-stadium.jpg",
+              }}
+              style={styles.image}
+            />
+            <View style={styles.infoContainer}>
+              <Text style={styles.name}>{stadium.stadium_name}</Text>
+              <Text style={styles.time}>{stadium.stadium_time}</Text>
+              <Text style={styles.rating}>
+                Rating: {stadium.stadium_rating}
+              </Text>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
       <FAB
         style={styles.fab}
         small
@@ -50,7 +53,7 @@ export default function StadiumList({ stadiumList }) {
         color="white"
         onPress={handleAddStadium}
       />
-    </ScrollView>
+    </>
   );
 }
 
