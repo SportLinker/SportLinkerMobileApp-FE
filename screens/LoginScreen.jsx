@@ -19,6 +19,7 @@ import { createEvent } from "../redux/slices/eventSlice";
 import { getUserLoadingSelector } from "../redux/selectors";
 import Loading from "../component/Loading";
 import { useEffect } from "react";
+import NotificationComponent from "../component/NotificationComponent";
 
 const LoginScreen = ({ navigation }) => {
   const [loginForm, setLoginForm] = useState({
@@ -32,6 +33,7 @@ const LoginScreen = ({ navigation }) => {
   const loadingSelector = useSelector(getUserLoadingSelector);
 
   const dispatch = useDispatch();
+  const { triggerNotification } = NotificationComponent();
 
   useEffect(() => {
     dispatch(userSlice.actions.setUserLoading(false));
@@ -248,6 +250,15 @@ const LoginScreen = ({ navigation }) => {
               onPress={() => navigation.navigate("BottomTabCoachNavigator")}
             >
               Go to Coach
+            </Button>
+            <Button
+              mode="outlined"
+              style={{ marginBottom: 10 }}
+              onPress={async () => {
+                await triggerNotification("Hello from App.js!");
+              }}
+            >
+              Press to schedule a notification
             </Button>
           </View>
         </ScrollView>
