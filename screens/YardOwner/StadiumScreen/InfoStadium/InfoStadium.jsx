@@ -16,18 +16,21 @@ import { ActionButtons } from "./Section/ActionButtons ";
 import { DetailsSection } from "./Section/DetailsSection";
 import HeaderSection from "./Section/HeaderSection";
 import IntroductionSection from "./Section/IntroductionSection";
+import { Snackbar, useTheme } from "react-native-paper";
 
 const InfoStadium = ({ route }) => {
   const { stadiumId } = route.params;
   const dispatch = useDispatch();
+  const theme = useTheme();
+  const successMessage = route.params?.successMessage;
 
   const [stadiumDetail, setStadiumDetail] = useState(null);
   const [userAvatar, setUserAvatar] = useState(null);
+  const [snackbarVisible, setSnackbarVisible] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
   const stadium = useSelector(getDetailByOwnerSelector);
   const user = useSelector(getUserSelector);
-
-  // console.log("user in stadium", userAvatar);
 
   useEffect(() => {
     dispatch(getDetailStadiumById(stadiumId));
@@ -40,6 +43,13 @@ const InfoStadium = ({ route }) => {
     }
   }, [stadium, user]);
 
+  useEffect(() => {
+    if (successMessage) {
+      setSnackbarMessage(successMessage);
+      setSnackbarVisible(true);
+    }
+  }, [successMessage]);
+
   if (!stadiumDetail) {
     return (
       <View style={styles.loadingContainer}>
@@ -50,12 +60,22 @@ const InfoStadium = ({ route }) => {
   }
 
   return (
-    <ScrollView style={{ backgroundColor: "#fff" }}>
-      <HeaderSection userAvatar={userAvatar} stadiumDetail={stadiumDetail} />
-      <ActionButtons stadiumId={stadiumId} />
-      <IntroductionSection stadiumDetail={stadiumDetail} />
-      <DetailsSection stadiumDetail={stadiumDetail} />
-    </ScrollView>
+    <>
+      <ScrollView style={{ backgroundColor: "#fff" }}>
+        <HeaderSection userAvatar={userAvatar} stadiumDetail={stadiumDetail} />
+        <ActionButtons stadiumId={stadiumId} stadiumDetail={stadiumDetail} />
+        <IntroductionSection stadiumDetail={stadiumDetail} />
+        <DetailsSection stadiumDetail={stadiumDetail} />
+      </ScrollView>
+      <Snackbar
+        visible={snackbarVisible}
+        onDismiss={() => setSnackbarVisible(false)}
+        duration={Snackbar.DURATION_SHORT}
+        style={{ backgroundColor: theme.colors.primary }}
+      >
+        {snackbarMessage}
+      </Snackbar>
+    </>
   );
 };
 

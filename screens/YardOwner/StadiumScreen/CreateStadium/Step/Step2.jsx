@@ -22,6 +22,7 @@ const Step2 = ({
   nextStep,
   previousStep,
   fetchLocationData,
+  stadiumId,
 }) => {
   useEffect(() => {
     if (stadiumData.stadium_address) {
@@ -38,9 +39,10 @@ const Step2 = ({
 
   const validateStep2 = () => {
     if (
-      stadiumData.stadium_address &&
-      stadiumData.stadium_lat &&
-      stadiumData.stadium_long
+      stadiumData.stadium_address
+      // &&
+      // stadiumData.stadium_lat &&
+      // stadiumData.stadium_long
     ) {
       nextStep();
     } else {
@@ -65,6 +67,9 @@ const Step2 = ({
           </View>
         </TouchableOpacity>
       </View>
+      <Text style={styles.text}>
+        Lưu ý: Không thể thay đổi được địa chỉ sau khi đã tạo!!!
+      </Text>
       <Searchbar
         placeholder="Địa chỉ Sân Vận Động"
         value={stadiumData.stadium_address}
@@ -140,6 +145,12 @@ const styles = StyleSheet.create({
     color: "#ffffff",
     fontSize: 16,
     fontWeight: "bold",
+  },
+  text: {
+    fontWeight: "bold",
+    color: "red",
+    textTransform: "uppercase",
+    // textDecorationLine: "underline",
   },
 });
 

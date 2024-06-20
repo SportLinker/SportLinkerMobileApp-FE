@@ -8,6 +8,7 @@ const Step3 = ({
   handleSelectImage,
   previousStep,
   handleCreateStadium,
+  stadiumId,
 }) => {
   //   const validateStep3 = () => {
   //     if (stadiumData.stadium_thumnail) {
@@ -18,6 +19,23 @@ const Step3 = ({
   //   };
   return (
     <View>
+      <View style={styles.navigationButtons}>
+        <TouchableOpacity onPress={previousStep} style={styles.buttonContainer}>
+          <View style={styles.button}>
+            <Text style={styles.buttonLabel}>Quay lại</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={handleCreateStadium}
+          style={styles.buttonContainer}
+        >
+          <View style={styles.button}>
+            <Text style={styles.buttonLabel}>
+              {stadiumId ? "Cập Nhật Sân" : "Tạo Sân"}
+            </Text>
+          </View>
+        </TouchableOpacity>
+      </View>
       <TouchableOpacity
         onPress={handleSelectImage}
         style={styles.uploadContainer}
@@ -34,21 +52,6 @@ const Step3 = ({
           </View>
         )}
       </TouchableOpacity>
-      <View style={styles.navigationButtons}>
-        <TouchableOpacity onPress={previousStep} style={styles.buttonContainer}>
-          <View style={styles.button}>
-            <Text style={styles.buttonLabel}>Quay lại</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={handleCreateStadium}
-          style={styles.buttonContainer}
-        >
-          <View style={styles.button}>
-            <Text style={styles.buttonLabel}>Tạo Sân Vận Động</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
     </View>
   );
 };

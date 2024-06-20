@@ -1,12 +1,15 @@
-import { useNavigation } from "@react-navigation/native";
-import axios from "axios";
-import * as ImagePicker from "expo-image-picker";
 import React, { useState } from "react";
 import { SafeAreaView, StyleSheet } from "react-native";
 import { useDispatch } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
+import * as ImagePicker from "expo-image-picker";
+import { Snackbar, useTheme } from "react-native-paper";
 import {
   createStadium,
+  updateStadium,
   getStadiumByOwner,
+  getDetailStadiumById,
 } from "../../../../redux/slices/yardSlice";
 import Step1 from "./Step/Step1";
 import Step2 from "./Step/Step2";
@@ -40,18 +43,20 @@ const fetchLocationData = async (query, setIsLoading, setLocations) => {
   }
 };
 
-const CreateStadium = () => {
+const CreateStadium = ({ route }) => {
+  const { stadiumId, stadiumDetail = {} } = route.params || {};
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const theme = useTheme();
 
   const [stadiumData, setStadiumData] = useState({
-    stadium_name: "",
-    stadium_address: "",
-    stadium_thumnail: null,
-    stadium_lat: "",
-    stadium_long: "",
-    stadium_time: "",
-    stadium_description: "",
+    stadium_name: stadiumDetail.stadium_name || "",
+    stadium_address: stadiumDetail.stadium_address || "",
+    stadium_thumnail: stadiumDetail.stadium_thumnail || "",
+    stadium_lat: stadiumDetail.stadium_lat || "",
+    stadium_long: stadiumDetail.stadium_long || "",
+    stadium_time: stadiumDetail.stadium_time,
+    stadium_description: stadiumDetail.stadium_description || "",
   });
 
   const [locations, setLocations] = useState([]);
@@ -80,20 +85,69 @@ const CreateStadium = () => {
     }
   };
 
-  const handleCreateStadium = () => {
-    console.log(stadiumData);
-    dispatch(createStadium(stadiumData)).then(() => {
-      dispatch(getStadiumByOwner());
-      navigation.goBack();
-    });
+  console.log("stadiumId", stadiumId);
+
+  const handleCreateStadium = async () => {
+    try {
+      const {
+        stadium_name,
+        stadium_address,
+        stadium_thumnail,
+        stadium_time,
+        stadium_description,
+      } = stadiumData;
+
+      const stadiumUpdate = {
+        stadium_name: stadium_name,
+        stadium_address: stadium_address,
+        stadium_thumnail: stadium_thumnail,
+        stadium_time: stadium_time,
+        stadium_description: stadium_description,
+      };
+      setIsLoading(true);
+
+      if (stadiumId) {
+        await dispatch(
+          updateStadium({ stadium_id: stadiumId, stadiumData: stadiumUpdate })
+        );
+        navigation.goBack(); // Quay lại màn hình trước đó
+        // navigation.setParams({
+        //   successMessage: "Stadium updated successfully",
+        // });
+      } else {
+        await dispatch(createStadium(stadiumData));
+        navigation.goBack(); // Quay lại màn hình trước đó
+        // navigation.setParams({
+        //   successMessage: "Stadium created successfully",
+        // });
+      }
+
+      await dispatch(getDetailStadiumById(stadiumId));
+      await dispatch(getStadiumByOwner());
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      console.error("Failed to create/update stadium:", error);
+      // Handle error message if needed
+    }
   };
 
   const nextStep = () => {
-    setCurrentStep((prevStep) => prevStep + 1);
+    setCurrentStep((prevStep) => {
+      if (prevStep === 1 && stadiumId) {
+        return 3; // Skip to step 3 if stadiumId is present
+      }
+      return prevStep + 1;
+    });
   };
 
   const previousStep = () => {
-    setCurrentStep((prevStep) => prevStep - 1);
+    setCurrentStep((prevStep) => {
+      if (prevStep === 3 && stadiumId) {
+        return 1; // Skip to step 3 if stadiumId is present
+      }
+      return prevStep - 1;
+    });
   };
 
   return (
@@ -105,7 +159,7 @@ const CreateStadium = () => {
           nextStep={nextStep}
         />
       )}
-      {currentStep === 2 && (
+      {currentStep === 2 && !stadiumId && (
         <Step2
           stadiumData={stadiumData}
           setStadiumData={setStadiumData}
@@ -125,6 +179,7 @@ const CreateStadium = () => {
           handleSelectImage={handleSelectImage}
           previousStep={previousStep}
           handleCreateStadium={handleCreateStadium}
+          stadiumId={stadiumId}
         />
       )}
     </SafeAreaView>
