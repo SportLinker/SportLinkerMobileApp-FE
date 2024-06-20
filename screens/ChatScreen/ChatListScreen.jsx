@@ -20,7 +20,9 @@ export default function ChatListScreen({ navigation }) {
   const { chatList, loading, error } = useSelector(
     (state) => state.messageSlice
   );
-  useEffect(() => {
+  const { userInfo } = useSelector((state) => state.userSlice);
+
+    useEffect(() => {
     dispatch(getListMessage());
   }, [dispatch]);
 
