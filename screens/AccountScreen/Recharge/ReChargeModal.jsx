@@ -8,11 +8,14 @@ import {
   Alert,
   Image,
   TouchableOpacity,
+  TouchableWithoutFeedback,
 } from "react-native";
 import QRCode from "react-native-qrcode-svg";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useDispatch, useSelector } from "react-redux";
+import { paymentRecharge } from "../../../redux/slices/paymentSlice";
 
 // Define the validation schema using Yup
 const validationSchema = Yup.object().shape({
@@ -26,6 +29,9 @@ export default function ReChargeModal({ modalVisible, setModalVisible }) {
   const [qrModalVisible, setQrModalVisible] = useState(false);
   const [selectedMethod, setSelectedMethod] = useState(null);
   const [timer, setTimer] = useState(120);
+  const dispatch = useDispatch();
+
+  const { userInfo } = useSelector((state) => state.userSlice);
 
   // Initialize Formik for form handling
   const formik = useFormik({
@@ -48,9 +54,15 @@ export default function ReChargeModal({ modalVisible, setModalVisible }) {
 
   const openQrModal = (amount) => {
     formik.setFieldValue("amount", amount);
-    setAmountModalVisible(false);
-    setQrModalVisible(true);
-    setTimer(120); // reset the timer
+    // setAmountModalVisible(false);
+    // setQrModalVisible(true);
+    // setTimer(120); // reset the timer
+    dispatch(
+      paymentRecharge({
+        money: amount,
+        userID: userInfo.id,
+      })
+    );
   };
 
   const closeQrModal = () => {
@@ -88,33 +100,38 @@ export default function ReChargeModal({ modalVisible, setModalVisible }) {
         animationType="slide"
         onRequestClose={toggleModal}
       >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContainer}>
-            <Text style={styles.modalTitle}>Chọn phương thức nạp tiền</Text>
-            <View style={{ flexDirection: "row" }}>
+        <TouchableWithoutFeedback onPress={toggleModal}>
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContainer}>
+              <Text style={styles.modalTitle}>Chọn phương thức nạp tiền</Text>
+              <View style={{ flexDirection: "row" }}>
+                <TouchableOpacity
+                  onPress={() => openAmountModal("Momo")}
+                  style={styles.modalOption}
+                >
+                  <Image
+                    source={require("./../../../assets/momo.png")}
+                    style={styles.imageStyle}
+                  />
+                  <Text style={styles.modalOptionText}>Momo</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => openAmountModal("Ngân hàng")}
+                  style={styles.modalOption}
+                >
+                  <Icon name="bank-outline" size={40} color="white" />
+                  <Text style={styles.modalOptionText}>Ngân hàng</Text>
+                </TouchableOpacity>
+              </View>
               <TouchableOpacity
-                onPress={() => openAmountModal("Momo")}
-                style={styles.modalOption}
+                onPress={toggleModal}
+                style={styles.closeButton}
               >
-                <Image
-                  source={require("./../../../assets/momo.png")}
-                  style={styles.imageStyle}
-                />
-                <Text style={styles.modalOptionText}>Momo</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => openAmountModal("Ngân hàng")}
-                style={styles.modalOption}
-              >
-                <Icon name="bank-outline" size={40} color="white" />
-                <Text style={styles.modalOptionText}>Ngân hàng</Text>
+                <Text style={styles.closeButtonText}>Đóng</Text>
               </TouchableOpacity>
             </View>
-            <TouchableOpacity onPress={toggleModal} style={styles.closeButton}>
-              <Text style={styles.closeButtonText}>Đóng</Text>
-            </TouchableOpacity>
           </View>
-        </View>
+        </TouchableWithoutFeedback>
       </Modal>
 
       <Modal
@@ -123,36 +140,38 @@ export default function ReChargeModal({ modalVisible, setModalVisible }) {
         animationType="slide"
         onRequestClose={() => setAmountModalVisible(false)}
       >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContainer}>
-            <Text style={styles.modalTitle}>
-              Nhập số tiền bạn muốn nạp qua {selectedMethod}
-            </Text>
-            <TextInput
-              style={styles.amountInput}
-              placeholder="Số tiền"
-              keyboardType="numeric"
-              value={formik.values.amount}
-              onChangeText={formik.handleChange("amount")}
-              onBlur={formik.handleBlur("amount")}
-            />
-            {formik.touched.amount && formik.errors.amount ? (
-              <Text style={{ color: "red" }}>{formik.errors.amount}</Text>
-            ) : null}
-            <TouchableOpacity
-              onPress={formik.handleSubmit}
-              style={styles.submitButton}
-            >
-              <Text style={styles.submitButtonText}>Xác nhận</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => setAmountModalVisible(false)}
-              style={styles.closeButton}
-            >
-              <Text style={styles.closeButtonText}>Đóng</Text>
-            </TouchableOpacity>
+        <TouchableWithoutFeedback onPress={() => setAmountModalVisible(false)}>
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContainer}>
+              <Text style={styles.modalTitle}>
+                Nhập số tiền bạn muốn nạp qua {selectedMethod}
+              </Text>
+              <TextInput
+                style={styles.amountInput}
+                placeholder="Số tiền"
+                keyboardType="numeric"
+                value={formik.values.amount}
+                onChangeText={formik.handleChange("amount")}
+                onBlur={formik.handleBlur("amount")}
+              />
+              {formik.touched.amount && formik.errors.amount ? (
+                <Text style={{ color: "red" }}>{formik.errors.amount}</Text>
+              ) : null}
+              <TouchableOpacity
+                onPress={formik.handleSubmit}
+                style={styles.submitButton}
+              >
+                <Text style={styles.submitButtonText}>Xác nhận</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setAmountModalVisible(false)}
+                style={styles.closeButton}
+              >
+                <Text style={styles.closeButtonText}>Đóng</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
+        </TouchableWithoutFeedback>
       </Modal>
 
       <Modal
@@ -161,33 +180,38 @@ export default function ReChargeModal({ modalVisible, setModalVisible }) {
         animationType="slide"
         onRequestClose={closeQrModal}
       >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContainer}>
-            <Text style={styles.modalTitle}>
-              Chuyển khoản qua {selectedMethod}
-            </Text>
-            <QRCode
-              value={`Chuyển khoản ${formik.values.amount} qua ${selectedMethod}`}
-              size={150}
-            />
-            <Text style={styles.qrText}>
-              Chuyển khoản {formik.values.amount} qua {selectedMethod}
-            </Text>
-            <TouchableOpacity
-              onPress={copyToClipboard}
-              style={styles.copyButton}
-            >
-              <Text style={styles.copyButtonText}>Copy</Text>
-            </TouchableOpacity>
-            <Text style={styles.timerText}>{`Thời gian còn lại: ${Math.floor(
-              timer / 60
-            )}:${("0" + (timer % 60)).slice(-2)}`}</Text>
+        <TouchableWithoutFeedback onPress={closeQrModal}>
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContainer}>
+              <Text style={styles.modalTitle}>
+                Chuyển khoản qua {selectedMethod}
+              </Text>
+              <QRCode
+                value={`Chuyển khoản ${formik.values.amount} qua ${selectedMethod}`}
+                size={150}
+              />
+              <Text style={styles.qrText}>
+                Chuyển khoản {formik.values.amount} qua {selectedMethod}
+              </Text>
+              <TouchableOpacity
+                onPress={copyToClipboard}
+                style={styles.copyButton}
+              >
+                <Text style={styles.copyButtonText}>Copy</Text>
+              </TouchableOpacity>
+              <Text style={styles.timerText}>{`Thời gian còn lại: ${Math.floor(
+                timer / 60
+              )}:${("0" + (timer % 60)).slice(-2)}`}</Text>
 
-            <TouchableOpacity onPress={closeQrModal} style={styles.closeButton}>
-              <Text style={styles.closeButtonText}>Đóng</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                onPress={closeQrModal}
+                style={styles.closeButton}
+              >
+                <Text style={styles.closeButtonText}>Đóng</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
+        </TouchableWithoutFeedback>
       </Modal>
     </View>
   );
@@ -238,18 +262,21 @@ const styles = StyleSheet.create({
   amountInput: {
     width: "100%",
     padding: 10,
-    borderColor: "#236457",
+    borderColor: "#1646A9",
     borderWidth: 1,
     borderRadius: 5,
-    marginBottom: 20,
+    marginBottom: 10,
     textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 20,
   },
   submitButton: {
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
-    backgroundColor: "#236457",
+    backgroundColor: "#1646A9",
     marginBottom: 10,
+    marginTop: 10,
   },
   submitButtonText: {
     color: "white",
@@ -264,7 +291,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
-    backgroundColor: "#236457",
+    backgroundColor: "#1646A9",
     marginTop: 10,
   },
   copyButtonText: {
