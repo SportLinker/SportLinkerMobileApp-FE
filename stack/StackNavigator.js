@@ -36,6 +36,7 @@ import BottomTabCoachNavigator from "../tabs/BottomTabCoachNavigator";
 import BottomTabNavigator from "../tabs/BottomTabNavigator";
 import BottomTabYardOwnerNavigator from "../tabs/BottomTabYardOwnerNavigator";
 import EventDetailTabs from "../tabs/EventDetailTabs";
+import CreateYardScreen from "../screens/YardOwner/ListYardScreen/CreateYardScreen/CreateYardScreen";
 
 const Stack = createStackNavigator();
 
@@ -335,6 +336,17 @@ const StackNavigator = () => (
       }}
     />
     <Stack.Screen
+      name="InfoStadium"
+      component={InfoStadium}
+      options={{
+        title: "Chi tiết sân",
+        headerStyle: { backgroundColor: "#1646a9" },
+        headerTitleAlign: "center",
+        headerTintColor: "white",
+        headerBackTitle: " ",
+      }}
+    />
+    <Stack.Screen
       name="InfoYard"
       component={InfoYard}
       options={{
@@ -346,10 +358,10 @@ const StackNavigator = () => (
       }}
     />
     <Stack.Screen
-      name="InfoStadium"
-      component={InfoStadium}
+      name="CreateYard"
+      component={CreateYardScreen}
       options={{
-        title: "Chi tiết sân",
+        title: "Tạo sân nhỏ của bạn",
         headerStyle: { backgroundColor: "#1646a9" },
         headerTitleAlign: "center",
         headerTintColor: "white",

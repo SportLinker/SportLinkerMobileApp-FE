@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
 import {
-  StyleSheet,
-  View,
-  Text,
-  Image,
-  ScrollView,
   ActivityIndicator,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { getDetailByOwner, getUserSelector } from "../../../../redux/selectors";
-import { getDetailStadiumById } from "../../../../redux/slices/bookingSlice";
-
+import {
+  getDetailByOwnerSelector,
+  getUserSelector,
+} from "../../../../redux/selectors";
+import { getDetailStadiumById } from "../../../../redux/slices/yardSlice";
+import { ActionButtons } from "./Section/ActionButtons ";
 import { DetailsSection } from "./Section/DetailsSection";
 import HeaderSection from "./Section/HeaderSection";
 import IntroductionSection from "./Section/IntroductionSection";
@@ -22,7 +24,7 @@ const InfoStadium = ({ route }) => {
   const [stadiumDetail, setStadiumDetail] = useState(null);
   const [userAvatar, setUserAvatar] = useState(null);
 
-  const stadium = useSelector(getDetailByOwner);
+  const stadium = useSelector(getDetailByOwnerSelector);
   const user = useSelector(getUserSelector);
 
   // console.log("user in stadium", userAvatar);
@@ -50,6 +52,7 @@ const InfoStadium = ({ route }) => {
   return (
     <ScrollView style={{ backgroundColor: "#fff" }}>
       <HeaderSection userAvatar={userAvatar} stadiumDetail={stadiumDetail} />
+      <ActionButtons stadiumId={stadiumId} />
       <IntroductionSection stadiumDetail={stadiumDetail} />
       <DetailsSection stadiumDetail={stadiumDetail} />
     </ScrollView>

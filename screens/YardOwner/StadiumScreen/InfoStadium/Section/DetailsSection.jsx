@@ -4,16 +4,16 @@ import { Text, View } from "react-native";
 
 export function DetailsSection({ stadiumDetail }) {
   return (
-    <View style={{ marginVertical: 20 }}>
+    <View style={{ marginVertical: 20, padding: 15 }}>
       <View style={{ display: "flex", flexDirection: "row" }}>
         <Entypo
           name="location-pin"
           size={30}
           color="black"
-          style={{ marginHorizontal: 30 }}
+          style={{ marginHorizontal: 20 }}
         />
 
-        <Text style={{ fontSize: 16, width: 300 }}>
+        <Text style={{ fontSize: 16, paddingRight: 50 }}>
           {stadiumDetail.stadium_address}
         </Text>
       </View>
@@ -22,7 +22,7 @@ export function DetailsSection({ stadiumDetail }) {
           name="clock"
           size={30}
           color="black"
-          style={{ marginHorizontal: 29 }}
+          style={{ marginHorizontal: 20 }}
         />
         <View
           style={{
@@ -39,7 +39,7 @@ export function DetailsSection({ stadiumDetail }) {
           name="star"
           size={30}
           color="#F9A825"
-          style={{ marginHorizontal: 30 }}
+          style={{ marginHorizontal: 20 }}
         />
         <View
           style={{
