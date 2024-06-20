@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { api } from "../../services/api";
 
 export const createStadium = createAsyncThunk(
-  "bookingSlice/createStadium",
+  "yardSlice/createStadium",
   async (stadiumData, { rejectWithValue }) => {
     // console.log("API Response: ", stadiumData);
     try {
@@ -16,13 +16,42 @@ export const createStadium = createAsyncThunk(
   }
 );
 
+export const createYardInStadium = createAsyncThunk(
+  "yardSlice/createYardInStadium",
+  async ({ stadium_id, yardData }, { rejectWithValue }) => {
+    console.log("API Response: ", stadium_id);
+    try {
+      const response = await api.post(`/yards/${stadium_id}`, yardData);
+      console.log("API Response: ", response.data);
+      return response.data;
+    } catch (error) {
+      console.log("Error: ", JSON.stringify(error.response.data));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const getStadiumByOwner = createAsyncThunk(
-  "bookingSlice/getStadiumByOwner",
+  "yardSlice/getStadiumByOwner",
   async (_, { rejectWithValue }) => {
     // console.log("API Response: ", stadiumData);
     try {
       const response = await api.get(`/stadiums/getByOnwer`);
-      console.log("API Response: ", response.data.metadata);
+      console.log("API Response: ", response.data);
+      return response.data.metadata;
+    } catch (error) {
+      console.log("Error: ", JSON.stringify(error.response.data));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+export const getAllSport = createAsyncThunk(
+  "yardSlice/getSport",
+  async (_, { rejectWithValue }) => {
+    // console.log("API Response: ", stadiumData);
+    try {
+      const response = await api.get(`/sports`);
+      console.log("API Response: ", response.data);
       return response.data.metadata;
     } catch (error) {
       console.log("Error: ", JSON.stringify(error.response.data));
@@ -32,7 +61,7 @@ export const getStadiumByOwner = createAsyncThunk(
 );
 
 export const getDetailStadiumById = createAsyncThunk(
-  "bookingSlice/getDetailStadiumById",
+  "yardSlice/getDetailStadiumById",
   async (stadiumId, { rejectWithValue }) => {
     // console.log("API Response: ", stadiumData);
     try {
@@ -46,11 +75,12 @@ export const getDetailStadiumById = createAsyncThunk(
   }
 );
 
-export const bookingSlice = createSlice({
-  name: "bookingSlice",
+export const yardSlice = createSlice({
+  name: "yardSlice",
   initialState: {
-    stadiumList: null,
+    stadiumList: [],
     stadium: null,
+    sports: null,
     loading: false,
     error: null,
   },
@@ -69,6 +99,17 @@ export const bookingSlice = createSlice({
         // state.stadium = action.payload;
       })
       .addCase(createStadium.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(createYardInStadium.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(createYardInStadium.fulfilled, (state, action) => {
+        state.loading = false;
+        // state.stadium = action.payload;
+      })
+      .addCase(createYardInStadium.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
@@ -93,8 +134,19 @@ export const bookingSlice = createSlice({
       .addCase(getDetailStadiumById.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(getAllSport.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAllSport.fulfilled, (state, action) => {
+        state.loading = false;
+        state.sports = action.payload;
+      })
+      .addCase(getAllSport.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
 
-export default bookingSlice;
+export default yardSlice;
