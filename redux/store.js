@@ -5,6 +5,7 @@ import { persistReducer, persistStore } from "redux-persist";
 import { eventSlice } from "./slices/eventSlice";
 import { messageSlice } from "./slices/messageSlice";
 import { bookingSlice } from "./slices/bookingSlice";
+import { paymentSlice } from "./slices/paymentSlice";
 
 const rootPersistConfig = {
   key: "root",
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   eventSlice: eventSlice.reducer,
   messageSlice: messageSlice.reducer,
   bookingSlice: bookingSlice.reducer,
+  paymentSlice: paymentSlice.reducer,
 
   //add more reducer here
   //...

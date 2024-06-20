@@ -37,8 +37,6 @@ export default function ChatDetail({ navigation }) {
     }
   };
 
-  console.log("chatDetail: " + JSON.stringify(chatDetail.group_message_detail));
-
   const sendMessage = () => {
     if (message.trim() !== "") {
       dispatch(
