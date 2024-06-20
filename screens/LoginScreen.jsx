@@ -82,7 +82,7 @@ const LoginScreen = ({ navigation }) => {
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        {loadingSelector && <Loading visible={loadingSelector} />}
+        {/* {loadingSelector && <Loading visible={loadingSelector} />} */}
         <ScrollView>
           <View style={styles.container}>
             <Image
