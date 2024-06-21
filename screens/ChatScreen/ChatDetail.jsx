@@ -17,6 +17,7 @@ import {
   getMessageDetail,
   sendMessageByUser,
 } from "../../redux/slices/messageSlice";
+import socket from "../../services/socket";
 
 export default function ChatDetail({ navigation }) {
   const { chatDetail, group_message_id, loading, error } = useSelector(
@@ -24,6 +25,8 @@ export default function ChatDetail({ navigation }) {
   );
   const dispatch = useDispatch();
   const [message, setMessage] = useState("");
+
+  const { userInfo } = useSelector((state) => state.userSlice);
 
   const scrollViewRef = useRef(null);
 
@@ -45,12 +48,26 @@ export default function ChatDetail({ navigation }) {
           content: message,
         })
       ).then((res) => {
+        socket.emit("send-message", {
+          group_message_id: group_message_id,
+          content: message,
+          user_id: userInfo.id,
+          message: res,
+        });
         setMessage("");
         dispatch(getMessageDetail(group_message_id));
         Keyboard.dismiss();
       });
     }
   };
+
+  useEffect(() => {
+    if (socket) {
+      socket.on("recieve-message", (msg) => {
+        console.log("recieve-message: ", msg);
+      });
+    }
+  }, []);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>

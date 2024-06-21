@@ -39,7 +39,7 @@ export const sendMessageByUser = createAsyncThunk(
       const response = await api.post(`/messages/${group_message_id}`, {
         content,
       });
-      console.log("sendMessageByUser:", response.data.metadata);
+      // console.log("sendMessageByUser:", response.data.metadata);
       return response.data.metadata;
     } catch (error) {
       if (!error.response) {
