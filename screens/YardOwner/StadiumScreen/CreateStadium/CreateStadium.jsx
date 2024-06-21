@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { SafeAreaView, StyleSheet } from "react-native";
+import { Alert, SafeAreaView, StyleSheet } from "react-native";
 import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
@@ -111,14 +111,12 @@ const CreateStadium = ({ route }) => {
           updateStadium({ stadium_id: stadiumId, stadiumData: stadiumUpdate })
         );
         navigation.goBack(); // Quay lại màn hình trước đó
-        // navigation.setParams({
-        //   successMessage: "Stadium updated successfully",
-        // });
+        Alert.alert("Thành công", "Sân đã cập nhật thành công!");
       } else {
         await dispatch(createStadium(stadiumData));
         navigation.goBack(); // Quay lại màn hình trước đó
         // navigation.setParams({
-        //   successMessage: "Stadium created successfully",
+        Alert.alert("Thành công", "Sân đã được tạo mới thành công!");
         // });
       }
 

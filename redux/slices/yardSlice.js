@@ -31,6 +31,20 @@ export const updateStadium = createAsyncThunk(
     }
   }
 );
+export const deleteStadium = createAsyncThunk(
+  "yardSlice/deleteStadium",
+  async ({ stadium_id }, { rejectWithValue }) => {
+    console.log("stadium_id: ", stadium_id);
+    try {
+      const response = await api.delete(`/stadiums/${stadium_id}`);
+      console.log("API Response: ", response.data);
+      return response.data;
+    } catch (error) {
+      console.log("Error: ", JSON.stringify(error.response.data));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
 export const createYardInStadium = createAsyncThunk(
   "yardSlice/createYardInStadium",
@@ -126,6 +140,17 @@ export const yardSlice = createSlice({
         // state.stadium = action.payload;
       })
       .addCase(updateStadium.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(deleteStadium.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteStadium.fulfilled, (state, action) => {
+        state.loading = false;
+        // state.stadium = action.payload;
+      })
+      .addCase(deleteStadium.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
