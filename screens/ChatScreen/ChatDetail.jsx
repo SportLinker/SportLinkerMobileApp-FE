@@ -63,8 +63,8 @@ export default function ChatDetail({ navigation }) {
 
   useEffect(() => {
     if (socket) {
-      socket.on("recieve-message", (msg) => {
-        console.log("recieve-message: ", msg);
+      socket.on("receive-message", (msg) => {
+        dispatch(getMessageDetail(group_message_id));
       });
     }
   }, []);
