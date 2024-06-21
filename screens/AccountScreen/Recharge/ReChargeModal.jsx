@@ -15,12 +15,15 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-import { paymentRecharge } from "../../../redux/slices/paymentSlice";
+import {
+  paymentRecharge,
+  updateStatusPayement,
+} from "../../../redux/slices/paymentSlice";
 
 // Define the validation schema using Yup
 const validationSchema = Yup.object().shape({
   amount: Yup.number()
-    .min(50000, "Số tiền tối thiểu là 50.000")
+    .min(1000, "Số tiền tối thiểu là 50.000")
     .required("Số tiền là bắt buộc"),
 });
 
@@ -29,6 +32,8 @@ export default function ReChargeModal({ modalVisible, setModalVisible }) {
   const [qrModalVisible, setQrModalVisible] = useState(false);
   const [selectedMethod, setSelectedMethod] = useState(null);
   const [timer, setTimer] = useState(120);
+  const [qrLink, setQrLink] = useState(null);
+  const [contentPayment, setContentPayment] = useState(null);
   const dispatch = useDispatch();
 
   const { userInfo } = useSelector((state) => state.userSlice);
@@ -54,15 +59,21 @@ export default function ReChargeModal({ modalVisible, setModalVisible }) {
 
   const openQrModal = (amount) => {
     formik.setFieldValue("amount", amount);
-    // setAmountModalVisible(false);
-    // setQrModalVisible(true);
-    // setTimer(120); // reset the timer
+
     dispatch(
       paymentRecharge({
         money: amount,
         userID: userInfo.id,
       })
-    );
+    ).then((res) => {
+      const transactionCode = res.payload.metadata.transaction_code;
+      const qrlink = res.payload.metadata.qr_link;
+      setQrLink(qrlink);
+      setContentPayment(transactionCode);
+      setAmountModalVisible(false);
+      setQrModalVisible(true);
+      setTimer(300); // reset the timer
+    });
   };
 
   const closeQrModal = () => {
@@ -84,6 +95,24 @@ export default function ReChargeModal({ modalVisible, setModalVisible }) {
             closeQrModal();
             Alert.alert("Thời gian đã hết", "Hãy thử lại.");
             return 0;
+          }
+          if (prevTimer % 5 == 0) {
+            dispatch(
+              updateStatusPayement({
+                transactionCode: contentPayment,
+              })
+            ).then((res) => {
+              console.log(
+                "status: " + JSON.stringify(res.payload.metadata.status)
+              );
+              const status = res.payload.metadata.status;
+              if (status == "completed") {
+                clearInterval(interval);
+                closeQrModal();
+                Alert.alert("Nạp tiền thành công !!!");
+                return 0;
+              }
+            });
           }
           return prevTimer - 1;
         });
@@ -186,12 +215,16 @@ export default function ReChargeModal({ modalVisible, setModalVisible }) {
               <Text style={styles.modalTitle}>
                 Chuyển khoản qua {selectedMethod}
               </Text>
-              <QRCode
-                value={`Chuyển khoản ${formik.values.amount} qua ${selectedMethod}`}
-                size={150}
+              {/* <QRCode value={qrLink} size={150} /> */}
+              <Image
+                style={{ width: 250, height: 250 }}
+                source={{
+                  uri: qrLink,
+                }}
               />
               <Text style={styles.qrText}>
-                Chuyển khoản {formik.values.amount} qua {selectedMethod}
+                {/* Nội dung giao dịch: {formik.values.amount} qua {selectedMethod} */}
+                Nội dung giao dịch: {contentPayment}
               </Text>
               <TouchableOpacity
                 onPress={copyToClipboard}

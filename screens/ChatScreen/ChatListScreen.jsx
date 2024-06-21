@@ -6,24 +6,28 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Searchbar } from "react-native-paper";
 import ChatListItem from "./ChatListItem";
 import { useDispatch, useSelector } from "react-redux";
 import { getListMessage } from "../../redux/slices/messageSlice";
 import { getListMessageSelector } from "../../redux/selectors";
 import Loading from "../../component/Loading";
+import { io } from "socket.io-client";
+import socket from "../../services/socket";
 
 export default function ChatListScreen({ navigation }) {
   const [searchQuery, setSearchQuery] = useState("");
+
   const dispatch = useDispatch();
   const { chatList, loading, error } = useSelector(
     (state) => state.messageSlice
   );
   const { userInfo } = useSelector((state) => state.userSlice);
 
-    useEffect(() => {
+  useEffect(() => {
     dispatch(getListMessage());
+    socket.emit("online-user", userInfo.id);
   }, [dispatch]);
 
   return (
