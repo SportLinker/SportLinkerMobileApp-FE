@@ -1,11 +1,28 @@
 import { AntDesign, FontAwesome, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
-import { Platform, Text, TouchableOpacity, View } from "react-native";
+import React, { useState } from "react";
+import { Alert, Platform, Text, TouchableOpacity, View } from "react-native";
 import { styles } from "../../../../../component/style";
+import { DeleteModal } from "./DeleteStadiumModal";
+import { useDispatch } from "react-redux";
+import {
+  deleteStadium,
+  getStadiumByOwner,
+} from "../../../../../redux/slices/yardSlice";
 
 export const ActionButtons = ({ stadiumId, stadiumDetail }) => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleDelete = () => {
+    dispatch(deleteStadium({ stadium_id: stadiumId })).then(() => {
+      dispatch(getStadiumByOwner());
+      navigation.goBack();
+      Alert.alert("Thành công", "Sân đã được xóa thành công");
+      setModalVisible(false);
+    });
+  };
 
   return (
     <View
@@ -49,16 +66,16 @@ export const ActionButtons = ({ stadiumId, stadiumDetail }) => {
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.iconContainer}
-        // onPress={() =>
-        //   navigation.navigate("CreateStadium", {
-        //     stadiumId: stadiumId,
-        //     stadiumDetail: stadiumDetail,
-        //   })
-        // }
+        onPress={() => setModalVisible(true)}
       >
         <AntDesign name="delete" size={30} color="black" />
         <Text>Xóa sân</Text>
       </TouchableOpacity>
+      <DeleteModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        onDelete={handleDelete}
+      />
     </View>
   );
 };
