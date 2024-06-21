@@ -1,7 +1,7 @@
 import { AntDesign, FontAwesome6 } from "@expo/vector-icons";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
-import { styles } from "../../component/style";
+import { styles } from "../../../component/style";
 
 const Profile = ({ fakeData }) => {
   return (
