@@ -62,7 +62,6 @@ export const messageSlice = createSlice({
   },
   reducers: {
     setGroupMessageID: (state, action) => {
-      console.log("action.payload: " + action.payload);
       state.group_message_id = action.payload;
     },
   },
