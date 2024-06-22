@@ -29,6 +29,20 @@ export default function ChatListScreen({ navigation }) {
     dispatch(getListMessage());
     socket.emit("online-user", userInfo.id);
   }, [dispatch]);
+  useEffect(() => {
+    if (socket) {
+      const handleMessageReceive = (msg) => {
+        dispatch(getListMessage());
+      };
+
+      socket.on("receive-message", handleMessageReceive);
+
+      // Cleanup function to remove the event listener
+      return () => {
+        socket.off("receive-message", handleMessageReceive);
+      };
+    }
+  }, []);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
