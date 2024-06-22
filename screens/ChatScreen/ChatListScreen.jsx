@@ -6,27 +6,43 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Searchbar } from "react-native-paper";
 import ChatListItem from "./ChatListItem";
 import { useDispatch, useSelector } from "react-redux";
 import { getListMessage } from "../../redux/slices/messageSlice";
 import { getListMessageSelector } from "../../redux/selectors";
 import Loading from "../../component/Loading";
+import { io } from "socket.io-client";
+import socket from "../../services/socket";
 
 export default function ChatListScreen({ navigation }) {
   const [searchQuery, setSearchQuery] = useState("");
+
   const dispatch = useDispatch();
   const { chatList, loading, error } = useSelector(
     (state) => state.messageSlice
   );
+  const { userInfo } = useSelector((state) => state.userSlice);
+
   useEffect(() => {
     dispatch(getListMessage());
+    socket.emit("online-user", userInfo.id);
   }, [dispatch]);
+  useEffect(() => {
+    if (socket) {
+      const handleMessageReceive = (msg) => {
+        dispatch(getListMessage());
+      };
 
-  if (error) {
-    return <Text>Error: {error}</Text>;
-  }
+      socket.on("receive-message", handleMessageReceive);
+
+      // Cleanup function to remove the event listener
+      return () => {
+        socket.off("receive-message", handleMessageReceive);
+      };
+    }
+  }, []);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -94,9 +110,9 @@ const styles = StyleSheet.create({
   chatBody: {
     flex: 1,
     backgroundColor: "#FDFDFD",
-    borderRadius: 40,
-    borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0,
+    // borderRadius: 40,
+    // borderBottomLeftRadius: 0,
+    // borderBottomRightRadius: 0,
     paddingTop: 30,
     paddingHorizontal: 10,
     marginTop: -45,

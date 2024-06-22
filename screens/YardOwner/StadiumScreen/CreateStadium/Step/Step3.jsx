@@ -8,9 +8,10 @@ const Step3 = ({
   handleSelectImage,
   previousStep,
   handleCreateStadium,
+  stadiumId,
 }) => {
   //   const validateStep3 = () => {
-  //     if (stadiumData.stadium_thumbnail) {
+  //     if (stadiumData.stadium_thumnail) {
   //       handleCreateStadium();
   //     } else {
   //       alert("Please upload an image of the stadium.");
@@ -18,22 +19,6 @@ const Step3 = ({
   //   };
   return (
     <View>
-      <TouchableOpacity
-        onPress={handleSelectImage}
-        style={styles.uploadContainer}
-      >
-        {stadiumData.stadium_thumbnail ? (
-          <Image
-            source={{ uri: stadiumData.stadium_thumbnail }}
-            style={styles.thumbnail}
-          />
-        ) : (
-          <View style={styles.uploadPlaceholder}>
-            <Icon name="upload" size={40} color="#888" />
-            <Text style={styles.uploadText}>Tải ảnh lên</Text>
-          </View>
-        )}
-      </TouchableOpacity>
       <View style={styles.navigationButtons}>
         <TouchableOpacity onPress={previousStep} style={styles.buttonContainer}>
           <View style={styles.button}>
@@ -45,10 +30,28 @@ const Step3 = ({
           style={styles.buttonContainer}
         >
           <View style={styles.button}>
-            <Text style={styles.buttonLabel}>Tạo Sân Vận Động</Text>
+            <Text style={styles.buttonLabel}>
+              {stadiumId ? "Cập Nhật Sân" : "Tạo Sân"}
+            </Text>
           </View>
         </TouchableOpacity>
       </View>
+      <TouchableOpacity
+        onPress={handleSelectImage}
+        style={styles.uploadContainer}
+      >
+        {stadiumData.stadium_thumnail ? (
+          <Image
+            source={{ uri: stadiumData.stadium_thumnail }}
+            style={styles.thumbnail}
+          />
+        ) : (
+          <View style={styles.uploadPlaceholder}>
+            <Icon name="upload" size={40} color="#888" />
+            <Text style={styles.uploadText}>Tải ảnh lên</Text>
+          </View>
+        )}
+      </TouchableOpacity>
     </View>
   );
 };
