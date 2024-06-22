@@ -11,6 +11,13 @@ import {
 } from "react-native";
 import { Avatar, Snackbar } from "react-native-paper";
 import { styles } from "../../component/style";
+
+import { uploadImageToCloudinary } from "../../services/cloudinary";
+import { useDispatch, useSelector } from "react-redux";
+import userSlice, { updateUserProfile } from "../../redux/slices/userSlice";
+import { getUserLoadingSelector, getUserSelector } from "../../redux/selectors";
+import Loading from "../../component/Loading";
+import { useEffect } from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Recharge from "./Recharge/Recharge";
 import Profile from "./ActionButton/Profile";
@@ -39,6 +46,10 @@ const fakeData = [
 
 export default function AccountScreen() {
   const [activeTab, setActiveTab] = useState("profile");
+  const userSelector = useSelector(getUserSelector);
+  const loading = useSelector(getUserLoadingSelector);
+
+  const dispatch = useDispatch();
 
   const fakeDataCommunity = [
     { id: 1, city: "Ho Chi Minh City", code: "EXE201" },
@@ -46,10 +57,36 @@ export default function AccountScreen() {
   ];
 
   const [image, setImage] = useState(
-    "https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcQlj3rCfLHry58AtJ8ZyBEAFPtChMddDSUSjt7C7nV3Nhsni9RIx5b0-n7LxfgerrPS6b-P-u3BOM3abuY"
+    userSelector.avatar_url
+      ? userSelector.avatar_url
+      : "https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcQlj3rCfLHry58AtJ8ZyBEAFPtChMddDSUSjt7C7nV3Nhsni9RIx5b0-n7LxfgerrPS6b-P-u3BOM3abuY"
   );
   const [showImagePickerOptions, setShowImagePickerOptions] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState(null);
+
+  const handleUpdateUserAvatar = (avatarURL) => {
+    try {
+      const formData = {
+        id: userSelector.id,
+        data: {
+          avatar_url: avatarURL,
+        },
+      };
+      console.log("formData", formData);
+      dispatch(updateUserProfile(formData)).then((response) => {
+        console.log("update avatar done", response?.payload?.message);
+        if (response?.payload?.message == "Update user successfully") {
+          setImage(avatarURL);
+          setSuccessMessage("User successfully");
+        } else {
+          setErrorMessage("Update fail");
+        }
+      });
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
 
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -60,9 +97,17 @@ export default function AccountScreen() {
     });
 
     if (!result.canceled) {
-      setImage(result.assets[0].uri);
+      const { uri, type, fileName } = result.assets[0];
+      console.log("result", result.assets[0]);
       setShowImagePickerOptions(false);
-      setSuccessMessage("Chọn ảnh thành công!");
+      dispatch(userSlice.actions.setUserLoading(true));
+
+      uploadImageToCloudinary(uri, type, fileName).then((response) => {
+        // after get a link from cloudinary then update url link for server
+        dispatch(userSlice.actions.setUserLoading(false));
+        console.log("response image ", response);
+        handleUpdateUserAvatar(response.url);
+      });
     }
   };
 
@@ -80,15 +125,65 @@ export default function AccountScreen() {
     });
 
     if (!result.canceled) {
-      setImage(result.assets[0].uri);
+      const { uri, type, fileName } = result.assets[0];
       setShowImagePickerOptions(false);
-      setSuccessMessage("Chụp ảnh thành công!");
+      dispatch(userSlice.actions.setUserLoading(true));
+
+      uploadImageToCloudinary(uri, type, fileName).then((response) => {
+        // after get a link from cloudinary then update url link for server
+        dispatch(userSlice.actions.setUserLoading(false));
+        console.log("response image ", response);
+        handleUpdateUserAvatar(response.url);
+      });
     }
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, paddingTop: 20, backgroundColor: "#fff" }}>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        paddingTop: 20,
+        backgroundColor: "#fff",
+        position: "relative",
+      }}
+    >
+      {loading && <Loading visible={loading} />}
       <ScrollView>
+        <View style={styles.centerStyle}>
+          <View style={{ position: "relative" }}>
+            <TouchableOpacity onPress={() => setShowImagePickerOptions(true)}>
+              <Avatar.Image
+                size={100}
+                source={{ uri: image }}
+                style={{ marginTop: 10 }}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setShowImagePickerOptions(true)}
+              style={{
+                position: "absolute",
+                bottom: -3,
+                right: -3,
+                backgroundColor: "white",
+                borderRadius: 15,
+                padding: 3,
+              }}
+            >
+              <Ionicons name="pencil" size={20} color="black" />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.nameAccountContainer}>
+            <Text style={{ marginTop: 5, fontSize: 20, fontWeight: "bold" }}>
+              {userSelector.name}
+            </Text>
+            {/* <Text style={{ marginTop: 5, fontWeight: "bold" }}>
+              Nam ● Người lớn
+            </Text> */}
+            <Text style={{ marginTop: 5, color: "#707070" }}>
+              {userSelector.bio ? userSelector.bio : "Nói đôi điều về bạn"}
+            </Text>
+          </View>
+        </View>
         <HeaderAccount
           image={image}
           setShowImagePickerOptions={setShowImagePickerOptions}
@@ -148,6 +243,14 @@ export default function AccountScreen() {
         style={styles.snackbarContainer}
       >
         {successMessage}
+      </Snackbar>
+      <Snackbar
+        visible={!!errorMessage}
+        duration={2000}
+        onDismiss={() => setErrorMessage(null)}
+        style={{ ...styles.snackbarContainer, backgroundColor: "red" }}
+      >
+        {errorMessage}
       </Snackbar>
     </SafeAreaView>
   );

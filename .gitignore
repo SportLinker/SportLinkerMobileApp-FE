@@ -133,11 +133,5 @@ dist
 credentials.json
 
 # Android build directories and IDE files
-/android/app/build/
-/android/.gradle/
-/android/.idea/
-/android/local.properties
-/android/*.iml
+android/
 
-# Ignore keystore file if it's located in the android directory
-/android/keystore.jks
