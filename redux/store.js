@@ -1,9 +1,11 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import { userSlice } from "./slices/userSlice";
 import storage from "@react-native-async-storage/async-storage";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
 import { eventSlice } from "./slices/eventSlice";
 import { messageSlice } from "./slices/messageSlice";
+import { userSlice } from "./slices/userSlice";
+import yardSlice from "./slices/yardSlice";
+import { paymentSlice } from "./slices/paymentSlice";
 
 const rootPersistConfig = {
   key: "root",
@@ -15,6 +17,8 @@ const rootReducer = combineReducers({
   userSlice: userSlice.reducer,
   eventSlice: eventSlice.reducer,
   messageSlice: messageSlice.reducer,
+  yardSlice: yardSlice.reducer,
+  paymentSlice: paymentSlice.reducer,
 
   //add more reducer here
   //...

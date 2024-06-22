@@ -21,6 +21,7 @@ import Loading from "../component/Loading";
 import { useEffect } from "react";
 import * as Google from "expo-auth-session/providers/google";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import NotificationComponent from "../component/NotificationComponent";
 
 const LoginScreen = ({ navigation }) => {
   const [loginForm, setLoginForm] = useState({
@@ -48,6 +49,7 @@ const LoginScreen = ({ navigation }) => {
   const loadingSelector = useSelector(getUserLoadingSelector);
 
   const dispatch = useDispatch();
+  const { triggerNotification } = NotificationComponent();
 
   useEffect(() => {
     dispatch(userSlice.actions.setUserLoading(false));
@@ -130,7 +132,7 @@ const LoginScreen = ({ navigation }) => {
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        {loadingSelector && <Loading visible={loadingSelector} />}
+        {/* {loadingSelector && <Loading visible={loadingSelector} />} */}
         <ScrollView>
           <View style={styles.container}>
             <Image
@@ -298,6 +300,15 @@ const LoginScreen = ({ navigation }) => {
               onPress={() => navigation.navigate("BottomTabCoachNavigator")}
             >
               Go to Coach
+            </Button>
+            <Button
+              mode="outlined"
+              style={{ marginBottom: 10 }}
+              onPress={async () => {
+                await triggerNotification("Hello from App.js!");
+              }}
+            >
+              Press to schedule a notification
             </Button>
           </View>
         </ScrollView>

@@ -11,14 +11,21 @@ import {
 } from "react-native";
 import { Avatar, Snackbar } from "react-native-paper";
 import { styles } from "../../component/style";
-import Profile from "./Profile";
-import MyPost from "./MyPost";
+
 import { uploadImageToCloudinary } from "../../services/cloudinary";
 import { useDispatch, useSelector } from "react-redux";
 import userSlice, { updateUserProfile } from "../../redux/slices/userSlice";
 import { getUserLoadingSelector, getUserSelector } from "../../redux/selectors";
 import Loading from "../../component/Loading";
 import { useEffect } from "react";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import Recharge from "./Recharge/Recharge";
+import Profile from "./ActionButton/Profile";
+import MyPost from "./ActionButton/MyPost";
+import HeaderAccount from "./HeaderAccount/HeaderAccount";
+import TabViewProfile from "./ActionButton/TabViewProfile";
+import MyMatch from "./ActionButton/MyMatch";
+import MyTransaction from "./ActionButton/MyTransaction";
 
 const fakeData = [
   {
@@ -44,17 +51,15 @@ export default function AccountScreen() {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    console.log("loading...", loading);
-  }, [loading]);
-
   const fakeDataCommunity = [
     { id: 1, city: "Ho Chi Minh City", code: "EXE201" },
     { id: 2, city: "Hanoi", code: "EXE202" },
   ];
 
   const [image, setImage] = useState(
-    "https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcQlj3rCfLHry58AtJ8ZyBEAFPtChMddDSUSjt7C7nV3Nhsni9RIx5b0-n7LxfgerrPS6b-P-u3BOM3abuY"
+    userSelector.avatar_url
+      ? userSelector.avatar_url
+      : "https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcQlj3rCfLHry58AtJ8ZyBEAFPtChMddDSUSjt7C7nV3Nhsni9RIx5b0-n7LxfgerrPS6b-P-u3BOM3abuY"
   );
   const [showImagePickerOptions, setShowImagePickerOptions] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
@@ -179,48 +184,17 @@ export default function AccountScreen() {
             </Text>
           </View>
         </View>
+        <HeaderAccount
+          image={image}
+          setShowImagePickerOptions={setShowImagePickerOptions}
+        />
 
-        <View style={styles.tabView}>
-          <TouchableOpacity
-            style={[
-              styles.textWrapper,
-              activeTab == "profile" && styles.activeTextWrapper,
-            ]}
-            onPress={() => {
-              setActiveTab("profile");
-            }}
-          >
-            <Text
-              style={[
-                styles.boldText,
-                activeTab == "profile" && styles.activeText,
-              ]}
-            >
-              Giới thiệu
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.textWrapper,
-              activeTab == "post" && styles.activeTextWrapper,
-            ]}
-            onPress={() => {
-              setActiveTab("post");
-            }}
-          >
-            <Text
-              style={[
-                styles.boldText,
-                activeTab == "post" && styles.activeText,
-              ]}
-            >
-              Bài đăng
-            </Text>
-          </TouchableOpacity>
-        </View>
+        <TabViewProfile activeTab={activeTab} setActiveTab={setActiveTab} />
 
         {activeTab === "profile" && <Profile fakeData={fakeData} />}
         {activeTab === "post" && <MyPost />}
+        {activeTab === "match" && <MyMatch />}
+        {activeTab === "transaction" && <MyTransaction />}
 
         <Modal
           visible={!!showImagePickerOptions}

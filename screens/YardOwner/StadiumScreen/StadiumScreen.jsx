@@ -1,16 +1,52 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
-import { SafeAreaView, StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  ActivityIndicator,
+  SafeAreaView,
+  StyleSheet,
+  View,
+} from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getByOwnerSelector,
+  getLoadingSelector,
+} from "../../../redux/selectors";
 import NoStadiumScreen from "./InfoStadium/NoStadiumScreen";
-import InfoStadium from "./InfoStadium/InfoStadium";
+import StadiumList from "./StadiumList/StadiumList";
+import { getStadiumByOwner } from "../../../redux/slices/yardSlice";
 
 const StadiumScreen = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const stadium = useSelector(getByOwnerSelector);
+  const loading = useSelector(getLoadingSelector);
+
+  const [stadiumList, setStadiumList] = useState([]);
+
+  // console.log("stadium", stadium);
+  // console.log("stadiumList", stadiumList);
+
+  useEffect(() => {
+    dispatch(getStadiumByOwner());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (stadium) {
+      setStadiumList(stadium);
+    }
+  }, [stadium]);
 
   return (
     <SafeAreaView style={styles.container}>
-      <NoStadiumScreen />
-      {/* <InfoStadium /> */}
+      {loading ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#6200ee" />
+        </View>
+      ) : stadiumList && stadiumList.length > 0 ? (
+        <StadiumList stadiumList={stadiumList} />
+      ) : (
+        <NoStadiumScreen />
+      )}
     </SafeAreaView>
   );
 };
@@ -20,6 +56,11 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     backgroundColor: "#f5f5f5",
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   button: {
     marginTop: 12,

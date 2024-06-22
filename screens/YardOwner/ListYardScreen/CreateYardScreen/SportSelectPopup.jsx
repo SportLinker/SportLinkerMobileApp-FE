@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { View, Modal, Text, TouchableOpacity, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-
+import { getAllSportSelector } from "../../../../redux/selectors";
+import { getAllSport } from "../../../../redux/slices/yardSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllSportSelector } from "../../../redux/selectors";
-import { getAllSport } from "../../../redux/slices/yardSlice";
 
 const SportSelectionPopup = ({ visible, onClose, onSelectSport }) => {
   const dispatch = useDispatch();
@@ -19,6 +18,8 @@ const SportSelectionPopup = ({ visible, onClose, onSelectSport }) => {
     if (sportList) setSports(sportList);
   }, [sportList]);
 
+  // console.log("sports", sports);
+
   return (
     <Modal
       visible={visible}
@@ -29,30 +30,36 @@ const SportSelectionPopup = ({ visible, onClose, onSelectSport }) => {
         justifyContent: "center",
       }}
     >
-      <View style={styles.modalContainer}>
-        {/* <TouchableOpacity onPress={onClose} style={styles.closeButton}>
+      <TouchableOpacity
+        style={styles.modalSubContainer}
+        activeOpacity={1}
+        onPressOut={onClose}
+      >
+        <View style={styles.modalContainer}>
+          {/* <TouchableOpacity onPress={onClose} style={styles.closeButton}>
           <Text style={styles.closeButtonText}>Close</Text>
         </TouchableOpacity> */}
-        <View style={styles.content}>
-          {sports &&
-            sports.map((item) => (
-              <TouchableOpacity
-                key={item.value}
-                onPress={() => {
-                  onSelectSport(item);
-                  onClose();
-                }}
-              >
-                <View style={styles.sportItem}>
-                  <Icon name={item.icon} size={20} color={"white"} />
-                  <Text style={{ marginLeft: 10, color: "white" }}>
-                    {item.sport_name}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            ))}
+          <View style={styles.content}>
+            {sports &&
+              sports.map((item) => (
+                <TouchableOpacity
+                  key={item.value}
+                  onPress={() => {
+                    onSelectSport(item.sport_name);
+                    onClose();
+                  }}
+                >
+                  <View style={styles.sportItem}>
+                    <Icon name={item.icon} size={20} color={"white"} />
+                    <Text style={{ marginLeft: 10, color: "white" }}>
+                      {item.sport_name}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              ))}
+          </View>
         </View>
-      </View>
+      </TouchableOpacity>
     </Modal>
   );
 };
@@ -64,7 +71,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.8)",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   content: {
     backgroundColor: "white",
@@ -95,5 +102,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "white",
     textAlign: "center",
+  },
+  modalSubContainer: {
+    flex: 1,
   },
 });

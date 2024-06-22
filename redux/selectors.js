@@ -9,3 +9,13 @@ export const getEventLoadingtSelector = (state) => state.eventSlice.loading;
 
 // MESSAGE / CHAT
 export const getListMessageSelector = (state) => state.messageSlice;
+
+//YARD OWNER
+export const getByOwnerSelector = (state) => state.yardSlice.stadiumList;
+export const getDetailByOwnerSelector = (state) => state.yardSlice.stadium;
+export const getLoadingSelector = (state) => state.yardSlice.loading;
+export const getAllSportSelector = (state) => state.yardSlice.sports;
+
+// SEARCH STADIUM
+export const getAllStadiumByUserSelector = (state) =>
+  state.yardSlice.stadiumListByUser;

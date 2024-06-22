@@ -1,3 +1,4 @@
+import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   Text,
@@ -9,7 +10,6 @@ import {
   Platform,
   Keyboard,
 } from "react-native";
-import React, { useState, useRef, useEffect } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Avatar, FAB } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,6 +17,7 @@ import {
   getMessageDetail,
   sendMessageByUser,
 } from "../../redux/slices/messageSlice";
+import socket from "../../services/socket";
 
 export default function ChatDetail({ navigation }) {
   const { chatDetail, group_message_id, loading, error } = useSelector(
@@ -24,6 +25,8 @@ export default function ChatDetail({ navigation }) {
   );
   const dispatch = useDispatch();
   const [message, setMessage] = useState("");
+
+  const { userInfo } = useSelector((state) => state.userSlice);
 
   const scrollViewRef = useRef(null);
 
@@ -45,12 +48,36 @@ export default function ChatDetail({ navigation }) {
           content: message,
         })
       ).then((res) => {
+        socket.emit("send-message", {
+          group_message_id: group_message_id,
+          content: message,
+          user_id: userInfo.id,
+          message: res,
+        });
         setMessage("");
+        console.log("send-message ", group_message_id);
+
         dispatch(getMessageDetail(group_message_id));
         Keyboard.dismiss();
       });
     }
   };
+
+  useEffect(() => {
+    if (socket) {
+      const handleMessageReceive = (msg) => {
+        console.log("receive-message ", group_message_id);
+        dispatch(getMessageDetail(group_message_id));
+      };
+
+      socket.on("receive-message", handleMessageReceive);
+
+      // Cleanup function to remove the event listener
+      return () => {
+        socket.off("receive-message", handleMessageReceive);
+      };
+    }
+  }, [group_message_id]);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -65,12 +92,14 @@ export default function ChatDetail({ navigation }) {
             <Avatar.Image
               size={60}
               source={{
-                uri: "https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcQlj3rCfLHry58AtJ8ZyBEAFPtChMddDSUSjt7C7nV3Nhsni9RIx5b0-n7LxfgerrPS6b-P-u3BOM3abuY",
+                uri: chatDetail.group_message_detail.group_message_thumnail,
               }}
               style={{ marginRight: 10 }}
             />
             <View>
-              <Text style={styles.userName}>Tài Võ</Text>
+              <Text style={styles.userName}>
+                {chatDetail.group_message_detail.group_message_name}
+              </Text>
               <Text style={styles.userActive}>Đang hoạt động</Text>
             </View>
           </View>
@@ -81,7 +110,7 @@ export default function ChatDetail({ navigation }) {
           contentContainerStyle={{ paddingTop: 20 }}
           onLayout={scrollToBottom} // Scroll to the end when ScrollView is rendered
         >
-          {chatDetail
+          {chatDetail.messages
             .slice()
             .reverse()
             .map((msg, index) => (
@@ -161,9 +190,9 @@ const styles = StyleSheet.create({
   chatBody: {
     flex: 1,
     backgroundColor: "#FDFDFD",
-    borderRadius: 40,
-    borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0,
+    // borderRadius: 40,
+    // borderBottomLeftRadius: 0,
+    // borderBottomRightRadius: 0,
     paddingHorizontal: 10,
     marginTop: -45,
   },
