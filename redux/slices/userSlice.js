@@ -38,6 +38,23 @@ export const register = createAsyncThunk(
   }
 );
 
+export const updateUserProfile = createAsyncThunk(
+  "userSlice/updateUserProfile",
+  async (formData, { rejectWithValue }) => {
+    console.log("formData update", formData);
+
+    try {
+      const data = await api.put(`/users/${formData?.id}`, formData.data);
+
+      console.log("updateUser data:", data.data);
+      return data.data;
+    } catch (error) {
+      console.log("error", error);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const userSlice = createSlice({
   name: "userSlice",
   initialState: {
@@ -105,6 +122,21 @@ export const userSlice = createSlice({
         state.loading = false;
       })
       .addCase(register.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload; // Ensure consistent error handling
+      })
+      .addCase(updateUserProfile.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateUserProfile.fulfilled, (state, action) => {
+        console.log("metadata updated", action.payload.metadata);
+        state.loading = false;
+        state.userInfo = {
+          ...state.userInfo,
+          ...action.payload.metadata,
+        };
+      })
+      .addCase(updateUserProfile.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload; // Ensure consistent error handling
       });
