@@ -1,3 +1,4 @@
+import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   Text,
@@ -9,7 +10,6 @@ import {
   Platform,
   Keyboard,
 } from "react-native";
-import React, { useState, useRef, useEffect } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Avatar, FAB } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
@@ -55,6 +55,8 @@ export default function ChatDetail({ navigation }) {
           message: res,
         });
         setMessage("");
+        console.log("send-message ", group_message_id);
+
         dispatch(getMessageDetail(group_message_id));
         Keyboard.dismiss();
       });
@@ -63,11 +65,19 @@ export default function ChatDetail({ navigation }) {
 
   useEffect(() => {
     if (socket) {
-      socket.on("receive-message", (msg) => {
+      const handleMessageReceive = (msg) => {
+        console.log("receive-message ", group_message_id);
         dispatch(getMessageDetail(group_message_id));
-      });
+      };
+
+      socket.on("receive-message", handleMessageReceive);
+
+      // Cleanup function to remove the event listener
+      return () => {
+        socket.off("receive-message", handleMessageReceive);
+      };
     }
-  }, []);
+  }, [group_message_id]);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
