@@ -11,10 +11,14 @@ import {
 } from "react-native";
 import { Avatar, Snackbar } from "react-native-paper";
 import { styles } from "../../component/style";
-import Profile from "./Profile";
-import MyPost from "./MyPost";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Recharge from "./Recharge/Recharge";
+import Profile from "./ActionButton/Profile";
+import MyPost from "./ActionButton/MyPost";
+import HeaderAccount from "./HeaderAccount/HeaderAccount";
+import TabViewProfile from "./ActionButton/TabViewProfile";
+import MyMatch from "./ActionButton/MyMatch";
+import MyTransaction from "./ActionButton/MyTransaction";
 
 const fakeData = [
   {
@@ -85,81 +89,17 @@ export default function AccountScreen() {
   return (
     <SafeAreaView style={{ flex: 1, paddingTop: 20, backgroundColor: "#fff" }}>
       <ScrollView>
-        <View style={styles.centerStyle}>
-          <View style={{ position: "relative" }}>
-            <TouchableOpacity onPress={() => setShowImagePickerOptions(true)}>
-              <Avatar.Image
-                size={100}
-                source={{ uri: image }}
-                style={{ marginTop: 10 }}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => setShowImagePickerOptions(true)}
-              style={{
-                position: "absolute",
-                bottom: -3,
-                right: -3,
-                backgroundColor: "white",
-                borderRadius: 15,
-                padding: 3,
-              }}
-            >
-              <Ionicons name="pencil" size={20} color="black" />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.nameAccountContainer}>
-            <Text style={{ marginTop: 5, fontSize: 20, fontWeight: "bold" }}>
-              Ninh
-            </Text>
-            <Text style={{ marginTop: 5, fontWeight: "bold" }}>
-              Nam ● Người lớn
-            </Text>
-          </View>
-          <Recharge />
-        </View>
+        <HeaderAccount
+          image={image}
+          setShowImagePickerOptions={setShowImagePickerOptions}
+        />
 
-        <View style={styles.tabView}>
-          <TouchableOpacity
-            style={[
-              styles.textWrapper,
-              activeTab == "profile" && styles.activeTextWrapper,
-            ]}
-            onPress={() => {
-              setActiveTab("profile");
-            }}
-          >
-            <Text
-              style={[
-                styles.boldText,
-                activeTab == "profile" && styles.activeText,
-              ]}
-            >
-              Giới thiệu
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.textWrapper,
-              activeTab == "post" && styles.activeTextWrapper,
-            ]}
-            onPress={() => {
-              setActiveTab("post");
-            }}
-          >
-            <Text
-              style={[
-                styles.boldText,
-                activeTab == "post" && styles.activeText,
-              ]}
-            >
-              Bài đăng
-            </Text>
-          </TouchableOpacity>
-        </View>
+        <TabViewProfile activeTab={activeTab} setActiveTab={setActiveTab} />
 
         {activeTab === "profile" && <Profile fakeData={fakeData} />}
         {activeTab === "post" && <MyPost />}
+        {activeTab === "match" && <MyMatch />}
+        {activeTab === "transaction" && <MyTransaction />}
 
         <Modal
           visible={!!showImagePickerOptions}

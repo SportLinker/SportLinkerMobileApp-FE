@@ -89,6 +89,20 @@ export const getAllSport = createAsyncThunk(
     }
   }
 );
+export const getAllStadiumByUser = createAsyncThunk(
+  "yardSlice/getAllStadiumByUser",
+  async ({ long, lat }, { rejectWithValue }) => {
+    // console.log("API Response: ", stadiumData);
+    try {
+      const response = await api.get(`/stadiums?long=${long}&lat=${lat}`);
+      // console.log("API Response: ", response.data);
+      return response.data.metadata;
+    } catch (error) {
+      console.log("Error: ", JSON.stringify(error.response.data));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
 export const getDetailStadiumById = createAsyncThunk(
   "yardSlice/getDetailStadiumById",
@@ -109,6 +123,7 @@ export const yardSlice = createSlice({
   name: "yardSlice",
   initialState: {
     stadiumList: [],
+    stadiumListByUser: [],
     stadium: null,
     sports: null,
     loading: false,
@@ -173,6 +188,17 @@ export const yardSlice = createSlice({
         state.stadiumList = action.payload;
       })
       .addCase(getStadiumByOwner.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getAllStadiumByUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAllStadiumByUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.stadiumListByUser = action.payload;
+      })
+      .addCase(getAllStadiumByUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })

@@ -204,6 +204,20 @@ export const styles = StyleSheet.create({
   nameAccountContainer: {
     alignItems: "center",
     paddingTop: 2,
+    marginVertical: "auto",
+  },
+  shadow: {
+    ...Platform.select({
+      ios: {
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 2,
+      },
+      android: {
+        elevation: 5,
+      },
+    }),
   },
   flexRowStyle: {
     display: "flex",
@@ -360,32 +374,38 @@ export const styles = StyleSheet.create({
     color: "#F9A825",
   },
   tabView: {
-    marginTop: 20,
-    backgroundColor: "#fff",
-    width: "100%",
-    height: 45,
-    display: "flex",
     flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    borderBottomWidth: 1,
-    borderBottomColor: "#C4C4C4",
+    marginTop: 20,
+    ...Platform.select({
+      ios: {
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 2,
+      },
+      android: {
+        elevation: 1,
+      },
+    }),
+    // additional styles
   },
   textWrapper: {
-    width: "50%",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 5,
-    paddingVertical: 10,
+    padding: 10,
+    marginHorizontal: 5,
+    // additional styles
+  },
+  activeTextWrapper: {
+    borderBottomWidth: 2,
+    borderBottomColor: "blue",
+    // additional styles for active tab
   },
   boldText: {
-    fontSize: 17,
-    fontWeight: 700,
+    fontWeight: "bold",
+    // additional styles
   },
   activeText: {
-    color: "#4878D9",
+    color: "blue",
+    // additional styles for active text
   },
   activeTextWrapper: {
     borderBottomWidth: 2,
