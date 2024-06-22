@@ -44,12 +44,12 @@ const styles = StyleSheet.create({
   },
   walletContainer: {
     backgroundColor: "#236457",
-    width: "80%",
+    width: "90%",
     paddingHorizontal: 20,
     paddingVertical: 20,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    marginTop: 20,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+
     flexDirection: "row",
   },
   walletInfo: {

@@ -1,21 +1,43 @@
+import * as Location from "expo-location";
 import React, { useEffect, useState } from "react";
 import {
-  View,
-  Text,
+  ActivityIndicator,
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  ActivityIndicator,
+  Text,
+  View,
 } from "react-native";
-import * as Location from "expo-location";
-import YardItem from "./YardItem";
-import FilterEventOptionList from "../EventScreen/FilterEventOptionList";
 import { yard_data } from "../../../utils/constant";
+import YardItem from "./YardItem";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllStadiumByUser } from "../../../redux/slices/yardSlice";
+import {
+  getAllStadiumByUserSelector,
+  getLoadingSelector,
+} from "../../../redux/selectors";
 
 export default function YardScreen() {
+  const dispatch = useDispatch();
+  const stadiumList = useSelector(getAllStadiumByUserSelector);
+  const loading = useSelector(getLoadingSelector);
+
   const [location, setLocation] = useState(null);
   const [address, setAddress] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
+  const [stadiums, setStadiums] = useState("");
+
+  console.log("stadiums", stadiums);
+
+  useEffect(() => {
+    dispatch(getAllStadiumByUser({ long: longitude, lat: latitude }));
+  }, []);
+
+  useEffect(() => {
+    if (stadiumList) setStadiums(stadiumList);
+  }, [stadiumList]);
 
   useEffect(() => {
     (async () => {
@@ -29,12 +51,13 @@ export default function YardScreen() {
       setLocation(location);
 
       if (location) {
-        console.log("latitude: ", location.coords.latitude);
-        console.log("longitude: ", location.coords.longitude);
+        const { latitude, longitude } = location.coords;
+        setLatitude(latitude);
+        setLongitude(longitude);
 
         let addressArray = await Location.reverseGeocodeAsync({
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude,
+          latitude,
+          longitude,
         });
         if (addressArray && addressArray.length > 0) {
           setAddress(addressArray[0]);
@@ -59,7 +82,7 @@ export default function YardScreen() {
         )}
       </View>
       <ScrollView style={{ height: "90%" }}>
-        <YardItem data={yard_data} />
+        <YardItem data={stadiums} loading={loading} />
       </ScrollView>
     </SafeAreaView>
   );
