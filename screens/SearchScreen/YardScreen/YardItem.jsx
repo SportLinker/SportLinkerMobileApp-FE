@@ -19,7 +19,7 @@ export default function YardItem({ data, loading }) {
             data.map((yard) => (
               <TouchableOpacity
                 key={yard.id}
-                style={styles.containerYard}
+                style={styles.containerYardUser}
                 onPress={() =>
                   navigation.navigate("DetailYardScreen", { stadium: yard })
                 }
