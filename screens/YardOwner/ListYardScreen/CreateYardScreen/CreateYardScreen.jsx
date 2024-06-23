@@ -12,22 +12,26 @@ import {
 import { TextInput } from "react-native-paper";
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
-import { createYardInStadium } from "../../../../redux/slices/yardSlice";
+import {
+  createYardInStadium,
+  getDetailYardByOwner,
+  updateYard,
+} from "../../../../redux/slices/yardSlice";
 import SportSelectionPopup from "./SportSelectPopup";
 
 const CreateYardScreen = ({ navigation, route }) => {
-  const { stadiumId } = route.params;
+  const { stadiumId, yardId, yardDetail = {} } = route.params;
   const dispatch = useDispatch();
   const [showSportPicker, setShowSportPicker] = useState(false);
 
-  console.log("stadiumId in create yard", stadiumId);
+  // console.log("yardId in create yard", yardId);
+  // console.log("yardDetail in create yard", yardDetail);
 
   const yardSchema = Yup.object().shape({
     yard_name: Yup.string().required("Vui lòng nhập tên sân"),
     yard_description: Yup.string().required("Vui lòng nhập mô tả"),
     yard_sport: Yup.string().required("Hãy chọn môn thể thao"),
     price_per_hour: Yup.string().required("Giá Thuê (ngàn VNĐ)/giờ"),
-    // .matches(/^\d+(VNĐ\/giờ)$/, "Giá phải là số"),
   });
 
   const handleSaveNewYard = (values, { resetForm }) => {
@@ -36,9 +40,16 @@ const CreateYardScreen = ({ navigation, route }) => {
       ...values,
       price_per_hour: parseFloat(values.price_per_hour),
     };
-    console.log("Dispatching with stadiumId:", stadiumId);
-    dispatch(createYardInStadium({ stadium_id: stadiumId, yardData }));
-    Alert.alert("Thành công", "Tạo mới sân nhỏ thành công!");
+    if (yardId) {
+      dispatch(updateYard({ yard_id: yardId, yardData })).then(() =>
+        dispatch(getDetailYardByOwner(yardId))
+      );
+      Alert.alert("Thành công", "Cập nhật sân nhỏ thành công!");
+    } else {
+      dispatch(createYardInStadium({ stadium_id: stadiumId, yardData }));
+      Alert.alert("Thành công", "Tạo mới sân nhỏ thành công!");
+    }
+
     resetForm();
     navigation.goBack(); // Go back to the previous screen
   };
@@ -57,12 +68,35 @@ const CreateYardScreen = ({ navigation, route }) => {
       style={styles.keyboardAvoidingView}
     >
       <View style={styles.container}>
+        {yardId ? (
+          <Text
+            style={{
+              marginHorizontal: "auto",
+              fontWeight: "bold",
+              fontSize: 25,
+              marginVertical: 10,
+            }}
+          >
+            Cập Nhật Sân Nhỏ Của Bạn
+          </Text>
+        ) : (
+          <Text
+            style={{
+              marginHorizontal: "auto",
+              fontWeight: "bold",
+              fontSize: 25,
+              marginVertical: 10,
+            }}
+          >
+            Tạo Sân Nhỏ Của Bạn
+          </Text>
+        )}
         <Formik
           initialValues={{
-            yard_name: "Sân 1",
-            yard_description: "Sân 5 người",
-            yard_sport: "",
-            price_per_hour: "150000",
+            yard_name: yardDetail.yard_name || "Sân 1",
+            yard_description: yardDetail.yard_description || "Sân 5 người",
+            yard_sport: yardDetail.yard_sport || "",
+            price_per_hour: `${yardDetail.price_per_hour}` || "",
           }}
           validationSchema={yardSchema}
           onSubmit={handleSaveNewYard}
@@ -81,7 +115,6 @@ const CreateYardScreen = ({ navigation, route }) => {
                 label={"Tên Sân"}
                 mode="outlined"
                 style={styles.input}
-                // placeholder="Tên Sân"
                 onChangeText={handleChange("yard_name")}
                 onBlur={handleBlur("yard_name")}
                 value={values.yard_name}
@@ -158,7 +191,11 @@ const CreateYardScreen = ({ navigation, route }) => {
                   style={[styles.button, styles.buttonSave]}
                   onPress={handleSubmit}
                 >
-                  <Text style={styles.buttonText}>Tạo</Text>
+                  {yardId ? (
+                    <Text style={styles.buttonText}>Cập nhật</Text>
+                  ) : (
+                    <Text style={styles.buttonText}>Tạo</Text>
+                  )}
                 </TouchableOpacity>
               </View>
             </View>
@@ -181,11 +218,6 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   input: {
-    // width: "100%",
-    // height: 50,
-    // borderWidth: 1,
-    // borderColor: "#1646a9",
-    // padding: 10,
     marginBottom: 15,
     borderRadius: 5,
     fontSize: 16,

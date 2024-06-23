@@ -328,7 +328,7 @@ const StackNavigator = () => (
       name="CreateStadium"
       component={CreateStadium}
       options={{
-        title: "Tạo Sân Của Bạn",
+        title: "",
         headerStyle: { backgroundColor: "#1646a9" },
         headerTitleAlign: "center",
         headerTintColor: "white",
@@ -361,7 +361,7 @@ const StackNavigator = () => (
       name="CreateYard"
       component={CreateYardScreen}
       options={{
-        title: "Tạo sân nhỏ của bạn",
+        title: "",
         headerStyle: { backgroundColor: "#1646a9" },
         headerTitleAlign: "center",
         headerTintColor: "white",
