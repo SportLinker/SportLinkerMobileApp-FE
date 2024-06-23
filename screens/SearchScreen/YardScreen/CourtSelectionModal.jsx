@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Modal,
   Text,
@@ -8,11 +8,47 @@ import {
   Image,
   Alert,
 } from "react-native";
-import { listYardData } from "../../../utils/constant";
 import { ScrollView } from "react-native-gesture-handler";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { Calendar, LocaleConfig } from "react-native-calendars";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllYardByUserSelector } from "../../../redux/selectors";
+import { getAllYardByUser } from "../../../redux/slices/yardSlice";
 
-export const CourtSelectionModal = ({ visible, onClose }) => {
+// Configure the calendar locale if necessary
+LocaleConfig.locales["fr"] = {
+  monthNames: [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ],
+  dayNames: [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ],
+  dayNamesShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+};
+LocaleConfig.defaultLocale = "fr";
+
+export const CourtSelectionModal = ({ visible, onClose, stadiumId }) => {
+  const dispatch = useDispatch();
+
+  const yardList = useSelector(getAllYardByUserSelector);
+
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [selectedYard, setSelectedYard] = useState(null);
   const [isManualTimeSelection, setIsManualTimeSelection] = useState(false);
@@ -21,17 +57,81 @@ export const CourtSelectionModal = ({ visible, onClose }) => {
   const [isSelectingStartTime, setIsSelectingStartTime] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [showBookingModal, setShowBookingModal] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [bookings, setBookings] = useState([]);
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [yards, setYards] = useState("");
+
+  // console.log("yardList", yardList);
+  // console.log("bookings", bookings);
+
+  useEffect(() => {
+    dispatch(getAllYardByUser({ stadium_id: stadiumId }));
+  }, []);
+
+  useEffect(() => {
+    if (yardList) {
+      setYards(yardList);
+      // Extract and set bookings from yardList
+      const allBookings = yardList.flatMap((yard) =>
+        yard.BookingYard.map((booking) => ({
+          date: booking.date,
+          timeSlots: booking.matches.map(
+            (match) => `${match.time_start} - ${match.time_end}`
+          ),
+        }))
+      );
+      setBookings(allBookings);
+    }
+  }, [yardList]);
 
   const handleBooking = (yard) => {
     setSelectedYard(yard);
     setShowBookingModal(true);
   };
 
-  // console.log("selectedYard", selectedYard);
-  console.log("startTime", startTime);
-  console.log("endTime", endTime);
+  const checkOverlap = (selectedTime) => {
+    const bookingsForSelectedDate = bookings.find(
+      (b) => b.date === selectedDate
+    );
+    if (bookingsForSelectedDate) {
+      // Kiểm tra từng slot đặt có trùng với selectedTime không
+      return bookingsForSelectedDate.timeSlots.some(
+        (slot) => slot === selectedTime
+      );
+    }
+    return false;
+  };
 
   const handleConfirmTime = () => {
+    if (!selectedDate) {
+      Alert.alert("Vui lòng chọn ngày");
+      return;
+    }
+
+    const currentDate = new Date().toISOString().split("T")[0];
+    if (selectedDate < currentDate) {
+      Alert.alert("Không thể đặt sân trước ngày hiện tại");
+      return;
+    }
+
+    let isOverlapping = false;
+    if (!isManualTimeSelection) {
+      // Kiểm tra trùng giờ nếu không phải chọn thủ công
+      if (selectedSlot) {
+        isOverlapping = checkOverlap(selectedSlot);
+      }
+    } else {
+      // Kiểm tra trùng giờ nếu chọn thủ công
+      isOverlapping = checkOverlap(`${startTime} - ${endTime}`);
+    }
+
+    if (isOverlapping) {
+      Alert.alert("Thời gian đã có lịch đặt, vui lòng chọn thời gian khác");
+      return;
+    }
+
+    // Nếu không trùng lịch, tiến hành xác nhận đặt sân
     if (!isManualTimeSelection) {
       if (selectedSlot) {
         const [start, end] = selectedSlot.split(" - ");
@@ -55,11 +155,20 @@ export const CourtSelectionModal = ({ visible, onClose }) => {
   };
 
   const confirmBooking = (start, end) => {
+    const bookingDetails = {
+      yard: selectedYard.yardName,
+      date: selectedDate,
+      startTime: start,
+      endTime: end,
+    };
+
+    console.log("Booking details:", bookingDetails);
+
     Alert.alert(
-      `Bạn đã đặt sân ${selectedYard.yardName} từ ${start} đến ${end}`
+      `Bạn đã đặt sân ${selectedYard.yardName} từ ${start} đến ${end} vào ngày ${selectedDate}`
     );
 
-    onClose();
+    setShowBookingModal(false);
   };
 
   const handleTimePickerChange = (event, selectedTime) => {
@@ -84,6 +193,35 @@ export const CourtSelectionModal = ({ visible, onClose }) => {
     setIsManualTimeSelection(false);
   };
 
+  const renderBookingsForDate = () => {
+    if (selectedDate) {
+      const bookingsForSelectedDate = bookings.find(
+        (b) => b.date === selectedDate
+      );
+      if (bookingsForSelectedDate) {
+        return (
+          <View>
+            <Text style={styles.bookingTitle}>
+              Bookings for {selectedDate}:
+            </Text>
+            {bookingsForSelectedDate.timeSlots.map((slot, index) => (
+              <Text key={index} style={styles.bookingTimeSlot}>
+                {slot}
+              </Text>
+            ))}
+          </View>
+        );
+      } else {
+        return (
+          <Text style={styles.bookingTitle}>
+            No bookings for {selectedDate}
+          </Text>
+        );
+      }
+    }
+    return null;
+  };
+
   return (
     <Modal
       animationType="slide"
@@ -99,22 +237,23 @@ export const CourtSelectionModal = ({ visible, onClose }) => {
             </TouchableOpacity>
             <Text style={styles.modalText}>Chọn sân</Text>
 
-            {listYardData.map((yard) => (
-              <TouchableOpacity
-                key={yard.id}
-                style={styles.courtButton}
-                onPress={() => handleBooking(yard)}
-              >
-                <Text style={styles.courtButtonText}>{yard.yardName}</Text>
-                <Image source={{ uri: yard.image }} style={styles.courtImage} />
-                <Text style={styles.courtButtonDescription}>
-                  {yard.description}
-                </Text>
-                <Text style={styles.courtButtonDescription}>
-                  Giá: {yard.price}
-                </Text>
-              </TouchableOpacity>
-            ))}
+            {yards &&
+              yards.map((yard) => (
+                <TouchableOpacity
+                  key={yard.id}
+                  style={styles.courtButton}
+                  onPress={() => handleBooking(yard)}
+                >
+                  <Text style={styles.courtButtonText}>{yard.yard_name}</Text>
+                  {/* <Image source={{ uri: yard.image }} style={styles.courtImage} /> */}
+                  <Text style={styles.courtButtonDescription}>
+                    {yard.yard_description}
+                  </Text>
+                  <Text style={styles.courtButtonDescription}>
+                    Giá: {yard.price_per_hour}
+                  </Text>
+                </TouchableOpacity>
+              ))}
           </View>
         </ScrollView>
       </View>
@@ -126,96 +265,124 @@ export const CourtSelectionModal = ({ visible, onClose }) => {
         onRequestClose={() => setShowBookingModal(false)}
       >
         <View style={styles.centeredView}>
-          <View style={styles.bookingContainer}>
+          <View style={styles.modalViewBooking}>
             <TouchableOpacity
               onPress={() => setShowBookingModal(false)}
               style={styles.closeModalButton}
             >
               <Text style={styles.closeModalButtonText}>Đóng</Text>
             </TouchableOpacity>
-            <Text style={styles.bookingTitle}>Chọn giờ đặt sân</Text>
-            <Text style={styles.selectedYard}>{selectedYard?.yardName}</Text>
+            <Text style={styles.bookingTitle}>Chọn ngày</Text>
             <TouchableOpacity
-              style={[
-                styles.timeSlot,
-                selectedSlot === "8:00 - 12:00" && styles.selectedTimeSlot,
-              ]}
-              onPress={() => handleSlotSelection("8:00 - 12:00")}
+              style={styles.toggleCalendarButton}
+              onPress={() => setShowCalendar(!showCalendar)}
             >
-              <Text>8:00 - 12:00</Text>
+              <Text style={styles.toggleCalendarButtonText}>
+                {showCalendar ? "Ẩn lịch" : "Hiển thị lịch"}
+              </Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.timeSlot,
-                selectedSlot === "13:00 - 17:00" && styles.selectedTimeSlot,
-              ]}
-              onPress={() => handleSlotSelection("13:00 - 17:00")}
-            >
-              <Text>13:00 - 17:00</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.timeSlot,
-                selectedSlot === "18:00 - 23:00" && styles.selectedTimeSlot,
-              ]}
-              onPress={() => handleSlotSelection("18:00 - 23:00")}
-            >
-              <Text>18:00 - 23:00</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.radioContainer}
-              onPress={() => setIsManualTimeSelection(true)}
-            >
-              <View style={styles.radioCircle}>
-                {isManualTimeSelection && <View style={styles.selectedRb} />}
-              </View>
-              <Text style={styles.radioText}>Chọn giờ thủ công</Text>
-            </TouchableOpacity>
-            {isManualTimeSelection && (
-              <View style={styles.timeInputContainer}>
-                <TouchableOpacity
-                  style={styles.timeInput}
-                  onPress={() => {
-                    setIsSelectingStartTime(true);
-                    setShowTimePicker(true);
-                  }}
-                >
-                  <Text style={styles.timeInputLabel}>Bắt đầu:</Text>
-                  <Text style={styles.timeInputValue}>{startTime}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.timeInput}
-                  onPress={() => {
-                    setIsSelectingStartTime(false);
-                    setShowTimePicker(true);
-                  }}
-                >
-                  <Text style={styles.timeInputLabel}>Kết thúc:</Text>
-                  <Text style={styles.timeInputValue}>{endTime}</Text>
-                </TouchableOpacity>
-              </View>
+            {showCalendar && (
+              <Calendar
+                onDayPress={(day) => setSelectedDate(day.dateString)}
+                markedDates={{
+                  [selectedDate]: {
+                    selected: true,
+                    disableTouchEvent: true,
+                    selectedDotColor: "orange",
+                  },
+                }}
+              />
             )}
-            <TouchableOpacity
-              style={styles.bookButton}
-              onPress={handleConfirmTime}
-            >
-              <Text style={styles.bookButtonText}>Xác nhận</Text>
-            </TouchableOpacity>
+            {selectedDate && renderBookingsForDate()}
+            <View style={styles.timeSelectionContainer}>
+              <Text style={styles.timeSelectionTitle}>
+                {isManualTimeSelection
+                  ? "Chọn giờ bắt đầu và kết thúc"
+                  : "Chọn slot thời gian"}
+              </Text>
+              {isManualTimeSelection ? (
+                <View>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setIsSelectingStartTime(true);
+                      setShowTimePicker(true);
+                    }}
+                    style={styles.timePickerButton}
+                  >
+                    <Text style={styles.timePickerButtonText}>
+                      Chọn giờ bắt đầu: {startTime}
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setIsSelectingStartTime(false);
+                      setShowTimePicker(true);
+                    }}
+                    style={styles.timePickerButton}
+                  >
+                    <Text style={styles.timePickerButtonText}>
+                      Chọn giờ kết thúc: {endTime}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              ) : (
+                <View>
+                  {["8:00 - 12:00", "12:00 - 16:00", "16:00 - 20:00"].map(
+                    (slot) => (
+                      <TouchableOpacity
+                        key={slot}
+                        onPress={() => handleSlotSelection(slot)}
+                        style={[
+                          styles.timeSlotButton,
+                          selectedSlot === slot &&
+                            styles.selectedTimeSlotButton,
+                        ]}
+                      >
+                        <Text
+                          style={[
+                            styles.timeSlotButtonText,
+                            selectedSlot === slot &&
+                              styles.selectedTimeSlotButtonText,
+                          ]}
+                        >
+                          {slot}
+                        </Text>
+                      </TouchableOpacity>
+                    )
+                  )}
+                </View>
+              )}
+              <TouchableOpacity
+                onPress={() => setIsManualTimeSelection(!isManualTimeSelection)}
+                style={styles.manualTimeSelectionButton}
+              >
+                <Text style={styles.manualTimeSelectionButtonText}>
+                  {isManualTimeSelection
+                    ? "Chọn theo slot thời gian"
+                    : "Chọn giờ thủ công"}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={handleConfirmTime}
+                style={styles.confirmBookingButton}
+              >
+                <Text style={styles.confirmBookingButtonText}>
+                  Xác nhận đặt sân
+                </Text>
+              </TouchableOpacity>
+            </View>
+            {showTimePicker && (
+              <DateTimePicker
+                value={new Date()}
+                mode="time"
+                is24Hour={true}
+                display="default"
+                onChange={handleTimePickerChange}
+              />
+            )}
           </View>
         </View>
       </Modal>
-
-      {showTimePicker && (
-        <DateTimePicker
-          testID="dateTimePicker"
-          value={new Date()}
-          mode="time"
-          is24Hour={true}
-          display="spinner"
-          minuteInterval={30}
-          onChange={handleTimePickerChange}
-        />
-      )}
     </Modal>
   );
 };
@@ -225,154 +392,147 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: "rgba(0,0,0,0.5)",
   },
   scrollView: {
     flexGrow: 1,
     justifyContent: "center",
+    alignItems: "center",
   },
   modalView: {
+    margin: 20,
     backgroundColor: "white",
-    padding: 20,
-    borderRadius: 10,
-    width: "100%",
+    borderRadius: 20,
+    padding: 35,
     alignItems: "center",
-    position: "relative",
-  },
-  modalText: {
-    fontSize: 20,
-    marginBottom: 15,
-    textAlign: "center",
-  },
-  courtButton: {
-    width: "100%",
-    alignItems: "center",
-    marginBottom: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-    paddingBottom: 10,
-  },
-  courtButtonText: {
-    fontSize: 16,
-    marginBottom: 5,
-    marginTop: 10,
-  },
-  courtButtonDescription: {
-    fontSize: 14,
-    color: "gray",
-    padding: 2,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
   closeButton: {
-    position: "absolute",
-    top: 10,
-    right: 10,
-    padding: 10,
+    alignSelf: "flex-end",
   },
   closeButtonText: {
-    fontSize: 18,
-    color: "blue",
-  },
-  bookingContainer: {
-    backgroundColor: "white",
-    padding: 20,
-    borderRadius: 10,
-    width: "80%",
-    alignItems: "center",
-    position: "relative",
-  },
-  bookingTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  selectedYard: {
+    color: "red",
     fontSize: 16,
-    marginBottom: 10,
   },
-  timeSlot: {
-    backgroundColor: "#f0f0f0",
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+    fontSize: 18,
+  },
+  courtButton: {
+    backgroundColor: "#2196F3",
+    borderRadius: 10,
     padding: 10,
-    marginVertical: 5,
-    width: "80%",
-    alignItems: "center",
-    borderRadius: 5,
-    marginBottom: 10,
+    marginVertical: 10,
+    width: 250,
   },
-  selectedTimeSlot: {
-    backgroundColor: "#d0d0d0",
-  },
-  radioContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 10,
-  },
-  radioCircle: {
-    height: 20,
-    width: 20,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#000",
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: 10,
-  },
-  selectedRb: {
-    height: 10,
-    width: 10,
-    borderRadius: 5,
-    backgroundColor: "#000",
-  },
-  radioText: {
-    fontSize: 16,
-    color: "#000",
-  },
-  timeInputContainer: {
-    marginTop: 10,
-    width: "80%",
-    alignItems: "flex-start",
-  },
-  timeInput: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 5,
-  },
-  timeInputLabel: {
-    marginRight: 10,
-  },
-  timeInputValue: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 8,
-    borderRadius: 5,
-    width: 100,
-  },
-  bookButton: {
-    marginTop: 15,
-    backgroundColor: "blue",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-  },
-  bookButtonText: {
+  courtButtonText: {
     color: "white",
     fontSize: 18,
+    fontWeight: "bold",
   },
-  courtImage: {
-    marginVertical: 5,
-    width: 322,
-    height: 150,
-    resizeMode: "cover",
-    borderRadius: 10,
+  courtButtonDescription: {
+    color: "white",
+    fontSize: 14,
+    marginTop: 5,
+  },
+  modalViewBooking: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
   closeModalButton: {
-    position: "absolute",
-    top: 10,
-    right: 10,
+    alignSelf: "flex-end",
   },
   closeModalButtonText: {
+    color: "red",
     fontSize: 16,
-    color: "blue",
+  },
+  bookingTitle: {
+    marginBottom: 15,
+    textAlign: "center",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  timeSelectionContainer: {
+    marginTop: 20,
+  },
+  timeSelectionTitle: {
+    fontSize: 16,
+    marginBottom: 10,
+  },
+  timePickerButton: {
+    backgroundColor: "#2196F3",
+    borderRadius: 10,
+    padding: 10,
+    marginVertical: 5,
+  },
+  timePickerButtonText: {
+    color: "white",
+    fontSize: 16,
+  },
+  timeSlotButton: {
+    backgroundColor: "#2196F3",
+    borderRadius: 10,
+    padding: 10,
+    marginVertical: 5,
+  },
+  timeSlotButtonText: {
+    color: "white",
+    fontSize: 16,
+  },
+  selectedTimeSlotButton: {
+    backgroundColor: "orange",
+  },
+  selectedTimeSlotButtonText: {
+    color: "white",
+    fontSize: 16,
+  },
+  manualTimeSelectionButton: {
+    backgroundColor: "#2196F3",
+    borderRadius: 10,
+    padding: 10,
+    marginVertical: 10,
+  },
+  manualTimeSelectionButtonText: {
+    color: "white",
+    fontSize: 16,
+  },
+  confirmBookingButton: {
+    backgroundColor: "#2196F3",
+    borderRadius: 10,
+    padding: 10,
+    marginTop: 20,
+  },
+  confirmBookingButtonText: {
+    color: "white",
+    fontSize: 16,
+  },
+  toggleCalendarButton: {
+    backgroundColor: "#2196F3",
+    borderRadius: 10,
+    padding: 10,
+    marginVertical: 10,
+  },
+  toggleCalendarButtonText: {
+    color: "white",
+    fontSize: 16,
   },
 });
-
-export default CourtSelectionModal;

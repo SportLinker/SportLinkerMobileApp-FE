@@ -126,6 +126,7 @@ export default function AccountScreen() {
 
     if (!result.canceled) {
       const { uri, type, fileName } = result.assets[0];
+      console.log("result", result.assets[0]);
       setShowImagePickerOptions(false);
       dispatch(userSlice.actions.setUserLoading(true));
 
