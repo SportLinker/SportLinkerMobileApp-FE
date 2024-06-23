@@ -120,8 +120,6 @@ const LoginScreen = ({ navigation }) => {
           }, 1000);
         }
       });
-
-      // navigation.navigate("BottomTabs");
     } catch (error) {
       console.log(error);
     }
@@ -132,7 +130,7 @@ const LoginScreen = ({ navigation }) => {
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        {/* {loadingSelector && <Loading visible={loadingSelector} />} */}
+        {loadingSelector && <Loading visible={loadingSelector} />}
         <ScrollView>
           <View style={styles.container}>
             <Image
