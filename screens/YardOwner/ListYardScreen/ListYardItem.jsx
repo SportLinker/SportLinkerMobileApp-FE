@@ -10,51 +10,86 @@ const ListYardItem = ({ data }) => {
 
   return (
     <View style={{ marginTop: 20, marginHorizontal: "auto" }}>
-      {data.map((yard) => (
-        <TouchableOpacity
-          key={yard.id}
-          style={styles.containerYard}
-          onPress={() =>
-            navigation.navigate("InfoYard", {
-              yardName: yard.yardName,
-              yardDescription: yard.description,
-              yardPrice: yard.price,
-              openTime: yard.openTime,
-              openDay: yard.openDay,
-              yardImage: yard.image,
-            })
-          }
-        >
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              marginTop: 10,
-            }}
+      {data &&
+        data.map((yard) => (
+          <TouchableOpacity
+            key={yard.yard_id}
+            style={styles.containerYard}
+            onPress={() =>
+              navigation.navigate("InfoYard", {
+                yardName: yard.yardName,
+                yardDescription: yard.description,
+                yardPrice: yard.price,
+                openTime: yard.openTime,
+                openDay: yard.openDay,
+                yardImage: yard.image,
+              })
+            }
           >
-            <View>
-              <Text
-                style={{
-                  fontWeight: "bold",
-                  fontSize: 16,
-                  color: "#4878d9",
-                  paddingVertical: 5,
-                  paddingHorizontal: 5,
-                }}
-              >
-                {yard.yardName}
-              </Text>
-              <Text style={{ paddingBottom: 10, paddingHorizontal: 5 }}>
-                Thời gian:{" "}
-                <Text style={{ fontWeight: "bold" }}>
-                  {yard.openTime} | {yard.openDay}
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                marginTop: 10,
+                marginHorizontal: "auto",
+                padding: 10,
+              }}
+            >
+              <View>
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                    fontSize: 16,
+                    color: "#4878d9",
+                    padding: 5,
+                    marginHorizontal: "auto",
+                  }}
+                >
+                  {yard.yard_name}
                 </Text>
-              </Text>
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                    color: "#5f6d7a",
+                    marginHorizontal: "auto",
+                    marginVertical: 10,
+                  }}
+                >
+                  {yard.yard_description}
+                </Text>
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    width: "100%",
+                  }}
+                >
+                  <Text style={{ paddingBottom: 10, paddingHorizontal: 5 }}>
+                    Môn thể thao:
+                  </Text>
+                  <Text style={{ fontWeight: "bold" }}>{yard.yard_sport}</Text>
+                </View>
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    width: "100%",
+                  }}
+                >
+                  <Text style={{ paddingBottom: 10, paddingHorizontal: 5 }}>
+                    Giá thuê:
+                  </Text>
+                  <Text style={{ fontWeight: "bold" }}>
+                    {yard.price_per_hour} VNĐ/giờ
+                  </Text>
+                </View>
+              </View>
             </View>
-          </View>
-        </TouchableOpacity>
-      ))}
+          </TouchableOpacity>
+        ))}
     </View>
   );
 };

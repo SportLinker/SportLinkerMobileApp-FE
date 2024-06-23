@@ -243,14 +243,59 @@ export const CourtSelectionModal = ({ visible, onClose, stadiumId }) => {
                   style={styles.courtButton}
                   onPress={() => handleBooking(yard)}
                 >
-                  <Text style={styles.courtButtonText}>{yard.yard_name}</Text>
-                  {/* <Image source={{ uri: yard.image }} style={styles.courtImage} /> */}
-                  <Text style={styles.courtButtonDescription}>
-                    {yard.yard_description}
-                  </Text>
-                  <Text style={styles.courtButtonDescription}>
-                    Giá: {yard.price_per_hour}
-                  </Text>
+                  <View>
+                    <Text
+                      style={{
+                        fontWeight: "bold",
+                        fontSize: 16,
+                        color: "#4878d9",
+                        padding: 5,
+                        marginHorizontal: "auto",
+                      }}
+                    >
+                      {yard.yard_name}
+                    </Text>
+                    <Text
+                      style={{
+                        fontWeight: "bold",
+                        color: "#5f6d7a",
+                        marginHorizontal: "auto",
+                        marginVertical: 10,
+                      }}
+                    >
+                      {yard.yard_description}
+                    </Text>
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        width: "100%",
+                      }}
+                    >
+                      <Text style={{ paddingBottom: 10, paddingHorizontal: 5 }}>
+                        Môn thể thao:
+                      </Text>
+                      <Text style={{ fontWeight: "bold" }}>
+                        {yard.yard_sport}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        width: "100%",
+                      }}
+                    >
+                      <Text style={{ paddingBottom: 10, paddingHorizontal: 5 }}>
+                        Giá thuê:
+                      </Text>
+                      <Text style={{ fontWeight: "bold" }}>
+                        {yard.price_per_hour} VNĐ/giờ
+                      </Text>
+                    </View>
+                  </View>
                 </TouchableOpacity>
               ))}
           </View>
@@ -427,11 +472,17 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   courtButton: {
-    backgroundColor: "#2196F3",
+    backgroundColor: "#fff",
     borderRadius: 10,
     padding: 10,
     marginVertical: 10,
     width: 250,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 10,
+    minWidth: "100%",
   },
   courtButtonText: {
     color: "white",
