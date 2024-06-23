@@ -29,11 +29,19 @@ export default function YardScreen() {
   const [longitude, setLongitude] = useState(null);
   const [stadiums, setStadiums] = useState("");
 
-  console.log("stadiums", stadiums);
+  // console.log("latitude", latitude);
+  // console.log("longitude", longitude);
+  // console.log("stadiums", stadiums);
 
   useEffect(() => {
-    dispatch(getAllStadiumByUser({ long: longitude, lat: latitude }));
-  }, []);
+    if (latitude && longitude) {
+      const formData = {
+        long: longitude,
+        lat: latitude,
+      };
+      dispatch(getAllStadiumByUser(formData));
+    }
+  }, [latitude, longitude]);
 
   useEffect(() => {
     if (stadiumList) setStadiums(stadiumList);

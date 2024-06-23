@@ -8,7 +8,7 @@ import {
   AntDesign,
 } from "@expo/vector-icons";
 
-export function DetailsSection({ rating }) {
+export function DetailsSection({ rating, stadium }) {
   return (
     <View style={{ marginVertical: 20 }}>
       <View style={{ display: "flex", flexDirection: "row" }}>
@@ -16,45 +16,25 @@ export function DetailsSection({ rating }) {
           name="location-pin"
           size={30}
           color="black"
-          style={{ marginHorizontal: 30 }}
+          style={{ marginHorizontal: 25 }}
         />
         <View
           style={{
             marginVertical: "auto",
             display: "flex",
             flexDirection: "row",
+            width: "70%",
           }}
         >
-          <Text style={{ fontSize: 16, width: 300 }}>
-            343/26 Nơ Trang Long, P13, Q Bình Thạnh, Ho Chi Minh City, Vietnam.
-          </Text>
+          <Text style={{ fontSize: 16 }}>{stadium.stadium_address}</Text>
         </View>
       </View>
-      {/* <View style={{ display: "flex", flexDirection: "row", marginTop: 20 }}>
-        <FontAwesome
-          name="phone"
-          size={30}
-          color="black"
-          style={{ marginHorizontal: 33 }}
-        />
-        <View
-          style={{
-            marginVertical: "auto",
-            display: "flex",
-            flexDirection: "row",
-          }}
-        >
-          <Text style={{ fontSize: 16 }}>Điện thoại</Text>
-          <Text style={{ marginHorizontal: 6 }}>●</Text>
-          <Text style={{ fontSize: 16, fontWeight: 700 }}>0123456789</Text>
-        </View>
-      </View> */}
       <View style={{ display: "flex", flexDirection: "row", marginTop: 20 }}>
         <Feather
           name="clock"
           size={30}
           color="black"
-          style={{ marginHorizontal: 29 }}
+          style={{ marginHorizontal: 25 }}
         />
         <View
           style={{
@@ -63,34 +43,15 @@ export function DetailsSection({ rating }) {
             flexDirection: "row",
           }}
         >
-          <Text style={{ fontSize: 16 }}>Thứ 2 - Thứ 7 | Mở cả ngày</Text>
+          <Text style={{ fontSize: 16 }}>{stadium.stadium_time}</Text>
         </View>
       </View>
-      {/* <View style={{ display: "flex", flexDirection: "row", marginTop: 20 }}>
-        <FontAwesome5
-          name="coins"
-          size={30}
-          color="black"
-          style={{ marginHorizontal: 30 }}
-        />
-        <View
-          style={{
-            marginVertical: "auto",
-            display: "flex",
-            flexDirection: "row",
-          }}
-        >
-          <Text style={{ fontSize: 16 }}>Mức giá</Text>
-          <Text style={{ marginHorizontal: 6 }}>●</Text>
-          <Text style={{ fontSize: 16, fontWeight: 700 }}>30000 vnđ</Text>
-        </View>
-      </View> */}
       <View style={{ display: "flex", flexDirection: "row", marginTop: 20 }}>
         <AntDesign
           name="star"
           size={30}
           color="#F9A825"
-          style={{ marginHorizontal: 30 }}
+          style={{ marginHorizontal: 25 }}
         />
         <View
           style={{
@@ -99,10 +60,10 @@ export function DetailsSection({ rating }) {
             flexDirection: "row",
           }}
         >
-          <Text style={{ fontSize: 16 }}>Lượt thích</Text>
+          <Text style={{ fontSize: 16 }}>Đánh giá</Text>
           <Text style={{ marginHorizontal: 6 }}>●</Text>
           <Text style={{ fontSize: 16 }}>
-            <Text style={{ fontWeight: 700 }}>{rating}</Text> (130 lượt thích)
+            <Text style={{ fontWeight: 700 }}>{stadium.stadium_rating}</Text>
           </Text>
         </View>
       </View>

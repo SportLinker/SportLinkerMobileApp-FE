@@ -19,3 +19,5 @@ export const getAllSportSelector = (state) => state.yardSlice.sports;
 // SEARCH STADIUM
 export const getAllStadiumByUserSelector = (state) =>
   state.yardSlice.stadiumListByUser;
+export const getAllYardByUserSelector = (state) =>
+  state.yardSlice.yardListByUser;
