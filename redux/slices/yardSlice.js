@@ -98,7 +98,7 @@ export const getAllStadiumByUser = createAsyncThunk(
     try {
       console.log(`/stadiums?long=${long}&lat=${lat}`);
       const response = await api.get(`/stadiums?long=${long}&lat=${lat}`);
-      console.log("API Response: ", response.data);
+      // console.log("API Response: ", response.data);
       return response.data.metadata;
     } catch (error) {
       console.log("Error: ", JSON.stringify(error.response.data));
