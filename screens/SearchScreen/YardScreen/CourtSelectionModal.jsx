@@ -165,7 +165,7 @@ export const CourtSelectionModal = ({ visible, onClose, stadiumId }) => {
     console.log("Booking details:", bookingDetails);
 
     Alert.alert(
-      `Bạn đã đặt sân ${selectedYard.yardName} từ ${start} đến ${end} vào ngày ${selectedDate}`
+      `Bạn đã đặt sân ${selectedYard.yard_name} từ ${start} đến ${end} vào ngày ${selectedDate}`
     );
 
     setShowBookingModal(false);
