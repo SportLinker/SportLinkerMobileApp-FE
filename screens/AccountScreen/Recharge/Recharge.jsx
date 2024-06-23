@@ -18,7 +18,7 @@ export default function Recharge() {
           <Text style={styles.walletAmount}>VND 100.000</Text>
         </View>
         <View style={styles.rechargeButtonContainer}>
-          <TouchableOpacity onPress={toggleModal} style={styles.rechargeButton}>
+          {/* <TouchableOpacity onPress={toggleModal} style={styles.rechargeButton}>
             <Icon
               name="wallet-plus-outline"
               size={30}
@@ -26,13 +26,13 @@ export default function Recharge() {
               style={styles.icon}
             />
             <Text style={styles.rechargeText}>Nạp tiền</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
-      <ReChargeModal
+      {/* <ReChargeModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
-      />
+      /> */}
     </View>
   );
 }
