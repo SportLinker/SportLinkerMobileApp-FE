@@ -1,37 +1,43 @@
-import React, { useState } from "react";
-import {
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import Icon from "react-native-vector-icons/Ionicons";
-import { listYardData } from "../../../utils/constant";
+import React, { useEffect, useState } from "react";
+import { SafeAreaView, ScrollView, StyleSheet } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllYardByOwnerSelector } from "../../../redux/selectors";
+import { getAllYardByYardOwner } from "../../../redux/slices/yardSlice";
 import FilterOptionList from "./FilterOption";
 import ListYardItem from "./ListYardItem";
 
-const ListYardScreen = ({ navigation }) => {
+const ListYardScreen = ({ navigation, route }) => {
+  const { stadiumId } = route?.params;
+  const dispatch = useDispatch();
+  const yardList = useSelector(getAllYardByOwnerSelector);
+
   const [filterOptions, setFilterOptions] = useState({ status: "all" });
+  const [yards, setYards] = useState(null);
+
+  console.log("yards", yards);
+
+  // console.log("stadiumId", stadiumId);
+
+  useEffect(() => {
+    dispatch(getAllYardByYardOwner({ stadium_id: stadiumId }));
+  }, []);
+
+  useEffect(() => {
+    if (yardList) setYards(yardList);
+  }, [yardList]);
 
   // Filter data based on filter options
-  const filteredData = listYardData.filter((item) => {
-    if (filterOptions.status === "all") return true;
-    return item.status === filterOptions.status;
-  });
+  // const filteredData = yards.filter((item) => {
+  //   if (filterOptions.status === "all") return true;
+  //   return item.status === filterOptions.status;
+  // });
 
   return (
     <SafeAreaView style={styles.container}>
       <FilterOptionList setFilterOptions={setFilterOptions} />
       <ScrollView style={{ height: "90%" }}>
-        <ListYardItem data={filteredData} />
+        <ListYardItem data={yards} />
       </ScrollView>
-      <TouchableOpacity
-        style={styles.fab}
-        onPress={() => navigation.navigate("CreateYard")}
-      >
-        <Icon name="add" size={30} color="#fff" />
-      </TouchableOpacity>
     </SafeAreaView>
   );
 };
