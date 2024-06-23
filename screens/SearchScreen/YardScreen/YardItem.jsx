@@ -4,6 +4,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { styles } from "../../../component/style";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
+import DefaultImage from "../../../assets/default_img.png";
 
 export default function YardItem({ data, loading }) {
   const navigation = useNavigation();
@@ -18,13 +19,19 @@ export default function YardItem({ data, loading }) {
               <TouchableOpacity
                 key={yard.id}
                 style={styles.containerYard}
-                onPress={() => navigation.navigate("DetailYardScreen")}
+                onPress={() =>
+                  navigation.navigate("DetailYardScreen", { stadium: yard })
+                }
               >
                 <View>
-                  <Image
-                    source={{ uri: yard.stadium_thumnail }}
-                    style={styles.imageYard}
-                  />
+                  {yard.stadium_thumnail && yard.stadium_thumnail ? (
+                    <Image
+                      source={{ uri: yard.stadium_thumnail }}
+                      style={styles.imageYard}
+                    />
+                  ) : (
+                    <Image source={DefaultImage} style={styles.imageYard} />
+                  )}
                 </View>
                 <View
                   style={{

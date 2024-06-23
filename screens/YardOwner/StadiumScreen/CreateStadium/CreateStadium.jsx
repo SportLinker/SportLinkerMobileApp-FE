@@ -14,6 +14,7 @@ import {
 import Step1 from "./Step/Step1";
 import Step2 from "./Step/Step2";
 import Step3 from "./Step/Step3";
+import { uploadImageToCloudinary } from "../../../../services/cloudinary";
 
 const fetchLocationData = async (query, setIsLoading, setLocations) => {
   setIsLoading(true);
@@ -64,28 +65,39 @@ const CreateStadium = ({ route }) => {
   const [currentStep, setCurrentStep] = useState(1);
 
   const handleSelectImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 1,
+      });
 
-    if (!result.cancelled) {
-      if (result.assets && result.assets.length > 0 && result.assets[0].uri) {
-        setStadiumData({
-          ...stadiumData,
-          stadium_thumnail: result.assets[0].uri,
+      if (!result.canceled) {
+        const { uri, type, fileName } = result.assets[0];
+        console.log("Selected image:", result.assets[0]);
+
+        // Upload image to Cloudinary
+        uploadImageToCloudinary(uri, type, fileName).then((response) => {
+          // after get a link from cloudinary then update url link for server
+          console.log("response image ", response);
+
+          // Update stadiumData with the Cloudinary URL
+          setStadiumData({
+            ...stadiumData,
+            stadium_thumbnail: response.url,
+          });
         });
       } else {
-        console.log("Image uri not found in result:", result);
+        console.log("Image selection canceled");
       }
-    } else {
-      console.log("Image selection canceled");
+    } catch (error) {
+      console.error("Error selecting/uploading image:", error);
+      // Handle error as needed (e.g., show an alert)
     }
   };
 
-  console.log("stadiumId", stadiumId);
+  // console.log("stadiumId", stadiumId);
 
   const handleCreateStadium = async () => {
     try {
@@ -110,14 +122,12 @@ const CreateStadium = ({ route }) => {
         await dispatch(
           updateStadium({ stadium_id: stadiumId, stadiumData: stadiumUpdate })
         );
-        navigation.goBack(); // Quay lại màn hình trước đó
+        navigation.goBack();
         Alert.alert("Thành công", "Sân đã cập nhật thành công!");
       } else {
         await dispatch(createStadium(stadiumData));
-        navigation.goBack(); // Quay lại màn hình trước đó
-        // navigation.setParams({
+        navigation.goBack();
         Alert.alert("Thành công", "Sân đã được tạo mới thành công!");
-        // });
       }
 
       await dispatch(getDetailStadiumById(stadiumId));

@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { FAB } from "react-native-paper";
+import DefaultImage from "../../../../assets/default_img.png";
 
 export default function StadiumList({ stadiumList }) {
   const navigation = useNavigation();
@@ -28,14 +29,17 @@ export default function StadiumList({ stadiumList }) {
               navigation.navigate("InfoStadium", { stadiumId: stadium.id })
             }
           >
-            <Image
-              source={{
-                uri:
-                  stadium.stadium_thumnail ||
-                  "https://example.com/default-stadium.jpg",
-              }}
-              style={styles.image}
-            />
+            {stadium.stadium_thumnail && stadium.stadium_thumnail ? (
+              <Image
+                source={{
+                  uri: stadium.stadium_thumnail,
+                }}
+                style={styles.image}
+              />
+            ) : (
+              <Image source={DefaultImage} style={styles.image} />
+            )}
+
             <View style={styles.infoContainer}>
               <Text style={styles.name}>{stadium.stadium_name}</Text>
               <Text style={styles.time}>{stadium.stadium_time}</Text>

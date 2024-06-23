@@ -1,6 +1,7 @@
 import { Formik } from "formik";
 import React, { useState } from "react";
 import {
+  Alert,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
@@ -37,6 +38,7 @@ const CreateYardScreen = ({ navigation, route }) => {
     };
     console.log("Dispatching with stadiumId:", stadiumId);
     dispatch(createYardInStadium({ stadium_id: stadiumId, yardData }));
+    Alert.alert("Thành công", "Tạo mới sân nhỏ thành công!");
     resetForm();
     navigation.goBack(); // Go back to the previous screen
   };

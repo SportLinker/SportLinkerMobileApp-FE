@@ -7,25 +7,36 @@ import { ActionButtons } from "./Section/ActionButtons ";
 import { IntroductionSection } from "./Section/IntroductionSection";
 import { DetailsSection } from "./Section/DetailsSection";
 
-const DetailYardScreen = () => {
+const DetailYardScreen = ({ route }) => {
+  const { stadium } = route?.params;
   const [image, setImage] = useState(
     "https://i.pinimg.com/236x/71/db/24/71db24f6798f1a208b7fe8a503365458.jpg"
   );
   const [liked, setLiked] = useState("");
+  const [stadiumOwner, setStadiumOwner] = useState(stadium.owner);
   const [modalVisible, setModalVisible] = useState(false);
   const navigation = useNavigation();
   const rating = 3.5;
 
+  // console.log("stadium", stadium);
+  // console.log("stadiumOwner", stadiumOwner);
+
   return (
     <ScrollView style={{ backgroundColor: "#fff" }}>
-      <HeaderSection image={image} rating={rating} />
+      <HeaderSection
+        image={image}
+        rating={rating}
+        stadium={stadium}
+        stadiumOwner={stadiumOwner}
+      />
       <ActionButtons
         setModalVisible={setModalVisible}
         liked={liked}
         setLiked={setLiked}
+        stadium={stadium}
       />
-      <IntroductionSection />
-      <DetailsSection rating={rating} />
+      <IntroductionSection stadium={stadium} />
+      <DetailsSection rating={rating} stadium={stadium} />
       <RatingModal
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
