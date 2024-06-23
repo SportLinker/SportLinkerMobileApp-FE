@@ -62,7 +62,7 @@ export const CourtSelectionModal = ({ visible, onClose, stadiumId }) => {
   const [showCalendar, setShowCalendar] = useState(false);
   const [yards, setYards] = useState("");
 
-  // console.log("yardList", yardList);
+  // console.log("yards", yards);
   // console.log("bookings", bookings);
 
   useEffect(() => {
@@ -156,7 +156,7 @@ export const CourtSelectionModal = ({ visible, onClose, stadiumId }) => {
 
   const confirmBooking = (start, end) => {
     const bookingDetails = {
-      yard: selectedYard.yardName,
+      yard: selectedYard.yard_name,
       date: selectedDate,
       startTime: start,
       endTime: end,
@@ -236,11 +236,10 @@ export const CourtSelectionModal = ({ visible, onClose, stadiumId }) => {
               <Text style={styles.closeButtonText}>Đóng</Text>
             </TouchableOpacity>
             <Text style={styles.modalText}>Chọn sân</Text>
-
             {yards &&
               yards.map((yard) => (
                 <TouchableOpacity
-                  key={yard.id}
+                  key={yard.yard_id}
                   style={styles.courtButton}
                   onPress={() => handleBooking(yard)}
                 >
@@ -400,7 +399,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalView: {
-    margin: 20,
     backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
@@ -413,6 +411,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+    minWidth: "100%",
+    minHeight: "100%",
   },
   closeButton: {
     alignSelf: "flex-end",
@@ -457,6 +457,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+    width: "100%",
   },
   closeModalButton: {
     alignSelf: "flex-end",
@@ -497,9 +498,10 @@ const styles = StyleSheet.create({
   timeSlotButtonText: {
     color: "white",
     fontSize: 16,
+    marginHorizontal: "auto",
   },
   selectedTimeSlotButton: {
-    backgroundColor: "orange",
+    backgroundColor: "#1646a9",
   },
   selectedTimeSlotButtonText: {
     color: "white",
@@ -511,28 +513,31 @@ const styles = StyleSheet.create({
     padding: 10,
     marginVertical: 10,
   },
+
   manualTimeSelectionButtonText: {
     color: "white",
     fontSize: 16,
   },
   confirmBookingButton: {
-    backgroundColor: "#2196F3",
+    backgroundColor: "#1646a9",
     borderRadius: 10,
-    padding: 10,
+    padding: 15,
     marginTop: 20,
   },
   confirmBookingButtonText: {
     color: "white",
     fontSize: 16,
+    marginHorizontal: "auto",
   },
   toggleCalendarButton: {
     backgroundColor: "#2196F3",
     borderRadius: 10,
     padding: 10,
-    marginVertical: 10,
+    width: "40%",
   },
   toggleCalendarButtonText: {
     color: "white",
-    fontSize: 16,
+    fontSize: 12,
+    marginHorizontal: "auto",
   },
 });

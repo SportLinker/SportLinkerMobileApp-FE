@@ -19,8 +19,8 @@ export const createStadium = createAsyncThunk(
 export const updateStadium = createAsyncThunk(
   "yardSlice/updateStadium",
   async ({ stadium_id, stadiumData }, { rejectWithValue }) => {
-    console.log("stadium_id: ", stadium_id);
-    console.log("API Response: ", stadiumData);
+    // console.log("stadium_id: ", stadium_id);
+    // console.log("API Response: ", stadiumData);
     try {
       const response = await api.put(`/stadiums/${stadium_id}`, stadiumData);
       console.log("API Response: ", response.data);
@@ -34,7 +34,7 @@ export const updateStadium = createAsyncThunk(
 export const deleteStadium = createAsyncThunk(
   "yardSlice/deleteStadium",
   async ({ stadium_id }, { rejectWithValue }) => {
-    console.log("stadium_id: ", stadium_id);
+    // console.log("stadium_id: ", stadium_id);
     try {
       const response = await api.delete(`/stadiums/${stadium_id}`);
       console.log("API Response: ", response.data);
@@ -110,7 +110,7 @@ export const getAllStadiumByUser = createAsyncThunk(
 export const getAllYardByUser = createAsyncThunk(
   "yardSlice/getAllYardByUser",
   async ({ stadium_id }, { rejectWithValue }) => {
-    console.log("stadium_id", stadium_id);
+    // console.log("stadium_id", stadium_id);
     try {
       const response = await api.get(`/yards/getListYardByUser/${stadium_id}`);
       // console.log("API Response: ", response.data);
