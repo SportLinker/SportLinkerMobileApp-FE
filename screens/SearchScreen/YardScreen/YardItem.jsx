@@ -8,6 +8,7 @@ import DefaultImage from "../../../assets/default_img.png";
 
 export default function YardItem({ data, loading }) {
   const navigation = useNavigation();
+
   return (
     <View style={{ marginTop: 20, marginHorizontal: "auto" }}>
       {loading ? (
@@ -50,7 +51,10 @@ export default function YardItem({ data, loading }) {
                         color: "#4878d9",
                       }}
                     >
-                      {yard.stadium_name}
+                      {yard.stadium_name} -{" "}
+                      <Text style={{ color: "#000" }}>
+                        {yard.distance.text}
+                      </Text>
                     </Text>
                     <Text>
                       Địa điểm:{" "}
