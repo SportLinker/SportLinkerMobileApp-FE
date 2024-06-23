@@ -2,10 +2,23 @@ import { View, Text, Modal, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { styles } from "../../component/style";
 import { useNavigation } from "@react-navigation/native";
+import ReChargeModal from "./Recharge/ReChargeModal";
+import WithDrawModal from "./Withdraw/WithDrawModal"; // Import the new modal
 
 export default function MenuAccount({ showMenu, setShowMenu }) {
   const navigation = useNavigation();
   const [showLogOut, setShowLogOut] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [withdrawModalVisible, setWithdrawModalVisible] = useState(false); // Add state for withdraw modal
+
+  const toggleModal = () => {
+    setModalVisible(!modalVisible);
+  };
+
+  const toggleWithdrawModal = () => {
+    // Add toggle function for withdraw modal
+    setWithdrawModalVisible(!withdrawModalVisible);
+  };
 
   return (
     <>
@@ -28,11 +41,43 @@ export default function MenuAccount({ showMenu, setShowMenu }) {
             <TouchableOpacity
               onPress={() => {
                 setShowMenu(false);
+                toggleModal();
+              }}
+              style={styles.menuItem}
+            >
+              <Text style={styles.textMenuItem}>Nạp Tiền</Text>
+            </TouchableOpacity>
+            <View
+              style={{
+                borderBottomWidth: 1,
+                marginVertical: 5,
+                borderColor: "#C4C4C4",
+              }}
+            />
+            <TouchableOpacity
+              onPress={() => {
+                setShowMenu(false);
+                toggleWithdrawModal(); // Toggle withdraw modal on press
+              }}
+              style={styles.menuItem}
+            >
+              <Text style={styles.textMenuItem}>Rút Tiền</Text>
+            </TouchableOpacity>
+            <View
+              style={{
+                borderBottomWidth: 1,
+                marginVertical: 5,
+                borderColor: "#C4C4C4",
+              }}
+            />
+            <TouchableOpacity
+              onPress={() => {
+                setShowMenu(false);
                 navigation.navigate("PasswordScreen");
               }}
               style={styles.menuItem}
             >
-              <Text style={styles.textMenuItem}>Đổi mật khẩu</Text>
+              <Text style={styles.textMenuItem}>Đổi Mật Khẩu</Text>
             </TouchableOpacity>
             <View
               style={{
@@ -112,6 +157,14 @@ export default function MenuAccount({ showMenu, setShowMenu }) {
           </TouchableOpacity>
         </TouchableOpacity>
       </Modal>
+      <ReChargeModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
+      <WithDrawModal // Include the new withdraw modal
+        modalVisible={withdrawModalVisible}
+        setModalVisible={setWithdrawModalVisible}
+      />
     </>
   );
 }
