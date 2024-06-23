@@ -11,9 +11,9 @@ import {
   getByOwnerSelector,
   getLoadingSelector,
 } from "../../../redux/selectors";
+import { getStadiumByOwner } from "../../../redux/slices/yardSlice";
 import NoStadiumScreen from "./InfoStadium/NoStadiumScreen";
 import StadiumList from "./StadiumList/StadiumList";
-import { getStadiumByOwner } from "../../../redux/slices/yardSlice";
 
 const StadiumScreen = () => {
   const navigation = useNavigation();

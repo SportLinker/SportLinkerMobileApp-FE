@@ -3,11 +3,14 @@ import { Image, Text, View } from "react-native";
 import { Avatar } from "react-native-paper";
 import { styles } from "../../../../component/style";
 import { FontAwesome } from "@expo/vector-icons";
+import DefaultImage from "../../../../assets/default_img.png";
 
-export default function HeaderSection({ rating }) {
+export default function HeaderSection({ stadium, stadiumOwner }) {
   const [image, setImage] = useState(
     "https://i.pinimg.com/236x/71/db/24/71db24f6798f1a208b7fe8a503365458.jpg"
   );
+
+  // console.log("stadium", stadium);
 
   const renderStars = (rating) => {
     const stars = [];
@@ -43,17 +46,20 @@ export default function HeaderSection({ rating }) {
     >
       <View style={styles.containerDetailYard}>
         <View style={styles.innerDetailYard}>
-          {/* Static image for demonstration */}
-          <Image
-            source={{
-              uri: "https://may.edu.vn/public/upload/news/clb-bong-ro-1695784008.jpg",
-            }}
-            style={styles.imageDetailYard}
-          />
-          {/* Dynamic avatar image */}
+          {stadium && stadium.stadium_thumnail ? (
+            <Image
+              source={{
+                uri: stadium.stadium_thumnail,
+              }}
+              style={styles.imageDetailYard}
+            />
+          ) : (
+            <Image source={DefaultImage} style={styles.imageDetailYard} />
+          )}
+
           <Avatar.Image
             size={90}
-            source={{ uri: image }}
+            source={{ uri: stadiumOwner.avatar_url }}
             style={[styles.avatar, styles.avatarShadow]}
           />
         </View>
@@ -61,10 +67,10 @@ export default function HeaderSection({ rating }) {
       <View style={styles.detailSection}>
         <View style={styles.avatarSpacer} />
         <View style={styles.textContainer}>
-          <Text style={styles.title}>Sân Bóng Rổ Công Viên Gia Định</Text>
+          <Text style={styles.title}>{stadium.stadium_name}</Text>
           <View style={styles.starsContainer}>
-            {renderStars(rating)}
-            <Text style={styles.rating}>{rating}</Text>
+            {renderStars(stadium.stadium_rating)}
+            <Text style={styles.rating}>{stadium.stadium_rating}</Text>
           </View>
         </View>
       </View>

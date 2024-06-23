@@ -5,7 +5,7 @@ import { Platform, Text, TouchableOpacity, View } from "react-native";
 import { styles } from "../../../../component/style";
 import { CourtSelectionModal } from "../CourtSelectionModal";
 
-export const ActionButtons = ({ setModalVisible, liked, setLiked }) => {
+export const ActionButtons = ({ setModalVisible, stadium }) => {
   const navigation = useNavigation();
   const [modalCourtVisible, setModalCourtVisible] = useState(false);
 
@@ -57,7 +57,11 @@ export const ActionButtons = ({ setModalVisible, liked, setLiked }) => {
         />
         <Text>Book</Text>
       </TouchableOpacity>
-      <CourtSelectionModal visible={modalCourtVisible} onClose={closeModal} />
+      <CourtSelectionModal
+        visible={modalCourtVisible}
+        onClose={closeModal}
+        stadiumId={stadium.id}
+      />
     </View>
   );
 };
