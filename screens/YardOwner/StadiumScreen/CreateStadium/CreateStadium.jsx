@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Alert, SafeAreaView, StyleSheet } from "react-native";
+import { Alert, SafeAreaView, StyleSheet, Text } from "react-native";
 import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
@@ -160,6 +160,30 @@ const CreateStadium = ({ route }) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      {stadiumId ? (
+        <Text
+          style={{
+            marginHorizontal: "auto",
+            fontWeight: "bold",
+            fontSize: 25,
+            marginVertical: 10,
+          }}
+        >
+          Cập Nhật Sân Của Bạn
+        </Text>
+      ) : (
+        <Text
+          style={{
+            marginHorizontal: "auto",
+            fontWeight: "bold",
+            fontSize: 25,
+            marginVertical: 10,
+          }}
+        >
+          Tạo Sân Của Bạn
+        </Text>
+      )}
+
       {currentStep === 1 && (
         <Step1
           stadiumData={stadiumData}

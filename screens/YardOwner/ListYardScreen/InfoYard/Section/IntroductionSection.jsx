@@ -1,13 +1,14 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-export function IntroductionSection({ yardDescription }) {
+export function IntroductionSection({ yardDetail }) {
   return (
     <View style={styles.container}>
-      <View style={styles.separator} />
       <Text style={styles.title}>Giới thiệu</Text>
-      <Text style={styles.subtitle}>{yardDescription}</Text>
-      <View style={styles.separatorB} />
+      <Text style={styles.subtitle}>
+        {yardDetail ? yardDetail.yard_description : "Loading..."}
+      </Text>
+      <View style={styles.separator} />
     </View>
   );
 }
