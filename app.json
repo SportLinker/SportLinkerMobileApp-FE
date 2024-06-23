@@ -15,6 +15,7 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
+      "bundleIndetifier": "com.phuoc18.sportlinker",
       "infoPlist": {
         "NSAllowsArbitraryLoads": true,
         "NSCameraUsageDescription": "This app needs access to your camera to take photos."
@@ -35,6 +36,14 @@
       "eas": {
         "projectId": "5483c5f7-4bb5-45d8-b8a7-721f801d1965"
       }
-    }
+    },
+    "plugins": [
+      [
+        "expo-dev-launcher",
+        {
+          "launchMode": "most-recent"
+        }
+      ]
+    ]
   }
 }

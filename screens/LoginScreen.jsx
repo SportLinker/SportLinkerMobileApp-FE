@@ -22,6 +22,12 @@ import { useEffect } from "react";
 import * as Google from "expo-auth-session/providers/google";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import NotificationComponent from "../component/NotificationComponent";
+import {
+  GoogleSignin,
+  statusCodes,
+} from "@react-native-google-signin/google-signin";
+import auth from "@react-native-firebase/auth";
+import { FIREBASE_WEB_CLIENT_ID } from "@env";
 
 const LoginScreen = ({ navigation }) => {
   const [loginForm, setLoginForm] = useState({
@@ -35,16 +41,38 @@ const LoginScreen = ({ navigation }) => {
   const [request, response, promptAsync] = Google.useAuthRequest({
     iosClientId: "",
     androidClientId:
-      "905745054659-2q9p3vsdtmvtqn2tpndth67q8e2u1l7a.apps.googleusercontent.com",
+      "124221842630-l2ppo0g9divu3n8aks6o8stfjlq09mp3.apps.googleusercontent.com",
     redirectUri: "https://google.com",
   });
 
-  // const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
-  //   clientId:
-  //     "905745054659-n8v052jci3mjurfq7pge4sub9ojipb5l.apps.googleusercontent.com",
-  //   androidClientId:
-  //     "905745054659-2q9p3vsdtmvtqn2tpndth67q8e2u1l7a.apps.googleusercontent.com",
-  // });
+  GoogleSignin.configure({
+    webClientId:
+      "124221842630-l2ppo0g9divu3n8aks6o8stfjlq09mp3.apps.googleusercontent.com",
+  });
+
+  async function onGoogleButtonPress() {
+    try {
+      // Get the user's ID token
+      const { idToken } = await GoogleSignin.signIn();
+
+      // Create a Google credential with the token
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+      // Sign-in the user with the credential
+      await auth().signInWithCredential(googleCredential);
+      console.log("Signed in with Google!");
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        console.log("User cancelled the login flow");
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        console.log("Sign in is in progress");
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        console.log("Play services not available or outdated");
+      } else {
+        console.error(error);
+      }
+    }
+  }
 
   const loadingSelector = useSelector(getUserLoadingSelector);
 
@@ -156,7 +184,7 @@ const LoginScreen = ({ navigation }) => {
                 marginVertical: "auto",
                 padding: 8,
               }}
-              onPress={() => promptAsync()}
+              onPress={onGoogleButtonPress}
             >
               <View
                 style={{
