@@ -303,6 +303,18 @@ export const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 20,
   },
+  containerYardUser: {
+    borderRadius: 10,
+    backgroundColor: "#fff",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 10,
+    padding: 5,
+    marginBottom: 20,
+    // width: 300,
+  },
   containerYard: {
     borderRadius: 10,
     backgroundColor: "#fff",
@@ -313,6 +325,7 @@ export const styles = StyleSheet.create({
     elevation: 10,
     padding: 5,
     marginBottom: 20,
+    width: 300,
   },
   imageYard: {
     width: 322,

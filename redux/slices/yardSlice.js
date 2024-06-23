@@ -23,7 +23,7 @@ export const updateStadium = createAsyncThunk(
     // console.log("API Response: ", stadiumData);
     try {
       const response = await api.put(`/stadiums/${stadium_id}`, stadiumData);
-      console.log("API Response: ", response.data);
+      // console.log("API Response: ", response.data);
       return response.data;
     } catch (error) {
       console.log("Error: ", JSON.stringify(error.response.data));
@@ -37,7 +37,7 @@ export const deleteStadium = createAsyncThunk(
     // console.log("stadium_id: ", stadium_id);
     try {
       const response = await api.delete(`/stadiums/${stadium_id}`);
-      console.log("API Response: ", response.data);
+      // console.log("API Response: ", response.data);
       return response.data;
     } catch (error) {
       console.log("Error: ", JSON.stringify(error.response.data));
@@ -67,7 +67,7 @@ export const getStadiumByOwner = createAsyncThunk(
     // console.log("API Response: ", stadiumData);
     try {
       const response = await api.get(`/stadiums/getByOwner`);
-      console.log("API Response: ", response.data);
+      // console.log("API Response: ", response.data);
       return response.data.metadata;
     } catch (error) {
       console.log("Error: ", JSON.stringify(error.response.data));
@@ -122,6 +122,21 @@ export const getAllYardByUser = createAsyncThunk(
   }
 );
 
+export const getAllYardByYardOwner = createAsyncThunk(
+  "yardSlice/getAllYardByYardOwner",
+  async ({ stadium_id }, { rejectWithValue }) => {
+    console.log("stadium_id", stadium_id);
+    try {
+      const response = await api.get(`/yards/getListYardByOwner/${stadium_id}`);
+      // console.log("API Response: ", response.data);
+      return response.data.metadata;
+    } catch (error) {
+      console.log("Error: ", JSON.stringify(error.response.data));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const getDetailStadiumById = createAsyncThunk(
   "yardSlice/getDetailStadiumById",
   async (stadiumId, { rejectWithValue }) => {
@@ -144,6 +159,7 @@ export const yardSlice = createSlice({
     stadiumListByUser: null,
     stadium: null,
     yardListByUser: null,
+    yardListByOwner: null,
     sports: null,
     loading: false,
     error: null,
@@ -229,6 +245,17 @@ export const yardSlice = createSlice({
         state.yardListByUser = action.payload;
       })
       .addCase(getAllYardByUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getAllYardByYardOwner.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAllYardByYardOwner.fulfilled, (state, action) => {
+        state.loading = false;
+        state.yardListByOwner = action.payload;
+      })
+      .addCase(getAllYardByYardOwner.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })

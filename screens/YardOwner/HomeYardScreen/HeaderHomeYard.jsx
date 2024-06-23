@@ -23,7 +23,7 @@ export default function HeaderHomeYard() {
         <View style={styles.actionContainer}>
           <TouchableOpacity
             style={styles.actionButton}
-            onPress={() => navigation.navigate("ListYard")}
+            // onPress={() => navigation.navigate("ListYard")}
           >
             <FontAwesome name="list-ul" size={24} color="black" />
             <Text>Danh sách sân</Text>

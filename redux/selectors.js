@@ -15,6 +15,8 @@ export const getByOwnerSelector = (state) => state.yardSlice.stadiumList;
 export const getDetailByOwnerSelector = (state) => state.yardSlice.stadium;
 export const getLoadingSelector = (state) => state.yardSlice.loading;
 export const getAllSportSelector = (state) => state.yardSlice.sports;
+export const getAllYardByOwnerSelector = (state) =>
+  state.yardSlice.yardListByOwner;
 
 // SEARCH STADIUM
 export const getAllStadiumByUserSelector = (state) =>

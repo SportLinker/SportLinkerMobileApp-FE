@@ -1,18 +1,21 @@
 import { AntDesign, FontAwesome, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, Platform, Text, TouchableOpacity, View } from "react-native";
 import { styles } from "../../../../../component/style";
 import { DeleteModal } from "./DeleteStadiumModal";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   deleteStadium,
+  getAllYardByYardOwner,
   getStadiumByOwner,
 } from "../../../../../redux/slices/yardSlice";
+import { getAllYardByOwnerSelector } from "../../../../../redux/selectors";
 
 export const ActionButtons = ({ stadiumId, stadiumDetail }) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleDelete = () => {
@@ -33,7 +36,9 @@ export const ActionButtons = ({ stadiumId, stadiumDetail }) => {
     >
       <TouchableOpacity
         style={styles.iconContainer}
-        // onPress={() => navigation.navigate("")}
+        onPress={() =>
+          navigation.navigate("ListYard", { stadiumId: stadiumId })
+        }
       >
         <FontAwesome name="list-ul" size={30} color="black" />
         <Text>Ds sân nhỏ</Text>
