@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, Text, SafeAreaView, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, SafeAreaView, StyleSheet, Image } from "react-native";
 import {
   RadioButton,
   Button,
@@ -13,9 +13,23 @@ import {
 export default function UpgradeScreen() {
   const [checked, setChecked] = useState("first");
   const [visible, setVisible] = useState(false);
+  const [qrVisible, setQrVisible] = useState(false);
+  const [timer, setTimer] = useState(120); // 2 minutes in seconds
+
+  useEffect(() => {
+    let interval;
+    if (qrVisible && timer > 0) {
+      interval = setInterval(() => {
+        setTimer((prevTimer) => prevTimer - 1);
+      }, 1000);
+    }
+    if (timer === 0) {
+      hideQrDialog();
+    }
+    return () => clearInterval(interval);
+  }, [qrVisible, timer]);
 
   const handleSubmit = () => {
-    // Hiển thị popup khi nhấn "Xác Nhận"
     setVisible(true);
   };
 
@@ -23,14 +37,30 @@ export default function UpgradeScreen() {
     setVisible(false);
   };
 
+  const handleAccept = () => {
+    setVisible(false);
+    setTimer(120); // Reset timer to 2 minutes
+    setQrVisible(true);
+  };
+
+  const hideQrDialog = () => {
+    setQrVisible(false);
+  };
+
   const getBorderColor = (value) => {
-    return checked === value ? "#1646A9" : "#ccc"; // Sử dụng "#1646A9" cho màu viền đã chọn
+    return checked === value ? "#1646A9" : "#ccc";
   };
 
   const getSelectedPlan = () => {
     return checked === "first"
       ? "Gói Cơ Bản - 39.000đ / tháng"
-      : "Gói 1 Năm - 390.000đ / tháng";
+      : "Gói 1 Năm - 390.000đ / năm";
+  };
+
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
   };
 
   return (
@@ -68,7 +98,7 @@ export default function UpgradeScreen() {
               ]}
             >
               <RadioButton value="second" />
-              <Text style={styles.radioText}>Gói 1 Năm - 390.000đ / tháng</Text>
+              <Text style={styles.radioText}>Gói 1 Năm - 390.000đ / năm</Text>
             </View>
           </RadioButton.Group>
         </View>
@@ -90,13 +120,58 @@ export default function UpgradeScreen() {
       </View>
 
       <Portal>
-        <Dialog visible={visible} onDismiss={hideDialog}>
-          <Dialog.Title>Xác Nhận</Dialog.Title>
+        <Dialog
+          style={{ backgroundColor: "white" }}
+          visible={visible}
+          onDismiss={hideDialog}
+        >
+          <Dialog.Title style={{ color: "#1646A9" }}>Xác Nhận</Dialog.Title>
           <Dialog.Content>
-            <Paragraph>Bạn đã chọn gói: {getSelectedPlan()}</Paragraph>
+            <Paragraph style={{ textAlign: "center", fontSize: 17 }}>
+              Bạn đã chọn gói{" "}
+            </Paragraph>
+            <Paragraph
+              style={{ textAlign: "center", fontWeight: "600", fontSize: 17 }}
+            >
+              {getSelectedPlan()}
+            </Paragraph>
           </Dialog.Content>
           <Dialog.Actions>
-            <Button onPress={hideDialog}>OK</Button>
+            <Button onPress={handleAccept}>Chấp nhận</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
+
+      <Portal>
+        <Dialog
+          style={{ backgroundColor: "white" }}
+          visible={qrVisible}
+          onDismiss={hideQrDialog}
+        >
+          <Dialog.Title style={{ color: "#1646A9", textAlign: "center" }}>
+            Thông Tin Thanh Toán
+          </Dialog.Title>
+          <Dialog.Content>
+            <Paragraph style={{ textAlign: "center", fontSize: 17 }}>
+              Đây là mã QR để thanh toán. Bạn có {formatTime(timer)} để hoàn
+              thành thanh toán.
+            </Paragraph>
+            <View style={styles.qrCodeContainer}>
+              <Image
+                source={{
+                  uri: "https://th.bing.com/th/id/R.4b3690db393943912c9ce450ff3a6f18?rik=13kfS%2fgyFrzeSg&pid=ImgRaw&r=0",
+                }} // Replace with your QR code image URL
+                style={styles.qrCode}
+              />
+            </View>
+            <Paragraph
+              style={{ textAlign: "center", fontSize: 17, marginTop: 16 }}
+            >
+              Thông tin ngân hàng: ABC Bank, Số tài khoản: 123456789
+            </Paragraph>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={hideQrDialog}>Đóng</Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>
@@ -171,5 +246,13 @@ const styles = StyleSheet.create({
   },
   boldText: {
     fontWeight: "bold",
+  },
+  qrCodeContainer: {
+    alignItems: "center",
+    marginVertical: 10,
+  },
+  qrCode: {
+    width: 250,
+    height: 250,
   },
 });
