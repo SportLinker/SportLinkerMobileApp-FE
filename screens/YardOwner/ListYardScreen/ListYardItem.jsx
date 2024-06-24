@@ -17,12 +17,7 @@ const ListYardItem = ({ data }) => {
             style={styles.containerYard}
             onPress={() =>
               navigation.navigate("InfoYard", {
-                yardName: yard.yardName,
-                yardDescription: yard.description,
-                yardPrice: yard.price,
-                openTime: yard.openTime,
-                openDay: yard.openDay,
-                yardImage: yard.image,
+                yardId: yard.yard_id,
               })
             }
           >

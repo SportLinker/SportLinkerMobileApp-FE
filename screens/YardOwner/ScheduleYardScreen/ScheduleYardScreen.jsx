@@ -1,60 +1,54 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
   FlatList,
+  StyleSheet,
+  Text,
   TouchableOpacity,
+  View,
 } from "react-native";
 import { Calendar } from "react-native-calendars";
+import { useDispatch } from "react-redux";
 
-const ScheduleYardScreen = ({ navigation }) => {
+const ScheduleYardScreen = ({ navigation, route }) => {
+  const { yardDetail } = route?.params;
+  const dispatch = useDispatch();
+  console.log("yardDetail", yardDetail);
+
   const [selectedField, setSelectedField] = useState({
-    id: "1",
-    name: "Sân A",
+    id: yardDetail.yard_id,
+    name: yardDetail.yard_name,
   }); // Sân đã chọn để xem lịch
   const [bookings, setBookings] = useState({}); // Dữ liệu lịch
   const [selectedDates, setSelectedDates] = useState([]); // Ngày đã chọn
 
-  // Sample booking data
-  const sampleBookings = {
-    1: {
-      "2024-06-10": [
-        { startTime: "08:00", endTime: "10:00", booked: true },
-        { startTime: "10:00", endTime: "12:00", booked: false },
-      ],
-      "2024-06-12": [{ startTime: "14:00", endTime: "16:00", booked: true }],
-    },
-    2: {
-      "2024-06-10": [
-        { startTime: "08:00", endTime: "10:00", booked: false },
-        { startTime: "10:00", endTime: "12:00", booked: true },
-      ],
-    },
-    3: {
-      "2024-06-10": [
-        { startTime: "08:00", endTime: "10:00", booked: true },
-        { startTime: "10:00", endTime: "12:00", booked: true },
-      ],
-    },
+  // Convert yardDetail to bookings format
+  const parseYardDetail = (yardDetail) => {
+    const parsedBookings = {};
+    yardDetail.BookingYard.forEach((booking) => {
+      const date = booking.date;
+      if (!parsedBookings[date]) {
+        parsedBookings[date] = [];
+      }
+      booking.matches.forEach((match) => {
+        parsedBookings[date].push({
+          startTime: match.time_start,
+          endTime: match.time_end,
+          booked: match.status === "accepted",
+        });
+      });
+    });
+    return parsedBookings;
   };
 
-  const fields = [
-    { id: "1", name: "Sân 1" },
-    { id: "2", name: "Sân 2" },
-    { id: "3", name: "Sân 3" },
-  ];
-
-  console.log("selectedField", selectedField);
-  console.log("selectedDates", selectedDates);
-  console.log("bookings", bookings);
+  const fields = [{ id: yardDetail.yard_id, name: yardDetail.yard_name }];
 
   useEffect(() => {
     // Load booking data for selected field
     if (selectedField) {
-      setBookings(sampleBookings[selectedField.id] || {});
+      const parsedBookings = parseYardDetail(yardDetail);
+      setBookings(parsedBookings);
     }
-  }, [selectedField]);
+  }, [selectedField, yardDetail]);
 
   useEffect(() => {
     // Initialize selected dates from bookings data
@@ -64,9 +58,9 @@ const ScheduleYardScreen = ({ navigation }) => {
   }, [bookings]);
 
   useEffect(() => {
-    // Auto select Sân A when entering ScheduleScreen
-    setSelectedField({ id: "1", name: "Sân A" });
-  }, []);
+    // Auto select the yard when entering ScheduleScreen
+    setSelectedField({ id: yardDetail.yard_id, name: yardDetail.yard_name });
+  }, [yardDetail]);
 
   const renderBookingDetail = ({ item }) => (
     <View style={styles.bookingDetail}>
@@ -84,8 +78,6 @@ const ScheduleYardScreen = ({ navigation }) => {
     date,
     slots: bookings[date] || [],
   }));
-
-  console.log("bookingDetails", bookingDetails);
 
   return (
     <View style={styles.container}>
@@ -148,14 +140,6 @@ const ScheduleYardScreen = ({ navigation }) => {
             renderItem={renderBookingDetail}
             style={styles.bookingList}
           />
-          {/* <TouchableOpacity
-            style={styles.button}
-            onPress={() =>
-              navigation.navigate("Booking", { fieldId: selectedField.id })
-            }
-          >
-            <Text style={styles.buttonText}>Go to Booking Screen</Text>
-          </TouchableOpacity> */}
         </>
       )}
     </View>
@@ -185,9 +169,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: "#1E90FF",
     marginRight: 10,
-    // height: 40,
-    justifyContent: "center", // Để các sân được căn giữa
-    alignItems: "center", // Để các sân được căn giữa
+    justifyContent: "center",
+    alignItems: "center",
   },
   selectedFieldButton: {
     backgroundColor: "#4169E1",

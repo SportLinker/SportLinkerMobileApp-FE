@@ -13,7 +13,7 @@ export function DetailsSection({ stadiumDetail }) {
           style={{ marginHorizontal: 20 }}
         />
 
-        <Text style={{ fontSize: 16, paddingRight: 50 }}>
+        <Text style={{ fontSize: 16, paddingRight: 50, width: "85%" }}>
           {stadiumDetail.stadium_address}
         </Text>
       </View>

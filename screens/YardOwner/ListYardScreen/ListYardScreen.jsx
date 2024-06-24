@@ -16,8 +16,6 @@ const ListYardScreen = ({ navigation, route }) => {
 
   console.log("yards", yards);
 
-  // console.log("stadiumId", stadiumId);
-
   useEffect(() => {
     dispatch(getAllYardByYardOwner({ stadium_id: stadiumId }));
   }, []);
