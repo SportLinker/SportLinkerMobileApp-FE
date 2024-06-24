@@ -75,7 +75,7 @@ export default function ChatListScreen({ navigation }) {
                 />
               ))
             ) : (
-              <Text>Không có đoạn chat nào</Text>
+              <Text style={styles.chatEmpty}>Không có đoạn chat nào</Text>
             )}
           </ScrollView>
         )}
@@ -116,5 +116,11 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     paddingHorizontal: 10,
     marginTop: -45,
+  },
+  chatEmpty: {
+    color: "#1646A9",
+    fontSize: 20,
+    textAlign: "center",
+    fontWeight: "bold",
   },
 });
