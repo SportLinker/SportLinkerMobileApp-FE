@@ -11,14 +11,14 @@ const ListYardScreen = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const yardList = useSelector(getAllYardByOwnerSelector);
 
-  const [filterOptions, setFilterOptions] = useState({ status: "all" });
+  // const [filterOptions, setFilterOptions] = useState({ status: "all" });
   const [yards, setYards] = useState(null);
 
-  console.log("yards", yards);
+  // console.log("yards", yards);
 
   useEffect(() => {
     dispatch(getAllYardByYardOwner({ stadium_id: stadiumId }));
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (yardList) setYards(yardList);
@@ -32,9 +32,9 @@ const ListYardScreen = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <FilterOptionList setFilterOptions={setFilterOptions} />
+      {/* <FilterOptionList setFilterOptions={setFilterOptions} /> */}
       <ScrollView style={{ height: "90%" }}>
-        <ListYardItem data={yards} />
+        <ListYardItem data={yards} stadiumId={stadiumId} />
       </ScrollView>
     </SafeAreaView>
   );
