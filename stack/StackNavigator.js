@@ -37,6 +37,8 @@ import BottomTabNavigator from "../tabs/BottomTabNavigator";
 import BottomTabYardOwnerNavigator from "../tabs/BottomTabYardOwnerNavigator";
 import EventDetailTabs from "../tabs/EventDetailTabs";
 import CreateYardScreen from "../screens/YardOwner/ListYardScreen/CreateYardScreen/CreateYardScreen";
+import ListAllYardScreen from "../screens/YardOwner/ListAllYardScreen/ListAllYardScreen";
+import ScheduleAllYardScreen from "../screens/YardOwner/ScheduleAllYardScreen/ScheduleAllYardScreen";
 
 const Stack = createStackNavigator();
 
@@ -339,7 +341,7 @@ const StackNavigator = () => (
       name="InfoStadium"
       component={InfoStadium}
       options={{
-        title: "Chi tiết sân",
+        title: "Chi Tiết Sân Lớn",
         headerStyle: { backgroundColor: "#1646a9" },
         headerTitleAlign: "center",
         headerTintColor: "white",
@@ -350,7 +352,7 @@ const StackNavigator = () => (
       name="InfoYard"
       component={InfoYard}
       options={{
-        title: "Thông tin sân",
+        title: "Thông Tin Sân Nhỏ",
         headerStyle: { backgroundColor: "#1646a9" },
         headerTitleAlign: "center",
         headerTintColor: "white",
@@ -362,6 +364,29 @@ const StackNavigator = () => (
       component={CreateYardScreen}
       options={{
         title: "",
+        headerStyle: { backgroundColor: "#1646a9" },
+        headerTitleAlign: "center",
+        headerTintColor: "white",
+        headerBackTitle: " ",
+      }}
+    />
+    <Stack.Screen
+      name="ListAllYard"
+      component={ListAllYardScreen}
+      options={{
+        title: "Danh Sách Tất Cả Sân Nhỏ",
+        headerStyle: { backgroundColor: "#1646a9" },
+        headerTitleAlign: "center",
+        headerTintColor: "white",
+        headerBackTitle: " ",
+      }}
+    />
+
+    <Stack.Screen
+      name="ScheduleAllYard"
+      component={ScheduleAllYardScreen}
+      options={{
+        title: "Lịch Tất Cả Sân",
         headerStyle: { backgroundColor: "#1646a9" },
         headerTitleAlign: "center",
         headerTintColor: "white",

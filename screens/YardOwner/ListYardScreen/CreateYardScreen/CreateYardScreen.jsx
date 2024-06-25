@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 import {
   createYardInStadium,
+  getAllYardByOwner,
   getDetailYardByOwner,
   updateYard,
 } from "../../../../redux/slices/yardSlice";
@@ -34,24 +35,30 @@ const CreateYardScreen = ({ navigation, route }) => {
     price_per_hour: Yup.string().required("Giá Thuê (ngàn VNĐ)/giờ"),
   });
 
-  const handleSaveNewYard = (values, { resetForm }) => {
-    console.log("newYard", values);
+  const handleSaveNewYard = async (values, { resetForm }) => {
     const yardData = {
       ...values,
       price_per_hour: parseFloat(values.price_per_hour),
     };
-    if (yardId) {
-      dispatch(updateYard({ yard_id: yardId, yardData })).then(() =>
-        dispatch(getDetailYardByOwner(yardId))
-      );
-      Alert.alert("Thành công", "Cập nhật sân nhỏ thành công!");
-    } else {
-      dispatch(createYardInStadium({ stadium_id: stadiumId, yardData }));
-      Alert.alert("Thành công", "Tạo mới sân nhỏ thành công!");
-    }
 
-    resetForm();
-    navigation.goBack(); // Go back to the previous screen
+    try {
+      if (yardId) {
+        await dispatch(updateYard({ yard_id: yardId, yardData }));
+        await dispatch(getDetailYardByOwner(yardId));
+        await dispatch(getAllYardByOwner());
+        Alert.alert("Thành công", "Cập nhật sân nhỏ thành công!");
+      } else {
+        await dispatch(
+          createYardInStadium({ stadium_id: stadiumId, yardData })
+        );
+        Alert.alert("Thành công", "Tạo mới sân nhỏ thành công!");
+      }
+      resetForm();
+      navigation.goBack(); // Go back to the previous screen
+    } catch (error) {
+      console.error("Error saving yard:", error);
+      Alert.alert("Lỗi", "Đã xảy ra lỗi khi lưu sân nhỏ. Vui lòng thử lại.");
+    }
   };
 
   const handlePriceChange = (text, setFieldValue) => {
@@ -96,7 +103,9 @@ const CreateYardScreen = ({ navigation, route }) => {
             yard_name: yardDetail.yard_name || "Sân 1",
             yard_description: yardDetail.yard_description || "Sân 5 người",
             yard_sport: yardDetail.yard_sport || "",
-            price_per_hour: `${yardDetail.price_per_hour}` || "",
+            price_per_hour: yardDetail.price_per_hour
+              ? String(yardDetail.price_per_hour)
+              : "100000",
           }}
           validationSchema={yardSchema}
           onSubmit={handleSaveNewYard}
