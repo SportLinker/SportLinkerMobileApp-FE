@@ -10,8 +10,12 @@ import {
 } from "react-native";
 import { FAB } from "react-native-paper";
 import PostItem from "./PostItem";
+import { useSelector } from "react-redux";
+import socket from "../../services/socket";
+import NotificationComponent from "../../component/NotificationComponent";
 
 const HomeScreen = ({ navigation }) => {
+  const { triggerNotification } = NotificationComponent();
   const [refreshing, setRefreshing] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const [posts, setPosts] = useState([1, 2, 3]);
@@ -22,29 +26,47 @@ const HomeScreen = ({ navigation }) => {
     if (
       layoutMeasurement.height + contentOffset.y >=
         contentSize.height - paddingToBottom &&
-      !loadingMore // Kiểm tra xem dữ liệu có đang được tải không
+      !loadingMore
     ) {
       loadMorePosts();
     }
   };
 
   const loadMorePosts = () => {
-    setLoadingMore(true); // Đánh dấu rằng dữ liệu đang được tải
+    setLoadingMore(true);
     console.log("Load more posts...");
     const newPosts = [4, 5, 6];
     setPosts((prevPosts) => prevPosts.concat(newPosts));
-    // Thêm logic tải thêm bài viết ở đây
     setTimeout(() => {
-      setLoadingMore(false); // Đánh dấu rằng dữ liệu đã được tải xong
+      setLoadingMore(false);
     }, 1000);
   };
 
   const onRefresh = () => {
-    setRefreshing(true); // Hiển thị chỉ báo là đang làm mới
+    setRefreshing(true);
     setTimeout(() => {
-      setRefreshing(false); // Ẩn chỉ báo là đang làm mới
+      setRefreshing(false);
     }, 1000);
   };
+
+  const { userInfo } = useSelector((state) => state.userSlice);
+
+  const socketRef = useRef(null);
+
+  useEffect(() => {
+    socketRef.current = socket;
+
+    socketRef.current.emit("online-user", userInfo.id);
+    socketRef.current.on("receive-notification", async (data) => {
+      await triggerNotification(data.content);
+    });
+
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.off("receive-notification");
+      }
+    };
+  }, [userInfo.id]);
 
   return (
     <SafeAreaView style={{ backgroundColor: "#fff" }}>
