@@ -1,6 +1,9 @@
 import { View, Text, ScrollView } from "react-native";
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
+import { useDispatch } from "react-redux";
+import { useFocusEffect } from "@react-navigation/native";
+import { getListNotification } from "../../redux/slices/messageSlice";
 
 const mock_data = [
   {
@@ -76,6 +79,15 @@ const mock_data = [
 ];
 
 export default function NotificationScreen({ navigation }) {
+  const dispatch = useDispatch();
+  const [notifications, setNotifications] = useState([]);
+
+  useEffect(() => {
+    dispatch(getListNotification()).then((res) => {
+      setNotifications(res.payload);
+    });
+  }, []);
+
   return (
     <View>
       <ScrollView>
@@ -90,46 +102,32 @@ export default function NotificationScreen({ navigation }) {
           >
             Hôm nay
           </Text>
-          {mock_data
-            .filter((item) => item.day === "today")
-            .map((item) => (
-              <View
-                key={item.id}
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  paddingVertical: 20,
-                }}
-              >
-                <AntDesign
-                  name={item.icon}
-                  size={24}
-                  color="#1646A9"
-                  style={{ marginVertical: "auto", marginHorizontal: 30 }}
-                />
-                <View style={{ width: "80%" }}>
-                  <Text
-                    style={{ fontSize: 16, fontWeight: 700, marginBottom: 10 }}
-                  >
-                    {item.title}
-                  </Text>
-                  <Text
-                    numberOfLines={2}
-                    style={{
-                      fontSize: 14,
-                      fontWeight: 700,
-                      color: "#cccccc",
-                      width: "90%",
-                      lineHeight: 20,
-                    }}
-                  >
-                    {item.desc}
-                  </Text>
-                </View>
+          {notifications.map((item) => (
+            <View
+              key={item.notification_id}
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                paddingVertical: 20,
+              }}
+            >
+              <AntDesign
+                name={"infocirlceo"}
+                size={24}
+                color="#1646A9"
+                style={{ marginVertical: "auto", marginHorizontal: 30 }}
+              />
+              <View style={{ width: "80%" }}>
+                <Text
+                  style={{ fontSize: 16, fontWeight: 700, marginBottom: 10 }}
+                >
+                  {item.content}
+                </Text>
               </View>
-            ))}
+            </View>
+          ))}
         </View>
-        <View>
+        {/* <View>
           <Text
             style={{
               marginTop: 20,
@@ -228,7 +226,7 @@ export default function NotificationScreen({ navigation }) {
                 </View>
               </View>
             ))}
-        </View>
+        </View> */}
       </ScrollView>
     </View>
   );
