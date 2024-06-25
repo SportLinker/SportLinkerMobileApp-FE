@@ -27,8 +27,6 @@ const InfoYard = ({ route }) => {
   const [yardDetail, setYardDetail] = useState(null);
   const [userAvatar, setUserAvatar] = useState(null);
 
-  // console.log("yardDetail", yardDetail);
-
   useEffect(() => {
     dispatch(getDetailYardByOwner(yardId));
   }, [dispatch, yardId]);
@@ -56,7 +54,7 @@ const InfoYard = ({ route }) => {
       ) : (
         <>
           <HeaderSection image={userAvatar} yardDetail={yardDetail} />
-          <ActionButtons yardDetail={yardDetail} />
+          <ActionButtons yardDetail={yardDetail} yardId={yardId} />
           <IntroductionSection yardDetail={yardDetail} />
           <DetailsSection yardDetail={yardDetail} />
         </>

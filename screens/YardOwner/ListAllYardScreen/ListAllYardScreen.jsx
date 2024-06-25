@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { SafeAreaView, ScrollView, StyleSheet } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllYardByOwnerSelector } from "../../../redux/selectors";
-import { getAllYardByYardOwner } from "../../../redux/slices/yardSlice";
-import FilterOptionList from "./FilterOption";
-import ListYardItem from "./ListYardItem";
+import { getAllYardSelector } from "../../../redux/selectors";
+import { getAllYardByOwner } from "../../../redux/slices/yardSlice";
+import ListAllYardItem from "./ListAllYardItem";
+import FilterOptionList from "../ListYardScreen/FilterOption";
 
-const ListYardScreen = ({ navigation, route }) => {
-  const { stadiumId } = route?.params;
+const ListAllYardScreen = ({ navigation }) => {
   const dispatch = useDispatch();
-  const yardList = useSelector(getAllYardByOwnerSelector);
+  const yardList = useSelector(getAllYardSelector);
 
   const [filterOptions, setFilterOptions] = useState({ status: "all" });
   const [yards, setYards] = useState(null);
@@ -17,7 +16,7 @@ const ListYardScreen = ({ navigation, route }) => {
   // console.log("yards", yards);
 
   useEffect(() => {
-    dispatch(getAllYardByYardOwner({ stadium_id: stadiumId }));
+    dispatch(getAllYardByOwner());
   }, [dispatch]);
 
   useEffect(() => {
@@ -34,13 +33,13 @@ const ListYardScreen = ({ navigation, route }) => {
     <SafeAreaView style={styles.container}>
       <FilterOptionList setFilterOptions={setFilterOptions} />
       <ScrollView style={{ height: "90%" }}>
-        <ListYardItem data={yards} stadiumId={stadiumId} />
+        <ListAllYardItem data={yards} />
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-export default ListYardScreen;
+export default ListAllYardScreen;
 
 const styles = StyleSheet.create({
   container: {

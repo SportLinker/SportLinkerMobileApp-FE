@@ -63,6 +63,21 @@ export const deleteStadium = createAsyncThunk(
   }
 );
 
+export const deleteYard = createAsyncThunk(
+  "yardSlice/deleteYard",
+  async ({ yard_id }, { rejectWithValue }) => {
+    // console.log("yard_id: ", yard_id);
+    try {
+      const response = await api.delete(`/yards/${yard_id}`);
+      // console.log("API Response: ", response.data);
+      return response.data;
+    } catch (error) {
+      console.log("Error: ", JSON.stringify(error.response.data));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const createYardInStadium = createAsyncThunk(
   "yardSlice/createYardInStadium",
   async ({ stadium_id, yardData }, { rejectWithValue }) => {
@@ -92,6 +107,21 @@ export const getStadiumByOwner = createAsyncThunk(
     }
   }
 );
+export const getAllYardByOwner = createAsyncThunk(
+  "yardSlice/getAllYardByOwner",
+  async (_, { rejectWithValue }) => {
+    // console.log("API Response: ", stadiumData);
+    try {
+      const response = await api.get(`/yards/getAllYardByOwner`);
+      console.log("API Response: ", response.data);
+      return response.data.metadata;
+    } catch (error) {
+      console.log("Error: ", JSON.stringify(error.response.data));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const getAllSport = createAsyncThunk(
   "yardSlice/getSport",
   async (_, { rejectWithValue }) => {
@@ -188,6 +218,7 @@ export const yardSlice = createSlice({
   name: "yardSlice",
   initialState: {
     stadiumList: null,
+    yardList: null,
     stadiumListByUser: null,
     stadium: null,
     yard: null,
@@ -276,6 +307,17 @@ export const yardSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
+      .addCase(getAllYardByOwner.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAllYardByOwner.fulfilled, (state, action) => {
+        state.loading = false;
+        state.yardList = action.payload;
+      })
+      .addCase(getAllYardByOwner.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
       .addCase(getAllYardByUser.pending, (state) => {
         state.loading = true;
       })
@@ -333,5 +375,3 @@ export const yardSlice = createSlice({
       });
   },
 });
-
-export default yardSlice;
