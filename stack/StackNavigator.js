@@ -264,7 +264,7 @@ const StackNavigator = () => (
       name="CreateBooking"
       component={CreateBookingScreen}
       options={{
-        title: "Đơn đặt sân",
+        title: "Đơn Đặt Sân",
         headerStyle: { backgroundColor: "#1646a9" },
         headerTitleAlign: "center",
         headerTintColor: "white",
@@ -275,7 +275,7 @@ const StackNavigator = () => (
       name="ListYard"
       component={ListYardScreen}
       options={{
-        title: "Danh sách sân",
+        title: "Danh Sách Sân Nhỏ",
         headerStyle: { backgroundColor: "#1646a9" },
         headerTitleAlign: "center",
         headerTintColor: "white",
