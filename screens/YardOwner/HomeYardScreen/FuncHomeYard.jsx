@@ -23,7 +23,7 @@ export default function FuncHomeYard() {
       >
         <TouchableOpacity
           style={styles.card}
-          // onPress={() => navigation.navigate("ScheduleYard")}
+          onPress={() => navigation.navigate("ScheduleAllYard")}
         >
           <FontAwesome name="calendar" size={70} color="#1646a9" />
           <Text style={styles.cardText}>Xem Lịch</Text>
@@ -54,7 +54,7 @@ export default function FuncHomeYard() {
             size={70}
             color="#1646a9"
           />
-          <Text style={styles.cardText}>Stadium</Text>
+          <Text style={styles.cardText}>Sân Lớn</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.card}

@@ -9,22 +9,37 @@ import {
 } from "react-native";
 import { Calendar } from "react-native-calendars";
 import { useDispatch, useSelector } from "react-redux";
-import { getLoadingSelector } from "../../../redux/selectors";
+import { getAllYardByOwner } from "../../../redux/slices/yardSlice";
+import {
+  getAllYardSelector,
+  getLoadingSelector,
+} from "../../../redux/selectors";
 import NoYard from "../ListAllYardScreen/NoYard/NoYard";
 
-const ScheduleYardScreen = ({ navigation, route }) => {
-  const { yardDetail } = route?.params;
-  const loading = useSelector(getLoadingSelector);
+const ScheduleAllYardScreen = ({ navigation }) => {
   const dispatch = useDispatch();
+  const yardList = useSelector(getAllYardSelector);
+  const loading = useSelector(getLoadingSelector);
 
-  const [selectedField, setSelectedField] = useState({
-    id: yardDetail.yard_id,
-    name: yardDetail.yard_name,
-  }); // Sân đã chọn để xem lịch
-  const [bookings, setBookings] = useState({}); // Dữ liệu lịch
-  const [selectedDates, setSelectedDates] = useState([]); // Ngày đã chọn
+  const [yards, setYards] = useState([]);
+  const [selectedField, setSelectedField] = useState(null);
+  const [bookings, setBookings] = useState({});
+  const [selectedDates, setSelectedDates] = useState([]);
 
-  // Convert yardDetail to bookings format
+  useEffect(() => {
+    dispatch(getAllYardByOwner());
+  }, []);
+
+  useEffect(() => {
+    if (yardList) setYards(yardList);
+  }, [yardList]);
+
+  useEffect(() => {
+    if (yards.length > 0) {
+      setSelectedField({ id: yards[0].yard_id, name: yards[0].yard_name });
+    }
+  }, [yards]);
+
   const parseYardDetail = (yardDetail) => {
     const parsedBookings = {};
     yardDetail.BookingYard.forEach((booking) => {
@@ -43,27 +58,23 @@ const ScheduleYardScreen = ({ navigation, route }) => {
     return parsedBookings;
   };
 
-  const fields = [{ id: yardDetail.yard_id, name: yardDetail.yard_name }];
-
   useEffect(() => {
-    // Load booking data for selected field
     if (selectedField) {
-      const parsedBookings = parseYardDetail(yardDetail);
-      setBookings(parsedBookings);
+      const selectedYard = yards.find(
+        (yard) => yard.yard_id === selectedField.id
+      );
+      if (selectedYard) {
+        const parsedBookings = parseYardDetail(selectedYard);
+        setBookings(parsedBookings);
+      }
     }
-  }, [selectedField, yardDetail]);
+  }, [selectedField, yards]);
 
   useEffect(() => {
-    // Initialize selected dates from bookings data
     if (Object.keys(bookings).length > 0) {
       setSelectedDates(Object.keys(bookings));
     }
   }, [bookings]);
-
-  useEffect(() => {
-    // Auto select the yard when entering ScheduleScreen
-    setSelectedField({ id: yardDetail.yard_id, name: yardDetail.yard_name });
-  }, [yardDetail]);
 
   const renderBookingDetail = ({ item }) => (
     <View style={styles.bookingDetail}>
@@ -88,16 +99,23 @@ const ScheduleYardScreen = ({ navigation, route }) => {
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
+      ) : yards.length === 0 ? (
+        <NoYard />
       ) : (
         <>
           <FlatList
-            data={fields}
+            data={yards.map((yard) => ({
+              id: yard.yard_id,
+              name: yard.yard_name,
+            }))}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
               <TouchableOpacity
                 style={[
                   styles.fieldButton,
-                  selectedField.id === item.id && styles.selectedFieldButton,
+                  selectedField &&
+                    selectedField.id === item.id &&
+                    styles.selectedFieldButton,
                   { marginHorizontal: 5 },
                 ]}
                 onPress={() => setSelectedField(item)}
@@ -162,11 +180,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     backgroundColor: "#f8f8f8",
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
   },
   title: {
     fontSize: 18,
@@ -256,4 +269,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ScheduleYardScreen;
+export default ScheduleAllYardScreen;

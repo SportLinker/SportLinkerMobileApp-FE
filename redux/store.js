@@ -4,7 +4,7 @@ import { persistReducer, persistStore } from "redux-persist";
 import { eventSlice } from "./slices/eventSlice";
 import { messageSlice } from "./slices/messageSlice";
 import { userSlice } from "./slices/userSlice";
-import yardSlice from "./slices/yardSlice";
+import { yardSlice } from "./slices/yardSlice";
 import { paymentSlice } from "./slices/paymentSlice";
 
 const rootPersistConfig = {
