@@ -51,6 +51,22 @@ export const sendMessageByUser = createAsyncThunk(
   }
 );
 
+export const getListNotification = createAsyncThunk(
+  "messageSlice/getListNotification",
+  async (_, { rejectWithValue }) => {
+    console.log("vao day");
+    try {
+      const data = await api.get(`/notifications`);
+
+      // console.log("getListNotification:", data.data.metadata);
+      return data.data.metadata;
+    } catch (error) {
+      console.log("error", error);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const messageSlice = createSlice({
   name: "messageSlice",
   initialState: {
@@ -59,6 +75,7 @@ export const messageSlice = createSlice({
     group_message_id: null,
     loading: false,
     error: null,
+    notifications: null,
   },
   reducers: {
     setGroupMessageID: (state, action) => {
@@ -96,6 +113,17 @@ export const messageSlice = createSlice({
         state.loading = false;
       })
       .addCase(sendMessageByUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload; // Ensure consistent error handling
+      })
+      .addCase(getListNotification.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getListNotification.fulfilled, (state, action) => {
+        state.loading = false;
+        state.notifications = action.payload;
+      })
+      .addCase(getListNotification.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload; // Ensure consistent error handling
       });
