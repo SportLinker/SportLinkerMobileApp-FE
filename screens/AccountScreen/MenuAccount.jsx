@@ -40,28 +40,11 @@ export default function MenuAccount({ showMenu, setShowMenu }) {
           >
             <TouchableOpacity
               onPress={() => {
-                setShowMenu(false);
-                toggleModal();
+                navigation.navigate("WalletHomeScreen");
               }}
               style={styles.menuItem}
             >
-              <Text style={styles.textMenuItem}>Nạp Tiền</Text>
-            </TouchableOpacity>
-            <View
-              style={{
-                borderBottomWidth: 1,
-                marginVertical: 5,
-                borderColor: "#C4C4C4",
-              }}
-            />
-            <TouchableOpacity
-              onPress={() => {
-                setShowMenu(false);
-                toggleWithdrawModal(); // Toggle withdraw modal on press
-              }}
-              style={styles.menuItem}
-            >
-              <Text style={styles.textMenuItem}>Rút Tiền</Text>
+              <Text style={styles.textMenuItem}>Ví của tôi</Text>
             </TouchableOpacity>
             <View
               style={{
@@ -157,14 +140,6 @@ export default function MenuAccount({ showMenu, setShowMenu }) {
           </TouchableOpacity>
         </TouchableOpacity>
       </Modal>
-      <ReChargeModal
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-      />
-      <WithDrawModal // Include the new withdraw modal
-        modalVisible={withdrawModalVisible}
-        setModalVisible={setWithdrawModalVisible}
-      />
     </>
   );
 }
