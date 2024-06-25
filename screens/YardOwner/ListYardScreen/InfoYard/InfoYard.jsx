@@ -1,18 +1,17 @@
-import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { ScrollView, View, ActivityIndicator } from "react-native";
+import { ActivityIndicator, ScrollView, View } from "react-native";
 
-import { DetailsSection } from "./Section/DetailsSection";
-import HeaderSection from "./Section/HeaderSection";
-import IntroductionSection from "./Section/IntroductionSection";
 import { useDispatch, useSelector } from "react-redux";
-import { getDetailYardByOwner } from "../../../../redux/slices/yardSlice";
 import {
   getDetailYardByOwnerSelector,
   getLoadingSelector,
   getUserSelector,
 } from "../../../../redux/selectors";
+import { getDetailYardByOwner } from "../../../../redux/slices/yardSlice";
 import { ActionButtons } from "./Section/ActionButtons ";
+import { DetailsSection } from "./Section/DetailsSection";
+import HeaderSection from "./Section/HeaderSection";
+import IntroductionSection from "./Section/IntroductionSection";
 
 const InfoYard = ({ route }) => {
   const { yardId } = route.params;
@@ -21,9 +20,6 @@ const InfoYard = ({ route }) => {
   const user = useSelector(getUserSelector);
   const loading = useSelector(getLoadingSelector);
 
-  const [image, setImage] = useState(
-    "https://i.pinimg.com/236x/71/db/24/71db24f6798f1a208b7fe8a503365458.jpg"
-  );
   const [yardDetail, setYardDetail] = useState(null);
   const [userAvatar, setUserAvatar] = useState(null);
 
@@ -46,7 +42,6 @@ const InfoYard = ({ route }) => {
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
-            height: "100%",
           }}
         >
           <ActivityIndicator size="large" color="#0000ff" />

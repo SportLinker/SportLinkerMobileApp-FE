@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   FlatList,
   StyleSheet,
   Text,
@@ -7,12 +8,14 @@ import {
   View,
 } from "react-native";
 import { Calendar } from "react-native-calendars";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getLoadingSelector } from "../../../redux/selectors";
+import NoYard from "../ListAllYardScreen/NoYard/NoYard";
 
 const ScheduleYardScreen = ({ navigation, route }) => {
   const { yardDetail } = route?.params;
+  const loading = useSelector(getLoadingSelector);
   const dispatch = useDispatch();
-  // console.log("yardDetail", yardDetail);
 
   const [selectedField, setSelectedField] = useState({
     id: yardDetail.yard_id,
@@ -81,65 +84,73 @@ const ScheduleYardScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={fields}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={[
-              styles.fieldButton,
-              selectedField.id === item.id && styles.selectedFieldButton,
-              { marginHorizontal: 5 },
-            ]}
-            onPress={() => setSelectedField(item)}
-          >
-            <Text style={styles.fieldButtonText}>{item.name}</Text>
-          </TouchableOpacity>
-        )}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.fieldList}
-      />
-      {selectedField && (
+      {loading ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+      ) : (
         <>
-          <Text style={styles.title}>Lịch - {selectedField.name}</Text>
-          <Calendar
-            markedDates={selectedDates.reduce((acc, date) => {
-              const bookedSlots = bookings[date] || [];
-              const allBooked =
-                bookedSlots.length > 0 &&
-                bookedSlots.every((slot) => slot.booked);
-              const color = allBooked ? "#1646a9" : "#ff0000";
-              acc[date] = {
-                selected: true,
-                marked: true,
-                selectedColor: color,
-              };
-              return acc;
-            }, {})}
-            style={styles.calendar}
-          />
-          <Text style={styles.legendTitle}>Legend</Text>
-          <View style={styles.legend}>
-            <View style={styles.legendItem}>
-              <View
-                style={[styles.legendColor, { backgroundColor: "#1646a9" }]}
-              />
-              <Text>All Slots Booked</Text>
-            </View>
-            <View style={styles.legendItem}>
-              <View
-                style={[styles.legendColor, { backgroundColor: "#ff0000" }]}
-              />
-              <Text>Partially Booked</Text>
-            </View>
-          </View>
           <FlatList
-            data={bookingDetails}
-            keyExtractor={(item) => item.date}
-            renderItem={renderBookingDetail}
-            style={styles.bookingList}
+            data={fields}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                style={[
+                  styles.fieldButton,
+                  selectedField.id === item.id && styles.selectedFieldButton,
+                  { marginHorizontal: 5 },
+                ]}
+                onPress={() => setSelectedField(item)}
+              >
+                <Text style={styles.fieldButtonText}>{item.name}</Text>
+              </TouchableOpacity>
+            )}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={styles.fieldList}
           />
+          {selectedField && (
+            <>
+              <Text style={styles.title}>Lịch - {selectedField.name}</Text>
+              <Calendar
+                markedDates={selectedDates.reduce((acc, date) => {
+                  const bookedSlots = bookings[date] || [];
+                  const allBooked =
+                    bookedSlots.length > 0 &&
+                    bookedSlots.every((slot) => slot.booked);
+                  const color = allBooked ? "#1646a9" : "#ff0000";
+                  acc[date] = {
+                    selected: true,
+                    marked: true,
+                    selectedColor: color,
+                  };
+                  return acc;
+                }, {})}
+                style={styles.calendar}
+              />
+              <Text style={styles.legendTitle}>Legend</Text>
+              <View style={styles.legend}>
+                <View style={styles.legendItem}>
+                  <View
+                    style={[styles.legendColor, { backgroundColor: "#1646a9" }]}
+                  />
+                  <Text>All Slots Booked</Text>
+                </View>
+                <View style={styles.legendItem}>
+                  <View
+                    style={[styles.legendColor, { backgroundColor: "#ff0000" }]}
+                  />
+                  <Text>Partially Booked</Text>
+                </View>
+              </View>
+              <FlatList
+                data={bookingDetails}
+                keyExtractor={(item) => item.date}
+                renderItem={renderBookingDetail}
+                style={styles.bookingList}
+              />
+            </>
+          )}
         </>
       )}
     </View>
@@ -151,6 +162,11 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     backgroundColor: "#f8f8f8",
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   title: {
     fontSize: 18,

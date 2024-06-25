@@ -11,7 +11,7 @@ const ListYardScreen = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const yardList = useSelector(getAllYardByOwnerSelector);
 
-  const [filterOptions, setFilterOptions] = useState({ status: "all" });
+  // const [filterOptions, setFilterOptions] = useState({ status: "all" });
   const [yards, setYards] = useState(null);
 
   // console.log("yards", yards);
@@ -32,7 +32,7 @@ const ListYardScreen = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <FilterOptionList setFilterOptions={setFilterOptions} />
+      {/* <FilterOptionList setFilterOptions={setFilterOptions} /> */}
       <ScrollView style={{ height: "90%" }}>
         <ListYardItem data={yards} stadiumId={stadiumId} />
       </ScrollView>

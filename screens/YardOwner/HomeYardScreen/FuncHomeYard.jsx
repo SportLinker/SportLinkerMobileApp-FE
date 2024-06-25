@@ -54,7 +54,7 @@ export default function FuncHomeYard() {
             size={70}
             color="#1646a9"
           />
-          <Text style={styles.cardText}>Stadium</Text>
+          <Text style={styles.cardText}>Sân Lớn</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.card}
