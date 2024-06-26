@@ -47,17 +47,21 @@ const BottomTabNavigator = () => (
         ),
       }}
     />
-    {/* <Tab.Screen
+    <Tab.Screen
       name="Upgrade"
       component={UpgradeScreen}
       options={{
         headerShown: false,
         tabBarLabel: "Nâng Cấp",
         tabBarIcon: ({ color, size }) => (
-          <Icon name={"transfer-up"} color={color} size={50} />
+          <Icon
+            name={"arrow-up-bold-box-outline"}
+            color={color}
+            size={size + 5}
+          />
         ),
       }}
-    /> */}
+    />
     <Tab.Screen
       name="Chat"
       component={ChatTabs}

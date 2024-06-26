@@ -2,51 +2,23 @@ import React, { useState } from "react";
 import { FlatList, View, StyleSheet } from "react-native";
 import { Button } from "react-native-paper";
 
-const fakeData = [
-  {
-    id: 1,
-    label: "Tất cả",
-  },
-  {
-    id: 2,
-    label: "Hoạt động",
-  },
-  {
-    id: 3,
-    label: "Ngừng hoạt động",
-  },
-];
-
-const options = {
-  "Tất cả": {
-    type: "all",
-  },
-  "Hoạt động": {
-    type: "active",
-  },
-  "Ngừng hoạt động": {
-    type: "inactive",
-  },
-};
-
-export const FilterOptionList = ({ setFilterOptions }) => {
+const FilterOptionList = ({ setFilterOptions, yards }) => {
   const [activeOption, setActiveOption] = useState("Tất cả");
 
-  const handleOptionPress = (type, label) => {
-    console.log("Selected option:", type);
+  const options = [
+    { id: "all", label: "Tất cả" },
+    ...yards.map((yard) => ({ id: yard.yard_name, label: yard.yard_name })),
+  ];
 
+  const handleOptionPress = (yardName, label) => {
     setActiveOption(label);
-
-    setFilterOptions((prevState) => ({
-      ...prevState,
-      status: type,
-    }));
+    setFilterOptions({ yardName });
   };
 
   return (
     <View>
       <FlatList
-        data={fakeData}
+        data={options}
         horizontal
         showsHorizontalScrollIndicator={false}
         style={styles.flatList}
@@ -63,9 +35,7 @@ export const FilterOptionList = ({ setFilterOptions }) => {
                   activeOption === item.label ? "#1646a9" : "#707070",
               },
             ]}
-            onPress={() =>
-              handleOptionPress(options[item.label].type, item.label)
-            }
+            onPress={() => handleOptionPress(item.id, item.label)}
           >
             {item.label}
           </Button>
