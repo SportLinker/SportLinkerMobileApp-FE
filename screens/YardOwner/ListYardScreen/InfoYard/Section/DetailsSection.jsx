@@ -1,36 +1,41 @@
+import { AntDesign, FontAwesome5 } from "@expo/vector-icons";
 import React from "react";
-import { View, Text } from "react-native";
-import {
-  Entypo,
-  FontAwesome,
-  Feather,
-  FontAwesome5,
-  AntDesign,
-} from "@expo/vector-icons";
+import { Text, View } from "react-native";
 
-export function DetailsSection({ yardPrice, openTime, openDay }) {
+export function DetailsSection({ yardDetail }) {
   return (
     <View style={{ marginVertical: 20 }}>
-      <View style={{ display: "flex", flexDirection: "row" }}>
-        <Feather
-          name="clock"
+      <View
+        style={{ display: "flex", flexDirection: "row", alignItems: "center" }}
+      >
+        <AntDesign
+          name="inbox"
           size={30}
           color="black"
-          style={{ marginHorizontal: 29 }}
+          style={{ marginHorizontal: 30 }}
         />
         <View
           style={{
-            marginVertical: "auto",
             display: "flex",
             flexDirection: "row",
+            alignItems: "center",
           }}
         >
+          <Text style={{ fontSize: 16 }}>Môn thể thao</Text>
+          <Text style={{ marginHorizontal: 6 }}>●</Text>
           <Text style={{ fontSize: 16 }}>
-            {openTime} | {openDay}
+            {yardDetail ? yardDetail.yard_sport : "Loading..."}
           </Text>
         </View>
       </View>
-      <View style={{ display: "flex", flexDirection: "row", marginTop: 20 }}>
+      <View
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          marginTop: 20,
+          alignItems: "center",
+        }}
+      >
         <FontAwesome5
           name="coins"
           size={30}
@@ -39,14 +44,16 @@ export function DetailsSection({ yardPrice, openTime, openDay }) {
         />
         <View
           style={{
-            marginVertical: "auto",
             display: "flex",
             flexDirection: "row",
+            alignItems: "center",
           }}
         >
-          <Text style={{ fontSize: 16 }}>Mức giá</Text>
+          <Text style={{ fontSize: 16 }}>Giá thuê</Text>
           <Text style={{ marginHorizontal: 6 }}>●</Text>
-          <Text style={{ fontSize: 16, fontWeight: 700 }}>{yardPrice}</Text>
+          <Text style={{ fontSize: 16, fontWeight: "700" }}>
+            {yardDetail ? yardDetail.price_per_hour : "Loading..."} VNĐ/giờ
+          </Text>
         </View>
       </View>
     </View>

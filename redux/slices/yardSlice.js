@@ -31,12 +31,44 @@ export const updateStadium = createAsyncThunk(
     }
   }
 );
+
+export const updateYard = createAsyncThunk(
+  "yardSlice/updateYard",
+  async ({ yard_id, yardData }, { rejectWithValue }) => {
+    console.log("yard_id: ", yard_id);
+    console.log("API Response: ", yardData);
+    try {
+      const response = await api.put(`/yards/${yard_id}`, yardData);
+      console.log("API Response: ", response.data);
+      return response.data;
+    } catch (error) {
+      console.log("Error: ", JSON.stringify(error.response.data));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const deleteStadium = createAsyncThunk(
   "yardSlice/deleteStadium",
   async ({ stadium_id }, { rejectWithValue }) => {
     // console.log("stadium_id: ", stadium_id);
     try {
       const response = await api.delete(`/stadiums/${stadium_id}`);
+      // console.log("API Response: ", response.data);
+      return response.data;
+    } catch (error) {
+      console.log("Error: ", JSON.stringify(error.response.data));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const deleteYard = createAsyncThunk(
+  "yardSlice/deleteYard",
+  async ({ yard_id }, { rejectWithValue }) => {
+    // console.log("yard_id: ", yard_id);
+    try {
+      const response = await api.delete(`/yards/${yard_id}`);
       // console.log("API Response: ", response.data);
       return response.data;
     } catch (error) {
@@ -75,6 +107,21 @@ export const getStadiumByOwner = createAsyncThunk(
     }
   }
 );
+export const getAllYardByOwner = createAsyncThunk(
+  "yardSlice/getAllYardByOwner",
+  async (_, { rejectWithValue }) => {
+    // console.log("API Response: ", stadiumData);
+    try {
+      const response = await api.get(`/yards/getAllYardByOwner`);
+      console.log("API Response: ", response.data);
+      return response.data.metadata;
+    } catch (error) {
+      console.log("Error: ", JSON.stringify(error.response.data));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const getAllSport = createAsyncThunk(
   "yardSlice/getSport",
   async (_, { rejectWithValue }) => {
@@ -125,7 +172,7 @@ export const getAllYardByUser = createAsyncThunk(
 export const getAllYardByYardOwner = createAsyncThunk(
   "yardSlice/getAllYardByYardOwner",
   async ({ stadium_id }, { rejectWithValue }) => {
-    console.log("stadium_id", stadium_id);
+    // console.log("stadium_id", stadium_id);
     try {
       const response = await api.get(`/yards/getListYardByOwner/${stadium_id}`);
       // console.log("API Response: ", response.data);
@@ -152,12 +199,29 @@ export const getDetailStadiumById = createAsyncThunk(
   }
 );
 
+export const getDetailYardByOwner = createAsyncThunk(
+  "yardSlice/getDetailYardByOwner",
+  async (yard_id, { rejectWithValue }) => {
+    // console.log("yard_id", yard_id);
+    try {
+      const response = await api.get(`/yards/${yard_id}`);
+      // console.log("API Response: ", response.data.metadata);
+      return response.data.metadata;
+    } catch (error) {
+      console.log("Error: ", JSON.stringify(error.response.data));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const yardSlice = createSlice({
   name: "yardSlice",
   initialState: {
     stadiumList: null,
+    yardList: null,
     stadiumListByUser: null,
     stadium: null,
+    yard: null,
     yardListByUser: null,
     yardListByOwner: null,
     sports: null,
@@ -176,7 +240,6 @@ export const yardSlice = createSlice({
       })
       .addCase(createStadium.fulfilled, (state, action) => {
         state.loading = false;
-        // state.stadium = action.payload;
       })
       .addCase(createStadium.rejected, (state, action) => {
         state.loading = false;
@@ -187,9 +250,18 @@ export const yardSlice = createSlice({
       })
       .addCase(updateStadium.fulfilled, (state, action) => {
         state.loading = false;
-        // state.stadium = action.payload;
       })
       .addCase(updateStadium.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(updateYard.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateYard.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(updateYard.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
@@ -198,7 +270,6 @@ export const yardSlice = createSlice({
       })
       .addCase(deleteStadium.fulfilled, (state, action) => {
         state.loading = false;
-        // state.stadium = action.payload;
       })
       .addCase(deleteStadium.rejected, (state, action) => {
         state.loading = false;
@@ -209,7 +280,6 @@ export const yardSlice = createSlice({
       })
       .addCase(createYardInStadium.fulfilled, (state, action) => {
         state.loading = false;
-        // state.stadium = action.payload;
       })
       .addCase(createYardInStadium.rejected, (state, action) => {
         state.loading = false;
@@ -234,6 +304,17 @@ export const yardSlice = createSlice({
         state.stadiumListByUser = action.payload;
       })
       .addCase(getAllStadiumByUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getAllYardByOwner.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAllYardByOwner.fulfilled, (state, action) => {
+        state.loading = false;
+        state.yardList = action.payload;
+      })
+      .addCase(getAllYardByOwner.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
@@ -270,6 +351,17 @@ export const yardSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
+      .addCase(getDetailYardByOwner.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getDetailYardByOwner.fulfilled, (state, action) => {
+        state.loading = false;
+        state.yard = action.payload;
+      })
+      .addCase(getDetailYardByOwner.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
       .addCase(getAllSport.pending, (state) => {
         state.loading = true;
       })
@@ -283,5 +375,3 @@ export const yardSlice = createSlice({
       });
   },
 });
-
-export default yardSlice;

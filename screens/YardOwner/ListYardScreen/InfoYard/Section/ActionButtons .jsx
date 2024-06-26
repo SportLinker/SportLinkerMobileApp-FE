@@ -1,18 +1,28 @@
-import { Ionicons } from "@expo/vector-icons";
+import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
-import { Platform, Text, TouchableOpacity, View } from "react-native";
+import { Alert, Platform, Text, TouchableOpacity, View } from "react-native";
+import { useDispatch } from "react-redux";
 import { styles } from "../../../../../component/style";
+import {
+  deleteYard,
+  getAllYardByOwner,
+} from "../../../../../redux/slices/yardSlice";
+import { DeleteModal } from "../../../StadiumScreen/InfoStadium/Section/DeleteStadiumModal";
 
-export const ActionButtons = ({ setModalVisible, liked, setLiked }) => {
+export const ActionButtons = ({ yardDetail, yardId }) => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [modalVisible, setModalVisible] = useState(false);
 
-  const openModal = () => {
-    setModalCourtVisible(true);
-  };
-
-  const closeModal = () => {
-    setModalCourtVisible(false);
+  // console.log("yardId", yardId);
+  const handleDelete = () => {
+    dispatch(deleteYard({ yard_id: yardId })).then(() =>
+      dispatch(getAllYardByOwner())
+    );
+    navigation.goBack();
+    Alert.alert("Thành công", "Sân nhỏ đã được xóa thành công");
+    setModalVisible(false);
   };
 
   return (
@@ -20,41 +30,42 @@ export const ActionButtons = ({ setModalVisible, liked, setLiked }) => {
       style={[
         styles.actionButtonsContainer,
         Platform.OS === "ios" ? styles.iosShadow : styles.androidShadow,
+        { marginTop: 50 },
       ]}
     >
       <TouchableOpacity
         style={styles.iconContainer}
-        onPress={() => setModalVisible(true)}
+        onPress={() =>
+          navigation.navigate("ScheduleYard", { yardDetail: yardDetail })
+        }
       >
-        <Ionicons
-          name="reader-outline"
-          size={30}
-          color="black"
-          style={{ paddingBottom: 3 }}
-        />
-        <Text>Đánh giá</Text>
+        <FontAwesome name="calendar" size={30} color="black" />
+        <Text>Lịch đặt sân</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.iconContainer}
-        onPress={() => navigation.navigate("ChatListScreen")}
+        onPress={() =>
+          navigation.navigate("CreateYard", {
+            yardId: yardDetail.yard_id,
+            yardDetail: yardDetail,
+          })
+        }
       >
-        <Ionicons
-          name="chatbubble-ellipses-outline"
-          size={30}
-          color="black"
-          style={{ paddingBottom: 3 }}
-        />
-        <Text>Chat</Text>
+        <AntDesign name="edit" size={30} color="black" />
+        <Text>Cập nhật sân</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.iconContainer}>
-        <Ionicons
-          name="bookmark-outline"
-          size={30}
-          color="black"
-          style={{ paddingBottom: 3 }}
-        />
-        <Text>Book</Text>
+      <TouchableOpacity
+        style={styles.iconContainer}
+        onPress={() => setModalVisible(true)}
+      >
+        <AntDesign name="delete" size={30} color="black" />
+        <Text>Xóa sân</Text>
       </TouchableOpacity>
+      <DeleteModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        onDelete={handleDelete}
+      />
     </View>
   );
 };

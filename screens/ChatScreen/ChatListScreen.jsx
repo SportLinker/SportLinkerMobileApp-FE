@@ -61,24 +61,20 @@ export default function ChatListScreen({ navigation }) {
         />
       </View>
       <View style={styles.chatBody}>
-        {loading ? (
-          <Loading visible={loading} />
-        ) : (
-          <ScrollView>
-            {chatList ? (
-              chatList.map((chatItem, index) => (
-                <ChatListItem
-                  key={chatItem.group_message_id}
-                  seen={false}
-                  chatItem={chatItem}
-                  navigation={navigation}
-                />
-              ))
-            ) : (
-              <Text>Không có đoạn chat nào</Text>
-            )}
-          </ScrollView>
-        )}
+        <ScrollView>
+          {chatList ? (
+            chatList.map((chatItem, index) => (
+              <ChatListItem
+                key={chatItem.group_message_id}
+                seen={false}
+                chatItem={chatItem}
+                navigation={navigation}
+              />
+            ))
+          ) : (
+            <Text>Không có đoạn chat nào</Text>
+          )}
+        </ScrollView>
       </View>
     </SafeAreaView>
   );
@@ -116,5 +112,11 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     paddingHorizontal: 10,
     marginTop: -45,
+  },
+  chatEmpty: {
+    color: "#1646A9",
+    fontSize: 20,
+    textAlign: "center",
+    fontWeight: "bold",
   },
 });

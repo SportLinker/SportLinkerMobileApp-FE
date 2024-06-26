@@ -3,22 +3,21 @@ import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { styles } from "../../../component/style";
 
-const ListYardItem = ({ data, stadiumId }) => {
+const ListAllYardItem = ({ data }) => {
   const navigation = useNavigation();
 
   return (
     <View style={{ marginTop: 20, marginHorizontal: "auto" }}>
       {data &&
         data.map((yard) => (
-          <View
+          <TouchableOpacity
             key={yard.yard_id}
             style={styles.containerYard}
-            // onPress={() =>
-            //   navigation.navigate("InfoYard", {
-            //     yardId: yard.yard_id,
-            //     stadiumId: stadiumId,
-            //   })
-            // }
+            onPress={() =>
+              navigation.navigate("InfoYard", {
+                yardId: yard.yard_id,
+              })
+            }
           >
             <View
               style={{
@@ -82,10 +81,10 @@ const ListYardItem = ({ data, stadiumId }) => {
                 </View>
               </View>
             </View>
-          </View>
+          </TouchableOpacity>
         ))}
     </View>
   );
 };
 
-export default ListYardItem;
+export default ListAllYardItem;
