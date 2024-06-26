@@ -128,19 +128,19 @@ const ScheduleYardScreen = ({ navigation, route }) => {
                 }, {})}
                 style={styles.calendar}
               />
-              <Text style={styles.legendTitle}>Legend</Text>
+              <Text style={styles.legendTitle}>Chú thích</Text>
               <View style={styles.legend}>
                 <View style={styles.legendItem}>
                   <View
                     style={[styles.legendColor, { backgroundColor: "#1646a9" }]}
                   />
-                  <Text>All Slots Booked</Text>
+                  <Text>Đã Book</Text>
                 </View>
                 <View style={styles.legendItem}>
                   <View
                     style={[styles.legendColor, { backgroundColor: "#ff0000" }]}
                   />
-                  <Text>Partially Booked</Text>
+                  <Text>Chưa Được Book</Text>
                 </View>
               </View>
               <FlatList

@@ -352,7 +352,7 @@ const styles = StyleSheet.create({
     width: "100%",
     fontSize: 16,
     fontWeight: "bold",
-    marginBottom: 5,
+    // marginBottom: 5,
   },
   secondaryText: {
     color: "#797979",
@@ -365,7 +365,13 @@ const styles = StyleSheet.create({
   },
   input: {
     width: "100%",
-    height: 50,
+    height: 40,
+    backgroundColor: "white",
+    marginVertical: 10,
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: "#4878D9",
+    borderWidth: 2,
   },
   errorMessage: {
     fontSize: 14,
