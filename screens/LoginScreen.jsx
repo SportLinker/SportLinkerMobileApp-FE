@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Alert,
 } from "react-native";
 import { TextInput, Button, Divider, Snackbar } from "react-native-paper";
 import { screenHeight, screenWidth } from "../component/style";
@@ -19,15 +20,8 @@ import { createEvent } from "../redux/slices/eventSlice";
 import { getUserLoadingSelector } from "../redux/selectors";
 import Loading from "../component/Loading";
 import { useEffect } from "react";
-import * as Google from "expo-auth-session/providers/google";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import NotificationComponent from "../component/NotificationComponent";
-import {
-  GoogleSignin,
-  statusCodes,
-} from "@react-native-google-signin/google-signin";
-import auth from "@react-native-firebase/auth";
-import { FIREBASE_WEB_CLIENT_ID } from "@env";
 
 const LoginScreen = ({ navigation }) => {
   const [loginForm, setLoginForm] = useState({
@@ -38,42 +32,6 @@ const LoginScreen = ({ navigation }) => {
   const [successMessage, setSuccessMessage] = useState("");
   const [isHidePassword, setIsHidePassword] = useState(true);
 
-  const [request, response, promptAsync] = Google.useAuthRequest({
-    iosClientId: "",
-    androidClientId:
-      "124221842630-l2ppo0g9divu3n8aks6o8stfjlq09mp3.apps.googleusercontent.com",
-    redirectUri: "https://google.com",
-  });
-
-  GoogleSignin.configure({
-    webClientId:
-      "124221842630-l2ppo0g9divu3n8aks6o8stfjlq09mp3.apps.googleusercontent.com",
-  });
-
-  async function onGoogleButtonPress() {
-    try {
-      // Get the user's ID token
-      const { idToken } = await GoogleSignin.signIn();
-
-      // Create a Google credential with the token
-      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-
-      // Sign-in the user with the credential
-      await auth().signInWithCredential(googleCredential);
-      console.log("Signed in with Google!");
-    } catch (error) {
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        console.log("User cancelled the login flow");
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        console.log("Sign in is in progress");
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        console.log("Play services not available or outdated");
-      } else {
-        console.error(error);
-      }
-    }
-  }
-
   const loadingSelector = useSelector(getUserLoadingSelector);
 
   const dispatch = useDispatch();
@@ -82,40 +40,6 @@ const LoginScreen = ({ navigation }) => {
   useEffect(() => {
     dispatch(userSlice.actions.setUserLoading(false));
   }, []);
-
-  useEffect(() => {
-    handleSignInWithGoogle();
-  }, [response]);
-
-  async function handleSignInWithGoogle() {
-    const user = await AsyncStorage.getItem("@user");
-    if (!user) {
-      if (response?.type === "success") {
-        await getUserInfo(response.authentication.accessToken);
-      }
-    } else {
-      console.log("Exist user");
-    }
-  }
-
-  const getUserInfo = async (token) => {
-    if (!token) {
-      return;
-    }
-
-    try {
-      const response = await fetch("https:/www.googleapis.com/userinfo/v2/me", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const user = await response.json();
-      console.log("user", user);
-    } catch (error) {
-      console.log("error" + error);
-    }
-  };
 
   const handleLogin = async () => {
     console.log("handleLogin");
@@ -184,7 +108,9 @@ const LoginScreen = ({ navigation }) => {
                 marginVertical: "auto",
                 padding: 8,
               }}
-              onPress={onGoogleButtonPress}
+              onPress={() =>
+                Alert.alert("Thông báo", "Tính năng đang phát triển")
+              }
             >
               <View
                 style={{
