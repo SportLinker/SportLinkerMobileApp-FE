@@ -23,13 +23,14 @@ import {
   joinEventByUser,
   unjoinEventByUserOrOwner,
 } from "../../../redux/slices/eventSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Dimensions } from "react-native";
 import ConfirmPopup from "../../../component/ConfirmPopup";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Loading from "../../../component/Loading";
 import { DEFAULT_DISTACNCE, getSportIcon } from "../../../utils/constant";
 import CreateSportEventModal from "./CreateSportEventModal";
+import { useRoute } from "@react-navigation/native";
 
 const fakeData = {
   id: "e1",
@@ -182,9 +183,19 @@ const EventDetail = ({ navigation }) => {
     });
   };
 
-  if (getEventLoading) {
+  if (getEventLoading && !isOpenUpdateModal) {
     return <Loading visible={getEventLoading} />;
   }
+
+  const handleCloseUpdateModal = (isUpdate) => {
+    if (isUpdate) {
+      setIsOpenUpdateModal(false);
+      navigation.goBack();
+    } else {
+      console.log("Close update modal");
+      setIsOpenUpdateModal(false);
+    }
+  };
 
   return (
     <View style={{ position: "relative", flex: 1, zIndex: 0 }}>
@@ -388,7 +399,7 @@ const EventDetail = ({ navigation }) => {
       />
       <CreateSportEventModal
         visible={isOpenUpdateModal}
-        onClose={() => setIsOpenUpdateModal(false)}
+        onClose={handleCloseUpdateModal}
         eventDetail={eventDetail}
       />
     </View>
