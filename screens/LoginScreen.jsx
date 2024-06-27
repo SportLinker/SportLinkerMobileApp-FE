@@ -307,8 +307,13 @@ const styles = StyleSheet.create({
   },
   input: {
     width: "100%",
-    height: 50,
-    marginBottom: 10,
+    height: 40,
+    backgroundColor: "white",
+    marginVertical: 12,
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: "#4878D9",
+    borderWidth: 2,
   },
   button: {
     backgroundColor: "#1646A9",

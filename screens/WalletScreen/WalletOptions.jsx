@@ -9,9 +9,21 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Avatar, FAB } from "react-native-paper";
 import { formatCurrency } from "../../utils";
 import { useState } from "react";
+import WithDrawModal from "../AccountScreen/Withdraw/WithDrawModal";
+import ReChargeModal from "../AccountScreen/Recharge/ReChargeModal";
 
 const WalletOptions = () => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [withdrawModalVisible, setWithdrawModalVisible] = useState(false); // Add state for withdraw modal
   const [isHideMoney, setIsHideMoney] = useState(true);
+
+  const toggleModal = () => {
+    setModalVisible(!modalVisible);
+  };
+  const toggleWithdrawModal = () => {
+    // Add toggle function for withdraw modal
+    setWithdrawModalVisible(!withdrawModalVisible);
+  };
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -46,21 +58,34 @@ const WalletOptions = () => {
           </View>
         </View>
         <View style={styles.actionContainer}>
-          <TouchableOpacity style={styles.actionButton}>
+          <TouchableOpacity
+            style={styles.actionButton}
+            onPress={() => {
+              toggleWithdrawModal(); // Toggle withdraw modal on press
+            }}
+          >
             <MaterialCommunityIcons
               name="application-export"
               size={24}
               color="black"
             />
-            <Text style={{ marginTop: 5 }}>Rút tiền</Text>
+            <Text style={{ marginTop: 5 }}>Rút Tiền</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.actionButton}>
+          <TouchableOpacity style={styles.actionButton} onPress={toggleModal}>
             <MaterialCommunityIcons name="bank" size={24} color="black" />
-            <Text style={{ marginTop: 5 }}>Bank</Text>
+            <Text style={{ marginTop: 5 }}>Nạp Tiền</Text>
           </TouchableOpacity>
         </View>
       </View>
+      <ReChargeModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
+      <WithDrawModal // Include the new withdraw modal
+        modalVisible={withdrawModalVisible}
+        setModalVisible={setWithdrawModalVisible}
+      />
     </View>
   );
 };
