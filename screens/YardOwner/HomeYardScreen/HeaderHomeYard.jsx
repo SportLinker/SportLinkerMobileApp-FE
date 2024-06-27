@@ -26,7 +26,7 @@ export default function HeaderHomeYard() {
             onPress={() => navigation.navigate("ListAllYard")}
           >
             <FontAwesome name="list-ul" size={24} color="black" />
-            <Text>Ds Sân Nhỏ</Text>
+            <Text>DS Sân Nhỏ</Text>
           </TouchableOpacity>
 
           <TouchableOpacity

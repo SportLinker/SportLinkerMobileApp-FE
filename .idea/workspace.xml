@@ -1,7 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="a10684ed-82c5-48fd-8979-2a7ea436118f" name="Changes" comment="" />
+    <list default="true" id="a10684ed-82c5-48fd-8979-2a7ea436118f" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/SportLinkerMobileApp-FE.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/SportLinkerMobileApp-FE.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/LoginScreen.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/LoginScreen.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/RegisterScreen.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/RegisterScreen.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/SearchScreen/YardScreen/CourtSelectionModal.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/SearchScreen/YardScreen/Section/ActionButtons .jsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/SearchScreen/YardScreen/Section/ActionButtons .jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/YardOwner/HomeYardScreen/HeaderHomeYard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/YardOwner/HomeYardScreen/HeaderHomeYard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/YardOwner/ListYardScreen/CreateYardScreen/CreateYardScreen.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/YardOwner/ListYardScreen/CreateYardScreen/CreateYardScreen.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/YardOwner/ScheduleYardScreen/ScheduleYardScreen.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/YardOwner/ScheduleYardScreen/ScheduleYardScreen.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/YardOwner/StadiumScreen/CreateStadium/Step/Step1.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/YardOwner/StadiumScreen/CreateStadium/Step/Step1.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/services/api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PRM392/FinalApp/FashionStoreApp/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../PRM392/FinalApp/FashionStoreApp/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PRM392/FinalApp/FashionStoreApp/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../PRM392/FinalApp/FashionStoreApp/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PRM392/FinalApp/FashionStoreApp/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../PRM392/FinalApp/FashionStoreApp/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PRM392/FinalApp/FashionStoreApp/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../../PRM392/FinalApp/FashionStoreApp/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PRM392/FinalApp/FashionStoreApp/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../PRM392/FinalApp/FashionStoreApp/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PRM392/FinalApp/FashionStoreApp/app/src/main/java/com/example/fashionstoreapp/Activity/AdminActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../PRM392/FinalApp/FashionStoreApp/app/src/main/java/com/example/fashionstoreapp/Activity/AdminActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PRM392/FinalApp/FashionStoreApp/app/src/main/java/com/example/fashionstoreapp/Activity/CheckOutActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../PRM392/FinalApp/FashionStoreApp/app/src/main/java/com/example/fashionstoreapp/Activity/CheckOutActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PRM392/FinalApp/FashionStoreApp/app/src/main/java/com/example/fashionstoreapp/Activity/IntroActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../PRM392/FinalApp/FashionStoreApp/app/src/main/java/com/example/fashionstoreapp/Activity/IntroActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PRM392/FinalApp/FashionStoreApp/app/src/main/java/com/example/fashionstoreapp/Activity/LoginActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../PRM392/FinalApp/FashionStoreApp/app/src/main/java/com/example/fashionstoreapp/Activity/LoginActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PRM392/FinalApp/FashionStoreApp/app/src/main/java/com/example/fashionstoreapp/Retrofit/RetrofitService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../PRM392/FinalApp/FashionStoreApp/app/src/main/java/com/example/fashionstoreapp/Retrofit/RetrofitService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PRM392/FinalApp/FashionStoreApp/app/src/main/java/com/example/fashionstoreapp/Zalo/Api/CreateOrder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PRM392/FinalApp/FashionStoreApp/app/src/main/java/com/example/fashionstoreapp/Zalo/Api/HttpProvider.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PRM392/FinalApp/FashionStoreApp/app/src/main/java/com/example/fashionstoreapp/Zalo/Constant/AppInfo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PRM392/FinalApp/FashionStoreApp/app/src/main/java/com/example/fashionstoreapp/Zalo/Helper/HMac/HMacUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PRM392/FinalApp/FashionStoreApp/app/src/main/java/com/example/fashionstoreapp/Zalo/Helper/HMac/HexStringUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PRM392/FinalApp/FashionStoreApp/app/src/main/java/com/example/fashionstoreapp/Zalo/Helper/Helpers.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PRM392/FinalApp/FashionStoreApp/app/src/main/res/layout/activity_login.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../PRM392/FinalApp/FashionStoreApp/app/src/main/res/layout/activity_login.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PRM392/FinalApp/FashionStoreApp/app/src/main/res/layout/dialog_change_password.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../PRM392/FinalApp/FashionStoreApp/app/src/main/res/layout/dialog_change_password.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PRM392/FinalApp/StoreApp/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../PRM392/FinalApp/StoreApp/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PRM392/FinalApp/StoreApp/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../PRM392/FinalApp/StoreApp/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PRM392/FinalApp/StoreApp/src/main/java/StoreApp/StoreApp/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../PRM392/FinalApp/StoreApp/src/main/java/StoreApp/StoreApp/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PRM392/FinalApp/StoreApp/src/main/java/StoreApp/StoreApp/service/impl/Overload.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PRM392/FinalApp/StoreApp/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../../PRM392/FinalApp/StoreApp/src/main/resources/application.properties" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -10,21 +49,21 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 7
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
   <component name="ProjectId" id="2hS0h157JU2bvwNpcBqDY6fXiUh" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenDatabaseViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "Tai",
-    "last_opened_file_path": "C:/Users/ADMIN"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenDatabaseViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Tai&quot;,
+    &quot;last_opened_file_path&quot;: &quot;F:/Semester 8/PRM392/FinalApp&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
 </project>
