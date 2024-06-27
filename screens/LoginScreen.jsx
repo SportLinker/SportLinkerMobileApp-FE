@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Alert,
 } from "react-native";
 import { TextInput, Button, Divider, Snackbar } from "react-native-paper";
 import { screenHeight, screenWidth } from "../component/style";
@@ -19,7 +20,6 @@ import { createEvent } from "../redux/slices/eventSlice";
 import { getUserLoadingSelector } from "../redux/selectors";
 import Loading from "../component/Loading";
 import { useEffect } from "react";
-import * as Google from "expo-auth-session/providers/google";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import NotificationComponent from "../component/NotificationComponent";
 
@@ -32,20 +32,6 @@ const LoginScreen = ({ navigation }) => {
   const [successMessage, setSuccessMessage] = useState("");
   const [isHidePassword, setIsHidePassword] = useState(true);
 
-  const [request, response, promptAsync] = Google.useAuthRequest({
-    iosClientId: "",
-    androidClientId:
-      "905745054659-2q9p3vsdtmvtqn2tpndth67q8e2u1l7a.apps.googleusercontent.com",
-    redirectUri: "https://google.com",
-  });
-
-  // const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
-  //   clientId:
-  //     "905745054659-n8v052jci3mjurfq7pge4sub9ojipb5l.apps.googleusercontent.com",
-  //   androidClientId:
-  //     "905745054659-2q9p3vsdtmvtqn2tpndth67q8e2u1l7a.apps.googleusercontent.com",
-  // });
-
   const loadingSelector = useSelector(getUserLoadingSelector);
 
   const dispatch = useDispatch();
@@ -54,40 +40,6 @@ const LoginScreen = ({ navigation }) => {
   useEffect(() => {
     dispatch(userSlice.actions.setUserLoading(false));
   }, []);
-
-  useEffect(() => {
-    handleSignInWithGoogle();
-  }, [response]);
-
-  async function handleSignInWithGoogle() {
-    const user = await AsyncStorage.getItem("@user");
-    if (!user) {
-      if (response?.type === "success") {
-        await getUserInfo(response.authentication.accessToken);
-      }
-    } else {
-      console.log("Exist user");
-    }
-  }
-
-  const getUserInfo = async (token) => {
-    if (!token) {
-      return;
-    }
-
-    try {
-      const response = await fetch("https:/www.googleapis.com/userinfo/v2/me", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const user = await response.json();
-      console.log("user", user);
-    } catch (error) {
-      console.log("error" + error);
-    }
-  };
 
   const handleLogin = async () => {
     console.log("handleLogin");
@@ -156,7 +108,9 @@ const LoginScreen = ({ navigation }) => {
                 marginVertical: "auto",
                 padding: 8,
               }}
-              onPress={() => promptAsync()}
+              onPress={() =>
+                Alert.alert("Thông báo", "Tính năng đang phát triển")
+              }
             >
               <View
                 style={{
