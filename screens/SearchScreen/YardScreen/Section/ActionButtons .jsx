@@ -3,7 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import { Platform, Text, TouchableOpacity, View } from "react-native";
 import { styles } from "../../../../component/style";
-import { CourtSelectionModal } from "../CourtSelectionModal";
+import CourtSelectionModal from "../CourtSelection/CourtSelectionModal";
 
 export const ActionButtons = ({ setModalVisible, stadium }) => {
   const navigation = useNavigation();
