@@ -15,6 +15,7 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
+      "bundleIndetifier": "com.phuoc18.sportlinker",
       "infoPlist": {
         "NSAllowsArbitraryLoads": true,
         "NSCameraUsageDescription": "This app needs access to your camera to take photos."
@@ -25,7 +26,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "permissions": ["android.permission.INTERNET"],
+      "permissions": ["CAMERA", "INTERNET"],
       "package": "com.phuoc18.sportlinker"
     },
     "web": {
