@@ -22,6 +22,9 @@ import { useEffect } from "react";
 import * as Google from "expo-auth-session/providers/google";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import NotificationComponent from "../component/NotificationComponent";
+import auth from "@react-native-firebase/auth";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import firebase from "@react-native-firebase/app";
 
 const LoginScreen = ({ navigation }) => {
   const [loginForm, setLoginForm] = useState({
@@ -125,6 +128,45 @@ const LoginScreen = ({ navigation }) => {
     }
   };
 
+  async function onGoogleButtonPress() {
+    GoogleSignin.configure({
+      webClientId:
+        "906328135376-90t5fhq0fe85g0bjdse93s62bkcun5q7.apps.googleusercontent.com",
+    });
+    try {
+      // Check if your device supports Google Play
+      await GoogleSignin.hasPlayServices({
+        showPlayServicesUpdateDialog: true,
+      });
+
+      // Get the user's ID token
+      const { idToken } = await GoogleSignin.signIn();
+      console.log(`idToken`, idToken);
+
+      if (!idToken) {
+        console.error("No ID token received from Google Sign-In");
+        return;
+      }
+
+      // Create a Google credential with the token
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+      console.log(`googleCredential`, googleCredential);
+
+      if (!googleCredential) {
+        console.error("Failed to create Google credential");
+        return;
+      }
+
+      // Sign-in the user with the credential
+      const userCredential = await auth().signInWithCredential(
+        googleCredential
+      );
+      console.log(`user`, userCredential.user);
+    } catch (err) {
+      console.log(`Error during Google Sign-In`, JSON.stringify(err));
+    }
+  }
+
   return (
     <SafeAreaView style={{ backgroundColor: "white", flex: 1 }}>
       <KeyboardAvoidingView
@@ -156,7 +198,11 @@ const LoginScreen = ({ navigation }) => {
                 marginVertical: "auto",
                 padding: 8,
               }}
-              onPress={() => promptAsync()}
+              onPress={() =>
+                onGoogleButtonPress().then(() =>
+                  console.log("Signed in with Google!")
+                )
+              }
             >
               <View
                 style={{
