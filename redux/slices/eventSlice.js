@@ -16,6 +16,32 @@ export const createEvent = createAsyncThunk(
   }
 );
 
+export const updateEvent = createAsyncThunk(
+  "eventSlice/updateEvent",
+  async (eventForm, { rejectWithValue }) => {
+    try {
+      if (eventForm) {
+        const response = await api.put(`/matches/${eventForm.match_id}`, {
+          match_name: eventForm.match_name,
+          sport_name: eventForm.sport_name,
+          maximum_join: eventForm.maximum_join,
+          start_time: eventForm.start_time,
+          end_time: eventForm.end_time,
+          option: {
+            budget: eventForm.budget,
+            note: eventForm.note,
+          },
+        });
+        console.log(response.data);
+        return response.data; // Return the response data
+      }
+    } catch (error) {
+      console.log("Error: ", JSON.stringify(error.response.data));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const getEventList = createAsyncThunk(
   "eventSlice/getEventList",
   async (formData, { rejectWithValue }) => {
@@ -193,6 +219,16 @@ export const eventSlice = createSlice({
         state.loading = false;
       })
       .addCase(unjoinEventByUserOrOwner.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error;
+      })
+      .addCase(updateEvent.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateEvent.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(updateEvent.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error;
       });

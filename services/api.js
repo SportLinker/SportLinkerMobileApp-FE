@@ -1,10 +1,9 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-const API_URL = "https://fine-special-ram.ngrok-free.app/v1/api";
+import { API_URL } from "@env";
 
 export const api = axios.create({
-  baseURL: API_URL,
+  baseURL: "https://fine-special-ram.ngrok-free.app/v1/api",
 });
 
 api.interceptors.request.use(

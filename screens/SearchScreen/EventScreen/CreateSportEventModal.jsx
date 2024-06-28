@@ -16,7 +16,12 @@ import StepTwo from "./Step/StepTwo";
 import StepThree from "./Step/StepThree";
 import { calculateEventTimes } from "../../../utils";
 import { useDispatch, useSelector } from "react-redux";
-import { createEvent, getEventList } from "../../../redux/slices/eventSlice";
+import {
+  createEvent,
+  getDetailEvent,
+  getEventList,
+  updateEvent,
+} from "../../../redux/slices/eventSlice";
 import { useNavigation } from "@react-navigation/native";
 import { getListMessage } from "../../../redux/slices/messageSlice";
 import { getUserSelector } from "../../../redux/selectors";
@@ -37,7 +42,6 @@ const CreateSportEventModal = ({ visible, onClose, eventDetail }) => {
     const time2 = new Date(endTime);
     let durationInMilliseconds = Math.abs(time2 - time1);
     let durationInMinutes = durationInMilliseconds / (1000 * 60);
-    console.log(durationInMinutes);
     return durationInMinutes;
   };
 
@@ -54,7 +58,7 @@ const CreateSportEventModal = ({ visible, onClose, eventDetail }) => {
           getDurationTime(eventDetail?.start_time, eventDetail?.end_time) + "",
         selectedSport: getSportObj(eventDetail?.sport_name),
         participants: eventDetail?.maximum_join + "",
-        budget: eventDetail?.option?.budget + "",
+        budget: eventDetail?.option?.budget,
         note: "",
         searchQuery: "",
         selectedLocation: {
@@ -111,7 +115,7 @@ const CreateSportEventModal = ({ visible, onClose, eventDetail }) => {
     participants: Yup.number()
       .min(2, "Người tham gia phải lớn hơn 1")
       .required("Hãy chọn số lượng người tham gia"),
-    // budget: Yup.number().min(1000, "Ngân sách mỗi người mang lớn hơn 1000"),
+    budget: Yup.number().min(1000, "Ngân sách mỗi người mang lớn hơn 1000"),
     // .required("Hãy chọn số tiền"),
     // note: Yup.string().required("Hãy viết lưu ý"),
   });
@@ -178,50 +182,97 @@ const CreateSportEventModal = ({ visible, onClose, eventDetail }) => {
       values.duration
     );
     try {
-      const eventForm = {
-        match_name: values.eventName,
-        cid: values.selectedLocation.cid,
-        sport_name: values.selectedSport.sport_name,
-        maximum_join: parseInt(values.participants),
-        start_time: times.start_time,
-        end_time: times.end_time,
-        option: {
-          budget: values.budget ? parseInt(values.budget) : null,
-          note: values.note ? values.note : null,
-        },
-      };
+      if (eventDetail) {
+        console.log("Updating event...", eventDetail);
+        //handle update event
+        const eventForm = {
+          match_id: eventDetail.match_id,
+          match_name: values.eventName,
+          sport_name: values.selectedSport.sport_name,
+          maximum_join: parseInt(values.participants),
+          start_time: times.start_time,
+          end_time: times.end_time,
+          option: {
+            budget: values.budget ? parseInt(values.budget) : null,
+            note: values.note ? values.note : null,
+          },
+        };
 
-      console.log(eventForm);
-      dispatch(createEvent(eventForm)).then((res) => {
-        if (res.type === "eventSlice/createEvent/fulfilled") {
-          console.log("Event created successfully: ", res.payload);
-          setSuccessMessage("Bạn đã tạo kèo thành công !!!");
-          const formData = {
-            long: getUserInfo.longitude,
-            lat: getUserInfo.latitude,
-            distance: DEFAULT_DISTACNCE,
-            start_time: 0,
-            end_time: 23,
-            sport_name: "",
-          };
-          setTimeout(() => {
-            dispatch(getEventList(formData));
-            setStep(1);
-            onClose();
-            dispatch(getListMessage());
-          }, 3000);
-        } else {
-          if (res.payload.message == "Not found") {
-            setFailMessage("Hãy đăng nhập lại !!!");
-            navigate("Login");
-          }
-          if (res.payload.message == "You have a match upcomming!") {
-            setFailMessage("Bạn đã tạo kèo ngày giờ này rồi");
+        dispatch(updateEvent(eventForm)).then((res) => {
+          if (res.type === "eventSlice/updateEvent/fulfilled") {
+            console.log("Event update successfully: ", res.payload);
+            setSuccessMessage("Cập nhật kèo thành công !!!");
+
+            const formData = {
+              long: getUserInfo.longitude,
+              lat: getUserInfo.latitude,
+              distance: DEFAULT_DISTACNCE,
+              start_time: 0,
+              end_time: 23,
+              sport_name: "",
+            };
+            setTimeout(() => {
+              dispatch(getEventList(formData));
+              setStep(1);
+              onClose(true);
+            }, 3000);
           } else {
-            setFailMessage(res.payload.message);
+            if (res.payload.message == "Not found") {
+              setFailMessage("Hãy đăng nhập lại !!!");
+              navigate("Login");
+            } else {
+              setFailMessage("Cập nhật thất bại");
+            }
           }
-        }
-      });
+        });
+      } else {
+        console.log("Creating event...");
+        //handle create event
+        const eventForm = {
+          match_name: values.eventName,
+          cid: values.selectedLocation.cid,
+          sport_name: values.selectedSport.sport_name,
+          maximum_join: parseInt(values.participants),
+          start_time: times.start_time,
+          end_time: times.end_time,
+          option: {
+            budget: values.budget ? parseInt(values.budget) : null,
+            note: values.note ? values.note : null,
+          },
+        };
+
+        console.log(eventForm);
+        dispatch(createEvent(eventForm)).then((res) => {
+          if (res.type === "eventSlice/createEvent/fulfilled") {
+            console.log("Event created successfully: ", res.payload);
+            setSuccessMessage("Bạn đã tạo kèo thành công !!!");
+            const formData = {
+              long: getUserInfo.longitude,
+              lat: getUserInfo.latitude,
+              distance: DEFAULT_DISTACNCE,
+              start_time: 0,
+              end_time: 23,
+              sport_name: "",
+            };
+            setTimeout(() => {
+              dispatch(getEventList(formData));
+              setStep(1);
+              onClose();
+              dispatch(getListMessage());
+            }, 3000);
+          } else {
+            if (res.payload.message == "Not found") {
+              setFailMessage("Hãy đăng nhập lại !!!");
+              navigate("Login");
+            }
+            if (res.payload.message == "You have a match upcomming!") {
+              setFailMessage("Bạn đã tạo kèo ngày giờ này rồi");
+            } else {
+              setFailMessage(res.payload.message);
+            }
+          }
+        });
+      }
     } catch (error) {
       console.log("error: ", JSON.stringify(error));
     }

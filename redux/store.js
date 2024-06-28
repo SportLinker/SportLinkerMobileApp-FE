@@ -6,6 +6,7 @@ import { messageSlice } from "./slices/messageSlice";
 import { userSlice } from "./slices/userSlice";
 import { yardSlice } from "./slices/yardSlice";
 import { paymentSlice } from "./slices/paymentSlice";
+import bookSlice from "./slices/bookSlice";
 
 const rootPersistConfig = {
   key: "root",
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   messageSlice: messageSlice.reducer,
   yardSlice: yardSlice.reducer,
   paymentSlice: paymentSlice.reducer,
+  bookSlice: bookSlice.reducer,
 
   //add more reducer here
   //...
