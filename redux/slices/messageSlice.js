@@ -4,7 +4,6 @@ import { api } from "../../services/api";
 export const getListMessage = createAsyncThunk(
   "messageSlice/getListMessage",
   async (_, { rejectWithValue }) => {
-    console.log("vao day");
     try {
       const data = await api.get(`/groupMessage`);
 
