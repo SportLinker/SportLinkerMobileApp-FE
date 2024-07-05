@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, Button, FlatList, StyleSheet } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllYardByOwner } from "../../../redux/slices/yardSlice";
+import { getAllYardSelector } from "../../../redux/selectors";
 
 const fields = [
   { id: "1", name: "Sân 1" },
@@ -9,19 +12,49 @@ const fields = [
 ];
 
 const OrderYardScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
+
+  const yardList = useSelector(getAllYardSelector);
+
+  const [yards, setYard] = useState(null);
+
+  // console.log("yards", yards);
+
+  useEffect(() => {
+    dispatch(getAllYardByOwner());
+  }, []);
+
+  useEffect(() => {
+    if (yardList) {
+      setYard(yardList);
+    }
+  }, [yardList]);
+
   return (
     <View style={styles.container}>
       <FlatList
-        data={fields}
-        keyExtractor={(item) => item.id}
+        data={yards}
+        keyExtractor={(item) => item.yard_id}
         renderItem={({ item }) => (
           <View style={styles.fieldContainer}>
-            <Text style={styles.fieldName}>{item.name}</Text>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <Text style={styles.fieldName}>{item.yard_name}</Text>
+              <Text>{item.yard_sport}</Text>
+            </View>
             <Button
               title="Đặt lịch"
               color="#1E90FF"
               onPress={() =>
-                navigation.navigate("Booking", { fieldId: item.id })
+                navigation.navigate("Booking", {
+                  yard_name: item.yard_name,
+                  booking: item.BookingYard,
+                })
               }
             />
           </View>

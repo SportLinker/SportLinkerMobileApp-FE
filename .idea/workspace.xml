@@ -5,18 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a10684ed-82c5-48fd-8979-2a7ea436118f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/SportLinkerMobileApp-FE.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/SportLinkerMobileApp-FE.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/LoginScreen.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/LoginScreen.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/RegisterScreen.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/RegisterScreen.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/SearchScreen/YardScreen/CourtSelectionModal.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/SearchScreen/YardScreen/Section/ActionButtons .jsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/SearchScreen/YardScreen/Section/ActionButtons .jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/YardOwner/HomeYardScreen/HeaderHomeYard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/YardOwner/HomeYardScreen/HeaderHomeYard.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/YardOwner/ListYardScreen/CreateYardScreen/CreateYardScreen.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/YardOwner/ListYardScreen/CreateYardScreen/CreateYardScreen.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/YardOwner/ScheduleYardScreen/ScheduleYardScreen.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/YardOwner/ScheduleYardScreen/ScheduleYardScreen.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/YardOwner/StadiumScreen/CreateStadium/Step/Step1.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/YardOwner/StadiumScreen/CreateStadium/Step/Step1.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/services/api.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../PRM392/FinalApp/FashionStoreApp/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../PRM392/FinalApp/FashionStoreApp/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../PRM392/FinalApp/FashionStoreApp/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../PRM392/FinalApp/FashionStoreApp/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../PRM392/FinalApp/FashionStoreApp/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../PRM392/FinalApp/FashionStoreApp/.idea/misc.xml" afterDir="false" />
@@ -57,13 +45,13 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenDatabaseViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Tai&quot;,
-    &quot;last_opened_file_path&quot;: &quot;F:/Semester 8/PRM392/FinalApp&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenDatabaseViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "Tai",
+    "last_opened_file_path": "F:/Semester 8/PRM392/FinalApp/script.sql"
   }
-}</component>
+}]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
 </project>

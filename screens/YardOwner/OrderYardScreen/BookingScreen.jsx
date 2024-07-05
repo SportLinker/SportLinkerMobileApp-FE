@@ -1,231 +1,148 @@
-import { AntDesign, Entypo, FontAwesome } from "@expo/vector-icons";
-import { truncate } from "lodash";
 import React, { useState } from "react";
 import {
-  View,
-  Text,
-  Button,
+  Alert,
   FlatList,
-  TouchableOpacity,
   StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { Calendar } from "react-native-calendars";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import AntDesign from "react-native-vector-icons/AntDesign";
+import { useDispatch } from "react-redux";
+import { confirmBooked } from "../../../redux/slices/bookSlice";
+import { getAllYardByOwner } from "../../../redux/slices/yardSlice";
 
 const BookingScreen = ({ route, navigation }) => {
-  const { fieldId } = route.params || {};
+  const { booking, yard_name } = route.params || {};
 
-  // Initial sample booking data
-  const initialBookings = {
-    "2024-06-10": [
-      { startTime: "08:00", endTime: "10:00", booked: true },
-      { startTime: "10:00", endTime: "12:00", booked: false },
-    ],
-    "2024-06-12": [{ startTime: "14:00", endTime: "16:00", booked: true }],
-  };
+  const dispatch = useDispatch();
 
-  const [bookings, setBookings] = useState(initialBookings);
+  const [bookings, setBookings] = useState(booking);
   const [selectedDates, setSelectedDates] = useState(
-    Object.keys(initialBookings)
+    booking.map((item) => item.date)
   );
   const [showCalendar, setShowCalendar] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState(null);
-  const [selectedTimeSlots, setSelectedTimeSlots] = useState({});
-
-  console.log("bookings", bookings);
-
-  // Fake data for titles
-  const fakeTitles = [
-    "Football với Thăng Long",
-    "Football với Thăng Long",
-    "Football với Thăng Long",
-  ];
-
-  // Fake data for start and end times
-  const fakeData = [
-    { id: 1, startTime: "08:00", endTime: "10:00" },
-    { id: 2, startTime: "10:00", endTime: "12:00" },
-    { id: 3, startTime: "14:00", endTime: "16:00" },
-    // Add more fake data as needed
-  ];
-
-  // Function to truncate title to 20 words and add ellipsis
-  const truncateTitle = (title) => {
-    return (
-      truncate(title, {
-        length: 21,
-        separator: " ",
-      }) + "..."
-    );
-  };
 
   const onDayPress = (day) => {
     const currentDate = new Date();
     const selectedDate = new Date(day.dateString);
 
-    if (selectedDate >= currentDate) {
-      const date = day.dateString;
-      if (!bookings[date]) {
-        const newBookings = {
-          ...bookings,
-          [date]: fakeData.map(({ startTime, endTime }) => ({
-            startTime,
-            endTime,
-            booked: false,
-          })),
-        };
-        setBookings(newBookings);
-        setSelectedDates([...selectedDates, date]);
-      }
-    } else {
-      // Do something to notify the user that they cannot book for past dates
+    if (selectedDate < currentDate) {
       console.log("Cannot book for past dates");
+      return;
     }
+
+    setSelectedDate(day.dateString);
+    setSelectedTimeSlot(null);
   };
 
-  const deleteBooking = (date, timeSlotIndex) => {
-    if (bookings[date]) {
-      const newBookings = { ...bookings };
-      newBookings[date] = [
-        ...newBookings[date].slice(0, timeSlotIndex),
-        ...newBookings[date].slice(timeSlotIndex + 1),
-      ];
-      if (newBookings[date].length === 0) {
-        delete newBookings[date];
-        setSelectedDates(selectedDates.filter((d) => d !== date));
-      }
-      setBookings(newBookings);
-    }
+  const updateBookingStatus = (date, timeSlot, status) => {
+    dispatch(confirmBooked({ status, booking_id: timeSlot.id })).then(() => {
+      setBookings((prevBookings) =>
+        prevBookings.map((booking) =>
+          booking.date === date
+            ? {
+                ...booking,
+                matches: booking.matches.map((match) =>
+                  match.id === timeSlot.id ? { ...match, status } : match
+                ),
+              }
+            : booking
+        )
+      );
+      dispatch(getAllYardByOwner());
+      Alert.alert(
+        "Thông báo",
+        `${status === "accepted" ? "Chấp nhận" : "Xóa"} đặt sân thành công!`
+      );
+    });
   };
 
-  const acceptBooking = (date) => {
-    // Handle accepting booking logic here
+  const acceptBooking = (date, timeSlot) => {
     console.log("Accepted booking for date", date);
-    const selectedSlot = selectedTimeSlots[date];
-    if (selectedSlot) {
-      const newBookings = {
-        ...bookings,
-        [date]: bookings[date].map((slot) => {
-          if (slot === selectedSlot) {
-            return {
-              ...slot,
-              booked: true,
-            };
-          }
-          return slot;
-        }),
-      };
-      setBookings(newBookings);
-    }
+    updateBookingStatus(date, timeSlot, "accepted");
   };
 
-  const recoveryBooking = (date) => {
-    const selectedSlot = selectedTimeSlots[date];
-    if (selectedSlot) {
-      const newBookings = {
-        ...bookings,
-        [date]: bookings[date].map((slot) => {
-          if (
-            slot.startTime === selectedSlot.startTime &&
-            slot.endTime === selectedSlot.endTime
-          ) {
-            return {
-              ...slot,
-              booked: false,
-            };
-          }
-          return slot;
-        }),
-      };
-      setBookings(newBookings);
-      // Đặt lại khung giờ được chọn thành null sau khi phục hồi
-      setSelectedTimeSlots({
-        ...selectedTimeSlots,
-        [date]: null,
-      });
-    }
+  const deleteBooking = (date, timeSlot) => {
+    console.log("Delete booking for date", date);
+    updateBookingStatus(date, timeSlot, "rejected");
   };
 
   const selectTimeSlot = (date, timeSlot) => {
-    setSelectedTimeSlots({
-      ...selectedTimeSlots,
-      [date]: timeSlot,
-    });
+    setSelectedDate(date);
+    setSelectedTimeSlot(timeSlot);
   };
 
   const sortedDates = selectedDates.sort((a, b) => new Date(a) - new Date(b));
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Lịch đặt cho sân {fieldId}</Text>
+      <Text style={styles.title}>Lịch đặt cho sân {yard_name}</Text>
       <FlatList
         style={{ backgroundColor: "white", padding: 10, borderRadius: 10 }}
         data={sortedDates}
         keyExtractor={(item) => item}
-        renderItem={({ item: date }) => (
-          <View
-            style={{
-              marginBottom: 15,
-              padding: 15,
-              backgroundColor: "rgba(240, 240, 240, 0.5)",
-            }}
-          >
-            <Text style={styles.dateText}>{date}</Text>
-            {bookings[date].map((timeSlot, index) => (
-              <TouchableOpacity
-                key={index}
-                style={styles.dateItem}
-                onPress={() => {
-                  setSelectedDate(date);
-                  selectTimeSlot(date, timeSlot);
-                }}
-              >
-                <View style={{ paddingHorizontal: 10 }}>
-                  <Text style={styles.flatListHeader}>
-                    {truncateTitle(fakeTitles[index])}
-                  </Text>
-                  <Text style={styles.timeText}>
-                    {timeSlot.startTime} - {timeSlot.endTime}
-                  </Text>
-                </View>
-                {selectedDate === date &&
-                  selectedTimeSlots[date] === timeSlot &&
-                  !timeSlot.booked && (
-                    <View style={styles.buttonContainer}>
-                      <TouchableOpacity
-                        style={[styles.button, styles.deleteButton]}
-                        onPress={() => deleteBooking(date, index)}
-                      >
-                        <FontAwesome name="trash-o" size={24} color="black" />
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={[styles.button, styles.acceptButton]}
-                        onPress={() => acceptBooking(date)}
-                      >
-                        <AntDesign
-                          name="checkcircleo"
-                          size={24}
-                          color="black"
-                        />
-                      </TouchableOpacity>
-                    </View>
-                  )}
-
-                {timeSlot.booked && (
-                  <TouchableOpacity
-                    style={[styles.button, styles.recoveryButton]}
-                    onPress={() => recoveryBooking(date)}
-                  >
-                    <Text style={styles.buttonText}>
-                      <Entypo name="check" size={24} color="green" />
+        renderItem={({ item: date }) => {
+          const bookingItem = bookings.find((booking) => booking.date === date);
+          if (!bookingItem) return null;
+          return (
+            <View
+              style={{
+                marginBottom: 15,
+                padding: 15,
+                backgroundColor: "rgba(240, 240, 240, 0.5)",
+              }}
+            >
+              <Text style={styles.dateText}>{date}</Text>
+              {bookingItem.matches.map((timeSlot, index) => (
+                <View key={index} style={styles.dateItem}>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Text style={styles.timeText}>
+                      {timeSlot.time_start} - {timeSlot.time_end}
                     </Text>
-                  </TouchableOpacity>
-                )}
-              </TouchableOpacity>
-            ))}
-          </View>
-        )}
+                    {timeSlot.status === "accepted" && (
+                      <AntDesign name="check" size={24} color="black" />
+                    )}
+                    {timeSlot.status === "rejected" && (
+                      <AntDesign name="close" size={24} color="red" />
+                    )}
+                  </View>
+                  {selectedDate === date &&
+                    selectedTimeSlot === timeSlot &&
+                    timeSlot.status !== "accepted" &&
+                    timeSlot.status !== "rejected" && (
+                      <View style={styles.buttonContainer}>
+                        <TouchableOpacity
+                          style={[styles.button, styles.acceptButton]}
+                          onPress={() => acceptBooking(date, timeSlot)}
+                        >
+                          <Icon name="check-circle" size={24} color="black" />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={[styles.button, styles.deleteButton]}
+                          onPress={() => deleteBooking(date, timeSlot)}
+                        >
+                          <Icon name="delete" size={24} color="black" />
+                        </TouchableOpacity>
+                      </View>
+                    )}
+                  {selectedDate !== date || selectedTimeSlot !== timeSlot ? (
+                    <TouchableOpacity
+                      style={styles.dateItemButton}
+                      onPress={() => selectTimeSlot(date, timeSlot)}
+                    >
+                      <Text>Chọn</Text>
+                    </TouchableOpacity>
+                  ) : null}
+                </View>
+              ))}
+            </View>
+          );
+        }}
       />
       <Icon.Button
         name={showCalendar ? "calendar-today" : "calendar-view-day"}
@@ -237,8 +154,11 @@ const BookingScreen = ({ route, navigation }) => {
       {showCalendar && (
         <Calendar
           markedDates={selectedDates.reduce((acc, date) => {
-            const allBooked = bookings[date].every((slot) => slot.booked);
-            const color = allBooked ? "#1646a9" : "#ff0000"; // Change color here based on booking status
+            const bookingItem = bookings.find(
+              (booking) => booking.date === date
+            );
+            const allBooked = bookingItem.matches.length > 0;
+            const color = allBooked ? "#1646a9" : "#ff0000";
             acc[date] = {
               selected: true,
               marked: true,
@@ -269,11 +189,11 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   dateItem: {
-    display: "flex",
     flexDirection: "row",
+    justifyContent: "space-between",
     borderRadius: 4,
     marginBottom: 10,
-    paddingHorizontal: 10,
+    paddingLeft: 10,
     paddingVertical: 5,
     shadowColor: "#000",
     shadowOffset: {
@@ -282,30 +202,25 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 1, // elevation vẫn được sử dụng cho các thiết bị Android
-  },
-
-  dateInfo: {
-    padding: 10,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "80%",
+    elevation: 1,
+    height: 50,
   },
   dateText: {
-    fontSize: 16,
-    marginVertical: "auto",
+    fontSize: 20,
     fontWeight: "bold",
     paddingBottom: 5,
   },
   timeText: {
-    fontSize: 14,
-    color: "gray",
+    fontSize: 18,
+    color: "black",
+    marginVertical: "auto",
+    marginRight: 10,
   },
   buttonContainer: {
     flexDirection: "row",
     justifyContent: "flex-end",
     marginVertical: "auto",
+    marginRight: 10,
     width: "38%",
   },
   button: {
@@ -314,26 +229,17 @@ const styles = StyleSheet.create({
   },
   deleteButton: {
     backgroundColor: "#ff0000",
-    marginRight: 10,
+    marginLeft: 10,
     paddingHorizontal: 10,
   },
   acceptButton: {
     backgroundColor: "#00ff00",
     paddingHorizontal: 7,
   },
-  recoveryButton: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    marginVertical: "auto",
-    width: "38%",
-  },
-  buttonText: {
-    color: "#ffffff",
-  },
-  flatListHeader: {
-    fontSize: 15,
-    fontWeight: "bold",
-    marginBottom: 5,
+  dateItemButton: {
+    padding: 5,
+    borderRadius: 5,
+    backgroundColor: "#ddd",
   },
 });
 
