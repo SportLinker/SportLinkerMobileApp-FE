@@ -48,6 +48,18 @@ const BookingModal = ({
     const start = new Date(`${selectedDate}T${startTime}`);
     const end = new Date(`${selectedDate}T${endTime}`);
 
+    // Tính thời gian giữa start và end (đơn vị là mili giây)
+    const timeDiff = end.getTime() - start.getTime();
+
+    // Chuyển thời gian từ mili giây sang giờ
+    const hoursDiff = timeDiff / (1000 * 60 * 60);
+
+    // Kiểm tra nếu thời gian lớn hơn 3 tiếng
+    if (hoursDiff > 4) {
+      Alert.alert("Bạn chỉ có thể đặt tối đa 4 tiếng");
+      return;
+    }
+
     handleConfirmTime(start.toISOString(), end.toISOString());
   };
 
@@ -67,7 +79,8 @@ const BookingModal = ({
   const handleTimePickerChange = (event, time) => {
     setShowTimePicker(false);
     if (time) {
-      const localTime = time.toLocaleTimeString([], {
+      const localTime = time.toLocaleTimeString("en-GB", {
+        hour12: false,
         hour: "2-digit",
         minute: "2-digit",
       });

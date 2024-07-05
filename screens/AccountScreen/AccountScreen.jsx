@@ -1,4 +1,4 @@
-import { AntDesign, FontAwesome6, Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import React, { useState } from "react";
 import {
@@ -12,20 +12,19 @@ import {
 import { Avatar, Snackbar } from "react-native-paper";
 import { styles } from "../../component/style";
 
-import { uploadImageToCloudinary } from "../../services/cloudinary";
 import { useDispatch, useSelector } from "react-redux";
-import userSlice, { updateUserProfile } from "../../redux/slices/userSlice";
-import { getUserLoadingSelector, getUserSelector } from "../../redux/selectors";
 import Loading from "../../component/Loading";
-import { useEffect } from "react";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import Recharge from "./Recharge/Recharge";
-import Profile from "./ActionButton/Profile";
-import MyPost from "./ActionButton/MyPost";
-import HeaderAccount from "./HeaderAccount/HeaderAccount";
-import TabViewProfile from "./ActionButton/TabViewProfile";
+import { getUserLoadingSelector, getUserSelector } from "../../redux/selectors";
+import userSlice, { updateUserProfile } from "../../redux/slices/userSlice";
+import { uploadImageToCloudinary } from "../../services/cloudinary";
 import MyMatch from "./ActionButton/MyMatch";
+import MyPost from "./ActionButton/MyPost";
 import MyTransaction from "./ActionButton/MyTransaction";
+import Profile from "./ActionButton/Profile";
+import TabViewProfile from "./ActionButton/TabViewProfile";
+import HeaderAccount from "./HeaderAccount/HeaderAccount";
+import MyBook from "./ActionButton/MyBook";
+import defaultAvatar from "../../assets/avatar_default.png";
 
 const fakeData = [
   {
@@ -51,16 +50,11 @@ export default function AccountScreen() {
 
   const dispatch = useDispatch();
 
-  const fakeDataCommunity = [
-    { id: 1, city: "Ho Chi Minh City", code: "EXE201" },
-    { id: 2, city: "Hanoi", code: "EXE202" },
-  ];
+  // const fakeDataCommunity = [
+  //   { id: 1, city: "Ho Chi Minh City", code: "EXE201" },
+  //   { id: 2, city: "Hanoi", code: "EXE202" },
+  // ];
 
-  const [image, setImage] = useState(
-    userSelector.avatar_url
-      ? userSelector.avatar_url
-      : "https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcQlj3rCfLHry58AtJ8ZyBEAFPtChMddDSUSjt7C7nV3Nhsni9RIx5b0-n7LxfgerrPS6b-P-u3BOM3abuY"
-  );
   const [showImagePickerOptions, setShowImagePickerOptions] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
@@ -153,11 +147,19 @@ export default function AccountScreen() {
         <View style={styles.centerStyle}>
           <View style={{ position: "relative" }}>
             <TouchableOpacity onPress={() => setShowImagePickerOptions(true)}>
-              <Avatar.Image
-                size={100}
-                source={{ uri: image }}
-                style={{ marginTop: 10 }}
-              />
+              {userSelector && userSelector.avatar_url ? (
+                <Avatar.Image
+                  size={100}
+                  source={{ uri: userSelector.avatar_url }}
+                  style={{ marginTop: 10 }}
+                />
+              ) : (
+                <Avatar.Image
+                  size={100}
+                  source={defaultAvatar}
+                  style={{ marginTop: 10 }}
+                />
+              )}
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => setShowImagePickerOptions(true)}
@@ -185,10 +187,10 @@ export default function AccountScreen() {
             </Text>
           </View>
         </View>
-        <HeaderAccount
+        {/* <HeaderAccount
           image={image}
           setShowImagePickerOptions={setShowImagePickerOptions}
-        />
+        /> */}
 
         <TabViewProfile activeTab={activeTab} setActiveTab={setActiveTab} />
 
@@ -196,6 +198,7 @@ export default function AccountScreen() {
         {activeTab === "post" && <MyPost />}
         {activeTab === "match" && <MyMatch />}
         {activeTab === "transaction" && <MyTransaction />}
+        {activeTab === "book" && <MyBook />}
 
         <Modal
           visible={!!showImagePickerOptions}

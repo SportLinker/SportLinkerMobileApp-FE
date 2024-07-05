@@ -15,7 +15,7 @@ export const ActionButtons = ({ yardDetail, yardId }) => {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
 
-  // console.log("yardId", yardId);
+  console.log("yardId", yardId);
   const handleDelete = () => {
     dispatch(deleteYard({ yard_id: yardId })).then(() =>
       dispatch(getAllYardByOwner())

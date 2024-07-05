@@ -66,7 +66,7 @@ export const deleteStadium = createAsyncThunk(
 export const deleteYard = createAsyncThunk(
   "yardSlice/deleteYard",
   async ({ yard_id }, { rejectWithValue }) => {
-    // console.log("yard_id: ", yard_id);
+    console.log("yard_id: ", yard_id);
     try {
       const response = await api.delete(`/yards/${yard_id}`);
       // console.log("API Response: ", response.data);
@@ -110,7 +110,6 @@ export const getStadiumByOwner = createAsyncThunk(
 export const getAllYardByOwner = createAsyncThunk(
   "yardSlice/getAllYardByOwner",
   async (_, { rejectWithValue }) => {
-    // console.log("API Response: ", stadiumData);
     try {
       const response = await api.get(`/yards/getAllYardByOwner`);
       console.log("API Response: ", response.data);

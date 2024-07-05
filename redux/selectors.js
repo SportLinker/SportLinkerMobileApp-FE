@@ -25,3 +25,6 @@ export const getAllStadiumByUserSelector = (state) =>
   state.yardSlice.stadiumListByUser;
 export const getAllYardByUserSelector = (state) =>
   state.yardSlice.yardListByUser;
+
+//PROFILE
+export const getBookedByUserSelector = (state) => state.bookSlice.booked;

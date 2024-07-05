@@ -66,15 +66,12 @@ const ScheduleAllYardScreen = ({ navigation }) => {
       if (selectedYard) {
         const parsedBookings = parseYardDetail(selectedYard);
         setBookings(parsedBookings);
+
+        // Update selectedDates
+        setSelectedDates(Object.keys(parsedBookings));
       }
     }
   }, [selectedField, yards]);
-
-  useEffect(() => {
-    if (Object.keys(bookings).length > 0) {
-      setSelectedDates(Object.keys(bookings));
-    }
-  }, [bookings]);
 
   const renderBookingDetail = ({ item }) => (
     <View style={styles.bookingDetail}>
@@ -82,16 +79,11 @@ const ScheduleAllYardScreen = ({ navigation }) => {
       {item.slots.map((slot, index) => (
         <Text key={index} style={styles.bookingSlot}>
           {slot.startTime} - {slot.endTime} (
-          {slot.booked ? "Booked" : "Available"})
+          {slot.booked ? "Đã đặt sân" : "Chưa hoặc từ chối đặt sân"})
         </Text>
       ))}
     </View>
   );
-
-  const bookingDetails = selectedDates.map((date) => ({
-    date,
-    slots: bookings[date] || [],
-  }));
 
   return (
     <View style={styles.container}>
@@ -133,36 +125,49 @@ const ScheduleAllYardScreen = ({ navigation }) => {
               <Calendar
                 markedDates={selectedDates.reduce((acc, date) => {
                   const bookedSlots = bookings[date] || [];
-                  const allBooked =
-                    bookedSlots.length > 0 &&
-                    bookedSlots.every((slot) => slot.booked);
-                  const color = allBooked ? "#1646a9" : "#ff0000";
-                  acc[date] = {
-                    selected: true,
-                    marked: true,
-                    selectedColor: color,
-                  };
+                  const anyBooked = bookedSlots.some((slot) => slot.booked); // Kiểm tra xem có bất kỳ slot nào đã được đặt hay không
+                  const anyAvailable = bookedSlots.some((slot) => !slot.booked); // Kiểm tra xem có bất kỳ slot nào còn trống hay không
+
+                  if (anyBooked) {
+                    // Nếu có booked, đánh dấu màu xanh
+                    acc[date] = {
+                      selected: true,
+                      marked: true,
+                      selectedColor: "#1646a9", // Màu xanh cho các ngày có slot đã được đặt
+                    };
+                  } else if (anyAvailable) {
+                    // Nếu có available nhưng không có booked, đánh dấu màu đỏ
+                    acc[date] = {
+                      selected: true,
+                      marked: true,
+                      selectedColor: "#ff0000", // Màu đỏ cho các ngày có slot còn trống
+                    };
+                  }
+
                   return acc;
                 }, {})}
                 style={styles.calendar}
               />
-              <Text style={styles.legendTitle}>Legend</Text>
+              <Text style={styles.legendTitle}>Chú thích</Text>
               <View style={styles.legend}>
                 <View style={styles.legendItem}>
                   <View
                     style={[styles.legendColor, { backgroundColor: "#1646a9" }]}
                   />
-                  <Text>All Slots Booked</Text>
+                  <Text>Đã đặt sân</Text>
                 </View>
                 <View style={styles.legendItem}>
                   <View
                     style={[styles.legendColor, { backgroundColor: "#ff0000" }]}
                   />
-                  <Text>Partially Booked</Text>
+                  <Text>Chưa hoặc từ chối đặt sân</Text>
                 </View>
               </View>
               <FlatList
-                data={bookingDetails}
+                data={selectedDates.map((date) => ({
+                  date,
+                  slots: bookings[date] || [],
+                }))}
                 keyExtractor={(item) => item.date}
                 renderItem={renderBookingDetail}
                 style={styles.bookingList}
@@ -254,18 +259,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#333",
     paddingVertical: 1,
-  },
-  button: {
-    backgroundColor: "#1E90FF",
-    padding: 15,
-    borderRadius: 8,
-    alignItems: "center",
-    marginVertical: 10,
-  },
-  buttonText: {
-    color: "#ffffff",
-    fontSize: 16,
-    fontWeight: "bold",
   },
 });
 

@@ -10,7 +10,6 @@ import {
 import { Calendar } from "react-native-calendars";
 import { useDispatch, useSelector } from "react-redux";
 import { getLoadingSelector } from "../../../redux/selectors";
-import NoYard from "../ListAllYardScreen/NoYard/NoYard";
 
 const ScheduleYardScreen = ({ navigation, route }) => {
   const { yardDetail } = route?.params;
@@ -71,7 +70,7 @@ const ScheduleYardScreen = ({ navigation, route }) => {
       {item.slots.map((slot, index) => (
         <Text key={index} style={styles.bookingSlot}>
           {slot.startTime} - {slot.endTime} (
-          {slot.booked ? "Booked" : "Available"})
+          {slot.booked ? "Đã đặt sân" : "Chưa hoặc từ chối đặt sân"})
         </Text>
       ))}
     </View>
@@ -115,15 +114,25 @@ const ScheduleYardScreen = ({ navigation, route }) => {
               <Calendar
                 markedDates={selectedDates.reduce((acc, date) => {
                   const bookedSlots = bookings[date] || [];
-                  const allBooked =
-                    bookedSlots.length > 0 &&
-                    bookedSlots.every((slot) => slot.booked);
-                  const color = allBooked ? "#1646a9" : "#ff0000";
-                  acc[date] = {
-                    selected: true,
-                    marked: true,
-                    selectedColor: color,
-                  };
+                  const anyBooked = bookedSlots.some((slot) => slot.booked); // Kiểm tra xem có bất kỳ slot nào đã được đặt hay không
+                  const anyAvailable = bookedSlots.some((slot) => !slot.booked); // Kiểm tra xem có bất kỳ slot nào còn trống hay không
+
+                  if (anyBooked) {
+                    // Nếu có booked, đánh dấu màu xanh
+                    acc[date] = {
+                      selected: true,
+                      marked: true,
+                      selectedColor: "#1646a9", // Màu xanh cho các ngày có slot đã được đặt
+                    };
+                  } else if (anyAvailable) {
+                    // Nếu có available nhưng không có booked, đánh dấu màu đỏ
+                    acc[date] = {
+                      selected: true,
+                      marked: true,
+                      selectedColor: "#ff0000", // Màu đỏ cho các ngày có slot còn trống
+                    };
+                  }
+
                   return acc;
                 }, {})}
                 style={styles.calendar}
@@ -134,13 +143,13 @@ const ScheduleYardScreen = ({ navigation, route }) => {
                   <View
                     style={[styles.legendColor, { backgroundColor: "#1646a9" }]}
                   />
-                  <Text>Đã Book</Text>
+                  <Text>Đã đặt sân</Text>
                 </View>
                 <View style={styles.legendItem}>
                   <View
                     style={[styles.legendColor, { backgroundColor: "#ff0000" }]}
                   />
-                  <Text>Chưa Được Book</Text>
+                  <Text>Chưa hoặc từ chối đặt sân</Text>
                 </View>
               </View>
               <FlatList

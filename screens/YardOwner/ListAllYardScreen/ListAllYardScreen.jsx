@@ -15,7 +15,6 @@ import {
 import { getAllYardByOwner } from "../../../redux/slices/yardSlice";
 import ListAllYardItem from "./ListAllYardItem";
 import FilterOptionList from "../ListYardScreen/FilterOption";
-import { Button } from "react-native-paper";
 import NoYard from "./NoYard/NoYard";
 
 const ListAllYardScreen = ({ navigation }) => {
@@ -23,7 +22,7 @@ const ListAllYardScreen = ({ navigation }) => {
   const yardList = useSelector(getAllYardSelector);
   const loading = useSelector(getLoadingSelector);
 
-  const [filterOptions, setFilterOptions] = useState({ yardName: "all" });
+  const [filterOptions, setFilterOptions] = useState({ stadiumName: "all" });
   const [yards, setYards] = useState([]);
 
   useEffect(() => {
@@ -35,9 +34,11 @@ const ListAllYardScreen = ({ navigation }) => {
   }, [yardList]);
 
   const filteredData =
-    filterOptions.yardName === "all"
+    filterOptions.stadiumName === "all"
       ? yards
-      : yards.filter((item) => item.yard_name === filterOptions.yardName);
+      : yards.filter(
+          (item) => item.stadium.stadium_name === filterOptions.stadiumName
+        );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -78,28 +79,5 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-  },
-  button: {
-    backgroundColor: "#1646a9",
-    paddingVertical: 10,
-    paddingHorizontal: 10,
-    borderRadius: 30,
-  },
-  buttonLabel: {
-    color: "#ffffff",
-    fontSize: 14,
-    fontWeight: "bold",
-  },
-  fab: {
-    position: "absolute",
-    width: 60,
-    height: 60,
-    alignItems: "center",
-    justifyContent: "center",
-    right: 30,
-    bottom: 30,
-    backgroundColor: "#03A9F4",
-    borderRadius: 30,
-    elevation: 8,
   },
 });
