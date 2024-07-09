@@ -8,8 +8,8 @@ import {
   Text,
   TouchableOpacity,
   View,
+  TextInput,
 } from "react-native";
-import { TextInput } from "react-native-paper";
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 import {
@@ -120,8 +120,8 @@ const CreateYardScreen = ({ navigation, route }) => {
             setFieldValue,
           }) => (
             <View style={styles.form}>
+              <Text style={styles.text}>Tên Sân</Text>
               <TextInput
-                label={"Tên Sân"}
                 mode="outlined"
                 style={styles.input}
                 onChangeText={handleChange("yard_name")}
@@ -131,6 +131,7 @@ const CreateYardScreen = ({ navigation, route }) => {
               {errors.yard_name && touched.yard_name ? (
                 <Text style={styles.errorText}>{errors.yard_name}</Text>
               ) : null}
+              <Text style={styles.text}>Giới thiệu</Text>
               <TextInput
                 style={styles.input}
                 label={"Giới thiệu"}
@@ -143,7 +144,6 @@ const CreateYardScreen = ({ navigation, route }) => {
               {errors.yard_description && touched.yard_description ? (
                 <Text style={styles.errorText}>{errors.yard_description}</Text>
               ) : null}
-
               <TouchableOpacity
                 style={styles.dropdown}
                 onPress={() => setShowSportPicker(true)}
@@ -178,10 +178,10 @@ const CreateYardScreen = ({ navigation, route }) => {
                 onClose={() => setShowSportPicker(false)}
                 onSelectSport={(sport) => setFieldValue("yard_sport", sport)}
               />
-
               {errors.yard_sport && touched.yard_sport ? (
                 <Text style={styles.errorText}>{errors.yard_sport}</Text>
               ) : null}
+              <Text style={styles.text}>Giá thuê</Text>
               <TextInput
                 style={styles.input}
                 label={"Giá Thuê"}
@@ -226,17 +226,19 @@ const styles = StyleSheet.create({
   form: {
     width: "100%",
   },
+  text: { marginTop: 12, fontSize: 18, fontWeight: "bold" },
   input: {
     marginBottom: 15,
     width: "100%",
     height: 40,
     backgroundColor: "white",
-    marginVertical: 12,
+    marginBottom: 12,
     borderWidth: 1,
     borderRadius: 8,
     borderColor: "#4878D9",
     borderWidth: 2,
     fontSize: 16,
+    paddingLeft: 15,
   },
   errorText: {
     fontSize: 14,
@@ -271,7 +273,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   selectedSportContainer: {
-    marginVertical: 10,
+    marginBottom: 10,
     borderWidth: 1,
     borderColor: "#ccc",
     padding: 20,
@@ -287,4 +289,5 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: "center",
   },
+  dateLabel: { marginTop: 12, fontSize: 18, fontWeight: "bold" },
 });

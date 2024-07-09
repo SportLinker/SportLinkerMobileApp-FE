@@ -7,6 +7,7 @@ const tabs = [
   { key: "post", label: "Bài đăng" },
   { key: "match", label: "Trận đấu" },
   { key: "transaction", label: "Giao dịch" },
+  { key: "book", label: "Đặt sân" },
 ];
 
 export default function TabViewProfile({ activeTab, setActiveTab }) {
