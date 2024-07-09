@@ -397,7 +397,7 @@ export const styles = StyleSheet.create({
         shadowRadius: 2,
       },
       android: {
-        elevation: 1,
+        elevation: 5,
       },
     }),
     // additional styles

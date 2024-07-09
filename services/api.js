@@ -4,6 +4,7 @@ import { API_URL } from "@env";
 
 export const api = axios.create({
   baseURL: "https://fine-special-ram.ngrok-free.app/v1/api",
+  // baseURL: API_URL,
 });
 
 api.interceptors.request.use(

@@ -1,15 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { Image, Text, View } from "react-native";
 import { Avatar } from "react-native-paper";
 import { styles } from "../../../../../component/style";
 import defaultImage from "../../../../../assets/default_img.png";
+import defaultAvatar from "../../../../../assets/avatar_default.png";
 import { FontAwesome } from "@expo/vector-icons";
 
 export default function HeaderSection({ userAvatar, stadiumDetail }) {
-  const [image, setImage] = useState(
-    "https://i.pinimg.com/236x/71/db/24/71db24f6798f1a208b7fe8a503365458.jpg"
-  );
-
   const renderStars = (rating) => {
     const stars = [];
     for (let i = 1; i <= 5; i++) {
@@ -44,19 +41,17 @@ export default function HeaderSection({ userAvatar, stadiumDetail }) {
     >
       <View style={styles.containerDetailYard}>
         <View style={styles.innerDetailYard}>
-          {stadiumDetail.stadium_thumnail ? (
-            <Image
-              source={{
-                uri: stadiumDetail.stadium_thumnail,
-              }}
-              style={styles.imageDetailYard}
-            />
-          ) : (
-            <Image source={defaultImage} style={styles.imageDetailYard} />
-          )}
+          <Image
+            source={
+              stadiumDetail.stadium_thumnail
+                ? { uri: stadiumDetail.stadium_thumnail }
+                : defaultImage
+            }
+            style={styles.imageDetailYard}
+          />
           <Avatar.Image
             size={90}
-            source={{ uri: userAvatar }}
+            source={userAvatar ? { uri: userAvatar } : defaultAvatar}
             style={[styles.avatar, styles.avatarShadow]}
           />
         </View>

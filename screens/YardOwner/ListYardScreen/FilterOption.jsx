@@ -7,12 +7,15 @@ const FilterOptionList = ({ setFilterOptions, yards }) => {
 
   const options = [
     { id: "all", label: "Tất cả" },
-    ...yards.map((yard) => ({ id: yard.yard_name, label: yard.yard_name })),
+    ...yards.map((yard, index) => ({
+      id: `${yard.stadium.stadium_name}_${index}`, // Use a combination to ensure uniqueness
+      label: yard.stadium.stadium_name,
+    })),
   ];
 
-  const handleOptionPress = (yardName, label) => {
+  const handleOptionPress = (stadiumName, label) => {
     setActiveOption(label);
-    setFilterOptions({ yardName });
+    setFilterOptions({ stadiumName });
   };
 
   return (

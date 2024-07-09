@@ -6,6 +6,8 @@ export const login = createAsyncThunk(
   "userSlice/login",
   async ({ phone, password }, { rejectWithValue }) => {
     console.log("login");
+    console.log("phone", phone);
+    console.log("password", password);
 
     try {
       const data = await api.post(`/authen/login?type=phone`, {
