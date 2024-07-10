@@ -60,6 +60,9 @@ const CourtSelectionModal = ({ visible, onClose, stadiumId }) => {
   const [endTime, setEndTime] = useState("12:00");
   const [isSelectingStartTime, setIsSelectingStartTime] = useState(false);
   const [bookings, setBookings] = useState([]);
+  const [showConfirmationPopup, setShowConfirmationPopup] = useState(false);
+  const [confirmedBooking, setConfirmedBooking] = useState(null);
+  const [depositAmount, setDepositAmount] = useState(0);
 
   useEffect(() => {
     dispatch(getAllYardByUser({ stadium_id: stadiumId }));
@@ -78,6 +81,8 @@ const CourtSelectionModal = ({ visible, onClose, stadiumId }) => {
       setBookings(allBookings);
     }
   }, [yardList]);
+
+  console.log("bookings", bookings);
 
   const handleBooking = (yard) => {
     setSelectedYard(yard);
@@ -161,15 +166,26 @@ const CourtSelectionModal = ({ visible, onClose, stadiumId }) => {
       time_end: endISO,
     };
 
-    console.log("Booking details:", bookingDetails);
-    dispatch(bookYardByUser(bookingDetails));
+    // Tính toán tiền đặt cọc
+    const pricePerHour = selectedYard.price_per_hour;
+    const deposit = pricePerHour * 0.3;
+    setDepositAmount(deposit);
 
-    Alert.alert(
-      "Đặt sân thành công",
-      `Bạn đã đặt sân ${selectedYard.yard_name} từ ${start} đến ${end} vào ngày ${selectedDate}`
-    );
+    setConfirmedBooking(bookingDetails);
+    setShowConfirmationPopup(true);
+  };
 
-    setShowBookingModal(false);
+  const handleConfirmation = () => {
+    if (confirmedBooking) {
+      dispatch(bookYardByUser(confirmedBooking));
+      Alert.alert(
+        "Đặt sân thành công",
+        `Bạn đã đặt sân ${selectedYard.yard_name} từ ${startTime} đến ${endTime} vào ngày ${selectedDate}`
+      );
+      setShowBookingModal(false);
+      setShowConfirmationPopup(false);
+      setConfirmedBooking(null);
+    }
   };
 
   const handleTimePickerChange = (event, selectedTime) => {
@@ -263,20 +279,80 @@ const CourtSelectionModal = ({ visible, onClose, stadiumId }) => {
           isManualTimeSelection={isManualTimeSelection}
           setIsManualTimeSelection={setIsManualTimeSelection}
           startTime={startTime}
-          showTimePicker={showTimePicker}
           setStartTime={setStartTime}
           endTime={endTime}
           setEndTime={setEndTime}
-          isSelectingStartTime={isSelectingStartTime}
-          setIsSelectingStartTime={setIsSelectingStartTime}
           handleConfirmTime={handleConfirmTime}
-          handleTimePickerChange={handleTimePickerChange}
           handleSlotSelection={handleSlotSelection}
           selectedSlot={selectedSlot}
-          bookings={bookings}
-          confirmBooking={confirmBooking}
-          selectedYard={selectedYard}
+          setIsSelectingStartTime={setIsSelectingStartTime}
+          showTimePicker={showTimePicker}
+          handleTimePickerChange={handleTimePickerChange}
         />
+      )}
+      {showConfirmationPopup && (
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={showConfirmationPopup}
+          onRequestClose={() => setShowConfirmationPopup(false)}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.confirmationView}>
+              <Text style={styles.confirmationText}>Xác nhận đặt sân</Text>
+              <View style={styles.flexRowView}>
+                <Text style={styles.confirmationDetails}>Sân:</Text>
+                <Text style={styles.confirmationInfor}>
+                  {selectedYard.yard_name}
+                </Text>
+              </View>
+              <View style={styles.flexRowView}>
+                <Text style={styles.confirmationDetails}>Thời gian:</Text>
+                <Text style={styles.confirmationInfor}>
+                  {startTime} - {endTime}
+                </Text>
+              </View>
+              <View style={styles.flexRowView}>
+                <Text style={styles.confirmationDetails}>Ngày:</Text>
+                <Text style={styles.confirmationInfor}>{selectedDate}</Text>
+              </View>
+              <View style={styles.flexRowView}>
+                <Text style={styles.confirmationDetails}>Giá:</Text>
+                <Text style={styles.confirmationInfor}>
+                  {selectedYard.price_per_hour} VNĐ/giờ
+                </Text>
+              </View>
+              <View style={styles.flexRowView}>
+                <Text style={styles.confirmationDetails}>
+                  Giá Đặt Cọc (30%):
+                </Text>
+                <Text style={styles.depositInfor}>{depositAmount} VNĐ</Text>
+              </View>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  width: "100%",
+                  marginTop: 20,
+                }}
+              >
+                <TouchableOpacity
+                  style={styles.confirmButton}
+                  onPress={handleConfirmation}
+                >
+                  <Text style={styles.confirmButtonText}>Xác nhận</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.cancelButton}
+                  onPress={() => setShowConfirmationPopup(false)}
+                >
+                  <Text style={styles.cancelButtonText}>Hủy</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </Modal>
       )}
     </Modal>
   );
@@ -288,6 +364,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "rgba(0,0,0,0.5)",
+    // marginTop: 22,
   },
   scrollView: {
     flexGrow: 1,
@@ -295,6 +372,38 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalView: {
+    marginHorizontal: "auto",
+    backgroundColor: "white",
+    // borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    minWidth: "90%",
+    minHeight: "100%",
+  },
+  closeButton: {
+    alignSelf: "flex-end",
+    padding: 10,
+  },
+  closeButtonText: {
+    color: "red",
+    fontWeight: "bold",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  confirmationView: {
+    margin: 20,
     backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
@@ -307,31 +416,65 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    minWidth: "100%",
-    minHeight: "100%",
   },
-  closeButton: {
-    alignSelf: "flex-end",
-  },
-  closeButtonText: {
-    color: "red",
-    fontSize: 16,
-  },
-  modalText: {
+  confirmationInfor: { fontSize: 16 },
+  depositInfor: { fontSize: 18, color: "red" },
+  confirmationText: {
     marginBottom: 15,
     textAlign: "center",
-    fontSize: 18,
+    fontSize: 30,
+    fontWeight: "bold",
   },
-  bookingTitle: {
-    marginBottom: 15,
+  confirmationDetails: {
+    marginBottom: 10,
     textAlign: "center",
     fontSize: 18,
     fontWeight: "bold",
+    marginVertical: "auto",
   },
-  bookingTimeSlot: {
+  flexRowView: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+  },
+  confirmButton: {
+    backgroundColor: "green",
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    marginBottom: 10,
+    width: "45%",
+  },
+  confirmButtonText: {
+    color: "white",
+    fontWeight: "bold",
     textAlign: "center",
     fontSize: 16,
-    marginVertical: 5,
+  },
+  cancelButton: {
+    backgroundColor: "red",
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    marginBottom: 10,
+    width: "45%",
+  },
+  cancelButtonText: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+    paddingHorizontal: 15,
+    fontSize: 16,
+  },
+  bookingTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginTop: 10,
+  },
+  bookingTimeSlot: {
+    fontSize: 14,
+    marginTop: 5,
   },
 });
 
