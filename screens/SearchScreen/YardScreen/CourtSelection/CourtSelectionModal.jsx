@@ -11,10 +11,10 @@ import { LocaleConfig } from "react-native-calendars";
 import { ScrollView } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllYardByUserSelector } from "../../../../redux/selectors";
+import { bookYardByUser } from "../../../../redux/slices/bookSlice";
 import { getAllYardByUser } from "../../../../redux/slices/yardSlice";
 import BookingModal from "./BookingModal";
 import CourtSelectionModalContent from "./CourtSelectionModalContent";
-import { bookYardByUser } from "../../../../redux/slices/bookSlice";
 
 // Configure the calendar locale if necessary
 LocaleConfig.locales["fr"] = {
@@ -288,6 +288,7 @@ const CourtSelectionModal = ({ visible, onClose, stadiumId }) => {
           setIsSelectingStartTime={setIsSelectingStartTime}
           showTimePicker={showTimePicker}
           handleTimePickerChange={handleTimePickerChange}
+          selectedYard={selectedYard}
         />
       )}
       {showConfirmationPopup && (
@@ -418,7 +419,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   confirmationInfor: { fontSize: 16 },
-  depositInfor: { fontSize: 18, color: "red" },
+  depositInfor: { fontSize: 18, color: "red", textDecorationLine: "underline" },
   confirmationText: {
     marginBottom: 15,
     textAlign: "center",

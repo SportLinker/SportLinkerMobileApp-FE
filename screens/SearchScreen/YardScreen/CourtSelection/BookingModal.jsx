@@ -150,9 +150,27 @@ const BookingModal = ({
                   }}
                   style={styles.timePickerButton}
                 >
-                  <Text style={styles.timePickerButtonText}>
-                    Chọn giờ bắt đầu: {startTime || "HH:MM"}
-                  </Text>
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Text style={styles.timePickerButtonText}>
+                      Chọn giờ bắt đầu:
+                    </Text>
+                    <Text
+                      style={{
+                        color: "#1446a9",
+                        fontWeight: "bold",
+                        fontSize: 20,
+                        marginVertical: "auto",
+                      }}
+                    >
+                      {startTime || "HH:MM"}
+                    </Text>
+                  </View>
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
@@ -161,9 +179,27 @@ const BookingModal = ({
                   }}
                   style={styles.timePickerButton}
                 >
-                  <Text style={styles.timePickerButtonText}>
-                    Chọn giờ kết thúc: {endTime || "HH:MM"}
-                  </Text>
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Text style={styles.timePickerButtonText}>
+                      Chọn giờ kết thúc:
+                    </Text>
+                    <Text
+                      style={{
+                        color: "#1446a9",
+                        fontWeight: "bold",
+                        fontSize: 20,
+                        marginVertical: "auto",
+                      }}
+                    >
+                      {endTime || "HH:MM"}
+                    </Text>
+                  </View>
                 </TouchableOpacity>
               </View>
             ) : (
@@ -250,7 +286,7 @@ const styles = StyleSheet.create({
   bookingTitle: {
     marginBottom: 15,
     textAlign: "center",
-    fontSize: 18,
+    fontSize: 24,
     fontWeight: "bold",
   },
   toggleCalendarButton: {
@@ -285,17 +321,18 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   timePickerButton: {
-    backgroundColor: "#2196F3",
+    backgroundColor: "#a5a5a5",
     borderRadius: 10,
     padding: 10,
     marginVertical: 5,
   },
   timePickerButtonText: {
-    color: "white",
+    color: "#000",
     fontSize: 16,
+    marginVertical: "auto",
   },
   timeSlotButton: {
-    backgroundColor: "#2196F3",
+    backgroundColor: "#cbcbcb",
     borderRadius: 10,
     padding: 10,
     marginVertical: 5,
