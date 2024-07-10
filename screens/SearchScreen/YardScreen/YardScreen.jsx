@@ -77,7 +77,7 @@ export default function YardScreen() {
   return (
     <SafeAreaView style={styles.container}>
       {/* <FilterEventOptionList /> */}
-      <View style={styles.locationWrapper}>
+      {/* <View style={styles.locationWrapper}>
         {address ? (
           <Text style={styles.locationText}>
             Current Location: {address.street || ""}, {address.city || ""},{" "}
@@ -88,7 +88,7 @@ export default function YardScreen() {
         ) : (
           <Text>{errorMsg || "Waiting..."}</Text>
         )}
-      </View>
+      </View> */}
       <ScrollView style={{ height: "90%" }}>
         <YardItem data={stadiums} loading={loading} />
       </ScrollView>
