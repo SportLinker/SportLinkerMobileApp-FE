@@ -63,6 +63,24 @@ export const getEventList = createAsyncThunk(
   }
 );
 
+export const getMyEventList = createAsyncThunk(
+  "eventSlice/getMyEventList",
+  async (formData, { rejectWithValue }) => {
+    console.log("getMyEventList");
+    const { lat, long } = formData;
+    try {
+      const data = await api.get(
+        `/matches/getMatchByUser?long=${long}&lat=${lat}`
+      );
+      console.log("myEventList", data.data);
+      return data.data.metadata;
+    } catch (error) {
+      console.log("error", error);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const getDetailEvent = createAsyncThunk(
   "eventSlice/getDetailEvent",
   async (eventID, { rejectWithValue }) => {
@@ -144,6 +162,7 @@ export const eventSlice = createSlice({
   name: "eventSlice",
   initialState: {
     eventList: null,
+    myEventList: null,
     event: null,
     loading: false,
     error: null,
@@ -175,9 +194,20 @@ export const eventSlice = createSlice({
       })
       .addCase(getEventList.fulfilled, (state, action) => {
         state.loading = false;
-        state.eventList = action.payload; // Correctly updating state without returning new state
+        state.eventList = action.payload;
       })
       .addCase(getEventList.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error;
+      })
+      .addCase(getMyEventList.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getMyEventList.fulfilled, (state, action) => {
+        state.loading = false;
+        state.myEventList = action.payload;
+      })
+      .addCase(getMyEventList.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error;
       })
@@ -186,7 +216,7 @@ export const eventSlice = createSlice({
       })
       .addCase(getDetailEvent.fulfilled, (state, action) => {
         state.loading = false;
-        state.event = action.payload; // Correctly updating state without returning new state
+        state.event = action.payload;
       })
       .addCase(getDetailEvent.rejected, (state, action) => {
         state.loading = false;
