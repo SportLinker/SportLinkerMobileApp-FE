@@ -5,6 +5,7 @@ export const getUserLoadingSelector = (state) => state.userSlice.loading;
 // EVENT
 export const getEventSelector = (state) => state.eventSlice.event;
 export const getEventListSelector = (state) => state.eventSlice.eventList;
+export const getMyEventListSelector = (state) => state.eventSlice.myEventList;
 export const getEventLoadingtSelector = (state) => state.eventSlice.loading;
 
 // MESSAGE / CHAT

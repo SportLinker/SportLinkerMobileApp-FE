@@ -71,7 +71,7 @@ export default function AccountScreen() {
       dispatch(updateUserProfile(formData)).then((response) => {
         console.log("update avatar done", response?.payload?.message);
         if (response?.payload?.message == "Update user successfully") {
-          setImage(avatarURL);
+          // setImage(avatarURL);
           setSuccessMessage("User successfully");
         } else {
           setErrorMessage("Update fail");
@@ -143,103 +143,101 @@ export default function AccountScreen() {
       }}
     >
       {loading && <Loading visible={loading} />}
-      <ScrollView>
-        <View style={styles.centerStyle}>
-          <View style={{ position: "relative" }}>
-            <TouchableOpacity onPress={() => setShowImagePickerOptions(true)}>
-              {userSelector && userSelector.avatar_url ? (
-                <Avatar.Image
-                  size={100}
-                  source={{ uri: userSelector.avatar_url }}
-                  style={{ marginTop: 10 }}
-                />
-              ) : (
-                <Avatar.Image
-                  size={100}
-                  source={defaultAvatar}
-                  style={{ marginTop: 10 }}
-                />
-              )}
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => setShowImagePickerOptions(true)}
-              style={{
-                position: "absolute",
-                bottom: -3,
-                right: -3,
-                backgroundColor: "white",
-                borderRadius: 15,
-                padding: 3,
-              }}
-            >
-              <Ionicons name="pencil" size={20} color="black" />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.nameAccountContainer}>
-            <Text style={{ marginTop: 5, fontSize: 20, fontWeight: "bold" }}>
-              {userSelector.name}
-            </Text>
-            {/* <Text style={{ marginTop: 5, fontWeight: "bold" }}>
+      <View style={styles.centerStyle}>
+        <View style={{ position: "relative" }}>
+          <TouchableOpacity onPress={() => setShowImagePickerOptions(true)}>
+            {userSelector && userSelector.avatar_url ? (
+              <Avatar.Image
+                size={100}
+                source={{ uri: userSelector.avatar_url }}
+                style={{ marginTop: 10 }}
+              />
+            ) : (
+              <Avatar.Image
+                size={100}
+                source={defaultAvatar}
+                style={{ marginTop: 10 }}
+              />
+            )}
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setShowImagePickerOptions(true)}
+            style={{
+              position: "absolute",
+              bottom: -3,
+              right: -3,
+              backgroundColor: "white",
+              borderRadius: 15,
+              padding: 3,
+            }}
+          >
+            <Ionicons name="pencil" size={20} color="black" />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.nameAccountContainer}>
+          <Text style={{ marginTop: 5, fontSize: 20, fontWeight: "bold" }}>
+            {userSelector.name}
+          </Text>
+          {/* <Text style={{ marginTop: 5, fontWeight: "bold" }}>
               Nam ● Người lớn
             </Text> */}
-            <Text style={{ marginTop: 5, color: "#707070" }}>
-              {userSelector.bio ? userSelector.bio : "Nói đôi điều về bạn"}
-            </Text>
-          </View>
+          <Text style={{ marginTop: 5, color: "#707070" }}>
+            {userSelector.bio ? userSelector.bio : "Nói đôi điều về bạn"}
+          </Text>
         </View>
-        {/* <HeaderAccount
+      </View>
+      {/* <HeaderAccount
           image={image}
           setShowImagePickerOptions={setShowImagePickerOptions}
         /> */}
 
-        <TabViewProfile activeTab={activeTab} setActiveTab={setActiveTab} />
+      <TabViewProfile activeTab={activeTab} setActiveTab={setActiveTab} />
 
-        {activeTab === "profile" && <Profile fakeData={fakeData} />}
-        {activeTab === "post" && <MyPost />}
-        {activeTab === "match" && <MyMatch />}
-        {activeTab === "transaction" && <MyTransaction />}
-        {activeTab === "book" && <MyBook />}
+      {activeTab === "profile" && <Profile fakeData={fakeData} />}
+      {activeTab === "post" && <MyPost />}
+      {activeTab === "match" && <MyMatch />}
+      {activeTab === "transaction" && <MyTransaction />}
+      {activeTab === "book" && <MyBook />}
 
-        <Modal
-          visible={!!showImagePickerOptions}
-          animationType="fade"
-          transparent={true}
-          onRequestClose={() => setShowImagePickerOptions(false)}
+      <Modal
+        visible={!!showImagePickerOptions}
+        animationType="fade"
+        transparent={true}
+        onRequestClose={() => setShowImagePickerOptions(false)}
+      >
+        <TouchableOpacity
+          style={styles.modalContainer}
+          activeOpacity={1}
+          onPressOut={() => setShowImagePickerOptions(false)}
         >
           <TouchableOpacity
-            style={styles.modalContainer}
+            style={styles.menuAccount}
             activeOpacity={1}
-            onPressOut={() => setShowImagePickerOptions(false)}
+            onPress={() => {}}
           >
-            <TouchableOpacity
-              style={styles.menuAccount}
-              activeOpacity={1}
-              onPress={() => {}}
-            >
-              <TouchableOpacity onPress={pickImage} style={styles.menuItem}>
-                <Text style={styles.textMenuItem}>Chọn ảnh từ thư viện</Text>
-              </TouchableOpacity>
-              <View
-                style={{
-                  borderBottomWidth: 1,
-                  marginVertical: 5,
-                  borderColor: "#C4C4C4",
-                }}
-              />
-              <TouchableOpacity onPress={captureImage} style={styles.menuItem}>
-                <Text style={styles.textMenuItem}>Chụp ảnh mới</Text>
-              </TouchableOpacity>
-              <View
-                style={{
-                  borderBottomWidth: 1,
-                  marginVertical: 5,
-                  borderColor: "#C4C4C4",
-                }}
-              />
+            <TouchableOpacity onPress={pickImage} style={styles.menuItem}>
+              <Text style={styles.textMenuItem}>Chọn ảnh từ thư viện</Text>
             </TouchableOpacity>
+            <View
+              style={{
+                borderBottomWidth: 1,
+                marginVertical: 5,
+                borderColor: "#C4C4C4",
+              }}
+            />
+            <TouchableOpacity onPress={captureImage} style={styles.menuItem}>
+              <Text style={styles.textMenuItem}>Chụp ảnh mới</Text>
+            </TouchableOpacity>
+            <View
+              style={{
+                borderBottomWidth: 1,
+                marginVertical: 5,
+                borderColor: "#C4C4C4",
+              }}
+            />
           </TouchableOpacity>
-        </Modal>
-      </ScrollView>
+        </TouchableOpacity>
+      </Modal>
       <Snackbar
         visible={successMessage !== ""}
         onDismiss={() => setSuccessMessage("")}

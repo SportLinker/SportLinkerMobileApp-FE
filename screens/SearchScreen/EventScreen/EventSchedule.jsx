@@ -57,7 +57,7 @@ const EventSchedule = () => {
   };
 
   useEffect(() => {
-    console.log("get permission");
+    console.log("get location permission");
     const getLocationPermission = async () => {
       dispatch(eventSlice.actions.setLoading(true));
       let { status } = await Location.requestForegroundPermissionsAsync();
