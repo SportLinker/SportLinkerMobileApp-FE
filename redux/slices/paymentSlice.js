@@ -39,6 +39,26 @@ export const updateStatusPayement = createAsyncThunk(
   }
 );
 
+export const getListTransactionByUser = createAsyncThunk(
+  "paymentSlice/getListTransactionByUser",
+  async (_, { rejectWithValue }) => {
+    console.log("getListTransactionByUser: ");
+
+    try {
+      // Change logic in there
+      const data = await api.get(
+        `/transactions/getByUser?pageSize=10&pageNumber=1`
+      );
+
+      console.log("getListTransactionByUser data:", data.data.metadata);
+      return data.data.metadata;
+    } catch (error) {
+      console.log("error", error);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const paymentSlice = createSlice({
   name: "paymentSlice",
   initialState: {
@@ -46,6 +66,7 @@ export const paymentSlice = createSlice({
     loading: false,
     error: null,
     status: null,
+    listTransaction: null,
   },
   reducers: {
     setUser: (state, action) => {
@@ -73,6 +94,17 @@ export const paymentSlice = createSlice({
         state.status = action.payload;
       })
       .addCase(updateStatusPayement.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload; // Ensure consistent error handling
+      })
+      .addCase(getListTransactionByUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getListTransactionByUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.listTransaction = action.payload;
+      })
+      .addCase(getListTransactionByUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload; // Ensure consistent error handling
       });

@@ -8,14 +8,16 @@ import {
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Avatar, FAB } from "react-native-paper";
 import { formatCurrency } from "../../utils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import WithDrawModal from "../AccountScreen/Withdraw/WithDrawModal";
 import ReChargeModal from "../AccountScreen/Recharge/ReChargeModal";
+import { useSelector } from "react-redux";
 
 const WalletOptions = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [withdrawModalVisible, setWithdrawModalVisible] = useState(false); // Add state for withdraw modal
   const [isHideMoney, setIsHideMoney] = useState(true);
+  const { listTransaction } = useSelector((state) => state.paymentSlice);
 
   const toggleModal = () => {
     setModalVisible(!modalVisible);
@@ -24,6 +26,7 @@ const WalletOptions = () => {
     // Add toggle function for withdraw modal
     setWithdrawModalVisible(!withdrawModalVisible);
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -31,12 +34,12 @@ const WalletOptions = () => {
           <Avatar.Image
             size={60}
             source={{
-              uri: "https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcQlj3rCfLHry58AtJ8ZyBEAFPtChMddDSUSjt7C7nV3Nhsni9RIx5b0-n7LxfgerrPS6b-P-u3BOM3abuY",
+              uri: listTransaction.user.avatar_url,
             }}
             style={styles.avatar}
           />
           <View>
-            <Text style={styles.profileName}>Tài Võ</Text>
+            <Text style={styles.profileName}>{listTransaction.user.name}</Text>
             <View style={styles.balanceWrapper}>
               <TouchableOpacity onPress={() => setIsHideMoney(!isHideMoney)}>
                 {isHideMoney ? (
@@ -52,7 +55,11 @@ const WalletOptions = () => {
               <Text style={styles.balance}>
                 {isHideMoney
                   ? "*******"
-                  : formatCurrency(5000000, "VND", "vi-VN")}
+                  : formatCurrency(
+                      listTransaction.user.Wallet.balance,
+                      "VND",
+                      "vi-VN"
+                    )}
               </Text>
             </View>
           </View>
