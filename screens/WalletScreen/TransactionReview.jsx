@@ -1,8 +1,9 @@
 import { Avatar } from "react-native-paper";
 import { FlatList, StyleSheet, Text, View } from "react-native";
-import { formatCurrency } from "../../utils";
+import { formatCurrency, formatISODate } from "../../utils";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
+import { useSelector } from "react-redux";
 
 const fakeData = [
   {
@@ -53,27 +54,40 @@ const fakeData = [
 ];
 
 const TransactionReview = () => {
+  const { listTransaction } = useSelector((state) => state.paymentSlice);
+
   const navigation = useNavigation();
   const TransactionItem = ({ item }) => {
     return (
       <TouchableOpacity
         style={styles.transactionContainer}
-        onPress={() => navigation.navigate("DetailTransaction")}
+        // onPress={() => navigation.navigate("DetailTransaction")}
       >
         <Avatar.Image
           size={50}
           source={{
-            uri: item.avatar,
+            uri:
+              item.status === "completed"
+                ? "https://westphysics.com/wp-content/uploads/2022/10/green-tick-icon.png"
+                : "https://cdn-icons-png.flaticon.com/512/7269/7269138.png",
           }}
         ></Avatar.Image>
         <View style={styles.transactionInfo}>
-          <Text style={styles.transactionName}>{item.name}</Text>
+          <Text style={styles.transactionName}>
+            {item.status === "completed" ? "Thành Công" : "Thất Bại"}
+          </Text>
           <Text style={styles.transactionTime}>
-            {item.time} - {item.date}
+            {formatISODate(item.created_at)}
           </Text>
         </View>
-        <Text style={styles.transactionValue}>
-          +{formatCurrency(item.value, "VND", "vi-VN")}
+        <Text
+          style={
+            item.status === "completed"
+              ? styles.transactionValue
+              : styles.transactionValueCancel
+          }
+        >
+          +{formatCurrency(item.amount, "VND", "vi-VN")}
         </Text>
       </TouchableOpacity>
     );
@@ -82,7 +96,7 @@ const TransactionReview = () => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={fakeData}
+        data={listTransaction.transactions}
         renderItem={TransactionItem}
         keyExtractor={(item) => item.id}
       />
@@ -117,6 +131,12 @@ const styles = StyleSheet.create({
   },
   transactionValue: {
     color: "#5BD027",
+    fontWeight: "bold",
+    textAlign: "right",
+    fontSize: 16,
+  },
+  transactionValueCancel: {
+    color: "#F90303",
     fontWeight: "bold",
     textAlign: "right",
     fontSize: 16,
