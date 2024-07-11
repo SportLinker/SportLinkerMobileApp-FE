@@ -282,7 +282,7 @@ const EventScheduleTable = ({ eventListData, loading }) => {
         />
       )}
 
-      {!loading && !eventList && (
+      {!loading && (!eventList || eventList.length == 0) && (
         <View>
           <Text
             style={{
