@@ -93,6 +93,8 @@ const TransactionReview = () => {
     );
   };
 
+  if (!listTransaction) return <Text>Loading...</Text>;
+
   return (
     <View style={styles.container}>
       <Text style={{ fontSize: 24, marginBottom: 10 }}>Lịch sử giao dịch</Text>
