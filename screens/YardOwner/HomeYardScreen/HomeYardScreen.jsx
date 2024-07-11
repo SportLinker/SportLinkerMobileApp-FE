@@ -9,8 +9,13 @@ import {
 import { FAB } from "react-native-paper";
 import FuncHomeYard from "./FuncHomeYard";
 import HeaderHomeYard from "./HeaderHomeYard";
+import { useSelector } from "react-redux";
+import { getUserSelector } from "../../../redux/selectors";
 
 function HomeYardScreen({ navigation }) {
+  const user = useSelector(getUserSelector);
+
+  if (!user) return <Text>Loading...</Text>;
   return (
     <SafeAreaView style={{ backgroundColor: "#fff" }}>
       <View style={styles.container}>
@@ -32,7 +37,7 @@ function HomeYardScreen({ navigation }) {
           </View>
         </View>
         <ScrollView>
-          <HeaderHomeYard />
+          <HeaderHomeYard user={user} />
           <FuncHomeYard />
         </ScrollView>
       </View>

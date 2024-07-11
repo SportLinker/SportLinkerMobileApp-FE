@@ -1,24 +1,32 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
-import { Avatar } from "react-native-paper";
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import React, { useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Avatar } from "react-native-paper";
+import defaultAvatar from "../../../assets/avatar_default.png";
 
-export default function HeaderHomeYard() {
+export default function HeaderHomeYard({ user }) {
   const navigation = useNavigation();
-  const [image, setImage] = useState(
-    "https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcQlj3rCfLHry58AtJ8ZyBEAFPtChMddDSUSjt7C7nV3Nhsni9RIx5b0-n7LxfgerrPS6b-P-u3BOM3abuY"
-  );
+  const [image, setImage] = useState(user.avatar_url);
+
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
         <View style={styles.profileContainer}>
-          <Avatar.Image
-            size={60}
-            source={{ uri: image }}
-            style={styles.avatar}
-          />
-          <Text style={styles.profileName}>Tài Võ</Text>
+          {user && user.avatar_url ? (
+            <Avatar.Image
+              size={100}
+              source={{ uri: image }}
+              style={styles.avatar}
+            />
+          ) : (
+            <Avatar.Image
+              size={100}
+              source={defaultAvatar}
+              style={styles.avatar}
+            />
+          )}
+          <Text style={styles.profileName}>{user.name}</Text>
         </View>
         <View style={styles.actionContainer}>
           <TouchableOpacity
@@ -26,7 +34,7 @@ export default function HeaderHomeYard() {
             onPress={() => navigation.navigate("ListAllYard")}
           >
             <FontAwesome name="list-ul" size={24} color="black" />
-            <Text>DS Sân Nhỏ</Text>
+            <Text style={{ textAlign: "center" }}>Tất Cả Sân Nhỏ</Text>
           </TouchableOpacity>
 
           <TouchableOpacity

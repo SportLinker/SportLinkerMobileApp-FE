@@ -245,6 +245,7 @@ const BookingModal = ({
               is24Hour={true}
               display="spinner"
               onChange={handleTimePickerChange}
+              minuteInterval={30}
             />
           )}
         </View>
