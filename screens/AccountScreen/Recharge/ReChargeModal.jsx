@@ -16,9 +16,11 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  getListTransactionByUser,
   paymentRecharge,
   updateStatusPayement,
 } from "../../../redux/slices/paymentSlice";
+import { Button } from "react-native-paper";
 
 // Define the validation schema using Yup
 const validationSchema = Yup.object().shape({
@@ -34,6 +36,10 @@ export default function ReChargeModal({ modalVisible, setModalVisible }) {
   const [timer, setTimer] = useState(120);
   const [qrLink, setQrLink] = useState(null);
   const [contentPayment, setContentPayment] = useState(null);
+  const [visibleSuccess, setVisibleSuccess] = useState(false);
+
+  const showModalSuccess = () => setVisibleSuccess(true);
+  const hideModalSuccess = () => setVisibleSuccess(false);
   const dispatch = useDispatch();
 
   const { userInfo } = useSelector((state) => state.userSlice);
@@ -109,7 +115,8 @@ export default function ReChargeModal({ modalVisible, setModalVisible }) {
               if (status == "completed") {
                 clearInterval(interval);
                 closeQrModal();
-                Alert.alert("Nạp tiền thành công !!!");
+                dispatch(getListTransactionByUser());
+                showModalSuccess();
                 return 0;
               }
             });
@@ -238,6 +245,35 @@ export default function ReChargeModal({ modalVisible, setModalVisible }) {
 
               <TouchableOpacity
                 onPress={closeQrModal}
+                style={styles.closeButton}
+              >
+                <Text style={styles.closeButtonText}>Đóng</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
+      <Modal
+        transparent={true}
+        visible={visibleSuccess}
+        onDismiss={hideModalSuccess}
+        animationType="slide"
+        onRequestClose={hideModalSuccess}
+      >
+        <TouchableWithoutFeedback onPress={closeQrModal}>
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContainer}>
+              <Text style={styles.modalTitle}>Thành Công</Text>
+              <Image
+                style={{ width: 150, height: 150 }}
+                source={{
+                  uri: "https://www.nhahangquangon.com/wp-content/uploads/2020/10/icon-thanh-cong-200x200.png",
+                }}
+              />
+              <Text style={styles.qrText}>Bạn đã nạp tiền thành công</Text>
+
+              <TouchableOpacity
+                onPress={hideModalSuccess}
                 style={styles.closeButton}
               >
                 <Text style={styles.closeButtonText}>Đóng</Text>
