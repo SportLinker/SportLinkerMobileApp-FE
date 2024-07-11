@@ -50,8 +50,9 @@ const roleOptions = [
 ];
 
 const RegisterSchema = Yup.object().shape({
-  phone: Yup.string()
-    .matches(phoneRegExp, "Số điện thoại không hợp lệ!")
+  username: Yup.string()
+    .min(2, "Tên đăng nhập quá ngắn!")
+    .max(50, "Tên đăng nhập quá dài!")
     .required("Vui lòng không bỏ trống thông tin này!"),
   name: Yup.string()
     .min(2, "Tên quá ngắn!")
@@ -100,7 +101,7 @@ export default function RegisterScreen({ navigation }) {
     >
       <Formik
         initialValues={{
-          phone: "",
+          username: "",
           name: "",
           password: "",
           confirmPassword: "",
@@ -112,12 +113,14 @@ export default function RegisterScreen({ navigation }) {
         onSubmit={(values) => {
           console.log(values);
           const formData = {
-            phone: values.phone,
+            username: values.username,
             password: values.password,
             name: values.name,
             gender: values.gender,
             role: values.role,
             favorite: getArrStringSportName(values.favSport),
+            avatar_url:
+              "https://www.redditstatic.com/avatars/avatar_default_03_FF8717.png",
           };
           console.log(formData);
           try {
@@ -170,19 +173,19 @@ export default function RegisterScreen({ navigation }) {
                 Để đăng ký hãy nhập thông tin bên dưới
               </Text>
 
-              <Text style={styles.label}>Số điện thoại:</Text>
+              <Text style={styles.label}>Tên đăng nhập:</Text>
               <TextInput
                 style={styles.input}
                 mode="outlined"
                 inputMode="decimal"
-                placeholder="Số điện thoại"
-                onChangeText={handleChange("phone")}
-                onBlur={handleBlur("phone")}
-                value={values.phone}
-                outlineColor={touched.phone && errors.phone && "red"}
+                placeholder="Tên đăng nhập"
+                onChangeText={handleChange("username")}
+                onBlur={handleBlur("username")}
+                value={values.username}
+                outlineColor={touched.username && errors.username && "red"}
               />
               <Text style={styles.errorMessage}>
-                {touched.phone && errors.phone && errors.phone}
+                {touched.username && errors.username && errors.username}
               </Text>
 
               <Text style={styles.label}>Họ và tên:</Text>

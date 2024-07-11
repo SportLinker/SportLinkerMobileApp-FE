@@ -81,6 +81,7 @@ const TransactionReview = () => {
 
   return (
     <View style={styles.container}>
+      <Text style={{ fontSize: 24, marginBottom: 10 }}>Lịch sử giao dịch</Text>
       <FlatList
         data={fakeData}
         renderItem={TransactionItem}

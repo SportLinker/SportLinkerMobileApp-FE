@@ -103,18 +103,24 @@ export default function PostLinkerScreen({ navigation }) {
   }, []);
 
   const pickImage = async () => {
+    console.log("pickImage");
+
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsMultipleSelection: true,
       aspect: [1, 1],
-      quality: 3,
+      quality: 1,
     });
 
+    console.log(result);
     if (!result.canceled) {
-      // console.log(result);
       let imageArr = [...result.assets];
       console.log("imageArr", imageArr);
       let imagesSelect = imageArr.map((image) => image.uri);
+      if (imagesSelect.length >= 3) {
+        alert("Bạn chỉ có thể chọn tối đa 3 ảnh.");
+        return;
+      }
       console.log("images: " + imagesSelect);
       setImages([...imagesSelect]);
       setSuccessMessage("Chọn ảnh thành công!");
