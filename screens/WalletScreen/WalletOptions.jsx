@@ -27,6 +27,7 @@ const WalletOptions = () => {
     setWithdrawModalVisible(!withdrawModalVisible);
   };
 
+  if (!listTransaction) return <Text>Loading...</Text>;
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
