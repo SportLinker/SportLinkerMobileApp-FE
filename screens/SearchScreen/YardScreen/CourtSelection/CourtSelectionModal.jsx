@@ -85,8 +85,6 @@ const CourtSelectionModal = ({ visible, onClose, stadiumId }) => {
     }
   }, [yardList]);
 
-  console.log("bookings", bookings);
-
   const handleBooking = (yard) => {
     setSelectedYard(yard);
     setShowBookingModal(true);
@@ -168,10 +166,15 @@ const CourtSelectionModal = ({ visible, onClose, stadiumId }) => {
       time_start: startISO,
       time_end: endISO,
     };
+    // Tính toán thời gian đặt sân
+    const startHours = startDate.getHours();
+    const endHours = endDate.getHours();
+    const duration = endHours - startHours;
 
     // Tính toán tiền đặt cọc
     const pricePerHour = selectedYard.price_per_hour;
-    const deposit = pricePerHour * 0.3;
+    const totalPrice = duration * pricePerHour;
+    const deposit = totalPrice * 0.3;
     setDepositAmount(deposit);
 
     setConfirmedBooking(bookingDetails);

@@ -94,7 +94,7 @@ const StepOne = ({ values, setFieldValue, errors, touched }) => {
                 {new Date(values.eventTime).toLocaleTimeString([], {
                   hour: "2-digit",
                   minute: "2-digit",
-                  hour12: true,
+                  hour12: false,
                 })}
               </Text>
             </TouchableOpacity>
