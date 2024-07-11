@@ -4,11 +4,10 @@ import { Avatar } from "react-native-paper";
 import { styles } from "../../../../component/style";
 import { FontAwesome } from "@expo/vector-icons";
 import DefaultImage from "../../../../assets/default_img.png";
+import defaultAvatar from "../../../../assets/avatar_default.png";
 
 export default function HeaderSection({ stadium, stadiumOwner }) {
-  const [image, setImage] = useState(
-    "https://i.pinimg.com/236x/71/db/24/71db24f6798f1a208b7fe8a503365458.jpg"
-  );
+  const [image, setImage] = useState(stadiumOwner.avatar_url);
 
   // console.log("stadium", stadium);
 
@@ -57,11 +56,19 @@ export default function HeaderSection({ stadium, stadiumOwner }) {
             <Image source={DefaultImage} style={styles.imageDetailYard} />
           )}
 
-          <Avatar.Image
-            size={90}
-            source={{ uri: stadiumOwner.avatar_url }}
-            style={[styles.avatar, styles.avatarShadow]}
-          />
+          {stadiumOwner && stadiumOwner.avatar_url ? (
+            <Avatar.Image
+              size={100}
+              source={{ uri: image }}
+              style={[styles.avatar, styles.avatarShadow]}
+            />
+          ) : (
+            <Avatar.Image
+              size={100}
+              source={defaultAvatar}
+              style={[styles.avatar, styles.avatarShadow]}
+            />
+          )}
         </View>
       </View>
       <View style={styles.detailSection}>

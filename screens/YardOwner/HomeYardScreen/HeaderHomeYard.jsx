@@ -3,6 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Avatar } from "react-native-paper";
+import defaultAvatar from "../../../assets/avatar_default.png";
 
 export default function HeaderHomeYard({ user }) {
   const navigation = useNavigation();
@@ -12,11 +13,19 @@ export default function HeaderHomeYard({ user }) {
     <View style={styles.container}>
       <View style={styles.headerContainer}>
         <View style={styles.profileContainer}>
-          <Avatar.Image
-            size={60}
-            source={{ uri: image }}
-            style={styles.avatar}
-          />
+          {user && user.avatar_url ? (
+            <Avatar.Image
+              size={100}
+              source={{ uri: image }}
+              style={styles.avatar}
+            />
+          ) : (
+            <Avatar.Image
+              size={100}
+              source={defaultAvatar}
+              style={styles.avatar}
+            />
+          )}
           <Text style={styles.profileName}>{user.name}</Text>
         </View>
         <View style={styles.actionContainer}>
