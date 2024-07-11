@@ -11,7 +11,10 @@ import { LocaleConfig } from "react-native-calendars";
 import { ScrollView } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllYardByUserSelector } from "../../../../redux/selectors";
-import { bookYardByUser } from "../../../../redux/slices/bookSlice";
+import {
+  bookYardByUser,
+  getAllBookedByUser,
+} from "../../../../redux/slices/bookSlice";
 import { getAllYardByUser } from "../../../../redux/slices/yardSlice";
 import BookingModal from "./BookingModal";
 import CourtSelectionModalContent from "./CourtSelectionModalContent";
@@ -177,7 +180,9 @@ const CourtSelectionModal = ({ visible, onClose, stadiumId }) => {
 
   const handleConfirmation = () => {
     if (confirmedBooking) {
-      dispatch(bookYardByUser(confirmedBooking));
+      dispatch(bookYardByUser(confirmedBooking)).then(() => {
+        dispatch(getAllBookedByUser());
+      });
       Alert.alert(
         "Đặt sân thành công",
         `Bạn đã đặt sân ${selectedYard.yard_name} từ ${startTime} đến ${endTime} vào ngày ${selectedDate}`

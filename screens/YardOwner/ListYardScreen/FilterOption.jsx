@@ -5,17 +5,21 @@ import { Button } from "react-native-paper";
 const FilterOptionList = ({ setFilterOptions, yards }) => {
   const [activeOption, setActiveOption] = useState("Tất cả");
 
+  const uniqueStadiumNames = [
+    ...new Set(yards.map((yard) => yard.stadium.stadium_name)),
+  ];
+
   const options = [
     { id: "all", label: "Tất cả" },
-    ...yards.map((yard, index) => ({
-      id: `${yard.stadium.stadium_name}_${index}`, // Use a combination to ensure uniqueness
-      label: yard.stadium.stadium_name,
+    ...uniqueStadiumNames.map((stadiumName, index) => ({
+      id: stadiumName, // Use only stadiumName for id
+      label: stadiumName,
     })),
   ];
 
   const handleOptionPress = (stadiumName, label) => {
     setActiveOption(label);
-    setFilterOptions({ stadiumName });
+    setFilterOptions({ stadiumName: stadiumName === "all" ? "all" : label });
   };
 
   return (
@@ -25,7 +29,7 @@ const FilterOptionList = ({ setFilterOptions, yards }) => {
         horizontal
         showsHorizontalScrollIndicator={false}
         style={styles.flatList}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <Button
             textColor={activeOption === item.label ? "white" : "black"}
