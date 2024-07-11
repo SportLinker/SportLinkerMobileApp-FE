@@ -177,3 +177,19 @@ export function convertTo12HourFormat(isoString) {
   // Return the formatted time
   return `${hours}:${minutesFormatted} ${ampm}`;
 }
+
+// USE AT TRANSACTION REVIEW
+export function formatISODate(isoDateStr) {
+  // Parse the ISO date string
+  const date = new Date(isoDateStr);
+
+  // Extract components
+  const hours = date.getHours().toString().padStart(2, "0");
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+  const day = date.getDate().toString().padStart(2, "0");
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const year = date.getFullYear();
+
+  // Format the date and time
+  return `${hours}:${minutes} - ${day}/${month}/${year}`;
+}

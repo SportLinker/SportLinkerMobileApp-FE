@@ -8,8 +8,17 @@ import {
 } from "react-native";
 import WalletOptions from "./WalletOptions";
 import TransactionReview from "./TransactionReview";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getListTransactionByUser } from "../../redux/slices/paymentSlice";
 
 const WalletHome = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getListTransactionByUser());
+  }, []);
+
   return (
     <SafeAreaView style={{ backgroundColor: "#fff" }}>
       <View style={styles.container}>

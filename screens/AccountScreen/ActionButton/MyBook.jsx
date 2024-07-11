@@ -16,8 +16,8 @@ const MyBook = () => {
 
   useEffect(() => {
     if (bookedList) {
-      // Sort bookedList by created_at in descending order
-      const sortedBookedList = bookedList.sort((a, b) => {
+      // Create a new array and sort it by created_at in descending order
+      const sortedBookedList = [...bookedList].sort((a, b) => {
         return new Date(b.created_at) - new Date(a.created_at);
       });
       setBooked(sortedBookedList);
