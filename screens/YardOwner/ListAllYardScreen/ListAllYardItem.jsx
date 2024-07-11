@@ -6,8 +6,6 @@ import { styles } from "../../../component/style";
 const ListAllYardItem = ({ data }) => {
   const navigation = useNavigation();
 
-  console.log("data", data);
-
   return (
     <View style={{ marginTop: 20, marginHorizontal: "auto" }}>
       {data &&

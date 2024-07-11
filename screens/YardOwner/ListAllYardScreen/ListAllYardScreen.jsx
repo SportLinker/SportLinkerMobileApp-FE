@@ -49,7 +49,7 @@ const ListAllYardScreen = ({ navigation }) => {
       ) : (
         <>
           <ScrollView style={{ height: "90%" }}>
-            {filteredData.length > 0 ? (
+            {yards.length > 0 ? (
               <>
                 <FilterOptionList
                   setFilterOptions={setFilterOptions}
@@ -58,7 +58,13 @@ const ListAllYardScreen = ({ navigation }) => {
                 <ListAllYardItem data={filteredData} />
               </>
             ) : (
-              <NoYard />
+              <>
+                <FilterOptionList
+                  setFilterOptions={setFilterOptions}
+                  yards={yards}
+                />
+                <NoYard />
+              </>
             )}
           </ScrollView>
         </>
