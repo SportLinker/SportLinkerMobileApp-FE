@@ -4,14 +4,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const login = createAsyncThunk(
   "userSlice/login",
-  async ({ phone, password }, { rejectWithValue }) => {
+  async ({ username, password }, { rejectWithValue }) => {
     console.log("login");
-    console.log("phone", phone);
+    console.log("username", username);
     console.log("password", password);
 
     try {
-      const data = await api.post(`/authen/login?type=phone`, {
-        phone,
+      const data = await api.post(`/authen/login?type=username`, {
+        username,
         password,
       });
 
@@ -29,7 +29,7 @@ export const register = createAsyncThunk(
     console.log("register");
 
     try {
-      const data = await api.post(`/authen/register?type=phone`, formData);
+      const data = await api.post(`/authen/register?type=username`, formData);
 
       console.log("login data:", data);
       return data.data;
@@ -65,6 +65,7 @@ export const userSlice = createSlice({
       phone: null,
       email: null,
       name: null,
+      username: null,
       password: null,
       bio: null,
       avatar_url: null,

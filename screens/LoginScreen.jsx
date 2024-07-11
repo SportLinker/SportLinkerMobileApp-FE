@@ -28,7 +28,7 @@ import firebase from "@react-native-firebase/app";
 
 const LoginScreen = ({ navigation }) => {
   const [loginForm, setLoginForm] = useState({
-    phone: "0825999871",
+    username: "ninh17",
     password: "123456",
   });
   const [errorMessage, setErrorMessage] = useState(null);
@@ -48,7 +48,7 @@ const LoginScreen = ({ navigation }) => {
     console.log("handleLogin");
     try {
       // Handle login logic here, such as sending login credentials to server
-      if (loginForm.phone === "" || loginForm.password === "") {
+      if (loginForm.username === "" || loginForm.password === "") {
         setErrorMessage("Vui lòng không bỏ trống!");
       }
       dispatch(login(loginForm)).then((response) => {
@@ -56,7 +56,7 @@ const LoginScreen = ({ navigation }) => {
 
         //login failed
         if (response.error) {
-          setErrorMessage("Số điện thoại hoặc mật khẩu không đúng!");
+          setErrorMessage("Tên đăng nhập hoặc mật khẩu không đúng!");
         }
 
         //login successful
@@ -194,17 +194,17 @@ const LoginScreen = ({ navigation }) => {
               />
             </View>
 
-            <Text style={styles.label}>Số điện thoại:</Text>
+            <Text style={styles.label}>Tên đăng nhập:</Text>
             <TextInput
               style={styles.input}
               mode="outlined"
               inputMode="decimal"
-              placeholder="Số điện thoại"
+              placeholder="Tên đăng nhập"
               onChangeText={(text) => {
-                setLoginForm((prevState) => ({ ...prevState, phone: text }));
+                setLoginForm((prevState) => ({ ...prevState, username: text }));
               }}
               outlineColor={errorMessage && "red"}
-              value={loginForm.phone}
+              value={loginForm.username}
             />
             <Text style={styles.label}>Mật khẩu:</Text>
             <TextInput
