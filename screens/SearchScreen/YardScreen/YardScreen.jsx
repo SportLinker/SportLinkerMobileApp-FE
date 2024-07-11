@@ -29,10 +29,6 @@ export default function YardScreen() {
   const [longitude, setLongitude] = useState(null);
   const [stadiums, setStadiums] = useState("");
 
-  // console.log("latitude", latitude);
-  // console.log("longitude", longitude);
-  // console.log("stadiums", stadiums);
-
   useEffect(() => {
     if (latitude && longitude) {
       const formData = {

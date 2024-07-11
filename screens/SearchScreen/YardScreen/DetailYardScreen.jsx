@@ -18,9 +18,6 @@ const DetailYardScreen = ({ route }) => {
   const navigation = useNavigation();
   const rating = 3.5;
 
-  console.log("stadium", stadium);
-  // console.log("stadiumOwner", stadiumOwner);
-
   return (
     <ScrollView style={{ backgroundColor: "#fff" }}>
       <HeaderSection

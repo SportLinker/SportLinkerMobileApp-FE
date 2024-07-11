@@ -160,23 +160,26 @@ const CourtSelectionModal = ({ visible, onClose, stadiumId }) => {
     const startISO = startDate.toISOString();
     const endISO = endDate.toISOString();
 
-    // Đảm bảo định dạng "YYYY-MM-DDTHH:mm:ss.SSSZ"
+    // Tạo đối tượng bookingDetails chứa thông tin đặt sân
     const bookingDetails = {
       yard_id: selectedYard.yard_id,
       time_start: startISO,
       time_end: endISO,
     };
+
     // Tính toán thời gian đặt sân
-    const startHours = startDate.getHours();
-    const endHours = endDate.getHours();
-    const duration = endHours - startHours;
+    const startMilliseconds = startDate.getTime(); // Lấy thời gian bắt đầu trong milliseconds
+    const endMilliseconds = endDate.getTime(); // Lấy thời gian kết thúc trong milliseconds
+    const durationMilliseconds = endMilliseconds - startMilliseconds; // Tính độ dài thời gian đặt sân trong milliseconds
 
     // Tính toán tiền đặt cọc
-    const pricePerHour = selectedYard.price_per_hour;
-    const totalPrice = duration * pricePerHour;
-    const deposit = totalPrice * 0.3;
+    const pricePerHour = selectedYard.price_per_hour; // Giá tiền trên giờ của sân
+    const totalPrice = (durationMilliseconds / (1000 * 60 * 60)) * pricePerHour; // Tính tổng giá tiền dựa trên thời gian đặt sân
+    const depositPercentage = 0.3; // Phần trăm đặt cọc (30%)
+    const deposit = totalPrice * depositPercentage; // Tính toán số tiền đặt cọc
     setDepositAmount(deposit);
 
+    // Đặt confirmedBooking và hiển thị popup xác nhận
     setConfirmedBooking(bookingDetails);
     setShowConfirmationPopup(true);
   };
