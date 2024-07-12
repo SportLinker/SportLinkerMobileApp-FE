@@ -18,14 +18,14 @@ import { getUserLoadingSelector, getUserSelector } from "../../redux/selectors";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { updateUserProfile } from "../../redux/slices/userSlice";
 import Loading from "../../component/Loading";
-import { Snackbar } from "react-native-paper";
+import { Button, Portal, Snackbar } from "react-native-paper";
 import { screenHeight, screenWidth } from "../../component/style";
+import SportSelectOptions from "../../component/SportSelectOptions";
 
 const phoneRegExp = /^0\d{9}$/;
 
 const validationSchema = Yup.object().shape({
   textName: Yup.string().required("Tên là bắt buộc"),
-  // textUsername: Yup.string().required("Tên người dùng là bắt buộc"),
   textEmail: Yup.string()
     .email("Email không hợp lệ")
     .required("Email là bắt buộc"),
@@ -35,7 +35,6 @@ const validationSchema = Yup.object().shape({
   dateOfBirth: Yup.date().required("Ngày sinh là bắt buộc"),
   textBio: Yup.string(),
   isGenderSelected: Yup.string().required("Giới tính là bắt buộc"),
-  // isAgeSelected: Yup.string().required("Nhóm tuổi là bắt buộc"),
 });
 
 export default function EditAccountScreen({ navigation }) {
@@ -45,29 +44,28 @@ export default function EditAccountScreen({ navigation }) {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
+  const [isOpenSportModal, setIsOpenSportModal] = useState(false);
 
   const dispatch = useDispatch();
 
   const initialValues = userSelector.id
     ? {
         textName: userSelector.name,
-        // textUsername: "Ninh-88",
         textEmail: userSelector.email || "",
         phone: userSelector.phone,
         textBio: userSelector.bio || "",
         isGenderSelected: userSelector.gender,
-        // isAgeSelected: "",
         dateOfBirth: new Date(userSelector.date_of_birth),
+        favSport: userSelector.favSport || [],
       }
     : {
         textName: "Ninh",
-        // textUsername: "Ninh-88",
         phone: "",
         textEmail: "ninh2002@gmail.com",
         textBio: "Tôi là Ninh, quê Tây Ninh",
         isGenderSelected: "",
-        // isAgeSelected: "",
         dateOfBirth: new Date(),
+        favSport: [],
       };
 
   const handleSubmitUpdate = (values) => {
@@ -83,6 +81,7 @@ export default function EditAccountScreen({ navigation }) {
             date_of_birth: values.dateOfBirth,
             gender: values.isGenderSelected,
             bio: values.textBio,
+            // favSport: values.favSport,
           },
         };
         console.log("formData", formData);
@@ -140,18 +139,6 @@ export default function EditAccountScreen({ navigation }) {
                     <Text style={styles.errorText}>{errors.textName}</Text>
                   )}
                 </View>
-                {/* <View style={styles.infoTextContainer}>
-                  <Text style={styles.textTitle}>Tên người dùng</Text>
-                  <TextInput
-                    style={styles.input}
-                    onChangeText={handleChange("textUsername")}
-                    onBlur={handleBlur("textUsername")}
-                    value={values.textUsername}
-                  />
-                  {touched.textUsername && errors.textUsername && (
-                    <Text style={styles.errorText}>{errors.textUsername}</Text>
-                  )}
-                </View> */}
                 <View style={styles.infoTextContainer}>
                   <Text style={styles.textTitle}>Số điện thoại</Text>
                   <TextInput
@@ -208,6 +195,29 @@ export default function EditAccountScreen({ navigation }) {
                     <Text style={styles.errorText}>{errors.dateOfBirth}</Text>
                   )}
                 </View>
+                <Text style={styles.label}>Môn thể thao yêu thích:</Text>
+                <Button
+                  mode="contained"
+                  style={styles.buttonSport}
+                  labelStyle={styles.buttonText}
+                  onPress={() => setIsOpenSportModal(true)}
+                >
+                  Chọn môn thể thao
+                </Button>
+                <Portal>
+                  <SportSelectOptions
+                    visible={isOpenSportModal}
+                    onDismiss={() => setIsOpenSportModal(false)}
+                    onClose={() => setIsOpenSportModal(false)}
+                    setSportFilter={(sports) =>
+                      setFieldValue("favSport", sports)
+                    }
+                    sportFilter={values.favSport}
+                  />
+                </Portal>
+                {touched.favSport && errors.favSport && (
+                  <Text style={styles.errorText}>{errors.favSport}</Text>
+                )}
                 <View style={styles.infoTextContainer}>
                   <Text style={styles.textTitle}>Giới tính</Text>
                   <View
@@ -281,39 +291,6 @@ export default function EditAccountScreen({ navigation }) {
                         </Text>
                       </View>
                     </TouchableOpacity>
-                    {/* <TouchableOpacity
-                      onPress={() =>
-                        setFieldValue("isGenderSelected", "secret")
-                      }
-                    >
-                      <View
-                        style={[
-                          styles.iconGender,
-                          values.isGenderSelected === "secret" &&
-                            styles.iconSelected,
-                        ]}
-                      >
-                        <Ionicons
-                          name="male-female"
-                          size={24}
-                          color={
-                            values.isGenderSelected === "secret"
-                              ? "white"
-                              : "black"
-                          }
-                        />
-                        <Text
-                          style={{
-                            color:
-                              values.isGenderSelected === "secret"
-                                ? "white"
-                                : "black",
-                          }}
-                        >
-                          Bí mật
-                        </Text>
-                      </View>
-                    </TouchableOpacity> */}
                   </View>
                   {touched.isGenderSelected && errors.isGenderSelected && (
                     <Text style={styles.errorText}>
@@ -322,214 +299,91 @@ export default function EditAccountScreen({ navigation }) {
                   )}
                 </View>
                 <View style={styles.infoTextContainer}>
-                  <Text style={styles.textTitle}>Tiểu sử</Text>
+                  <Text style={styles.textTitle}>Bio</Text>
                   <TextInput
-                    style={styles.inputBio}
+                    style={styles.input}
                     onChangeText={handleChange("textBio")}
                     onBlur={handleBlur("textBio")}
                     value={values.textBio}
-                    multiline={true}
-                    numberOfLines={4}
-                    returnKeyType="done"
                   />
-                  {touched.textBio && errors.textBio && (
-                    <Text style={styles.errorText}>{errors.textBio}</Text>
-                  )}
                 </View>
-
-                {/* <View style={styles.infoTextContainer}>
-                  <Text style={styles.textTitle}>Nhóm tuổi</Text>
-                  <View
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      justifyContent: "space-around",
-                      marginTop: 10,
-                    }}
-                  >
-                    <TouchableOpacity
-                      onPress={() => setFieldValue("isAgeSelected", "young")}
-                    >
-                      <View
-                        style={[
-                          styles.iconGender,
-                          values.isAgeSelected === "young" &&
-                            styles.iconSelected,
-                        ]}
-                      >
-                        <Text
-                          style={{
-                            color:
-                              values.isAgeSelected === "young"
-                                ? "white"
-                                : "black",
-                          }}
-                        >
-                          Thiếu niên
-                        </Text>
-                        <Text
-                          style={{
-                            color:
-                              values.isAgeSelected === "young"
-                                ? "white"
-                                : "black",
-                          }}
-                        >
-                          (dưới 18)
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => setFieldValue("isAgeSelected", "adult")}
-                    >
-                      <View
-                        style={[
-                          styles.iconGender,
-                          values.isAgeSelected === "adult" &&
-                            styles.iconSelected,
-                        ]}
-                      >
-                        <Text
-                          style={{
-                            color:
-                              values.isAgeSelected === "adult"
-                                ? "white"
-                                : "black",
-                          }}
-                        >
-                          Người lớn
-                        </Text>
-                        <Text
-                          style={{
-                            color:
-                              values.isAgeSelected === "adult"
-                                ? "white"
-                                : "black",
-                          }}
-                        >
-                          (18 - 50)
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => setFieldValue("isAgeSelected", "senior")}
-                    >
-                      <View
-                        style={[
-                          styles.iconGender,
-                          values.isAgeSelected === "senior" &&
-                            styles.iconSelected,
-                        ]}
-                      >
-                        <Text
-                          style={{
-                            color:
-                              values.isAgeSelected === "senior"
-                                ? "white"
-                                : "black",
-                          }}
-                        >
-                          Cao tuổi
-                        </Text>
-                        <Text
-                          style={{
-                            color:
-                              values.isAgeSelected === "senior"
-                                ? "white"
-                                : "black",
-                          }}
-                        >
-                          (trên 50)
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
-                  </View>
-                  {touched.isAgeSelected && errors.isAgeSelected && (
-                    <Text style={styles.errorText}>{errors.isAgeSelected}</Text>
-                  )}
-                </View> */}
-                <View
-                  style={{
-                    marginVertical: 20,
-                    marginHorizontal: 20,
-                  }}
+                <TouchableOpacity
+                  style={styles.updateButton}
+                  onPress={handleSubmit}
                 >
-                  <TouchableOpacity
-                    style={{
-                      alignItems: "center",
-                      justifyContent: "center",
-                      backgroundColor: "#1646A9",
-                      paddingHorizontal: 50,
-                      paddingVertical: 10,
-                      borderRadius: 10,
-                      height: 50,
-                    }}
-                    onPress={handleSubmit}
-                  >
-                    <Text style={{ color: "#FFF", fontSize: 16 }}>
-                      Cập nhật
-                    </Text>
-                  </TouchableOpacity>
-                </View>
+                  <Text style={styles.updateButtonText}>Cập nhật</Text>
+                </TouchableOpacity>
               </>
             )}
           </Formik>
         </View>
+      </ScrollView>
+      <Portal>
         <Snackbar
-          visible={!!errorMessage}
-          duration={2000}
+          visible={Boolean(errorMessage)}
           onDismiss={() => setErrorMessage(null)}
-          style={[styles.snackbarContainer, styles.snackbarContainerFail]}
+          action={{
+            label: "Close",
+            onPress: () => setErrorMessage(null),
+          }}
+          duration={3000}
         >
           {errorMessage}
         </Snackbar>
         <Snackbar
-          visible={successMessage !== ""}
+          visible={Boolean(successMessage)}
           onDismiss={() => setSuccessMessage("")}
-          duration={1000}
-          style={styles.snackbarContainer}
+          action={{
+            label: "Close",
+            onPress: () => setSuccessMessage(""),
+          }}
+          duration={3000}
         >
           {successMessage}
         </Snackbar>
-      </ScrollView>
+      </Portal>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  infoTextContainer: { marginTop: 10 },
-  textTitle: { marginLeft: 25, fontWeight: "bold" },
-  input: {
-    height: 40,
-    marginHorizontal: 25,
-    marginVertical: 12,
-    borderWidth: 1,
-    padding: 10,
-    borderRadius: 8,
-    borderColor: "#4878D9",
-    borderWidth: 2,
+  infoTextContainer: {
+    marginBottom: 15,
+    paddingHorizontal: 20,
   },
-  inputBio: {
-    height: 80, // Điều chỉnh độ cao của TextInput để hiển thị nhiều dòng văn bản
-    marginHorizontal: 25,
-    marginVertical: 12,
+  textTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  input: {
     borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
     padding: 10,
-    borderRadius: 8,
-    textAlignVertical: "top",
-    borderColor: "#4878D9",
-    borderWidth: 2,
+    fontSize: 16,
+  },
+  errorText: {
+    color: "red",
+    marginTop: 5,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 10,
+    paddingHorizontal: 20,
+  },
+  buttonSport: {
+    width: "90%",
+    alignSelf: "center",
+    marginBottom: 10,
+    backgroundColor: "#1646A9",
+  },
+  buttonText: {
+    color: "white",
   },
   iconGender: {
     backgroundColor: "#fff",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    // elevation: 5, // Chỉ áp dụng cho Android
     height: 80,
     width: 80,
     borderRadius: 8,
@@ -538,43 +392,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-
-  age: {
-    backgroundColor: "#fff",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    // elevation: 5, // Chỉ áp dụng cho Android
-    paddingHorizontal: 10,
-    paddingVertical: 15,
-    borderRadius: 8,
-    borderWidth: 2,
-    borderColor: "#4878D9",
-    alignItems: "center",
-  },
   iconSelected: {
-    backgroundColor: "blue", // Màu nền khi được chọn
-    borderColor: "white",
-  },
-  errorText: {
-    color: "red",
-    marginLeft: 25,
-  },
-  snackbarContainer: {
-    borderRadius: 10,
-    alignItems: "center",
     backgroundColor: "#1646A9",
-    textAlign: "center",
-    transform: [
-      { translateX: 0 * screenWidth },
-      { translateY: -0.02 * screenHeight },
-    ],
+    color: "white",
   },
-  snackbarContainerFail: {
-    backgroundColor: "red",
+  updateButton: {
+    backgroundColor: "#1646A9",
+    borderRadius: 5,
+    paddingVertical: 15,
+    alignItems: "center",
+    justifyContent: "center",
+    marginHorizontal: 20,
+    marginBottom: 20,
+  },
+  updateButtonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
