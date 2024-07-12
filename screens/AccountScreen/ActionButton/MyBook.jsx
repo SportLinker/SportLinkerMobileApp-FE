@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, FlatList, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  Button,
+  TouchableOpacity,
+} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { getBookedByUserSelector } from "../../../redux/selectors";
 import { getAllBookedByUser } from "../../../redux/slices/bookSlice";
@@ -16,7 +23,6 @@ const MyBook = () => {
 
   useEffect(() => {
     if (bookedList) {
-      // Create a new array and sort it by created_at in descending order
       const sortedBookedList = [...bookedList].sort((a, b) => {
         return new Date(b.created_at) - new Date(a.created_at);
       });
@@ -42,6 +48,10 @@ const MyBook = () => {
       default:
         return { backgroundColor: "white", color: "white" };
     }
+  };
+
+  const handleCancelBooking = (id) => {
+    console.log(`Cancel booking with id: ${id}`);
   };
 
   const renderItem = ({ item }) => (
@@ -75,6 +85,14 @@ const MyBook = () => {
           {item.status.toUpperCase()}
         </Text>
       </View>
+      {item.status === "pending" && (
+        <TouchableOpacity
+          style={styles.cancelButton}
+          onPress={() => handleCancelBooking(item.id)}
+        >
+          <Text style={styles.cancelButtonText}>Hủy Đặt Sân</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 
@@ -83,7 +101,7 @@ const MyBook = () => {
       <FlatList
         data={booked || []}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()} // Ensure key is a string
+        keyExtractor={(item) => item.id.toString()}
       />
     </View>
   );
@@ -99,11 +117,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 15,
     marginVertical: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    elevation: 3,
+    // shadowColor: "#000",
+    // shadowOffset: { width: 0, height: 2 },
+    // shadowOpacity: 0.8,
+    // shadowRadius: 2,
+    // elevation: 1,
+    borderWidth: 3,
   },
   text: {
     fontSize: 16,
@@ -123,6 +142,17 @@ const styles = StyleSheet.create({
   innerText: {
     flexDirection: "row",
     justifyContent: "space-between",
+  },
+  cancelButton: {
+    backgroundColor: "#FF0000",
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+    alignItems: "center",
+  },
+  cancelButtonText: {
+    color: "white",
+    fontWeight: "bold",
   },
 });
 
