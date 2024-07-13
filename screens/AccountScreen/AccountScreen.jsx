@@ -133,6 +133,8 @@ export default function AccountScreen() {
     }
   };
 
+  console.log(userSelector);
+
   return (
     <SafeAreaView
       style={{
