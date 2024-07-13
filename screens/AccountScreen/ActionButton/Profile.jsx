@@ -8,9 +8,9 @@ const Profile = ({ fakeData }) => {
     <>
       <View style={styles.topInfoSport}>
         <Text style={{ color: "#707070", fontWeight: "bold" }}>
-          {"Thể thao".toUpperCase()}
+          {"Thể thao yêu thích".toUpperCase()}
         </Text>
-        <Text style={{ color: "#4878D9", fontWeight: "bold" }}>Thêm</Text>
+        {/* <Text style={{ color: "#4878D9", fontWeight: "bold" }}>Thêm</Text> */}
       </View>
       <View style={styles.centerStyle}>
         {fakeData.map((item) => (
@@ -22,7 +22,7 @@ const Profile = ({ fakeData }) => {
                   flexDirection: "row",
                   justifyContent: "space-between",
                   marginHorizontal: 20,
-                  marginTop: 10,
+                  paddingVertical: 20,
                 }}
               >
                 <View style={{ display: "flex", flexDirection: "row" }}>
@@ -38,14 +38,14 @@ const Profile = ({ fakeData }) => {
                   <AntDesign name="right" size={24} color="#000" />
                 </View>
               </TouchableOpacity>
-              <View
+              {/* <View
                 style={{
                   borderBottomWidth: 1,
                   marginVertical: 5,
                   borderColor: "#C4C4C4",
                 }}
-              />
-              <View style={styles.bottomInfoSport}>
+              /> */}
+              {/* <View style={styles.bottomInfoSport}>
                 <View style={styles.centerStyle}>
                   <Text style={{ color: "#707070" }}>
                     Trình độ (Tự đánh giá)
@@ -56,7 +56,7 @@ const Profile = ({ fakeData }) => {
                   <Text style={{ color: "#707070" }}>Vị trí</Text>
                   <Text style={{ fontWeight: "bold" }}>{item.position}</Text>
                 </View>
-              </View>
+              </View> */}
             </View>
           </View>
         ))}

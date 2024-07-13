@@ -47,6 +47,7 @@ export default function EditAccountScreen({ navigation }) {
   const [isOpenSportModal, setIsOpenSportModal] = useState(false);
 
   const dispatch = useDispatch();
+  console.log(userSelector);
 
   const initialValues = userSelector.id
     ? {
