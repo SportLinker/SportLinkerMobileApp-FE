@@ -585,4 +585,10 @@ export const styles = StyleSheet.create({
       },
     }),
   },
+  favSportEmpty: {
+    color: "#1646A9",
+    fontSize: 20,
+    textAlign: "center",
+    fontWeight: "bold",
+  },
 });
