@@ -62,8 +62,8 @@ export default function ChatListScreen({ navigation }) {
       </View>
       <View style={styles.chatBody}>
         <ScrollView>
-          {chatList.length != 0 ? (
-            chatList.map((chatItem, index) => (
+          {chatList?.length != 0 ? (
+            chatList?.map((chatItem, index) => (
               <ChatListItem
                 key={chatItem.group_message_id}
                 seen={false}
