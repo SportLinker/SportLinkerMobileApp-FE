@@ -1,4 +1,4 @@
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, StyleSheet } from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
@@ -92,40 +92,50 @@ export default function NotificationScreen({ navigation }) {
     <View>
       <ScrollView>
         <View>
-          <Text
-            style={{
-              marginTop: 20,
-              marginLeft: 20,
-              fontWeight: 700,
-              color: "#a7a7a7",
-            }}
-          >
-            Hôm nay
-          </Text>
-          {notifications.map((item) => (
-            <View
-              key={item.notification_id}
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                paddingVertical: 20,
-              }}
-            >
-              <AntDesign
-                name={"infocirlceo"}
-                size={24}
-                color="#1646A9"
-                style={{ marginVertical: "auto", marginHorizontal: 30 }}
-              />
-              <View style={{ width: "80%" }}>
-                <Text
-                  style={{ fontSize: 16, fontWeight: 700, marginBottom: 10 }}
+          {notifications.length > 0 && notifications ? (
+            <View>
+              <Text
+                style={{
+                  marginTop: 20,
+                  marginLeft: 20,
+                  fontWeight: 700,
+                  color: "#a7a7a7",
+                }}
+              >
+                Hôm nay
+              </Text>
+              {notifications.map((item) => (
+                <View
+                  key={item.notification_id}
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    paddingVertical: 20,
+                  }}
                 >
-                  {item.content}
-                </Text>
-              </View>
+                  <AntDesign
+                    name={"infocirlceo"}
+                    size={24}
+                    color="#1646A9"
+                    style={{ marginVertical: "auto", marginHorizontal: 30 }}
+                  />
+                  <View style={{ width: "70%" }}>
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        fontWeight: 700,
+                        marginBottom: 10,
+                      }}
+                    >
+                      {item.content}
+                    </Text>
+                  </View>
+                </View>
+              ))}
             </View>
-          ))}
+          ) : (
+            <Text style={styles.notificationEmpty}>Không có thông báo mới</Text>
+          )}
         </View>
         {/* <View>
           <Text
@@ -231,3 +241,13 @@ export default function NotificationScreen({ navigation }) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  notificationEmpty: {
+    color: "#1646A9",
+    fontSize: 20,
+    textAlign: "center",
+    fontWeight: "bold",
+    marginTop: 20,
+  },
+});
