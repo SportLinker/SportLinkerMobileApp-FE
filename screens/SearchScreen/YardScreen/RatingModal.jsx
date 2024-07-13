@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -12,10 +12,42 @@ import {
   Platform,
 } from "react-native";
 import { FontAwesome } from "react-native-vector-icons";
+import defaultAvatar from "../../../assets/default_img.png";
+import { useDispatch } from "react-redux";
+import {
+  ratingStadium,
+  getAllStadiumByUser,
+} from "../../../redux/slices/yardSlice";
 
-const RatingModal = ({ visible, onClose }) => {
+const RatingModal = ({ visible, onClose, stadium, longitude, latitude }) => {
+  const dispatch = useDispatch();
+
   const [rating, setRating] = useState(0);
   const [feedback, setFeedback] = useState("");
+
+  const confirmedRatingYard = () => {
+    console.log("feedback", feedback);
+    const feedbackData = {
+      content: feedback,
+      rating: rating,
+    };
+    dispatch(ratingStadium({ stadium_id: stadium.id, feedbackData })).then(
+      () => {
+        if (latitude && longitude) {
+          const formData = {
+            long: longitude,
+            lat: latitude,
+          };
+          dispatch(getAllStadiumByUser(formData));
+        }
+      }
+    );
+    onClose();
+
+    // Clear state
+    setRating(0);
+    setFeedback("");
+  };
 
   const renderStars = () => {
     const stars = [];
@@ -45,23 +77,28 @@ const RatingModal = ({ visible, onClose }) => {
             <TouchableWithoutFeedback>
               <View style={modalStyles.modalContainer}>
                 <Text style={modalStyles.modalTitle}>Đánh giá sân</Text>
-                <Image
-                  source={{
-                    uri: "https://may.edu.vn/public/upload/news/clb-bong-ro-1695784008.jpg",
-                  }}
-                  style={modalStyles.modalImage}
-                />
+                {stadium.stadium_thumbnail ? (
+                  <Image
+                    source={{ uri: stadium.stadium_thumbnail }}
+                    style={modalStyles.modalImage}
+                  />
+                ) : (
+                  <Image
+                    source={defaultAvatar}
+                    style={modalStyles.modalImage}
+                  />
+                )}
+
                 <Text style={modalStyles.modalDescription}>
-                  Sân Bóng Rổ Công Viên Gia Định
+                  {stadium.stadium_name}
                 </Text>
                 <Text style={modalStyles.modalAddress}>
-                  343/26 Nơ Trang Long, P13, Q Bình Thạnh, Ho Chi Minh City,
-                  Vietnam.
+                  {stadium.stadium_address}
                 </Text>
                 <View style={modalStyles.starsContainer}>{renderStars()}</View>
                 <TextInput
                   style={modalStyles.feedbackInput}
-                  placeholder="Add your feedback"
+                  placeholder="Thêm đánh giá của bạn"
                   value={feedback}
                   onChangeText={setFeedback}
                   multiline
@@ -74,7 +111,7 @@ const RatingModal = ({ visible, onClose }) => {
                     <Text style={modalStyles.modalButtonText}>Đóng</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
-                    onPress={() => console.log("Submit Rating")}
+                    onPress={confirmedRatingYard}
                     style={[modalStyles.modalButton, modalStyles.submitButton]}
                   >
                     <Text style={modalStyles.modalButtonText}>Submit</Text>

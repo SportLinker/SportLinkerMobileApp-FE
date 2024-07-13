@@ -213,6 +213,25 @@ export const getDetailYardByOwner = createAsyncThunk(
   }
 );
 
+export const ratingStadium = createAsyncThunk(
+  "yardSlice/ratingStadium",
+  async ({ stadium_id, feedbackData }, { rejectWithValue }) => {
+    // console.log("stadium_id: ", stadium_id);
+    // console.log("feedbackData: ", feedbackData);
+    try {
+      const response = await api.post(
+        `/stadiums/rating/${stadium_id}`,
+        feedbackData
+      );
+      // console.log("API Response: ", response.data);
+      return response.data;
+    } catch (error) {
+      console.log("Error: ", JSON.stringify(error.response.data));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const yardSlice = createSlice({
   name: "yardSlice",
   initialState: {
@@ -369,6 +388,16 @@ export const yardSlice = createSlice({
         state.sports = action.payload;
       })
       .addCase(getAllSport.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(ratingStadium.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(ratingStadium.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(ratingStadium.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
