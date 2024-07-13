@@ -57,7 +57,6 @@ const TransactionReview = () => {
   const { listTransaction } = useSelector((state) => state.paymentSlice);
 
   const navigation = useNavigation();
-  console.log(typeof listTransaction.transactions);
   const TransactionItem = ({ item }) => {
     return (
       <TouchableOpacity
