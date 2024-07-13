@@ -7,7 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import DefaultImage from "../../../assets/default_img.png";
 import Loading from "../../../component/Loading";
 
-export default function YardItem({ data, loading }) {
+export default function YardItem({ data, loading, latitude, longitude }) {
   const navigation = useNavigation();
 
   return (
@@ -22,7 +22,11 @@ export default function YardItem({ data, loading }) {
                 key={yard.id}
                 style={styles.containerYardUser}
                 onPress={() =>
-                  navigation.navigate("DetailYardScreen", { stadium: yard })
+                  navigation.navigate("DetailYardScreen", {
+                    stadium: yard,
+                    latitude: latitude,
+                    longitude: longitude,
+                  })
                 }
               >
                 <View>
