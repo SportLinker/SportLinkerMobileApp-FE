@@ -131,10 +131,11 @@ const SportSelectOptions = ({
               {
                 borderRadius: 5,
                 backgroundColor:
-                  sportSelectedCount == 0 ? "#707070" : "#1646A9",
+                  // sportSelectedCount == 0 ? "#707070" : "#1646A9",
+                  "#1646A9",
               },
             ]}
-            disabled={sportSelectedCount == 0}
+            // disabled={sportSelectedCount == 0}
           >
             Xác nhận
           </Button>

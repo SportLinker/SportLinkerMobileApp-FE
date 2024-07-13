@@ -257,14 +257,25 @@ export default function RegisterScreen({ navigation }) {
               </Text>
 
               <Text style={styles.label}>Môn thể thao yêu thích:</Text>
-              <Button
-                mode="contained"
-                style={styles.buttonSport}
-                labelStyle={styles.buttonText}
-                onPress={() => setIsOpenSportModal(true)}
-              >
-                Chọn môn thể thao
-              </Button>
+              {values.favSport.length > 0 ? (
+                <Button
+                  mode="contained"
+                  style={styles.buttonSport}
+                  labelStyle={styles.buttonText}
+                  onPress={() => setIsOpenSportModal(true)}
+                >
+                  Bạn đã chọn {values.favSport.length} môn thể thao
+                </Button>
+              ) : (
+                <Button
+                  mode="contained"
+                  style={styles.buttonSport}
+                  labelStyle={styles.buttonText}
+                  onPress={() => setIsOpenSportModal(true)}
+                >
+                  Chọn môn thể thao
+                </Button>
+              )}
               <Portal>
                 <SportSelectOptions
                   visible={isOpenSportModal}

@@ -57,6 +57,7 @@ const TransactionReview = () => {
   const { listTransaction } = useSelector((state) => state.paymentSlice);
 
   const navigation = useNavigation();
+  console.log(typeof listTransaction.transactions);
   const TransactionItem = ({ item }) => {
     return (
       <TouchableOpacity
@@ -98,11 +99,15 @@ const TransactionReview = () => {
   return (
     <View style={styles.container}>
       <Text style={{ fontSize: 24, marginBottom: 10 }}>Lịch sử giao dịch</Text>
-      <FlatList
-        data={listTransaction.transactions}
-        renderItem={TransactionItem}
-        keyExtractor={(item) => item.id}
-      />
+      {listTransaction.transactions.length == 0 ? (
+        <Text style={styles.transactionEmpty}>Không lịch sử giao dịch</Text>
+      ) : (
+        <FlatList
+          data={listTransaction.transactions}
+          renderItem={TransactionItem}
+          keyExtractor={(item) => item.id}
+        />
+      )}
     </View>
   );
 };
@@ -154,6 +159,13 @@ const styles = StyleSheet.create({
   transactionTime: {
     color: "#707070",
     fontSize: 12,
+  },
+  transactionEmpty: {
+    color: "#1646A9",
+    fontSize: 20,
+    textAlign: "center",
+    fontWeight: "bold",
+    marginTop: 20,
   },
 });
 
