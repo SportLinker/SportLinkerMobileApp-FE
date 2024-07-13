@@ -86,7 +86,12 @@ export default function YardScreen() {
         )}
       </View> */}
       <ScrollView style={{ height: "90%" }}>
-        <YardItem data={stadiums} loading={loading} />
+        <YardItem
+          data={stadiums}
+          latitude={latitude}
+          longitude={longitude}
+          loading={loading}
+        />
       </ScrollView>
     </SafeAreaView>
   );
