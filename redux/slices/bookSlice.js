@@ -31,6 +31,22 @@ export const getAllBookedByUser = createAsyncThunk(
   }
 );
 
+export const cancelBooked = createAsyncThunk(
+  "bookSlice/cancelBooked",
+  async (booking_id, { rejectWithValue }) => {
+    console.log("booking_id: ", booking_id);
+    try {
+      const response = await api.delete(`/bookings/${booking_id}`);
+      // console.log("status", status);
+      console.log("API Response: ", response.data);
+      return response.data;
+    } catch (error) {
+      console.log("Error: ", JSON.stringify(error.response.data));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const confirmBooked = createAsyncThunk(
   "bookSlice/confirmBooked",
   async ({ status, booking_id }, { rejectWithValue }) => {
@@ -92,6 +108,16 @@ export const bookSlice = createSlice({
         state.loading = false;
       })
       .addCase(confirmBooked.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(cancelBooked.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(cancelBooked.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(cancelBooked.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
