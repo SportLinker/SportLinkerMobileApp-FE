@@ -213,17 +213,32 @@ export const getDetailYardByOwner = createAsyncThunk(
   }
 );
 
+export const getDetailStadiumByUser = createAsyncThunk(
+  "yardSlice/getDetailStadiumByUser",
+  async (stadium_id, { rejectWithValue }) => {
+    // console.log("yard_id", yard_id);
+    try {
+      const response = await api.get(`/stadiums/${stadium_id}`);
+      // console.log("API Response: ", response.data.metadata);
+      return response.data.metadata;
+    } catch (error) {
+      console.log("Error: ", JSON.stringify(error.response.data));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const ratingStadium = createAsyncThunk(
   "yardSlice/ratingStadium",
   async ({ stadium_id, feedbackData }, { rejectWithValue }) => {
-    // console.log("stadium_id: ", stadium_id);
-    // console.log("feedbackData: ", feedbackData);
+    console.log("stadium_id: ", stadium_id);
+    console.log("feedbackData: ", feedbackData);
     try {
       const response = await api.post(
         `/stadiums/rating/${stadium_id}`,
         feedbackData
       );
-      // console.log("API Response: ", response.data);
+      console.log("API Response: ", response.data);
       return response.data;
     } catch (error) {
       console.log("Error: ", JSON.stringify(error.response.data));
@@ -240,6 +255,7 @@ export const yardSlice = createSlice({
     stadiumListByUser: null,
     stadium: null,
     yard: null,
+    stadiumByUser: null,
     yardListByUser: null,
     yardListByOwner: null,
     sports: null,
@@ -322,6 +338,17 @@ export const yardSlice = createSlice({
         state.stadiumListByUser = action.payload;
       })
       .addCase(getAllStadiumByUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getDetailStadiumByUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getDetailStadiumByUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.stadiumByUser = action.payload;
+      })
+      .addCase(getDetailStadiumByUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
