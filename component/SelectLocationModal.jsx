@@ -118,7 +118,11 @@ const SelectLocationModal = ({
                     style={styles.searchbar}
                   />
                   {isLoading ? (
-                    <ActivityIndicator size="large" color="#1646A9" />
+                    <ActivityIndicator
+                      size="large"
+                      color="#1646A9"
+                      style={{ flex: 1 }}
+                    />
                   ) : (
                     <ScrollView
                       style={styles.locationList}
@@ -175,6 +179,8 @@ const styles = StyleSheet.create({
     margin: 20,
     borderRadius: 10,
     width: "90%",
+    minWidth: "90%",
+    height: "90%",
   },
   btnBack: {
     fontSize: 24,
@@ -212,6 +218,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     backgroundColor: "#EEEEEE",
     marginBottom: 20,
+    width: "100%",
   },
   selectedLocationContainer: {
     marginBottom: 20,

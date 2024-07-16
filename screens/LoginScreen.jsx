@@ -72,7 +72,7 @@ const LoginScreen = ({ navigation }) => {
             if (response.payload.metadata.user.role == "stadium") {
               navigation.navigate("BottomTabYardOwnerNavigator");
             }
-          }, 1000);
+          }, 500);
         }
       });
     } catch (error) {
