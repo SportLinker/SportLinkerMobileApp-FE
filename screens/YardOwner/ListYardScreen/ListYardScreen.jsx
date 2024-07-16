@@ -3,7 +3,6 @@ import { SafeAreaView, ScrollView, StyleSheet } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllYardByOwnerSelector } from "../../../redux/selectors";
 import { getAllYardByYardOwner } from "../../../redux/slices/yardSlice";
-import FilterOptionList from "./FilterOption";
 import ListYardItem from "./ListYardItem";
 
 const ListYardScreen = ({ navigation, route }) => {
@@ -11,10 +10,7 @@ const ListYardScreen = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const yardList = useSelector(getAllYardByOwnerSelector);
 
-  // const [filterOptions, setFilterOptions] = useState({ status: "all" });
   const [yards, setYards] = useState(null);
-
-  // console.log("yards", yards);
 
   useEffect(() => {
     dispatch(getAllYardByYardOwner({ stadium_id: stadiumId }));
@@ -24,15 +20,8 @@ const ListYardScreen = ({ navigation, route }) => {
     if (yardList) setYards(yardList);
   }, [yardList]);
 
-  // Filter data based on filter options
-  // const filteredData = yards.filter((item) => {
-  //   if (filterOptions.status === "all") return true;
-  //   return item.status === filterOptions.status;
-  // });
-
   return (
     <SafeAreaView style={styles.container}>
-      {/* <FilterOptionList setFilterOptions={setFilterOptions} /> */}
       <ScrollView style={{ height: "90%" }}>
         <ListYardItem data={yards} stadiumId={stadiumId} />
       </ScrollView>

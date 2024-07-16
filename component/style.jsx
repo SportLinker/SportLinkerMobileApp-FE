@@ -355,6 +355,10 @@ export const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: "white",
   },
+  avatarYard: {
+    borderWidth: 2,
+    borderColor: "white",
+  },
   detailSection: {
     flexDirection: "row",
     paddingTop: 10,

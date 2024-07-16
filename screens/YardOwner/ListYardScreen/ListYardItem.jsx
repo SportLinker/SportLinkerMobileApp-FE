@@ -10,16 +10,7 @@ const ListYardItem = ({ data, stadiumId }) => {
     <View style={{ marginTop: 20, marginHorizontal: "auto" }}>
       {data &&
         data.map((yard) => (
-          <View
-            key={yard.yard_id}
-            style={styles.containerYard}
-            // onPress={() =>
-            //   navigation.navigate("InfoYard", {
-            //     yardId: yard.yard_id,
-            //     stadiumId: stadiumId,
-            //   })
-            // }
-          >
+          <View key={yard.yard_id} style={styles.containerYard}>
             <View
               style={{
                 display: "flex",
