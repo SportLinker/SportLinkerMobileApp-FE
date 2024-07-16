@@ -31,3 +31,6 @@ export const getStadiumDetailByUserSelector = (state) =>
 
 //PROFILE
 export const getBookedByUserSelector = (state) => state.bookSlice.booked;
+
+//BLOG
+export const getBlogLoadingSelector = (state) => state.blogSlice.loading;
