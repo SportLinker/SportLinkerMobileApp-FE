@@ -193,3 +193,10 @@ export function formatISODate(isoDateStr) {
   // Format the date and time
   return `${hours}:${minutes} - ${day}/${month}/${year}`;
 }
+
+// Get an array string sport name from array sport object - Register ,Edit Account Screen
+export const getArrStringSportName = (sportArrObj) => {
+  const sportNameArr = sportArrObj.map((sport) => sport.sport_name);
+  console.log("sportNameArr", sportNameArr);
+  return sportNameArr;
+};
