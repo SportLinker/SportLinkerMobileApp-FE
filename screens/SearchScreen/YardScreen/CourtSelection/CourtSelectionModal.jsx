@@ -168,15 +168,15 @@ const CourtSelectionModal = ({ visible, onClose, stadiumId }) => {
     };
 
     // Tính toán thời gian đặt sân
-    const startMilliseconds = startDate.getTime(); // Lấy thời gian bắt đầu trong milliseconds
-    const endMilliseconds = endDate.getTime(); // Lấy thời gian kết thúc trong milliseconds
-    const durationMilliseconds = endMilliseconds - startMilliseconds; // Tính độ dài thời gian đặt sân trong milliseconds
+    const startMilliseconds = startDate.getTime();
+    const endMilliseconds = endDate.getTime();
+    const durationMilliseconds = endMilliseconds - startMilliseconds;
 
     // Tính toán tiền đặt cọc
-    const pricePerHour = selectedYard.price_per_hour; // Giá tiền trên giờ của sân
-    const totalPrice = (durationMilliseconds / (1000 * 60 * 60)) * pricePerHour; // Tính tổng giá tiền dựa trên thời gian đặt sân
-    const depositPercentage = 0.3; // Phần trăm đặt cọc (30%)
-    const deposit = totalPrice * depositPercentage; // Tính toán số tiền đặt cọc
+    const pricePerHour = selectedYard.price_per_hour;
+    const totalPrice = (durationMilliseconds / (1000 * 60 * 60)) * pricePerHour;
+    const depositPercentage = 0.3;
+    const deposit = totalPrice * depositPercentage;
     setDepositAmount(deposit);
 
     // Đặt confirmedBooking và hiển thị popup xác nhận
@@ -186,13 +186,16 @@ const CourtSelectionModal = ({ visible, onClose, stadiumId }) => {
 
   const handleConfirmation = () => {
     if (confirmedBooking) {
-      dispatch(bookYardByUser(confirmedBooking)).then(() => {
+      dispatch(bookYardByUser(confirmedBooking)).then((item) => {
+        if (item.status === "Created") {
+          Alert.alert(
+            "Đặt sân thành công",
+            `Bạn đã đặt sân ${selectedYard.yard_name} từ ${startTime} đến ${endTime} vào ngày ${selectedDate}`
+          );
+        }
         dispatch(getAllBookedByUser());
       });
-      Alert.alert(
-        "Đặt sân thành công",
-        `Bạn đã đặt sân ${selectedYard.yard_name} từ ${startTime} đến ${endTime} vào ngày ${selectedDate}`
-      );
+
       setShowBookingModal(false);
       setShowConfirmationPopup(false);
       setConfirmedBooking(null);
