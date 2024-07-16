@@ -142,7 +142,18 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 15,
     marginVertical: 10,
-    borderWidth: 3,
+    borderColor: "#ddd",
+    backgroundColor: "#fff",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    width: "98%",
+    marginHorizontal: "auto",
   },
   text: {
     fontSize: 16,
@@ -157,7 +168,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     marginVertical: 6,
-    marginHorizontal: "auto",
+    textAlign: "center",
   },
   innerText: {
     flexDirection: "row",
