@@ -63,7 +63,9 @@ export function DetailsSection({ rating, stadium }) {
           <Text style={{ fontSize: 16 }}>Đánh giá</Text>
           <Text style={{ marginHorizontal: 6 }}>●</Text>
           <Text style={{ fontSize: 16 }}>
-            <Text style={{ fontWeight: 700 }}>{stadium.stadium_rating}</Text>
+            <Text style={{ fontWeight: 700 }}>
+              {stadium.stadium_rating} ({stadium.total_rating} lượt đánh giá)
+            </Text>
           </Text>
         </View>
       </View>

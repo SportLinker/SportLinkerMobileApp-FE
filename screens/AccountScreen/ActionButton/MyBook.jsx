@@ -1,19 +1,25 @@
 import React, { useEffect, useState } from "react";
 import {
-  View,
-  Text,
   FlatList,
   StyleSheet,
-  Button,
+  Text,
   TouchableOpacity,
+  View,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { getBookedByUserSelector } from "../../../redux/selectors";
-import { getAllBookedByUser } from "../../../redux/slices/bookSlice";
+import {
+  getBookedByUserSelector,
+  getLoadingSelector,
+} from "../../../redux/selectors";
+import {
+  cancelBooked,
+  getAllBookedByUser,
+} from "../../../redux/slices/bookSlice";
 
 const MyBook = () => {
   const dispatch = useDispatch();
   const bookedList = useSelector(getBookedByUserSelector);
+  const loading = useSelector(getLoadingSelector);
 
   const [booked, setBooked] = useState([]);
 
@@ -50,27 +56,41 @@ const MyBook = () => {
     }
   };
 
+  const getStatusText = (status) => {
+    switch (status) {
+      case "pending":
+        return "Đang xử lí";
+      case "accepted":
+        return "Thành công";
+      case "rejected":
+        return "Từ chối";
+      default:
+        return status;
+    }
+  };
+
   const handleCancelBooking = (id) => {
     console.log(`Cancel booking with id: ${id}`);
+    dispatch(cancelBooked(id)).then(() => dispatch(getAllBookedByUser()));
   };
 
   const renderItem = ({ item }) => (
     <View style={styles.card}>
       <Text style={styles.textStadium}>{item.yard.stadium.stadium_name}</Text>
       <View style={styles.innerText}>
-        <Text style={styles.textBold}>Yard: </Text>
+        <Text style={styles.textBold}>Sân nhỏ: </Text>
         <Text style={styles.text}>{item.yard.yard_name}</Text>
       </View>
       <View style={styles.innerText}>
-        <Text style={styles.textBold}>Start Time: </Text>
+        <Text style={styles.textBold}>Bắt đầu: </Text>
         <Text style={styles.text}>{formatTime(item.time_start)} giờ</Text>
       </View>
       <View style={styles.innerText}>
-        <Text style={styles.textBold}>End Time: </Text>
+        <Text style={styles.textBold}>Kết thúc: </Text>
         <Text style={styles.text}>{formatTime(item.time_end)} giờ</Text>
       </View>
       <View style={styles.innerText}>
-        <Text style={styles.textBold}>Price per Hour: </Text>
+        <Text style={styles.textBold}>Giá thuê: </Text>
         <Text style={styles.text}>{item.yard.price_per_hour} VNĐ/giờ</Text>
       </View>
       <View style={styles.innerText}>
@@ -82,7 +102,7 @@ const MyBook = () => {
             getStatusColor(item.status),
           ]}
         >
-          {item.status.toUpperCase()}
+          {getStatusText(item.status).toUpperCase()}
         </Text>
       </View>
       {item.status === "pending" && (
@@ -98,11 +118,16 @@ const MyBook = () => {
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={booked || []}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
-      />
+      {!loading && (
+        <FlatList
+          data={booked || []}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id.toString()}
+          ListEmptyComponent={
+            <Text style={styles.emptyText}>Không có đơn đặt sân nào!</Text>
+          }
+        />
+      )}
     </View>
   );
 };
@@ -117,11 +142,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 15,
     marginVertical: 10,
-    // shadowColor: "#000",
-    // shadowOffset: { width: 0, height: 2 },
-    // shadowOpacity: 0.8,
-    // shadowRadius: 2,
-    // elevation: 1,
     borderWidth: 3,
   },
   text: {
@@ -152,6 +172,13 @@ const styles = StyleSheet.create({
   },
   cancelButtonText: {
     color: "white",
+    fontWeight: "bold",
+  },
+  emptyText: {
+    textAlign: "center",
+    fontSize: 24,
+    color: "#1446a9",
+    marginTop: 20,
     fontWeight: "bold",
   },
 });
