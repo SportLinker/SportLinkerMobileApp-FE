@@ -18,13 +18,18 @@ export const ActionButtons = ({ stadiumId, stadiumDetail }) => {
 
   const [modalVisible, setModalVisible] = useState(false);
 
-  const handleDelete = () => {
-    dispatch(deleteStadium({ stadium_id: stadiumId })).then(() => {
-      dispatch(getStadiumByOwner());
-      navigation.goBack();
-      Alert.alert("Thành công", "Sân đã được xóa thành công");
-      setModalVisible(false);
-    });
+  const handleDelete = async () => {
+    const res = await dispatch(deleteStadium({ stadium_id: stadiumId }));
+    const { code } = res.payload;
+    if (code === 200 && code === 201) {
+      Alert.alert("Thành công", "Sân đã được xóa thành công!");
+    } else {
+      Alert.alert("Thất bại", "Xóa sân không thành công!");
+    }
+    dispatch(getStadiumByOwner());
+    navigation.goBack();
+
+    setModalVisible(false);
   };
 
   return (
