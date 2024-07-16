@@ -43,6 +43,8 @@ export default function YardScreen() {
     if (stadiumList) setStadiums(stadiumList);
   }, [stadiumList]);
 
+  // console.log("stadiums", stadiums);
+
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();

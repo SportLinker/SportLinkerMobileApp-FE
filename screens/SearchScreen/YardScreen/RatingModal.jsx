@@ -1,22 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
-  View,
-  Text,
   Image,
-  TouchableOpacity,
-  Modal,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  TextInput,
   KeyboardAvoidingView,
+  Modal,
   Platform,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
 } from "react-native";
 import { FontAwesome } from "react-native-vector-icons";
-import defaultAvatar from "../../../assets/default_img.png";
 import { useDispatch } from "react-redux";
+import defaultAvatar from "../../../assets/default_img.png";
 import {
+  getDetailStadiumByUser,
   ratingStadium,
-  getAllStadiumByUser,
 } from "../../../redux/slices/yardSlice";
 
 const RatingModal = ({ visible, onClose, stadium, longitude, latitude }) => {
@@ -33,13 +33,7 @@ const RatingModal = ({ visible, onClose, stadium, longitude, latitude }) => {
     };
     dispatch(ratingStadium({ stadium_id: stadium.id, feedbackData })).then(
       () => {
-        if (latitude && longitude) {
-          const formData = {
-            long: longitude,
-            lat: latitude,
-          };
-          dispatch(getAllStadiumByUser(formData));
-        }
+        dispatch(getDetailStadiumByUser(stadium.id));
       }
     );
     onClose();
