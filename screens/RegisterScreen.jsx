@@ -20,6 +20,7 @@ import { register } from "../redux/slices/userSlice";
 import { WINDOW_HEIGHT, WINDOW_WIDTH } from "../utils/constant";
 import { getUserLoadingSelector } from "../redux/selectors";
 import Loading from "../component/Loading";
+import { getArrStringSportName } from "../utils";
 
 const phoneRegExp = /^0\d{9}$/;
 
@@ -86,13 +87,6 @@ export default function RegisterScreen({ navigation }) {
   const dispatch = useDispatch();
   const loadingSelector = useSelector(getUserLoadingSelector);
 
-  //get an array string sport name from array sport object
-  const getArrStringSportName = (sportArrObj) => {
-    const sportNameArr = sportArrObj.map((sport) => sport.sport_name);
-    console.log("sportNameArr", sportNameArr);
-    return sportNameArr;
-  };
-
   return (
     <SafeAreaView
       style={{
@@ -122,7 +116,6 @@ export default function RegisterScreen({ navigation }) {
             avatar_url:
               "https://www.redditstatic.com/avatars/avatar_default_03_FF8717.png",
           };
-          console.log(formData);
           try {
             dispatch(register(formData)).then((response) => {
               if (response.error) {
