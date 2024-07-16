@@ -30,3 +30,17 @@ export const uploadImageToCloudinary = async (uri, type, fileName) => {
     console.log("Error uploading image: ", error);
   }
 };
+
+export const uploadMultipleImages = async (imageUris) => {
+  const uploadPromises = imageUris.map((uri) => {
+    return uploadImageToCloudinary(uri, "", "");
+  });
+
+  try {
+    const results = await Promise.all(uploadPromises);
+    return results.filter((result) => result !== null);
+  } catch (error) {
+    console.error("Error uploading multiple images: ", error);
+    return [];
+  }
+};

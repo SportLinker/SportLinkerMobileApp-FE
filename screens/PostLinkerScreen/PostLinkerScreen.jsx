@@ -11,9 +11,11 @@ import {
   Platform,
   ScrollView,
   Linking,
+  Alert,
 } from "react-native";
+import { screenHeight, screenWidth } from "../../component/style";
 import React, { useEffect, useLayoutEffect, useState, useRef } from "react";
-import { Avatar, Button } from "react-native-paper";
+import { Avatar, Button, Snackbar } from "react-native-paper";
 import Swiper from "react-native-swiper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { TouchableOpacity } from "react-native";
@@ -25,6 +27,11 @@ import Autolink from "react-native-autolink";
 import * as ImagePicker from "expo-image-picker";
 import SelectLocationModal from "../../component/SelectLocationModal";
 import PublicStatusModal from "./PublicStatusModal";
+import { uploadMultipleImages } from "../../services/cloudinary";
+import { useDispatch, useSelector } from "react-redux";
+import blogSlice, { postBlog } from "../../redux/slices/blogSlice";
+import { getBlogLoadingSelector } from "../../redux/selectors";
+import Loading from "../../component/Loading";
 
 const cationOptions = [
   {
@@ -33,12 +40,12 @@ const cationOptions = [
     icon: "file-image",
     color: "#5BD027",
   },
-  {
-    id: 2,
-    label: "Video",
-    icon: "play-box-outline",
-    color: "#1646A9",
-  },
+  // {
+  //   id: 2,
+  //   label: "Video",
+  //   icon: "play-box-outline",
+  //   color: "#1646A9",
+  // },
   {
     id: 3,
     label: "Vị trí",
@@ -62,11 +69,15 @@ export default function PostLinkerScreen({ navigation }) {
   const [inputHeight, setInputHeight] = useState(40); // initial height of the TextInput
 
   const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState(null);
   const [isOpen, setIsOpen] = useState(false); //open modal pick location
   const [isOpenStatusModal, setIsOpenStatusModal] = useState(false); //open modal public status
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [searchQuery, setSearchQuery] = useState(null);
   const [publicStatus, setPublicStatus] = useState("Công khai");
+
+  const dispatch = useDispatch();
+  const loading = useSelector(getBlogLoadingSelector);
 
   const onToggleStatusModal = () => {
     setIsOpenStatusModal(!isOpenStatusModal);
@@ -76,6 +87,47 @@ export default function PostLinkerScreen({ navigation }) {
     setIsOpen(!isOpen);
     if (isOpen) {
       setSearchQuery(null);
+    }
+  };
+
+  const handleSubmitPost = async () => {
+    console.log("Address", selectedLocation);
+    if (caption == "") {
+      Alert.alert("Hãy điền cảm nghĩ cho bài viết của bạn");
+    } else {
+      let imageURLs = null;
+      //handle upload image
+      if (images) {
+        dispatch(blogSlice.actions.setBlogLoading(true));
+        const results = await uploadMultipleImages(images);
+        console.log("Upload images ", results);
+        imageURLs = results.map((image) => image.url);
+        console.log("imageURLs ", imageURLs);
+        dispatch(blogSlice.actions.setBlogLoading(false));
+      }
+
+      const formData = {
+        blog_content: caption,
+        blog_address: selectedLocation?.address || "",
+        blog_sport: "",
+        images: imageURLs || [],
+        videos: [],
+      };
+      console.log("FormData", formData);
+      dispatch(postBlog(formData)).then((response) => {
+        console.log("Response", response);
+        if (
+          response?.payload &&
+          response?.payload.message == "Blog created successfully"
+        ) {
+          setSuccessMessage("Tạo bài đăng thành công!");
+          setTimeout(() => {
+            navigation.navigate("BottomTabs");
+          }, 800);
+        } else {
+          setErrorMessage("Tạo bài đăng thất bại!");
+        }
+      });
     }
   };
 
@@ -94,13 +146,13 @@ export default function PostLinkerScreen({ navigation }) {
             marginVertical: 5,
             fontWeight: "bold",
           }}
-          onPress={() => console.log("Đăng")}
+          onPress={() => handleSubmitPost()}
         >
           Đăng
         </Button>
       ),
     });
-  }, []);
+  }, [navigation, handleSubmitPost]);
 
   const pickImage = async () => {
     console.log("pickImage");
@@ -117,7 +169,7 @@ export default function PostLinkerScreen({ navigation }) {
       let imageArr = [...result.assets];
       console.log("imageArr", imageArr);
       let imagesSelect = imageArr.map((image) => image.uri);
-      if (imagesSelect.length >= 3) {
+      if (imagesSelect.length > 3) {
         alert("Bạn chỉ có thể chọn tối đa 3 ảnh.");
         return;
       }
@@ -144,6 +196,7 @@ export default function PostLinkerScreen({ navigation }) {
     const urlRegex =
       /(?:https?:\/\/|www\.)[^\s/$.?#].[^\s]*|(?:\b(?:(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+(?:[a-z]{2,}|xn--[a-z0-9]{2,})\b)(?![^<]*>|[^<>]*<\/a>))/gi;
     const matchedUrl = inputText.match(urlRegex);
+
     if (matchedUrl && matchedUrl.length > 0) {
       console.log("set links");
       setUrl(matchedUrl[0]);
@@ -163,6 +216,7 @@ export default function PostLinkerScreen({ navigation }) {
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
+        {loading && <Loading visible={loading} />}
         <ScrollView>
           <View
             style={{
@@ -206,7 +260,7 @@ export default function PostLinkerScreen({ navigation }) {
 
                   color: "#1646A9",
                 }}
-                onPress={() => onToggleStatusModal()}
+                onPress={() => alert("Tính năng đang phát triển")}
                 mode="outlined"
                 icon="chevron-down"
                 style={{
@@ -340,6 +394,22 @@ export default function PostLinkerScreen({ navigation }) {
         setPublicStatus={setPublicStatus}
         publicStatus={publicStatus}
       ></PublicStatusModal>
+      <Snackbar
+        visible={!!errorMessage}
+        duration={2000}
+        onDismiss={() => setErrorMessage(null)}
+        style={[styles.snackbarContainer, styles.snackbarContainerFail]}
+      >
+        {errorMessage}
+      </Snackbar>
+      <Snackbar
+        visible={successMessage !== ""}
+        onDismiss={() => setSuccessMessage("")}
+        duration={1000}
+        style={styles.snackbarContainer}
+      >
+        {successMessage}
+      </Snackbar>
     </SafeAreaView>
   );
 }
@@ -452,5 +522,18 @@ const styles = StyleSheet.create({
   boldText: {
     fontWeight: "bold",
     fontSize: 16,
+  },
+  snackbarContainer: {
+    borderRadius: 10,
+    alignItems: "center",
+    backgroundColor: "#1646A9",
+    textAlign: "center",
+    transform: [
+      { translateX: 0 * screenWidth },
+      { translateY: -0.02 * screenHeight },
+    ],
+  },
+  snackbarContainerFail: {
+    backgroundColor: "red",
   },
 });
