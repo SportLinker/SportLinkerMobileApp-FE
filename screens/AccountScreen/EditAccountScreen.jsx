@@ -21,6 +21,7 @@ import Loading from "../../component/Loading";
 import { Button, Portal, Snackbar } from "react-native-paper";
 import { screenHeight, screenWidth } from "../../component/style";
 import SportSelectOptions from "../../component/SportSelectOptions";
+import { getArrStringSportName } from "../../utils";
 
 const phoneRegExp = /^0\d{9}$/;
 
@@ -56,7 +57,7 @@ export default function EditAccountScreen({ navigation }) {
         textBio: userSelector.bio || "",
         isGenderSelected: userSelector.gender,
         dateOfBirth: new Date(userSelector.date_of_birth),
-        favSport: userSelector.favSport || [],
+        favSport: userSelector.favorite || [],
       }
     : {
         textName: "Ninh",
@@ -81,7 +82,7 @@ export default function EditAccountScreen({ navigation }) {
             date_of_birth: values.dateOfBirth,
             gender: values.isGenderSelected,
             bio: values.textBio,
-            // favSport: values.favSport,
+            favorite: getArrStringSportName(values.favSport),
           },
         };
         console.log("formData", formData);
@@ -196,14 +197,25 @@ export default function EditAccountScreen({ navigation }) {
                   )}
                 </View>
                 <Text style={styles.label}>Môn thể thao yêu thích:</Text>
-                <Button
-                  mode="contained"
-                  style={styles.buttonSport}
-                  labelStyle={styles.buttonText}
-                  onPress={() => setIsOpenSportModal(true)}
-                >
-                  Chọn môn thể thao
-                </Button>
+                {values.favSport.length > 0 ? (
+                  <Button
+                    mode="contained"
+                    style={styles.buttonSport}
+                    labelStyle={styles.buttonText}
+                    onPress={() => setIsOpenSportModal(true)}
+                  >
+                    Bạn đã chọn {values.favSport.length} môn thể thao
+                  </Button>
+                ) : (
+                  <Button
+                    mode="contained"
+                    style={styles.buttonSport}
+                    labelStyle={styles.buttonText}
+                    onPress={() => setIsOpenSportModal(true)}
+                  >
+                    Chọn môn thể thao
+                  </Button>
+                )}
                 <Portal>
                   <SportSelectOptions
                     visible={isOpenSportModal}
@@ -213,6 +225,7 @@ export default function EditAccountScreen({ navigation }) {
                       setFieldValue("favSport", sports)
                     }
                     sportFilter={values.favSport}
+                    favSport={values.favSport}
                   />
                 </Portal>
                 {touched.favSport && errors.favSport && (

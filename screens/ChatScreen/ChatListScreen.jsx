@@ -62,8 +62,8 @@ export default function ChatListScreen({ navigation }) {
       </View>
       <View style={styles.chatBody}>
         <ScrollView>
-          {chatList ? (
-            chatList.map((chatItem, index) => (
+          {chatList?.length != 0 ? (
+            chatList?.map((chatItem, index) => (
               <ChatListItem
                 key={chatItem.group_message_id}
                 seen={false}
@@ -72,7 +72,7 @@ export default function ChatListScreen({ navigation }) {
               />
             ))
           ) : (
-            <Text>Không có đoạn chat nào</Text>
+            <Text style={styles.chatEmpty}>Không có đoạn chat nào</Text>
           )}
         </ScrollView>
       </View>
