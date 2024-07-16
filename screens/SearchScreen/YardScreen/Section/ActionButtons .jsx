@@ -36,7 +36,7 @@ export const ActionButtons = ({ setModalVisible, stadium }) => {
         />
         <Text>Đánh giá</Text>
       </TouchableOpacity>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.iconContainer}
         onPress={() => navigation.navigate("ChatListScreen")}
       >
@@ -47,7 +47,7 @@ export const ActionButtons = ({ setModalVisible, stadium }) => {
           style={{ paddingBottom: 3 }}
         />
         <Text>Chat</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <TouchableOpacity style={styles.iconContainer} onPress={openModal}>
         <Ionicons
           name="bookmark-outline"
