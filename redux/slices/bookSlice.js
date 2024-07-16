@@ -22,7 +22,7 @@ export const getAllBookedByUser = createAsyncThunk(
     // console.log("API Response: ", bookData);
     try {
       const response = await api.get(`/bookings/getByUser`);
-      console.log("API Response: ", response.data);
+      // console.log("API Response: ", response.data);
       return response.data.metadata;
     } catch (error) {
       console.log("Error: ", JSON.stringify(error.response.data));

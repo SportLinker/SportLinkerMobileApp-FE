@@ -184,17 +184,19 @@ const CourtSelectionModal = ({ visible, onClose, stadiumId }) => {
     setShowConfirmationPopup(true);
   };
 
-  const handleConfirmation = () => {
+  const handleConfirmation = async () => {
     if (confirmedBooking) {
-      dispatch(bookYardByUser(confirmedBooking)).then((item) => {
-        if (item.status === "Created") {
-          Alert.alert(
-            "Đặt sân thành công",
-            `Bạn đã đặt sân ${selectedYard.yard_name} từ ${startTime} đến ${endTime} vào ngày ${selectedDate}`
-          );
-        }
-        dispatch(getAllBookedByUser());
-      });
+      const res = await dispatch(bookYardByUser(confirmedBooking));
+      const { code, message } = res.payload;
+      if (code === 200 || code === 201) {
+        Alert.alert(
+          "Đặt sân thành công",
+          `Bạn đã đặt sân ${selectedYard.yard_name} từ ${startTime} đến ${endTime} vào ngày ${selectedDate}`
+        );
+      } else if (code === 400) {
+        Alert.alert("Đặt sân thất bại", message);
+      }
+      dispatch(getAllBookedByUser());
 
       setShowBookingModal(false);
       setShowConfirmationPopup(false);

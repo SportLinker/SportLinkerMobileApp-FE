@@ -19,11 +19,8 @@ export const createStadium = createAsyncThunk(
 export const updateStadium = createAsyncThunk(
   "yardSlice/updateStadium",
   async ({ stadium_id, stadiumData }, { rejectWithValue }) => {
-    // console.log("stadium_id: ", stadium_id);
-    // console.log("API Response: ", stadiumData);
     try {
       const response = await api.put(`/stadiums/${stadium_id}`, stadiumData);
-      // console.log("API Response: ", response.data);
       return response.data;
     } catch (error) {
       console.log("Error: ", JSON.stringify(error.response.data));
@@ -35,11 +32,8 @@ export const updateStadium = createAsyncThunk(
 export const updateYard = createAsyncThunk(
   "yardSlice/updateYard",
   async ({ yard_id, yardData }, { rejectWithValue }) => {
-    console.log("yard_id: ", yard_id);
-    console.log("API Response: ", yardData);
     try {
       const response = await api.put(`/yards/${yard_id}`, yardData);
-      console.log("API Response: ", response.data);
       return response.data;
     } catch (error) {
       console.log("Error: ", JSON.stringify(error.response.data));
@@ -51,10 +45,8 @@ export const updateYard = createAsyncThunk(
 export const deleteStadium = createAsyncThunk(
   "yardSlice/deleteStadium",
   async ({ stadium_id }, { rejectWithValue }) => {
-    // console.log("stadium_id: ", stadium_id);
     try {
       const response = await api.delete(`/stadiums/${stadium_id}`);
-      // console.log("API Response: ", response.data);
       return response.data;
     } catch (error) {
       console.log("Error: ", JSON.stringify(error.response.data));
@@ -69,7 +61,6 @@ export const deleteYard = createAsyncThunk(
     console.log("yard_id: ", yard_id);
     try {
       const response = await api.delete(`/yards/${yard_id}`);
-      // console.log("API Response: ", response.data);
       return response.data;
     } catch (error) {
       console.log("Error: ", JSON.stringify(error.response.data));
@@ -81,10 +72,8 @@ export const deleteYard = createAsyncThunk(
 export const createYardInStadium = createAsyncThunk(
   "yardSlice/createYardInStadium",
   async ({ stadium_id, yardData }, { rejectWithValue }) => {
-    // console.log("API Response: ", stadium_id);
     try {
       const response = await api.post(`/yards/${stadium_id}`, yardData);
-      // console.log("API Response: ", response.data);
       return response.data;
     } catch (error) {
       console.log("Error: ", JSON.stringify(error.response.data));
@@ -96,10 +85,8 @@ export const createYardInStadium = createAsyncThunk(
 export const getStadiumByOwner = createAsyncThunk(
   "yardSlice/getStadiumByOwner",
   async (_, { rejectWithValue }) => {
-    // console.log("API Response: ", stadiumData);
     try {
       const response = await api.get(`/stadiums/getByOwner`);
-      // console.log("API Response: ", response.data);
       return response.data.metadata;
     } catch (error) {
       console.log("Error: ", JSON.stringify(error.response.data));
@@ -112,7 +99,6 @@ export const getAllYardByOwner = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await api.get(`/yards/getAllYardByOwner`);
-      console.log("API Response: ", response.data);
       return response.data.metadata;
     } catch (error) {
       console.log("Error: ", JSON.stringify(error.response.data));
@@ -124,10 +110,8 @@ export const getAllYardByOwner = createAsyncThunk(
 export const getAllSport = createAsyncThunk(
   "yardSlice/getSport",
   async (_, { rejectWithValue }) => {
-    // console.log("API Response: ", stadiumData);
     try {
       const response = await api.get(`/sports`);
-      // console.log("API Response: ", response.data);
       return response.data.metadata;
     } catch (error) {
       console.log("Error: ", JSON.stringify(error.response.data));
@@ -139,12 +123,9 @@ export const getAllStadiumByUser = createAsyncThunk(
   "yardSlice/getAllStadiumByUser",
   async (formData, { rejectWithValue }) => {
     const { lat, long } = formData;
-    console.log("long", long);
-    console.log("lat", lat);
     try {
       console.log(`/stadiums?long=${long}&lat=${lat}`);
       const response = await api.get(`/stadiums?long=${long}&lat=${lat}`);
-      // console.log("API Response: ", response.data);
       return response.data.metadata;
     } catch (error) {
       console.log("Error: ", JSON.stringify(error.response.data));
@@ -156,10 +137,8 @@ export const getAllStadiumByUser = createAsyncThunk(
 export const getAllYardByUser = createAsyncThunk(
   "yardSlice/getAllYardByUser",
   async ({ stadium_id }, { rejectWithValue }) => {
-    // console.log("stadium_id", stadium_id);
     try {
       const response = await api.get(`/yards/getListYardByUser/${stadium_id}`);
-      // console.log("API Response: ", response.data);
       return response.data.metadata;
     } catch (error) {
       console.log("Error: ", JSON.stringify(error.response.data));
@@ -171,10 +150,8 @@ export const getAllYardByUser = createAsyncThunk(
 export const getAllYardByYardOwner = createAsyncThunk(
   "yardSlice/getAllYardByYardOwner",
   async ({ stadium_id }, { rejectWithValue }) => {
-    // console.log("stadium_id", stadium_id);
     try {
       const response = await api.get(`/yards/getListYardByOwner/${stadium_id}`);
-      // console.log("API Response: ", response.data);
       return response.data.metadata;
     } catch (error) {
       console.log("Error: ", JSON.stringify(error.response.data));
@@ -186,10 +163,8 @@ export const getAllYardByYardOwner = createAsyncThunk(
 export const getDetailStadiumById = createAsyncThunk(
   "yardSlice/getDetailStadiumById",
   async (stadiumId, { rejectWithValue }) => {
-    // console.log("API Response: ", stadiumData);
     try {
       const response = await api.get(`/stadiums/${stadiumId}`);
-      // console.log("API Response: ", response.data.metadata);
       return response.data.metadata;
     } catch (error) {
       console.log("Error: ", JSON.stringify(error.response.data));
@@ -201,10 +176,8 @@ export const getDetailStadiumById = createAsyncThunk(
 export const getDetailYardByOwner = createAsyncThunk(
   "yardSlice/getDetailYardByOwner",
   async (yard_id, { rejectWithValue }) => {
-    // console.log("yard_id", yard_id);
     try {
       const response = await api.get(`/yards/${yard_id}`);
-      // console.log("API Response: ", response.data.metadata);
       return response.data.metadata;
     } catch (error) {
       console.log("Error: ", JSON.stringify(error.response.data));
@@ -216,10 +189,8 @@ export const getDetailYardByOwner = createAsyncThunk(
 export const getDetailStadiumByUser = createAsyncThunk(
   "yardSlice/getDetailStadiumByUser",
   async (stadium_id, { rejectWithValue }) => {
-    // console.log("yard_id", yard_id);
     try {
       const response = await api.get(`/stadiums/${stadium_id}`);
-      // console.log("API Response: ", response.data.metadata);
       return response.data.metadata;
     } catch (error) {
       console.log("Error: ", JSON.stringify(error.response.data));
@@ -231,14 +202,11 @@ export const getDetailStadiumByUser = createAsyncThunk(
 export const ratingStadium = createAsyncThunk(
   "yardSlice/ratingStadium",
   async ({ stadium_id, feedbackData }, { rejectWithValue }) => {
-    console.log("stadium_id: ", stadium_id);
-    console.log("feedbackData: ", feedbackData);
     try {
       const response = await api.post(
         `/stadiums/rating/${stadium_id}`,
         feedbackData
       );
-      console.log("API Response: ", response.data);
       return response.data;
     } catch (error) {
       console.log("Error: ", JSON.stringify(error.response.data));

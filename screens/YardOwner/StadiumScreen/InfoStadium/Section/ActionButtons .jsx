@@ -51,7 +51,9 @@ export const ActionButtons = ({ stadiumId, stadiumDetail }) => {
       <TouchableOpacity
         style={styles.iconContainer}
         onPress={() =>
-          navigation.navigate("CreateYard", { stadiumId: stadiumId })
+          navigation.navigate("CreateYard", {
+            stadiumId: stadiumId,
+          })
         }
       >
         <Ionicons
