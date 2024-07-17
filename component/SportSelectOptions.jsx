@@ -8,7 +8,7 @@ import {
 import { Button, Modal } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { getSportIcon, sports } from "../utils/constant";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 //count total sport of the system
 const TOTAL_SPORT = sports.length;
@@ -31,7 +31,9 @@ const SportSelectOptions = ({
     : sports;
 
   //temporary save the sport selected
-  const [sportSelected, setSportSelected] = useState(sportFilter);
+  const [sportSelected, setSportSelected] = useState(
+    mySport ? mySport : sportFilter
+  );
 
   //temporary count the sport selected
   const [sportSelectedCount, setSportSelectedCount] = useState(
