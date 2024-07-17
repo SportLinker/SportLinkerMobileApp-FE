@@ -200,3 +200,29 @@ export const getArrStringSportName = (sportArrObj) => {
   console.log("sportNameArr", sportNameArr);
   return sportNameArr;
 };
+
+//get the time distance from the blog created
+export function getDistanceTime(timestamp) {
+  const postDate = new Date(timestamp);
+  const currentDate = new Date();
+  const timeDifference = currentDate - postDate;
+
+  const millisecondsInAnHour = 1000 * 60 * 60;
+  const millisecondsInADay = millisecondsInAnHour * 24;
+
+  if (timeDifference < millisecondsInADay) {
+    //if the distance time less than 24hours ago
+    const hoursAgo = Math.floor(timeDifference / millisecondsInAnHour);
+    return `${hoursAgo}h`;
+  } else if (timeDifference < millisecondsInADay * 7) {
+    //if the distance time less than 7 days ago
+    const daysAgo = Math.floor(timeDifference / millisecondsInADay);
+    return `${daysAgo} ngày`;
+  } else {
+    //if the distance time more than 7 days ago
+    const day = postDate.getDate();
+    const month = postDate.getMonth() + 1;
+    const year = postDate.getFullYear();
+    return `${day}/${month}/${year}`;
+  }
+}
