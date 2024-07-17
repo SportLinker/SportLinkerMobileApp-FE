@@ -328,8 +328,8 @@ export const styles = StyleSheet.create({
     width: 300,
   },
   imageYard: {
-    width: 322,
-    height: 150,
+    width: 355,
+    height: 170,
     resizeMode: "cover",
     borderRadius: 10,
   },
@@ -352,6 +352,10 @@ export const styles = StyleSheet.create({
     position: "absolute",
     bottom: -55,
     left: 10,
+    borderWidth: 2,
+    borderColor: "white",
+  },
+  avatarYard: {
     borderWidth: 2,
     borderColor: "white",
   },

@@ -23,6 +23,8 @@ const MyBook = () => {
 
   const [booked, setBooked] = useState([]);
 
+  console.log("booked", booked);
+
   useEffect(() => {
     dispatch(getAllBookedByUser());
   }, [dispatch]);
@@ -82,13 +84,12 @@ const MyBook = () => {
         <Text style={styles.text}>{item.yard.yard_name}</Text>
       </View>
       <View style={styles.innerText}>
-        <Text style={styles.textBold}>Bắt đầu: </Text>
-        <Text style={styles.text}>{formatTime(item.time_start)} giờ</Text>
+        <Text style={styles.textBold}>Thời gian: </Text>
+        <Text style={styles.text}>
+          {formatTime(item.time_start)} -{formatTime(item.time_end)} giờ
+        </Text>
       </View>
-      <View style={styles.innerText}>
-        <Text style={styles.textBold}>Kết thúc: </Text>
-        <Text style={styles.text}>{formatTime(item.time_end)} giờ</Text>
-      </View>
+
       <View style={styles.innerText}>
         <Text style={styles.textBold}>Giá thuê: </Text>
         <Text style={styles.text}>{item.yard.price_per_hour} VNĐ/giờ</Text>

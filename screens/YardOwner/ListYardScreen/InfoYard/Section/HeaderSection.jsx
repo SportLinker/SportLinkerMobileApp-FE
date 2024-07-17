@@ -1,8 +1,6 @@
 import React from "react";
-import { Image, Text, View } from "react-native";
+import { Image, Text, View, StyleSheet } from "react-native";
 import { Avatar } from "react-native-paper";
-import { styles } from "../../../../../component/style";
-import defaultImage from "../../../../../assets/default_img.png";
 import defaultAvatar from "../../../../../assets/avatar_default.png";
 
 export default function HeaderSection({ image, yardDetail }) {
@@ -10,23 +8,33 @@ export default function HeaderSection({ image, yardDetail }) {
     <View
       style={[
         styles.container,
-        { alignItems: "center", justifyContent: "center" },
+        {
+          alignItems: "center",
+          justifyContent: "center",
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+          elevation: 5,
+        },
       ]}
     >
       <View style={styles.containerDetailYard}>
         <View style={styles.innerDetailYard}>
-          <Image source={defaultImage} style={styles.imageDetailYard} />
           {image ? (
             <Avatar.Image
               size={90}
               source={{ uri: image }}
-              style={[styles.avatar, styles.avatarShadow]}
+              style={[styles.avatarYard, styles.avatarShadow]}
             />
           ) : (
             <Avatar.Image
               size={90}
               source={defaultAvatar}
-              style={[styles.avatar, styles.avatarShadow]}
+              style={[styles.avatarYard, styles.avatarShadow]}
             />
           )}
         </View>
@@ -44,3 +52,42 @@ export default function HeaderSection({ image, yardDetail }) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 20,
+    backgroundColor: "#fff",
+    borderRadius: 10,
+  },
+  containerDetailYard: {
+    marginBottom: 10,
+  },
+  innerDetailYard: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  avatarYard: {
+    borderRadius: 45,
+  },
+  avatarShadow: {
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  detailSection: {
+    alignItems: "center",
+  },
+  avatarSpacer: {
+    marginBottom: 10,
+  },
+  textContainer: {
+    alignItems: "center",
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#333",
+  },
+});
