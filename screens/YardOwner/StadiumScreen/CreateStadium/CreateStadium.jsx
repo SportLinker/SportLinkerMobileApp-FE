@@ -85,7 +85,7 @@ const CreateStadium = ({ route }) => {
           // Update stadiumData with the Cloudinary URL
           setStadiumData({
             ...stadiumData,
-            stadium_thumbnail: response.url,
+            stadium_thumnail: response.url,
           });
         });
       } else {

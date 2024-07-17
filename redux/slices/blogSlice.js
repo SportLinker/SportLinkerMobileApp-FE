@@ -16,6 +16,24 @@ export const postBlog = createAsyncThunk(
   }
 );
 
+export const getBlogList = createAsyncThunk(
+  "bookSlice/getBlogList",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const { pageNumber, pageSize } = formData;
+      console.log("get blog list: ", pageNumber, pageSize);
+      const response = await api.get(
+        `/blogs?page_number=${pageNumber}&page_size=${pageSize}`
+      );
+      console.log("API Response: ", JSON.stringify(response.data));
+      return response.data.metadata;
+    } catch (error) {
+      console.log("Error: ", JSON.stringify(error.response.data));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const blogSlice = createSlice({
   name: "blogSlice",
   initialState: {
@@ -37,6 +55,22 @@ export const blogSlice = createSlice({
         state.loading = false;
       })
       .addCase(postBlog.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload; // Ensure consistent error handling
+      })
+      .addCase(getBlogList.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getBlogList.fulfilled, (state, action) => {
+        state.loading = false;
+        //handle whether load a new list or paging
+        if (action.payload.page_number > 1) {
+          state.blogList = [...state.blogList, action.payload];
+        } else {
+          state.blogList = action.payload;
+        }
+      })
+      .addCase(getBlogList.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload; // Ensure consistent error handling
       });

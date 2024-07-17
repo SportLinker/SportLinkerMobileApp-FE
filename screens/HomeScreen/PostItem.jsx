@@ -16,23 +16,19 @@ import LoadVideo from "./LoadVideo";
 import LoadImage from "./LoadImage";
 import Autolink from "react-native-autolink";
 import { LinkPreview } from "@flyerhq/react-native-link-preview";
+import { getDistanceTime } from "../../utils";
 
-export default function PostItem({ navigation, index, caption }) {
+export default function PostItem({ navigation, caption, blog }) {
   const [liked, setLiked] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [url, setUrl] = useState(null);
-  const [images, setImages] = useState([
-    "https://derehamstrikesbowl.co.uk/wp-content/uploads/2022/01/pool-table1.webp",
-    "https://th.bing.com/th/id/OIP.0dBKywMs9F5N7ykZfI3VKAAAAA?rs=1&pid=ImgDetMain",
-    "https://blog.dktcdn.net/files/bida-la-gi-2.jpg",
-    "https://blog.dktcdn.net/files/bida-la-gi-2.jpg",
-  ]);
+  const [images, setImages] = useState(
+    blog && blog.blog.blog_link.length > 0
+      ? blog.blog.blog_link.map((item) => item.url)
+      : []
+  );
 
-  const listVideo = [
-    "https://res.cloudinary.com/dcbsbl9zg/video/upload/v1716902043/Test/8b665e16-8e46-4fab-91da-8bacd2b2f7b3_mykxqt.mp4",
-    "https://res.cloudinary.com/dcbsbl9zg/video/upload/v1716902043/Test/8b665e16-8e46-4fab-91da-8bacd2b2f7b3_mykxqt.mp4",
-    "https://res.cloudinary.com/dcbsbl9zg/video/upload/v1716902043/Test/8b665e16-8e46-4fab-91da-8bacd2b2f7b3_mykxqt.mp4",
-  ];
+  const listVideo = [];
 
   const scaleAnim = useRef(new Animated.Value(1)).current;
 
@@ -76,12 +72,26 @@ export default function PostItem({ navigation, index, caption }) {
         <Avatar.Image
           size={40}
           source={{
-            uri: "https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcQlj3rCfLHry58AtJ8ZyBEAFPtChMddDSUSjt7C7nV3Nhsni9RIx5b0-n7LxfgerrPS6b-P-u3BOM3abuY",
+            uri: blog && blog.blog.owner?.avatar_url,
           }}
           style={styles.mr5}
         />
-        <Text style={styles.mr5}>Ninh PD</Text>
-        <Text style={styles.postTime}>1h</Text>
+        <View>
+          <View style={{ display: "flex", flexDirection: "row" }}>
+            <Text style={styles.mr5}> {blog && blog.blog.owner?.name}</Text>
+            {blog && blog.blog?.blog_address && (
+              <Text>
+                đang ở{" "}
+                <Text style={{ fontWeight: "bold" }}>
+                  {blog.blog.blog_address}
+                </Text>
+              </Text>
+            )}
+          </View>
+          <Text style={styles.postTime}>
+            {blog && getDistanceTime(blog.blog?.created_at)}
+          </Text>
+        </View>
       </View>
       <Autolink
         style={styles.postTitle}
@@ -116,9 +126,9 @@ export default function PostItem({ navigation, index, caption }) {
         />
       )}
 
-      {(images || listVideo) && (
+      {(images.length > 0 || listVideo.length > 0) && (
         <View>
-          {index % 2 === 0 ? (
+          {images.length == 0 && listVideo.length > 0 ? (
             <LoadVideo listVideo={listVideo} />
           ) : (
             <LoadImage listImages={images} />
@@ -205,6 +215,7 @@ const styles = StyleSheet.create({
   postTime: {
     color: "#707070",
     fontSize: 12,
+    marginLeft: 2,
   },
   mr5: {
     marginRight: 5,
