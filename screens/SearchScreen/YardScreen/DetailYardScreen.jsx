@@ -1,14 +1,14 @@
-import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { ScrollView } from "react-native";
-import RatingModal from "./RatingModal";
-import HeaderSection from "./Section/HeaderSection";
-import { ActionButtons } from "./Section/ActionButtons ";
-import { IntroductionSection } from "./Section/IntroductionSection";
-import { DetailsSection } from "./Section/DetailsSection";
+import { Alert, ScrollView } from "react-native"; // Import Alert from React Native
 import { useDispatch, useSelector } from "react-redux";
 import { getStadiumDetailByUserSelector } from "../../../redux/selectors";
 import { getDetailStadiumByUser } from "../../../redux/slices/yardSlice";
+import RatingModal from "./RatingModal";
+import { ActionButtons } from "./Section/ActionButtons ";
+import { DetailsSection } from "./Section/DetailsSection";
+import HeaderSection from "./Section/HeaderSection";
+import { IntroductionSection } from "./Section/IntroductionSection";
+import { Snackbar } from "react-native-paper";
 
 const DetailYardScreen = ({ route }) => {
   const { stadium, latitude, longitude } = route?.params;
@@ -23,18 +23,26 @@ const DetailYardScreen = ({ route }) => {
   const [stadiumOwner, setStadiumOwner] = useState(stadium.owner);
   const [modalVisible, setModalVisible] = useState(false);
   const [stadiumDetail, setStadiumDetail] = useState(false);
-
-  console.log("stadiumDetail", stadiumDetail);
+  const [snackbarVisible, setSnackbarVisible] = useState(false);
 
   useEffect(() => {
     dispatch(getDetailStadiumByUser(stadium.id));
   }, []);
+
+  console.log("stadiumDetail", stadiumDetail);
 
   useEffect(() => {
     if (stadiumDetailById) {
       setStadiumDetail(stadiumDetailById);
     }
   }, [stadiumDetailById]);
+
+  const handleRating = () => {
+    if (stadiumDetail && stadiumDetail.can_rating) {
+      setSnackbarVisible(true);
+    }
+    setModalVisible(true);
+  };
 
   return (
     <ScrollView style={{ backgroundColor: "#fff" }}>
@@ -44,20 +52,29 @@ const DetailYardScreen = ({ route }) => {
         stadiumOwner={stadiumOwner}
       />
       <ActionButtons
-        setModalVisible={setModalVisible}
+        handleRating={handleRating}
         liked={liked}
         setLiked={setLiked}
         stadium={stadium}
       />
       <IntroductionSection stadium={stadiumDetail} />
       <DetailsSection stadium={stadiumDetail} />
-      <RatingModal
-        stadium={stadiumDetail}
-        visible={modalVisible}
-        onClose={() => setModalVisible(false)}
-        longitude={longitude}
-        latitude={latitude}
-      />
+      <Snackbar
+        visible={snackbarVisible}
+        onDismiss={() => setSnackbarVisible(false)}
+        duration={3000}
+      >
+        Bạn đã đánh giá sân này!
+      </Snackbar>
+      {stadiumDetail && !stadiumDetail.can_rating ? (
+        <RatingModal
+          stadium={stadiumDetail}
+          visible={modalVisible}
+          onClose={() => setModalVisible(false)}
+          longitude={longitude}
+          latitude={latitude}
+        />
+      ) : null}
     </ScrollView>
   );
 };
