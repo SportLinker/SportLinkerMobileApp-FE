@@ -1,6 +1,6 @@
 import { AntDesign } from "@expo/vector-icons";
 import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { styles } from "../../../component/style";
 import { useSelector } from "react-redux";
 import { getUserSelector } from "../../../redux/selectors";
@@ -18,28 +18,30 @@ const Profile = () => {
               {"Thể thao yêu thích".toUpperCase()}
             </Text>
           </View>
-          <View style={styles.centerStyle}>
-            {favorite.map((item, index) => (
-              <View key={index} style={styles.innerInfoSport}>
-                <TouchableOpacity
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    marginHorizontal: 20,
-                    paddingVertical: 20,
-                  }}
-                >
-                  <View style={{ display: "flex", flexDirection: "row" }}>
-                    <Text>{item}</Text>
-                  </View>
-                  <View>
-                    <AntDesign name="right" size={24} color="#000" />
-                  </View>
-                </TouchableOpacity>
-              </View>
-            ))}
-          </View>
+          <ScrollView>
+            <View style={styles.centerStyle}>
+              {favorite.map((item, index) => (
+                <View key={index} style={styles.innerInfoSport}>
+                  <TouchableOpacity
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      marginHorizontal: 20,
+                      paddingVertical: 20,
+                    }}
+                  >
+                    <View>
+                      <Text style={styles.textFav}>{item}</Text>
+                    </View>
+                    <View>
+                      <AntDesign name="right" size={24} color="#000" />
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </View>
+          </ScrollView>
         </>
       ) : (
         <Text style={styles.favSportEmpty}>

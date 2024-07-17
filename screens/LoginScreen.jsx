@@ -28,7 +28,7 @@ import firebase from "@react-native-firebase/app";
 
 const LoginScreen = ({ navigation }) => {
   const [loginForm, setLoginForm] = useState({
-    username: "ninh17",
+    username: "ninh18",
     password: "123456",
   });
   const [errorMessage, setErrorMessage] = useState(null);
