@@ -23,9 +23,6 @@ const StadiumScreen = () => {
 
   const [stadiumList, setStadiumList] = useState([]);
 
-  // console.log("stadium", stadium);
-  // console.log("stadiumList", stadiumList);
-
   useEffect(() => {
     dispatch(getStadiumByOwner());
   }, [dispatch]);
