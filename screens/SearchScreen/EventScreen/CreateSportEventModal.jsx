@@ -1,31 +1,29 @@
+import { useNavigation } from "@react-navigation/native";
+import { Formik } from "formik";
 import React, { useState } from "react";
 import {
-  View,
+  Dimensions,
   Modal,
   StyleSheet,
   Text,
   TouchableOpacity,
-  Alert,
-  Dimensions,
+  View
 } from "react-native";
 import { Button, Snackbar } from "react-native-paper";
-import { Formik } from "formik";
-import * as Yup from "yup";
-import StepOne from "./Step/StepOne";
-import StepTwo from "./Step/StepTwo";
-import StepThree from "./Step/StepThree";
-import { calculateEventTimes } from "../../../utils";
 import { useDispatch, useSelector } from "react-redux";
+import * as Yup from "yup";
+import { getUserSelector } from "../../../redux/selectors";
 import {
   createEvent,
-  getDetailEvent,
   getEventList,
-  updateEvent,
+  updateEvent
 } from "../../../redux/slices/eventSlice";
-import { useNavigation } from "@react-navigation/native";
 import { getListMessage } from "../../../redux/slices/messageSlice";
-import { getUserSelector } from "../../../redux/selectors";
+import { calculateEventTimes } from "../../../utils";
 import { DEFAULT_DISTACNCE, getSportObj } from "../../../utils/constant";
+import StepOne from "./Step/StepOne";
+import StepThree from "./Step/StepThree";
+import StepTwo from "./Step/StepTwo";
 
 const CreateSportEventModal = ({ visible, onClose, eventDetail }) => {
   const getUserInfo = useSelector(getUserSelector);
