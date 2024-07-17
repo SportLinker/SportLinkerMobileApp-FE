@@ -3,6 +3,8 @@ export const getUserSelector = (state) => state.userSlice.userInfo;
 export const getUserLoadingSelector = (state) => state.userSlice.loading;
 
 // EVENT
+
+export const getAllPlayersSelector = (state) => state.eventSlice.userList;
 export const getEventSelector = (state) => state.eventSlice.event;
 export const getEventListSelector = (state) => state.eventSlice.eventList;
 export const getMyEventListSelector = (state) => state.eventSlice.myEventList;
@@ -26,6 +28,8 @@ export const getAllStadiumByUserSelector = (state) =>
   state.yardSlice.stadiumListByUser;
 export const getAllYardByUserSelector = (state) =>
   state.yardSlice.yardListByUser;
+export const getStadiumDetailByUserSelector = (state) =>
+  state.yardSlice.stadiumByUser;
 
 //PROFILE
 export const getBookedByUserSelector = (state) => state.bookSlice.booked;

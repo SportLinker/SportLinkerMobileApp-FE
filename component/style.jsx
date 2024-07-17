@@ -42,6 +42,10 @@ export const styles = StyleSheet.create({
     elevation: 5, // Chỉ áp dụng cho Android
     marginBottom: 20,
   },
+  textFav: {
+    fontSize: 15,
+    fontWeight: "600",
+  },
   profileCoach: {
     borderRadius: 20,
     backgroundColor: "#fff", // Màu nền của phần tử
@@ -328,8 +332,8 @@ export const styles = StyleSheet.create({
     width: 300,
   },
   imageYard: {
-    width: 322,
-    height: 150,
+    width: 355,
+    height: 170,
     resizeMode: "cover",
     borderRadius: 10,
   },
@@ -352,6 +356,10 @@ export const styles = StyleSheet.create({
     position: "absolute",
     bottom: -55,
     left: 10,
+    borderWidth: 2,
+    borderColor: "white",
+  },
+  avatarYard: {
     borderWidth: 2,
     borderColor: "white",
   },

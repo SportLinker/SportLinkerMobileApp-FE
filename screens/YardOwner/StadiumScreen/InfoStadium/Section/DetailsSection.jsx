@@ -48,11 +48,12 @@ export function DetailsSection({ stadiumDetail }) {
             flexDirection: "row",
           }}
         >
-          <Text style={{ fontSize: 16 }}>Lượt thích</Text>
+          <Text style={{ fontSize: 16 }}>Đánh giá</Text>
           <Text style={{ marginHorizontal: 6 }}>●</Text>
           <Text style={{ fontSize: 16 }}>
             <Text style={{ fontWeight: 700 }}>
-              {stadiumDetail.stadium_rating}
+              {stadiumDetail.stadium_rating} ({stadiumDetail.total_rating} lượt
+              thích)
             </Text>
           </Text>
         </View>
