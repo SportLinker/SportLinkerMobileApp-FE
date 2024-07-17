@@ -142,7 +142,13 @@ export default function ReChargeModal({ modalVisible, setModalVisible }) {
               <Text style={styles.modalTitle}>Chọn phương thức nạp tiền</Text>
               <View style={{ flexDirection: "row" }}>
                 <TouchableOpacity
-                  onPress={() => openAmountModal("Momo")}
+                  onPress={() => {
+                    Alert.alert(
+                      "Tính năng đang phát triển",
+                      "Hãy sử dụng ngân hàng."
+                    );
+                    // openAmountModal("Momo");
+                  }}
                   style={styles.modalOption}
                 >
                   <Image
