@@ -10,15 +10,36 @@ import {
 } from "react-native";
 import { FAB } from "react-native-paper";
 import PostItem from "./PostItem";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import socket from "../../services/socket";
 import NotificationComponent from "../../component/NotificationComponent";
+import { getBlogList } from "../../redux/slices/blogSlice";
+import { getBlogListSelector } from "../../redux/selectors";
+
+const PAGE_SIZE = 10;
 
 const HomeScreen = ({ navigation }) => {
   const { triggerNotification } = NotificationComponent();
   const [refreshing, setRefreshing] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const [posts, setPosts] = useState([1, 2, 3]);
+  const [pageNumber, setPageNumber] = useState(1);
+
+  const blogListSelector = useSelector(getBlogListSelector);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    try {
+      const formData = {
+        pageNumber: 1,
+        pageSize: PAGE_SIZE,
+      };
+      dispatch(getBlogList(formData));
+    } catch (error) {
+      console.log("Error getting blog list", error);
+    }
+  }, []);
 
   const handleScroll = (event) => {
     const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
@@ -28,25 +49,47 @@ const HomeScreen = ({ navigation }) => {
         contentSize.height - paddingToBottom &&
       !loadingMore
     ) {
+      //don't load more if the page number is equal to the total page
+      if (
+        blogListSelector.total_page &&
+        pageNumber == blogListSelector.total_page
+      ) {
+        return;
+      }
       loadMorePosts();
     }
   };
 
   const loadMorePosts = () => {
-    setLoadingMore(true);
-    console.log("Load more posts...");
-    const newPosts = [4, 5, 6];
-    setPosts((prevPosts) => prevPosts.concat(newPosts));
-    setTimeout(() => {
-      setLoadingMore(false);
-    }, 1000);
+    try {
+      setLoadingMore(true);
+      setPageNumber((prevState) => prevState + 1);
+      console.log("Load more posts...");
+      const formData = {
+        pageNumber: pageNumber + 1,
+        pageSize: PAGE_SIZE,
+      };
+      dispatch(getBlogList(formData)).then((response) => {
+        setLoadingMore(false);
+      });
+    } catch (error) {
+      console.log("Error load more blog list", error);
+    }
   };
 
   const onRefresh = () => {
-    setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 1000);
+    try {
+      setRefreshing(true);
+      const formData = {
+        pageNumber: 1,
+        pageSize: PAGE_SIZE,
+      };
+      dispatch(getBlogList(formData)).then((response) => {
+        setRefreshing(false);
+      });
+    } catch (error) {
+      console.log("Error refresh blog list", error);
+    }
   };
 
   const { userInfo } = useSelector((state) => state.userSlice);
@@ -110,14 +153,15 @@ const HomeScreen = ({ navigation }) => {
           }
           style={{ paddingHorizontal: 10 }}
         >
-          {posts.map((item, index) => (
-            <PostItem
-              caption="Tìm bạn cùng chơi bi-a ở Thủ Đức, từ 18 - 30 tuổi, ưu tiên các bạn nam github.com google.com"
-              key={index}
-              index={index}
-              navigation={navigation}
-            />
-          ))}
+          {blogListSelector &&
+            blogListSelector.list_blog.map((item, index) => (
+              <PostItem
+                caption={item.blog.blog_content}
+                blog={item}
+                key={index + item?.id}
+                navigation={navigation}
+              />
+            ))}
         </ScrollView>
       </View>
     </SafeAreaView>
