@@ -1,5 +1,5 @@
 import { AntDesign } from "@expo/vector-icons";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   SafeAreaView,
   ScrollView,
@@ -10,6 +10,13 @@ import {
 import { Avatar } from "react-native-paper";
 import { styles } from "../../../component/style";
 import FilterEventOptionList from "../EventScreen/FilterEventOptionList";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllPlayers } from "../../../redux/slices/eventSlice";
+import {
+  getAllPlayersSelector,
+  getEventLoadingtSelector,
+} from "../../../redux/selectors";
+import Loading from "../../../component/Loading";
 
 export const mock_data = [
   { id: 1, name: "Tai Vo", star: "true" },
@@ -24,48 +31,115 @@ export const mock_data = [
 ];
 
 export default function PlayerScreen({ navigation }) {
-  return (
-    <SafeAreaView style={{ backgroundColor: "#fff" }}>
-      {/* <FilterEventOptionList /> */}
-      <ScrollView>
-        <View style={{ alignItems: "center", marginTop: 20 }}>
-          {mock_data.map((item) => (
-            <View key={item.id} style={styles.containerPlayer}>
-              <TouchableOpacity
-                onPress={() => navigation.navigate("DetailPlayerScreen")}
-              >
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
+  const dispatch = useDispatch();
+  const getAllPlayersFromRedux = useSelector(getAllPlayersSelector);
+  const eventLoadingtSelector = useSelector(getEventLoadingtSelector);
 
-                    marginLeft: 20,
-                  }}
-                >
-                  <Avatar.Image
-                    size={60}
-                    source={{
-                      uri: "https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcQlj3rCfLHry58AtJ8ZyBEAFPtChMddDSUSjt7C7nV3Nhsni9RIx5b0-n7LxfgerrPS6b-P-u3BOM3abuY",
-                    }}
-                  />
-                  <Text
-                    style={{
-                      marginHorizontal: 20,
-                      fontSize: 20,
-                      fontWeight: "600",
-                    }}
+  useEffect(() => {
+    dispatch(getAllPlayers());
+  }, []);
+
+  console.log(eventLoadingtSelector);
+
+  if (!getAllPlayersFromRedux) return <Text>Loading...</Text>;
+
+  return (
+    <SafeAreaView style={{ backgroundColor: "#fff", minHeight: 600 }}>
+      {/* <FilterEventOptionList /> */}
+      {eventLoadingtSelector ? (
+        <Loading
+          message={"Loading..."}
+          visible={eventLoadingtSelector}
+        ></Loading>
+      ) : (
+        <ScrollView>
+          {getAllPlayersFromRedux.length > 0 ? (
+            <View
+              style={{ alignItems: "center", marginTop: 20, paddingBottom: 30 }}
+            >
+              {getAllPlayersFromRedux.map((item) => (
+                <View key={item.id} style={styles.containerPlayer}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate("DetailPlayerScreen", { item })
+                    }
                   >
-                    {item.name}
-                  </Text>
-                  {item.star === "true" && (
-                    <AntDesign name="star" size={24} color="#F9A825" />
-                  )}
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        marginLeft: 20,
+                      }}
+                    >
+                      <Avatar.Image
+                        size={40}
+                        source={{
+                          uri: item.avatar_url,
+                        }}
+                      />
+                      <View>
+                        <Text
+                          style={{
+                            marginHorizontal: 20,
+                            fontSize: 16,
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {item.username}
+                        </Text>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                          }}
+                        >
+                          <Text
+                            style={{
+                              marginLeft: 20,
+                              marginRight: 10,
+                              fontSize: 14,
+                            }}
+                          >
+                            {item.name}
+                          </Text>
+                          <Text>-</Text>
+                          {item.favorite?.length - 1 < 2 &&
+                          item.favorite?.length > 0 ? (
+                            <Text> Yêu thích {item.favorite[0]}</Text>
+                          ) : item.favorite?.length > 0 ? (
+                            <Text
+                              style={{
+                                fontSize: 14,
+                                marginLeft: 10,
+                              }}
+                            >
+                              Yêu thích {item.favorite[0]} và{" "}
+                              {item.favorite?.length - 1} môn
+                            </Text>
+                          ) : (
+                            <Text> Yêu thích không có</Text>
+                          )}
+                        </View>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
                 </View>
-              </TouchableOpacity>
+              ))}
             </View>
-          ))}
-        </View>
-      </ScrollView>
+          ) : (
+            <Text
+              style={{
+                color: "#1646A9",
+                fontSize: 20,
+                textAlign: "center",
+                fontWeight: "bold",
+                marginTop: 20,
+              }}
+            >
+              Không có thông tin phù hợp
+            </Text>
+          )}
+        </ScrollView>
+      )}
     </SafeAreaView>
   );
 }

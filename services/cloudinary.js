@@ -8,6 +8,7 @@ const formatKey = (key) => {
 };
 
 export const uploadImageToCloudinary = async (uri, type, fileName) => {
+  console.log("KEY: ", CLOUDINARY_CLOUD_NAME, CLOUDINARY_UPLOAD_PRESET_NAME);
   console.log("uri:", uri, "type:", type, "file:", fileName);
   const data = new FormData();
   data.append("file", {

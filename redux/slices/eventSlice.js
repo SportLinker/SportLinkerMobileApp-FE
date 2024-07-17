@@ -54,7 +54,7 @@ export const getEventList = createAsyncThunk(
       const data = await api.get(
         `/matches?lat=${lat}&long=${long}&distance=${distance}&start_time=${start_time}&end_time=${end_time}&sport_name=${sport_name}`
       );
-
+      // console.log("get event: " + JSON.stringify(data.data.metadata));
       return data.data.metadata;
     } catch (error) {
       console.log("error", error);
@@ -158,11 +158,121 @@ export const unjoinEventByUserOrOwner = createAsyncThunk(
   }
 );
 
+export const getAllPlayers = createAsyncThunk(
+  "eventSlice/getAllPlayers",
+  async (_, { rejectWithValue }) => {
+    console.log("API getAllPlayers: ");
+    try {
+      const response = await api.get(`/users/getAllPlayer`);
+
+      console.log("API getAllPlayers: ", JSON.stringify(response.data)); // Log the API response
+      return response.data.metadata; // Return the response data
+    } catch (error) {
+      console.log("Error: ", JSON.stringify(error.response.data));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const getAllStadiumByUser = createAsyncThunk(
+  "yardSlice/getAllStadiumByUser",
+  async (formData, { rejectWithValue }) => {
+    const { lat, long } = formData;
+    try {
+      console.log(`/stadiums?long=${long}&lat=${lat}`);
+      const response = await api.get(`/stadiums?long=${long}&lat=${lat}`);
+      console.log(response.data.metadata);
+      return response.data.metadata;
+    } catch (error) {
+      console.log("Error: ", JSON.stringify(error.response.data));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const searchAdvanceListUser = createAsyncThunk(
+  "eventSlice/searchAdvanceListUser",
+  async ({ page_size, page_number, search }, { rejectWithValue }) => {
+    console.log("Props searchAdvanceListUser :", {
+      page_size,
+      page_number,
+      search,
+    }); // Log the props
+
+    try {
+      const response = await api.get(
+        `/searchs?page_size=${page_size}&page_number=${page_number}&search=${search}&type=user`
+      );
+
+      console.log("API searchAdvanceListUser: ", JSON.stringify(response.data)); // Log the API response
+      return response.data.metadata; // Return the response data
+    } catch (error) {
+      console.log("Error: ", JSON.stringify(error.response.data));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const searchAdvanceListMatch = createAsyncThunk(
+  "eventSlice/searchAdvanceListMatch",
+  async ({ page_size, page_number, search }, { rejectWithValue }) => {
+    console.log("Props searchAdvanceListMatch :", {
+      page_size,
+      page_number,
+      search,
+    }); // Log the props
+
+    try {
+      const response = await api.get(
+        `/searchs?page_size=${page_size}&page_number=${page_number}&search=${search}&type=match`
+      );
+
+      console.log(
+        "API searchAdvanceListMatch: ",
+        JSON.stringify(response.data.metadata)
+      ); // Log the API response
+      return response.data.metadata; // Return the response data
+    } catch (error) {
+      console.log("Error: ", JSON.stringify(error.response.data));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+export const searchAdvanceLisYard = createAsyncThunk(
+  "eventSlice/searchAdvanceLisYard",
+  async (
+    { page_size, page_number, search, latitude, longitude },
+    { rejectWithValue }
+  ) => {
+    console.log("Props searchAdvanceLisYard :", {
+      page_size,
+      page_number,
+      search,
+      longitude,
+      latitude,
+    }); // Log the props
+
+    try {
+      const response = await api.get(
+        `/searchs?page_size=${page_size}&page_number=${page_number}&search=${search}&type=stadium&long=${longitude}&lat=${latitude}`
+      );
+
+      console.log("API searchAdvanceLisYard: ", JSON.stringify(response.data)); // Log the API response
+      return response.data.metadata; // Return the response data
+    } catch (error) {
+      console.log("Error: ", JSON.stringify(error.response.data));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const eventSlice = createSlice({
   name: "eventSlice",
   initialState: {
     eventList: null,
     myEventList: null,
+    userList: null,
+    stadiumListByUser: null,
     event: null,
     loading: false,
     error: null,
@@ -259,6 +369,61 @@ export const eventSlice = createSlice({
         state.loading = false;
       })
       .addCase(updateEvent.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error;
+      })
+      .addCase(getAllPlayers.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAllPlayers.fulfilled, (state, action) => {
+        state.userList = action.payload;
+        state.loading = false;
+      })
+      .addCase(getAllPlayers.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error;
+      })
+      .addCase(getAllStadiumByUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAllStadiumByUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.stadiumListByUser = action.payload;
+      })
+      .addCase(getAllStadiumByUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(searchAdvanceListUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(searchAdvanceListUser.fulfilled, (state, action) => {
+        state.userList = action.payload;
+        state.loading = false;
+      })
+      .addCase(searchAdvanceListUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error;
+      })
+      .addCase(searchAdvanceListMatch.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(searchAdvanceListMatch.fulfilled, (state, action) => {
+        state.eventList = action.payload;
+        state.loading = false;
+      })
+      .addCase(searchAdvanceListMatch.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error;
+      })
+      .addCase(searchAdvanceLisYard.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(searchAdvanceLisYard.fulfilled, (state, action) => {
+        state.stadiumListByUser = action.payload;
+        state.loading = false;
+      })
+      .addCase(searchAdvanceLisYard.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error;
       });

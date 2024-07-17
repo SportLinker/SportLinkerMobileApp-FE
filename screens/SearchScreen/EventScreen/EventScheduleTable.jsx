@@ -256,6 +256,21 @@ const EventScheduleTable = ({ eventListData, loading }) => {
   return (
     <View style={{ flex: 1 }}>
       {loading && <Loading message={"Loading..."} visible={loading}></Loading>}
+      {!loading && (!eventList || eventList?.length == 0) && (
+        <View>
+          <Text
+            style={{
+              color: "#1646A9",
+              fontSize: 20,
+              fontWeight: "bold",
+              textAlign: "center",
+              paddingTop: 30,
+            }}
+          >
+            Không tìm thấy trận đấu nào!
+          </Text>
+        </View>
+      )}
       {!loading && eventList && (
         <SectionList
           stickySectionHeadersEnabled
@@ -280,22 +295,6 @@ const EventScheduleTable = ({ eventListData, loading }) => {
             </View>
           )}
         />
-      )}
-
-      {!loading && (!eventList || eventList.length == 0) && (
-        <View>
-          <Text
-            style={{
-              color: "#1646A9",
-              fontSize: 20,
-              fontWeight: "bold",
-              textAlign: "center",
-              paddingTop: 30,
-            }}
-          >
-            Không tìm thấy trận đấu nào!
-          </Text>
-        </View>
       )}
     </View>
   );
