@@ -43,8 +43,6 @@ export default function YardScreen() {
     if (stadiumList) setStadiums(stadiumList);
   }, [stadiumList]);
 
-  // console.log("stadiums", stadiums);
-
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -74,20 +72,7 @@ export default function YardScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <FilterEventOptionList /> */}
-      {/* <View style={styles.locationWrapper}>
-        {address ? (
-          <Text style={styles.locationText}>
-            Current Location: {address.street || ""}, {address.city || ""},{" "}
-            {address.region || ""}, {address.country || ""}
-          </Text>
-        ) : location ? (
-          <ActivityIndicator size="large" color="#0000ff" />
-        ) : (
-          <Text>{errorMsg || "Waiting..."}</Text>
-        )}
-      </View> */}
-      <ScrollView style={{ height: "90%" }}>
+      <ScrollView>
         <YardItem
           data={stadiums}
           latitude={latitude}

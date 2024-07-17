@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import * as ImagePicker from "expo-image-picker";
-import { Snackbar, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 import {
   createStadium,
   updateStadium,
@@ -85,7 +85,7 @@ const CreateStadium = ({ route }) => {
           // Update stadiumData with the Cloudinary URL
           setStadiumData({
             ...stadiumData,
-            stadium_thumbnail: response.url,
+            stadium_thumnail: response.url,
           });
         });
       } else {
@@ -96,8 +96,6 @@ const CreateStadium = ({ route }) => {
       // Handle error as needed (e.g., show an alert)
     }
   };
-
-  // console.log("stadiumId", stadiumId);
 
   const handleCreateStadium = async () => {
     try {
@@ -119,15 +117,30 @@ const CreateStadium = ({ route }) => {
       setIsLoading(true);
 
       if (stadiumId) {
-        await dispatch(
+        const response = await dispatch(
           updateStadium({ stadium_id: stadiumId, stadiumData: stadiumUpdate })
         );
+
+        if (response.payload && response.payload.code === 200) {
+          Alert.alert("Thành công", "Sân đã cập nhật thành công!");
+        } else {
+          Alert.alert("Thất bại", "Cập nhật sân thất bại!");
+        }
         navigation.goBack();
-        Alert.alert("Thành công", "Sân đã cập nhật thành công!");
       } else {
-        await dispatch(createStadium(stadiumData));
+        const response = await dispatch(createStadium(stadiumData));
+        const { code } = response.payload;
+
+        if (code === 200 || code === 201) {
+          Alert.alert("Thành công", "Sân đã được tạo mới thành công!");
+        } else if (code === 400) {
+          Alert.alert("Thất bại", "Sân đã tồn tại ở cùng vị trí.");
+        } else if (code === 500) {
+          Alert.alert("Thất bại", "Hệ thống đang bảo trì!");
+        } else {
+          Alert.alert("Thất bại", "Đã xảy ra lỗi!");
+        }
         navigation.goBack();
-        Alert.alert("Thành công", "Sân đã được tạo mới thành công!");
       }
 
       await dispatch(getDetailStadiumById(stadiumId));
@@ -136,7 +149,7 @@ const CreateStadium = ({ route }) => {
     } catch (error) {
       setIsLoading(false);
       console.error("Failed to create/update stadium:", error);
-      // Handle error message if needed
+      Alert.alert("Thất bại", "Đã xảy ra lỗi khi tạo/cập nhật sân.");
     }
   };
 

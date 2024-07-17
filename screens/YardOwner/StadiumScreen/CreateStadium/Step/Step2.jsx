@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   ActivityIndicator,
@@ -24,30 +24,40 @@ const Step2 = ({
   fetchLocationData,
   stadiumId,
 }) => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showFlatList, setShowFlatList] = useState(true); // State to toggle FlatList visibility
+
   useEffect(() => {
-    if (stadiumData.stadium_address) {
+    if (searchQuery) {
       const delayDebounceFn = setTimeout(() => {
-        fetchLocationData(
-          stadiumData.stadium_address,
-          setIsLoading,
-          setLocations
-        );
+        fetchLocationData(searchQuery, setIsLoading, setLocations);
       }, 500);
       return () => clearTimeout(delayDebounceFn);
     }
-  }, [stadiumData.stadium_address]);
+  }, [searchQuery]);
 
   const validateStep2 = () => {
-    if (
-      stadiumData.stadium_address
-      // &&
-      // stadiumData.stadium_lat &&
-      // stadiumData.stadium_long
-    ) {
+    if (stadiumData.stadium_address) {
       nextStep();
     } else {
       alert("Please select a location.");
     }
+  };
+
+  const handleSelectLocation = (item) => {
+    setStadiumData({
+      ...stadiumData,
+      stadium_address: item.address,
+      stadium_lat: item.latitude,
+      stadium_long: item.longitude,
+    });
+    setSearchQuery("");
+    setShowFlatList(false);
+  };
+
+  const handleClearSearch = () => {
+    setSearchQuery("");
+    setShowFlatList(false);
   };
 
   return (
@@ -70,43 +80,38 @@ const Step2 = ({
       <Text style={styles.text}>
         Lưu ý: Không thể thay đổi được địa chỉ sau khi đã tạo!!!
       </Text>
+      <Text style={{ fontWeight: "bold", fontSize: 18, marginVertical: 5 }}>
+        Địa điểm đã chọn: {stadiumData.stadium_address}
+      </Text>
       <Searchbar
         placeholder="Địa chỉ Sân Vận Động"
-        value={stadiumData.stadium_address}
-        onChangeText={(text) =>
-          setStadiumData({ ...stadiumData, stadium_address: text })
-        }
+        value={searchQuery}
+        onChangeText={(text) => {
+          setSearchQuery(text);
+          setShowFlatList(true);
+        }}
         clearIcon={() => (
           <Icon
             name="close-circle"
             size={20}
             color="gray"
-            onPress={() =>
-              setStadiumData({ ...stadiumData, stadium_address: "" })
-            }
+            onPress={handleClearSearch}
           />
         )}
         style={styles.searchbar}
       />
+
       {isLoading && <ActivityIndicator size="large" color="#0000ff" />}
-      <FlatList
-        scrollEnabled
-        data={locations}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => (
-          <LocationItem
-            item={item}
-            onSelect={(item) => {
-              setStadiumData({
-                ...stadiumData,
-                stadium_address: item.address,
-                stadium_lat: item.latitude,
-                stadium_long: item.longitude,
-              });
-            }}
-          />
-        )}
-      />
+      {showFlatList && (
+        <FlatList
+          scrollEnabled
+          data={locations}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <LocationItem item={item} onSelect={handleSelectLocation} />
+          )}
+        />
+      )}
     </View>
   );
 };
