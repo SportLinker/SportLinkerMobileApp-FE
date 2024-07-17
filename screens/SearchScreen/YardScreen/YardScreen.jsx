@@ -11,16 +11,17 @@ import {
 import { yard_data } from "../../../utils/constant";
 import YardItem from "./YardItem";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllStadiumByUser } from "../../../redux/slices/yardSlice";
+import { getAllStadiumByUser } from "../../../redux/slices/eventSlice";
 import {
   getAllStadiumByUserSelector,
+  getEventLoadingtSelector,
   getLoadingSelector,
 } from "../../../redux/selectors";
 
 export default function YardScreen() {
   const dispatch = useDispatch();
   const stadiumList = useSelector(getAllStadiumByUserSelector);
-  const loading = useSelector(getLoadingSelector);
+  const loading = useSelector(getEventLoadingtSelector);
 
   const [location, setLocation] = useState(null);
   const [address, setAddress] = useState(null);
