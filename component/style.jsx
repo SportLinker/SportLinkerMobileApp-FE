@@ -42,6 +42,10 @@ export const styles = StyleSheet.create({
     elevation: 5, // Chỉ áp dụng cho Android
     marginBottom: 20,
   },
+  textFav: {
+    fontSize: 15,
+    fontWeight: "600",
+  },
   profileCoach: {
     borderRadius: 20,
     backgroundColor: "#fff", // Màu nền của phần tử

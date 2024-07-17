@@ -21,6 +21,33 @@ export const paymentRecharge = createAsyncThunk(
   }
 );
 
+export const paymentWithDraw = createAsyncThunk(
+  "paymentSlice/paymentWithDraw",
+  async (
+    { bank_account, bank_name, bank_short_name, bank_logo, money },
+    { rejectWithValue }
+  ) => {
+    console.log("money:", money);
+
+    try {
+      // Change logic in there
+      const data = await api.post(`/payments?type=withdraw&method=bank`, {
+        amount: parseInt(money),
+        bank_account,
+        bank_name,
+        bank_short_name,
+        bank_logo,
+      });
+
+      console.log("paymentWithDraw data:", data.data);
+      return data.data;
+    } catch (error) {
+      console.log("error", error);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const updateStatusPayement = createAsyncThunk(
   "paymentSlice/updateStatusPayement",
   async ({ transactionCode }, { rejectWithValue }) => {
@@ -105,6 +132,16 @@ export const paymentSlice = createSlice({
         state.listTransaction = action.payload;
       })
       .addCase(getListTransactionByUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload; // Ensure consistent error handling
+      })
+      .addCase(paymentWithDraw.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(paymentWithDraw.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(paymentWithDraw.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload; // Ensure consistent error handling
       });
