@@ -8,6 +8,7 @@ import Loading from "../../../component/Loading";
 
 export default function YardItem({ data, loading, latitude, longitude }) {
   const navigation = useNavigation();
+  console.log("YardItem: ", data);
 
   return (
     <View style={{ marginTop: 20, marginHorizontal: "auto", minHeight: 400 }}>
@@ -15,7 +16,8 @@ export default function YardItem({ data, loading, latitude, longitude }) {
         <Loading message={"Loading..."} visible={loading} />
       ) : (
         <>
-          {data &&
+          {data.length > 0 ? (
+            data &&
             data.map((yard) => (
               <TouchableOpacity
                 key={yard.id}
@@ -47,7 +49,7 @@ export default function YardItem({ data, loading, latitude, longitude }) {
                     <Text style={styles.stadiumName}>
                       {yard.stadium_name} -{" "}
                       <Text style={styles.distanceText}>
-                        {yard.distance.text}
+                        {yard.distance?.text}
                       </Text>
                     </Text>
                     <Text>
@@ -64,7 +66,20 @@ export default function YardItem({ data, loading, latitude, longitude }) {
                   </View>
                 </View>
               </TouchableOpacity>
-            ))}
+            ))
+          ) : (
+            <Text
+              style={{
+                color: "#1646A9",
+                fontSize: 20,
+                textAlign: "center",
+                fontWeight: "bold",
+                marginTop: 20,
+              }}
+            >
+              Không có sân phù hợp
+            </Text>
+          )}
         </>
       )}
     </View>

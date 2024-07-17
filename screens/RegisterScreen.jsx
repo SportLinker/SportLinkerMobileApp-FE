@@ -116,26 +116,27 @@ export default function RegisterScreen({ navigation }) {
             avatar_url:
               "https://www.redditstatic.com/avatars/avatar_default_03_FF8717.png",
           };
-          try {
-            dispatch(register(formData)).then((response) => {
-              if (response.error) {
-                console.log("error response");
-                setFailMessage(response.payload.message);
-              }
-              if (
-                response?.payload?.message &&
-                response.payload.message == "Register sucessfully"
-              ) {
-                console.log("success");
-                setSuccessMessage("Đăng ký thành công!");
-                setTimeout(() => {
-                  navigation.navigate("Login");
-                }, 3000);
-              }
-            });
-          } catch (error) {
-            console.log("error", error);
-          }
+          console.log(formData);
+          // try {
+          //   dispatch(register(formData)).then((response) => {
+          //     if (response.error) {
+          //       console.log("error response");
+          //       setFailMessage(response.payload.message);
+          //     }
+          //     if (
+          //       response?.payload?.message &&
+          //       response.payload.message == "Register sucessfully"
+          //     ) {
+          //       console.log("success");
+          //       setSuccessMessage("Đăng ký thành công!");
+          //       setTimeout(() => {
+          //         navigation.navigate("Login");
+          //       }, 3000);
+          //     }
+          //   });
+          // } catch (error) {
+          //   console.log("error", error);
+          // }
         }}
       >
         {({
