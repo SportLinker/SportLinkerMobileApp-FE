@@ -69,12 +69,29 @@ const TransactionReview = () => {
             uri:
               item.status === "completed"
                 ? "https://westphysics.com/wp-content/uploads/2022/10/green-tick-icon.png"
+                : item.status === "pending"
+                ? "https://th.bing.com/th/id/OIP.OSnj9wk3bF8hX1YbXWMgSwHaHa?rs=1&pid=ImgDetMain"
                 : "https://cdn-icons-png.flaticon.com/512/7269/7269138.png",
           }}
         ></Avatar.Image>
         <View style={styles.transactionInfo}>
+          <Text
+            style={
+              item.status === "completed"
+                ? styles.transactionValue
+                : item.status === "pending"
+                ? styles.transactionValuePending
+                : styles.transactionValueCancel
+            }
+          >
+            {item.status === "completed"
+              ? "Thành Công"
+              : item.status === "pending"
+              ? "Đang Xử Lý"
+              : "Thất Bại"}
+          </Text>
           <Text style={styles.transactionName}>
-            {item.status === "completed" ? "Thành Công" : "Thất Bại"}
+            {item.type === "deposit" ? "Nạp Tiền" : "Rút Tiền"}
           </Text>
           <Text style={styles.transactionTime}>
             {formatISODate(item.created_at)}
@@ -84,10 +101,13 @@ const TransactionReview = () => {
           style={
             item.status === "completed"
               ? styles.transactionValue
+              : item.status === "pending"
+              ? styles.transactionValuePending
               : styles.transactionValueCancel
           }
         >
-          +{formatCurrency(item.amount, "VND", "vi-VN")}
+          {item.type === "deposit" ? "+" : "-"}
+          {formatCurrency(item.amount, "VND", "vi-VN")}
         </Text>
       </TouchableOpacity>
     );
@@ -139,13 +159,16 @@ const styles = StyleSheet.create({
   transactionValue: {
     color: "#5BD027",
     fontWeight: "bold",
-    textAlign: "right",
     fontSize: 16,
   },
   transactionValueCancel: {
     color: "#F90303",
     fontWeight: "bold",
-    textAlign: "right",
+    fontSize: 16,
+  },
+  transactionValuePending: {
+    color: "#fea500",
+    fontWeight: "bold",
     fontSize: 16,
   },
   transactionInfo: {

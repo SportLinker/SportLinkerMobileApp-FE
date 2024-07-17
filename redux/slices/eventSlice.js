@@ -158,11 +158,28 @@ export const unjoinEventByUserOrOwner = createAsyncThunk(
   }
 );
 
+export const getAllPlayers = createAsyncThunk(
+  "eventSlice/getAllPlayers",
+  async (_, { rejectWithValue }) => {
+    console.log("API getAllPlayers: ");
+    try {
+      const response = await api.get(`/users/getAllPlayer`);
+
+      console.log("API getAllPlayers: ", JSON.stringify(response.data)); // Log the API response
+      return response.data.metadata; // Return the response data
+    } catch (error) {
+      console.log("Error: ", JSON.stringify(error.response.data));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const eventSlice = createSlice({
   name: "eventSlice",
   initialState: {
     eventList: null,
     myEventList: null,
+    userList: null,
     event: null,
     loading: false,
     error: null,
@@ -259,6 +276,16 @@ export const eventSlice = createSlice({
         state.loading = false;
       })
       .addCase(updateEvent.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error;
+      })
+      .addCase(getAllPlayers.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAllPlayers.fulfilled, (state, action) => {
+        state.userList = action.payload;
+      })
+      .addCase(getAllPlayers.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error;
       });

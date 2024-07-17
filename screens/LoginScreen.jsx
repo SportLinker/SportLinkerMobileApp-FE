@@ -28,7 +28,7 @@ import firebase from "@react-native-firebase/app";
 
 const LoginScreen = ({ navigation }) => {
   const [loginForm, setLoginForm] = useState({
-    username: "ninh17",
+    username: "ninh18",
     password: "123456",
   });
   const [errorMessage, setErrorMessage] = useState(null);
@@ -124,7 +124,7 @@ const LoginScreen = ({ navigation }) => {
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        {loadingSelector && <Loading visible={loadingSelector} />}
+        {/* {loadingSelector && <Loading visible={loadingSelector} />} */}
         <ScrollView>
           <View style={styles.container}>
             <Image

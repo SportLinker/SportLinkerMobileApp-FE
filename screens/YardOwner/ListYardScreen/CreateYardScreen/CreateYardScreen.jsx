@@ -1,5 +1,5 @@
 import { Formik } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Alert,
   KeyboardAvoidingView,
@@ -10,26 +10,36 @@ import {
   View,
   TextInput,
 } from "react-native";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import {
   createYardInStadium,
   getAllYardByOwner,
+  getAllYardByYardOwner,
   getDetailYardByOwner,
   updateYard,
 } from "../../../../redux/slices/yardSlice";
 import SportSelectionPopup from "./SportSelectPopup";
+import { getAllYardByOwnerSelector } from "../../../../redux/selectors";
 
 const CreateYardScreen = ({ navigation, route }) => {
   const { stadiumId, yardId, yardDetail = {} } = route.params;
   const dispatch = useDispatch();
+  const yardList = useSelector(getAllYardByOwnerSelector);
   const [showSportPicker, setShowSportPicker] = useState(false);
 
-  // console.log("yardId in create yard", yardId);
-  // console.log("yardDetail in create yard", yardDetail);
+  useEffect(() => {
+    dispatch(getAllYardByYardOwner({ stadium_id: stadiumId }));
+  }, [dispatch]);
 
   const yardSchema = Yup.object().shape({
-    yard_name: Yup.string().required("Vui lòng nhập tên sân"),
+    yard_name: Yup.string()
+      .required("Vui lòng nhập tên sân")
+      .test(
+        "unique-name",
+        "Tên sân đã tồn tại",
+        (value) => !yardList.some((yard) => yard.yard_name === value)
+      ),
     yard_description: Yup.string().required("Vui lòng nhập mô tả"),
     yard_sport: Yup.string().required("Hãy chọn môn thể thao"),
     price_per_hour: Yup.string().required("Giá Thuê (ngàn VNĐ)/giờ"),
@@ -43,29 +53,31 @@ const CreateYardScreen = ({ navigation, route }) => {
 
     try {
       if (yardId) {
-        await dispatch(updateYard({ yard_id: yardId, yardData }));
+        const res = await dispatch(updateYard({ yard_id: yardId, yardData }));
+        const { code } = res.payload;
+        if (code === 200 || code === 201) {
+          Alert.alert("Thành công", "Cập nhật sân nhỏ thành công!");
+        } else {
+          Alert.alert("Thất bại", "Cập nhật sân nhỏ thất bại!");
+        }
         await dispatch(getDetailYardByOwner(yardId));
         await dispatch(getAllYardByOwner());
-        Alert.alert("Thành công", "Cập nhật sân nhỏ thành công!");
       } else {
-        await dispatch(
+        const res = await dispatch(
           createYardInStadium({ stadium_id: stadiumId, yardData })
         );
-        Alert.alert("Thành công", "Tạo mới sân nhỏ thành công!");
+        const { code } = res.payload;
+        if (code === 200 || code === 201) {
+          Alert.alert("Thành công", "Tạo mới sân nhỏ thành công!");
+        } else {
+          Alert.alert("Thất bại", "Tạo mới sân nhỏ thất bại!");
+        }
       }
       resetForm();
       navigation.goBack(); // Go back to the previous screen
     } catch (error) {
       console.error("Error saving yard:", error);
       Alert.alert("Lỗi", "Đã xảy ra lỗi khi lưu sân nhỏ. Vui lòng thử lại.");
-    }
-  };
-
-  const handlePriceChange = (text, setFieldValue) => {
-    if (text.endsWith("VNĐ/giờ")) {
-      setFieldValue("price_per_hour", text);
-    } else {
-      setFieldValue("price_per_hour", `${text.replace(/\D/g, "")}VNĐ/giờ`);
     }
   };
 
