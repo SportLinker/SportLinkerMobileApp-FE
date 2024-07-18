@@ -16,6 +16,23 @@ export const getListMessage = createAsyncThunk(
   }
 );
 
+export const searchListMessage = createAsyncThunk(
+  "messageSlice/searchListMessage",
+  async ({ searchValue }, { rejectWithValue }) => {
+    console.log("vao day:", searchValue);
+
+    try {
+      const data = await api.get(`/groupMessage?search=${searchValue}`);
+
+      console.log("searchListMessage:", data.data.metadata);
+      return data.data.metadata;
+    } catch (error) {
+      console.log("error", error);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const getMessageDetail = createAsyncThunk(
   "messageSlice/getMessageDetail",
   async (group_message_id, { rejectWithValue }) => {
@@ -91,6 +108,17 @@ export const messageSlice = createSlice({
         state.chatList = action.payload;
       })
       .addCase(getListMessage.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload; // Ensure consistent error handling
+      })
+      .addCase(searchListMessage.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(searchListMessage.fulfilled, (state, action) => {
+        state.loading = false;
+        state.chatList = action.payload;
+      })
+      .addCase(searchListMessage.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload; // Ensure consistent error handling
       })
