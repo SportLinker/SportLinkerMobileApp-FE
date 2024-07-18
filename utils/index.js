@@ -196,7 +196,9 @@ export function formatISODate(isoDateStr) {
 
 // Get an array string sport name from array sport object - Register ,Edit Account Screen
 export const getArrStringSportName = (sportArrObj) => {
-  const sportNameArr = sportArrObj.map((sport) => sport.sport_name);
+  const sportNameArr = sportArrObj.map((sport) =>
+    sport.sport_name ? sport.sport_name : sport
+  );
   console.log("sportNameArr", sportNameArr);
   return sportNameArr;
 };

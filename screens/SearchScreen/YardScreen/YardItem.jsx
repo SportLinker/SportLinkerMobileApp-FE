@@ -8,7 +8,6 @@ import Loading from "../../../component/Loading";
 
 export default function YardItem({ data, loading, latitude, longitude }) {
   const navigation = useNavigation();
-  console.log("YardItem: ", data);
 
   return (
     <View style={{ marginTop: 20, marginHorizontal: "auto", minHeight: 400 }}>
