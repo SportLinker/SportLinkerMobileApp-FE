@@ -10,7 +10,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { Searchbar } from "react-native-paper";
 import ChatListItem from "./ChatListItem";
 import { useDispatch, useSelector } from "react-redux";
-import { getListMessage } from "../../redux/slices/messageSlice";
+import {
+  getListMessage,
+  searchListMessage,
+} from "../../redux/slices/messageSlice";
 import { getListMessageSelector } from "../../redux/selectors";
 import Loading from "../../component/Loading";
 import { io } from "socket.io-client";
@@ -44,6 +47,14 @@ export default function ChatListScreen({ navigation }) {
     }
   }, []);
 
+  const handleSearchSubmit = () => {
+    dispatch(
+      searchListMessage({
+        searchValue: searchQuery,
+      })
+    );
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.chatHeader}>
@@ -58,6 +69,8 @@ export default function ChatListScreen({ navigation }) {
           inputStyle={styles.textInput}
           style={styles.searchInput}
           placeholderTextColor="#707070"
+          onSubmitEditing={handleSearchSubmit}
+          onIconPress={handleSearchSubmit}
         />
       </View>
       <View style={styles.chatBody}>

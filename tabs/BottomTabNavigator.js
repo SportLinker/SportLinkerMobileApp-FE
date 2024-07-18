@@ -62,7 +62,7 @@ const BottomTabNavigator = () => {
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Upgrade"
         component={UpgradeScreen}
         options={{
@@ -76,7 +76,7 @@ const BottomTabNavigator = () => {
             />
           ),
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Chat"
         component={ChatTabs}
