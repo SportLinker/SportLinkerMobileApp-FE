@@ -17,22 +17,33 @@ import LoadImage from "./LoadImage";
 import Autolink from "react-native-autolink";
 import { LinkPreview } from "@flyerhq/react-native-link-preview";
 import { getDistanceTime } from "../../utils";
+import { useDispatch } from "react-redux";
+import { dislikeBlog, likeBlog } from "../../redux/slices/blogSlice";
 
 export default function PostItem({ navigation, caption, blog }) {
   const [liked, setLiked] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [url, setUrl] = useState(null);
-  const [images, setImages] = useState(
-    blog && blog.blog.blog_link.length > 0
-      ? blog.blog.blog_link.map((item) => item.url)
-      : []
-  );
+  const [images, setImages] = useState([]);
+
+  useEffect(() => {
+    if (blog && blog.blog) {
+      setLiked(blog.blog.is_react);
+    }
+    if (blog && blog.blog.blog_link.length > 0) {
+      const urlArr = blog.blog.blog_link.map((item) => item.url);
+      setImages(urlArr);
+    }
+  }, [blog]);
+
+  const dispatch = useDispatch();
 
   const listVideo = [];
 
   const scaleAnim = useRef(new Animated.Value(1)).current;
 
   const handleToggleLike = () => {
+    console.log("Is react", liked);
     setLiked(!liked);
     Animated.sequence([
       Animated.timing(scaleAnim, {
@@ -46,6 +57,13 @@ export default function PostItem({ navigation, caption, blog }) {
         useNativeDriver: true,
       }),
     ]).start();
+
+    //handle whether like or unlike blog
+    if (!liked) {
+      dispatch(likeBlog(blog.blog?.id));
+    } else {
+      dispatch(dislikeBlog(blog.blog?.id));
+    }
   };
 
   useEffect(() => {

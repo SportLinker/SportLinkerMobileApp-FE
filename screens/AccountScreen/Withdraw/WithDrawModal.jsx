@@ -17,6 +17,12 @@ import {
   Snackbar,
 } from "react-native-paper";
 import axios from "axios"; // Import Axios library
+import { Image } from "react-native";
+import { useDispatch } from "react-redux";
+import {
+  getListTransactionByUser,
+  paymentWithDraw,
+} from "../../../redux/slices/paymentSlice";
 
 const WithDrawModal = ({ modalVisible, setModalVisible }) => {
   const [banks, setBanks] = useState([]);
@@ -29,6 +35,8 @@ const WithDrawModal = ({ modalVisible, setModalVisible }) => {
   const [submitting, setSubmitting] = useState(false); // State to track submission status
 
   const [successMessage, setSuccessMessage] = useState("");
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     fetchBanks();
@@ -113,13 +121,42 @@ const WithDrawModal = ({ modalVisible, setModalVisible }) => {
     if (submitting) return;
     setSubmitting(true);
 
+    if (amount < 5000) {
+      setSubmitting(false);
+      setSuccessMessage("Số tiền rút tối thiểu phải hơn 5000 vnd !!!");
+      return;
+    }
     // Perform submission logic here
     // For example, you can send data to an API or perform local validation
-    setSuccessMessage("Đã gửi đơn thành công !!!");
-    // After submission is complete (success or failure), reset the submitting state
+    const dataSendApi = {
+      bank_account: bankNumber,
+      bank_name: selectedBank.name,
+      bank_short_name: selectedBank.short_name,
+      bank_logo: selectedBank.logo,
+      money: amount,
+    };
+    dispatch(paymentWithDraw(dataSendApi)).then((res) => {
+      if (res.payload.message == "Số dư không đủ") {
+        setSuccessMessage("Số dư của bạn không đủ để rút !!!");
+        setSubmitting(false);
+      }
+
+      if (res.payload.code == 201) {
+        dispatch(getListTransactionByUser());
+        setSuccessMessage("Đã gửi đơn thành công !!!");
+        setTimeout(() => {
+          setSubmitting(false);
+          hideModal(); // Close the modal after submission
+        }, 3000);
+      }
+    });
+
+    // dispatch(getListTransactionByUser());
+    // setSuccessMessage("Đã gửi đơn thành công !!!");
+    // // After submission is complete (success or failure), reset the submitting state
     setTimeout(() => {
       setSubmitting(false);
-      hideModal(); // Close the modal after submission
+      // hideModal(); // Close the modal after submission
     }, 3000);
   };
 
@@ -146,7 +183,19 @@ const WithDrawModal = ({ modalVisible, setModalVisible }) => {
                 <Menu.Item
                   key={bank.id}
                   onPress={() => handleBankSelect(bank)}
-                  title={`${bank.bin} - ${bank.short_name}`}
+                  title={
+                    <View style={styles.menuItem}>
+                      <Image
+                        source={{ uri: bank.logo }}
+                        style={{
+                          width: 100,
+                          height: 50,
+                          marginRight: 20,
+                        }}
+                      />
+                      <Text>{bank.short_name}</Text>
+                    </View>
+                  }
                 />
               ))}
             </Menu>
@@ -260,6 +309,13 @@ const styles = StyleSheet.create({
   scrollView: {
     flexGrow: 1,
     justifyContent: "center",
+  },
+
+  menuItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 10,
+    width: "100%",
   },
   snackbarContainer: {
     borderRadius: 10,

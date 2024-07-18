@@ -16,8 +16,40 @@ export const postBlog = createAsyncThunk(
   }
 );
 
+export const likeBlog = createAsyncThunk(
+  "blogSlice/likeBlog",
+  async (blogId, { rejectWithValue }) => {
+    console.log("blogId: ", blogId);
+    try {
+      const response = await api.post(`blogs/react`, {
+        blog_id: blogId,
+      });
+      console.log("API Response: ", response.data);
+      return response.data;
+    } catch (error) {
+      console.log("Error: ", JSON.stringify(error.response.data));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const dislikeBlog = createAsyncThunk(
+  "blogSlice/dislikeBlog",
+  async (blogId, { rejectWithValue }) => {
+    try {
+      console.log("dislike blog with id: ", blogId);
+      const response = await api.delete(`blogs/react/${blogId}`);
+      console.log("Dislike blog response: ", JSON.stringify(response.data));
+      return response.data.metadata;
+    } catch (error) {
+      console.log("Error: ", JSON.stringify(error.response.data));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const getBlogList = createAsyncThunk(
-  "bookSlice/getBlogList",
+  "blogSlice/getBlogList",
   async (formData, { rejectWithValue }) => {
     try {
       const { pageNumber, pageSize } = formData;
@@ -34,10 +66,25 @@ export const getBlogList = createAsyncThunk(
   }
 );
 
+export const getMyBlogList = createAsyncThunk(
+  "blogSlice/getMyBlogList",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.get(`/blogs/getMyBlog`);
+      console.log("API Response: ", JSON.stringify(response.data));
+      return response.data.metadata;
+    } catch (error) {
+      console.log("Error: ", JSON.stringify(error.response.data));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const blogSlice = createSlice({
   name: "blogSlice",
   initialState: {
     blogList: null,
+    myBlogList: null,
     loading: false,
     error: null,
   },
@@ -58,6 +105,26 @@ export const blogSlice = createSlice({
         state.loading = false;
         state.error = action.payload; // Ensure consistent error handling
       })
+      .addCase(likeBlog.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(likeBlog.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(likeBlog.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload; // Ensure consistent error handling
+      })
+      .addCase(dislikeBlog.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(dislikeBlog.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(dislikeBlog.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload; // Ensure consistent error handling
+      })
       .addCase(getBlogList.pending, (state) => {
         state.loading = true;
       })
@@ -71,6 +138,17 @@ export const blogSlice = createSlice({
         }
       })
       .addCase(getBlogList.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload; // Ensure consistent error handling
+      })
+      .addCase(getMyBlogList.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getMyBlogList.fulfilled, (state, action) => {
+        state.loading = false;
+        state.myBlogList = action.payload;
+      })
+      .addCase(getMyBlogList.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload; // Ensure consistent error handling
       });

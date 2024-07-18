@@ -19,11 +19,10 @@ const ScheduleYardScreen = ({ navigation, route }) => {
   const [selectedField, setSelectedField] = useState({
     id: yardDetail.yard_id,
     name: yardDetail.yard_name,
-  }); // Sân đã chọn để xem lịch
-  const [bookings, setBookings] = useState({}); // Dữ liệu lịch
-  const [selectedDates, setSelectedDates] = useState([]); // Ngày đã chọn
+  });
+  const [bookings, setBookings] = useState({});
+  const [selectedDates, setSelectedDates] = useState([]);
 
-  // Convert yardDetail to bookings format
   const parseYardDetail = (yardDetail) => {
     const parsedBookings = {};
     yardDetail.BookingYard.forEach((booking) => {
@@ -45,7 +44,6 @@ const ScheduleYardScreen = ({ navigation, route }) => {
   const fields = [{ id: yardDetail.yard_id, name: yardDetail.yard_name }];
 
   useEffect(() => {
-    // Load booking data for selected field
     if (selectedField) {
       const parsedBookings = parseYardDetail(yardDetail);
       setBookings(parsedBookings);
@@ -53,14 +51,12 @@ const ScheduleYardScreen = ({ navigation, route }) => {
   }, [selectedField, yardDetail]);
 
   useEffect(() => {
-    // Initialize selected dates from bookings data
     if (Object.keys(bookings).length > 0) {
       setSelectedDates(Object.keys(bookings));
     }
   }, [bookings]);
 
   useEffect(() => {
-    // Auto select the yard when entering ScheduleScreen
     setSelectedField({ id: yardDetail.yard_id, name: yardDetail.yard_name });
   }, [yardDetail]);
 
@@ -70,7 +66,7 @@ const ScheduleYardScreen = ({ navigation, route }) => {
       {item.slots.map((slot, index) => (
         <Text key={index} style={styles.bookingSlot}>
           {slot.startTime} - {slot.endTime} (
-          {slot.booked ? "Đã đặt sân" : "Chưa hoặc từ chối đặt sân"})
+          {slot.booked ? "Đã đặt sân" : "Chưa hoặc đã từ chối đặt sân"})
         </Text>
       ))}
     </View>
@@ -114,22 +110,20 @@ const ScheduleYardScreen = ({ navigation, route }) => {
               <Calendar
                 markedDates={selectedDates.reduce((acc, date) => {
                   const bookedSlots = bookings[date] || [];
-                  const anyBooked = bookedSlots.some((slot) => slot.booked); // Kiểm tra xem có bất kỳ slot nào đã được đặt hay không
-                  const anyAvailable = bookedSlots.some((slot) => !slot.booked); // Kiểm tra xem có bất kỳ slot nào còn trống hay không
+                  const anyBooked = bookedSlots.some((slot) => slot.booked);
+                  const anyAvailable = bookedSlots.some((slot) => !slot.booked);
 
                   if (anyBooked) {
-                    // Nếu có booked, đánh dấu màu xanh
                     acc[date] = {
                       selected: true,
                       marked: true,
-                      selectedColor: "#1646a9", // Màu xanh cho các ngày có slot đã được đặt
+                      selectedColor: "#1646a9",
                     };
                   } else if (anyAvailable) {
-                    // Nếu có available nhưng không có booked, đánh dấu màu đỏ
                     acc[date] = {
                       selected: true,
                       marked: true,
-                      selectedColor: "#ff0000", // Màu đỏ cho các ngày có slot còn trống
+                      selectedColor: "#ff0000",
                     };
                   }
 
@@ -149,7 +143,7 @@ const ScheduleYardScreen = ({ navigation, route }) => {
                   <View
                     style={[styles.legendColor, { backgroundColor: "#ff0000" }]}
                   />
-                  <Text>Chưa hoặc từ chối đặt sân</Text>
+                  <Text>Chưa hoặc đã từ chối đặt sân</Text>
                 </View>
               </View>
               <FlatList
