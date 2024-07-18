@@ -36,3 +36,4 @@ export const getBookedByUserSelector = (state) => state.bookSlice.booked;
 //BLOG
 export const getBlogLoadingSelector = (state) => state.blogSlice.loading;
 export const getBlogListSelector = (state) => state.blogSlice.blogList;
+export const getMyBlogListSelector = (state) => state.blogSlice.myBlogList;

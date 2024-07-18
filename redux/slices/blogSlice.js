@@ -48,6 +48,21 @@ export const dislikeBlog = createAsyncThunk(
   }
 );
 
+export const deleteBlog = createAsyncThunk(
+  "blogSlice/deleteBlog",
+  async (blogId, { rejectWithValue }) => {
+    try {
+      console.log("deleteBlog blog with id: ", blogId);
+      const response = await api.delete(`blogs/${blogId}`);
+      console.log("deleteBlog blog response: ", JSON.stringify(response.data));
+      return response.data.metadata;
+    } catch (error) {
+      console.log("Error: ", JSON.stringify(error.response.data));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const getBlogList = createAsyncThunk(
   "blogSlice/getBlogList",
   async (formData, { rejectWithValue }) => {
@@ -80,11 +95,30 @@ export const getMyBlogList = createAsyncThunk(
   }
 );
 
+export const getBlogCommentList = createAsyncThunk(
+  "blogSlice/getBlogCommentList",
+  async (blogId, { rejectWithValue }) => {
+    try {
+      console.log("Blog Id: ", blogId);
+      const response = await api.get(`/blogs/comment/${blogId}`);
+      console.log(
+        "API Get Blog Comment Response: ",
+        JSON.stringify(response.data)
+      );
+      return response.data.metadata;
+    } catch (error) {
+      console.log("Error: ", JSON.stringify(error.response.data));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const blogSlice = createSlice({
   name: "blogSlice",
   initialState: {
     blogList: null,
     myBlogList: null,
+    blogCommentList: null,
     loading: false,
     error: null,
   },
@@ -125,6 +159,16 @@ export const blogSlice = createSlice({
         state.loading = false;
         state.error = action.payload; // Ensure consistent error handling
       })
+      .addCase(deleteBlog.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteBlog.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(deleteBlog.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload; // Ensure consistent error handling
+      })
       .addCase(getBlogList.pending, (state) => {
         state.loading = true;
       })
@@ -149,6 +193,17 @@ export const blogSlice = createSlice({
         state.myBlogList = action.payload;
       })
       .addCase(getMyBlogList.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload; // Ensure consistent error handling
+      })
+      .addCase(getBlogCommentList.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getBlogCommentList.fulfilled, (state, action) => {
+        state.loading = false;
+        state.blogCommentList = action.payload;
+      })
+      .addCase(getBlogCommentList.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload; // Ensure consistent error handling
       });
