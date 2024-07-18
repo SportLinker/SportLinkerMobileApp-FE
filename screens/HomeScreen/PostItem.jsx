@@ -8,31 +8,54 @@ import {
   Linking,
   Animated,
 } from "react-native";
-import { Avatar } from "react-native-paper";
+import { Avatar, Divider, Menu } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import Swiper from "react-native-swiper";
 import CommentModal from "./CommentModal"; // Import CommentModal
+import { Ionicons } from "@expo/vector-icons";
 import LoadVideo from "./LoadVideo";
 import LoadImage from "./LoadImage";
 import Autolink from "react-native-autolink";
 import { LinkPreview } from "@flyerhq/react-native-link-preview";
 import { getDistanceTime } from "../../utils";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  deleteBlog,
+  dislikeBlog,
+  likeBlog,
+} from "../../redux/slices/blogSlice";
+import { Alert } from "react-native";
 
 export default function PostItem({ navigation, caption, blog }) {
   const [liked, setLiked] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [url, setUrl] = useState(null);
-  const [images, setImages] = useState(
-    blog && blog.blog.blog_link.length > 0
-      ? blog.blog.blog_link.map((item) => item.url)
-      : []
-  );
+  const [images, setImages] = useState([]);
+  const [visibleMenu, setVisibleMenu] = React.useState(false);
+
+  const { userInfo } = useSelector((state) => state.userSlice);
+
+  useEffect(() => {
+    if (blog) {
+      setLiked(blog.is_react);
+    }
+    if (blog && blog.blog_link.length > 0) {
+      const urlArr = blog.blog_link.map((item) => item.url);
+      setImages(urlArr);
+    }
+  }, [blog]);
+
+  const dispatch = useDispatch();
 
   const listVideo = [];
 
   const scaleAnim = useRef(new Animated.Value(1)).current;
 
+  const openMenu = () => setVisibleMenu(true);
+
+  const closeMenu = () => setVisibleMenu(false);
+
   const handleToggleLike = () => {
+    console.log("Is react", liked);
     setLiked(!liked);
     Animated.sequence([
       Animated.timing(scaleAnim, {
@@ -46,6 +69,41 @@ export default function PostItem({ navigation, caption, blog }) {
         useNativeDriver: true,
       }),
     ]).start();
+
+    //handle whether like or unlike blog
+    if (!liked) {
+      dispatch(likeBlog(blog?.id));
+    } else {
+      dispatch(dislikeBlog(blog?.id));
+    }
+  };
+
+  const confirmDeleteBlog = () => {
+    Alert.alert(
+      "Xác nhận",
+      `Bạn có chắc chắn là muốn xoá bài đăng này không?`,
+      [
+        {
+          text: "Huỷ",
+          style: "cancel",
+        },
+        {
+          text: "Có",
+          onPress: () => handleDeleteBlog(),
+        },
+      ]
+    );
+  };
+
+  const handleDeleteBlog = () => {
+    try {
+      dispatch(deleteBlog(blog?.id)).then((response) => {
+        console.log("response delete blog: " + response);
+        closeMenu();
+      });
+    } catch (error) {
+      console.log("Error deleting blog", error);
+    }
   };
 
   useEffect(() => {
@@ -68,30 +126,76 @@ export default function PostItem({ navigation, caption, blog }) {
 
   return (
     <View style={styles.postWrapper}>
-      <View style={styles.avatarWrapper}>
-        <Avatar.Image
-          size={40}
-          source={{
-            uri: blog && blog.blog.owner?.avatar_url,
-          }}
-          style={styles.mr5}
-        />
-        <View>
-          <View style={{ display: "flex", flexDirection: "row" }}>
-            <Text style={styles.mr5}> {blog && blog.blog.owner?.name}</Text>
-            {blog && blog.blog?.blog_address && (
-              <Text>
-                đang ở{" "}
-                <Text style={{ fontWeight: "bold" }}>
-                  {blog.blog.blog_address}
+      <View style={styles.headerWrapper}>
+        <View style={styles.avatarWrapper}>
+          <Avatar.Image
+            size={40}
+            source={{
+              uri: blog && blog.owner?.avatar_url,
+            }}
+            style={styles.mr5}
+          />
+          <View>
+            <View style={{ display: "flex", flexDirection: "row" }}>
+              <Text style={styles.mr5}> {blog && blog.owner?.name}</Text>
+              {blog && blog?.blog_address && (
+                <Text>
+                  đang ở{" "}
+                  <Text style={{ fontWeight: "bold" }}>
+                    {blog.blog_address}
+                  </Text>
                 </Text>
+              )}
+            </View>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Text style={styles.postTime}>
+                {blog && getDistanceTime(blog?.created_at)}
               </Text>
-            )}
+              {blog.status == "deleted" && (
+                <Text
+                  style={{
+                    backgroundColor: "#c72523",
+                    color: "white",
+                    height: 18,
+                    borderRadius: 7,
+                    overflow: "hidden",
+                    textAlign: "center",
+                    fontSize: 12,
+                    fontWeight: "bold",
+                    paddingHorizontal: 10,
+                    paddingVertical: 0,
+                    marginLeft: 10,
+                  }}
+                >
+                  Đã xoá
+                </Text>
+              )}
+            </View>
           </View>
-          <Text style={styles.postTime}>
-            {blog && getDistanceTime(blog.blog?.created_at)}
-          </Text>
         </View>
+        {blog.blog_owner == userInfo.id && (
+          <View>
+            <Menu
+              statusBarHeight={30}
+              visible={visibleMenu}
+              onDismiss={closeMenu}
+              anchor={
+                <Ionicons
+                  name="ellipsis-vertical"
+                  size={24}
+                  color="black"
+                  onPress={() => openMenu()}
+                />
+              }
+            >
+              <Menu.Item
+                onPress={() => confirmDeleteBlog()}
+                title="Delete"
+                leadingIcon="delete"
+              />
+            </Menu>
+          </View>
+        )}
       </View>
       <Autolink
         style={styles.postTitle}
@@ -164,11 +268,13 @@ export default function PostItem({ navigation, caption, blog }) {
           <Text>500 lượt thích</Text>
         </TouchableOpacity>
       </View>
-      <CommentModal
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        comments={comments}
-      />
+      {modalVisible && (
+        <CommentModal
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          blogId={blog.id}
+        />
+      )}
     </View>
   );
 }
@@ -203,10 +309,15 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
   },
-  avatarWrapper: {
+  headerWrapper: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
     marginBottom: 18,
+  },
+  avatarWrapper: {
+    width: "90%",
+    flexDirection: "row",
   },
   postTitle: {
     marginBottom: 15,

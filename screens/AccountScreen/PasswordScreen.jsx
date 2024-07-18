@@ -83,7 +83,7 @@ export default function PasswordScreen({ navigation }) {
           <View
             style={{
               marginVertical: 20,
-              marginHorizontal: 50,
+              marginHorizontal: 25,
             }}
           >
             <TouchableOpacity
