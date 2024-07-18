@@ -3,7 +3,8 @@ export const getUserSelector = (state) => state.userSlice.userInfo;
 export const getUserLoadingSelector = (state) => state.userSlice.loading;
 
 // EVENT
-
+export const getAllStadiumByUserSelector = (state) =>
+  state.eventSlice.stadiumListByUser;
 export const getAllPlayersSelector = (state) => state.eventSlice.userList;
 export const getEventSelector = (state) => state.eventSlice.event;
 export const getEventListSelector = (state) => state.eventSlice.eventList;
@@ -24,8 +25,6 @@ export const getDetailYardByOwnerSelector = (state) => state.yardSlice.yard;
 export const getAllYardSelector = (state) => state.yardSlice.yardList;
 
 // SEARCH STADIUM
-export const getAllStadiumByUserSelector = (state) =>
-  state.yardSlice.stadiumListByUser;
 export const getAllYardByUserSelector = (state) =>
   state.yardSlice.yardListByUser;
 export const getStadiumDetailByUserSelector = (state) =>
