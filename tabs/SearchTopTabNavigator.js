@@ -17,13 +17,15 @@ import { color } from "react-native-elements/dist/helpers";
 const TopTab = createMaterialTopTabNavigator();
 
 const SearchTopTabNavigator = () => {
-  const navigationState = useNavigationState((state) => state); // Get the navigation state
-  const activeRouteName = navigationState;
+  // const navigationState = useNavigationState((state) => state); // Get the navigation state
+  // const activeRouteName = navigationState;
   const [activeTab, setActiveTab] = useState("match"); // save the active tab: match, user, yard, coach
+
+  console.log("Active Route: " + activeTab);
 
   return (
     <>
-      <SearchInputDynamic />
+      <SearchInputDynamic screen={activeTab} />
 
       <View style={styles.filterTab}>
         <TouchableOpacity

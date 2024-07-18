@@ -1,3 +1,5 @@
+import { AntDesign } from "@expo/vector-icons";
+import { useEffect, useState } from "react";
 import {
   FlatList,
   Image,
@@ -6,66 +8,69 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
-
-const fakeData = {
-  averageRating: 4.7,
-  yardList: [
-    {
-      id: "y1",
-      thumbnail:
-        "https://i.pinimg.com/564x/fc/f8/9a/fcf89a7d9dc91c15b36545cd6d9ed712.jpg",
-      name: "Sân TSN",
-      rating: 4.6,
-    },
-    {
-      id: "y2",
-      thumbnail:
-        "https://i.pinimg.com/564x/fc/f8/9a/fcf89a7d9dc91c15b36545cd6d9ed712.jpg",
-      name: "Sân Banh Quyền Bình Thạnh",
-      rating: 4.6,
-    },
-    {
-      id: "y3",
-      thumbnail:
-        "https://i.pinimg.com/564x/fc/f8/9a/fcf89a7d9dc91c15b36545cd6d9ed712.jpg",
-      name: "Sân TSN",
-      rating: 4.6,
-    },
-    {
-      id: "y4",
-      thumbnail:
-        "https://i.pinimg.com/564x/fc/f8/9a/fcf89a7d9dc91c15b36545cd6d9ed712.jpg",
-      name: "Sân TSN",
-      rating: 4.6,
-    },
-    {
-      id: "y5",
-      thumbnail:
-        "https://i.pinimg.com/564x/fc/f8/9a/fcf89a7d9dc91c15b36545cd6d9ed712.jpg",
-      name: "Sân TSN",
-      rating: 4.6,
-    },
-  ],
-};
+import { useDispatch, useSelector } from "react-redux";
+import defaultImage from "../../../assets/default_img.png";
+import { getByOwnerSelector } from "../../../redux/selectors";
+import { getStadiumByOwner } from "../../../redux/slices/yardSlice";
 
 const RatingYardList = ({ navigation }) => {
+  const dispatch = useDispatch();
+  const stadium = useSelector(getByOwnerSelector);
+
+  const [stadiumList, setStadiumList] = useState([]);
+  const [averageRating, setAverageRating] = useState(0);
+
+  useEffect(() => {
+    dispatch(getStadiumByOwner());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (stadium) {
+      setStadiumList(stadium);
+      calculateAverageRating(stadium);
+    }
+  }, [stadium]);
+
+  const calculateAverageRating = (stadiums) => {
+    if (stadiums.length === 0) {
+      setAverageRating(0);
+      return;
+    }
+    const totalRating = stadiums.reduce(
+      (acc, item) => acc + (item.stadium_rating || 0),
+      0
+    );
+    const average = totalRating / stadiums.length;
+    setAverageRating(average.toFixed(1)); // làm tròn đến 1 chữ số thập phân
+  };
+
   const YardItem = ({ item }) => {
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate("RatingYardItemScreen")}
+        onPress={() =>
+          navigation.navigate("RatingYardItemScreen", {
+            stadiumId: item.id,
+          })
+        }
         style={styles.yardItemContainer}
       >
-        <Image
-          style={styles.yardItemImage}
-          source={{
-            uri: item.thumbnail,
-          }}
-        />
+        {item.stadium_thumnail ? (
+          <Image
+            style={styles.yardItemImage}
+            source={{
+              uri: item.stadium_thumnail,
+            }}
+          />
+        ) : (
+          <Image style={styles.yardItemImage} source={defaultImage} />
+        )}
+
         <View style={styles.yardItemInfo}>
-          <Text style={[styles.whiteText, styles.yardTitle]}>{item.name}</Text>
+          <Text style={[styles.whiteText, styles.yardTitle]}>
+            {item.stadium_name}
+          </Text>
           <View style={styles.yardItemRatingWrapper}>
-            <Text style={styles.whiteText}>{item.rating}/5</Text>
+            <Text style={styles.whiteText}>{item.stadium_rating}/5</Text>
             <AntDesign name="star" size={24} color="#F9A825" />
           </View>
         </View>
@@ -77,12 +82,12 @@ const RatingYardList = ({ navigation }) => {
     <View style={styles.ratingContainer}>
       <View style={styles.averageRating}>
         <Text style={[styles.whiteText, { fontWeight: "bold" }]}>
-          Đánh giá trung bình: {fakeData.averageRating} / 5
+          Đánh giá trung bình: {averageRating} / 5
         </Text>
         <AntDesign name="star" size={24} color="#F9A825" />
       </View>
       <FlatList
-        data={fakeData.yardList}
+        data={stadiumList}
         renderItem={YardItem}
         keyExtractor={(item) => item.id}
         style={styles.ratingListContainer}

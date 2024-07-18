@@ -16,6 +16,7 @@ import {
   getAllPlayersSelector,
   getEventLoadingtSelector,
 } from "../../../redux/selectors";
+import Loading from "../../../component/Loading";
 
 export const mock_data = [
   { id: 1, name: "Tai Vo", star: "true" },
@@ -38,82 +39,107 @@ export default function PlayerScreen({ navigation }) {
     dispatch(getAllPlayers());
   }, []);
 
-  console.log(getAllPlayersFromRedux);
+  console.log(eventLoadingtSelector);
 
   if (!getAllPlayersFromRedux) return <Text>Loading...</Text>;
 
   return (
-    <SafeAreaView style={{ backgroundColor: "#fff" }}>
+    <SafeAreaView style={{ backgroundColor: "#fff", minHeight: 600 }}>
       {/* <FilterEventOptionList /> */}
-      <ScrollView>
-        <View style={{ alignItems: "center", marginTop: 20 }}>
-          {getAllPlayersFromRedux.map((item) => (
-            <View key={item.id} style={styles.containerPlayer}>
-              <TouchableOpacity
-                onPress={() => navigation.navigate("DetailPlayerScreen")}
-              >
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    marginLeft: 20,
-                  }}
-                >
-                  <Avatar.Image
-                    size={40}
-                    source={{
-                      uri: item.avatar_url,
-                    }}
-                  />
-                  <View>
-                    <Text
-                      style={{
-                        marginHorizontal: 20,
-                        fontSize: 16,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      {item.username}
-                    </Text>
+      {eventLoadingtSelector ? (
+        <Loading
+          message={"Loading..."}
+          visible={eventLoadingtSelector}
+        ></Loading>
+      ) : (
+        <ScrollView>
+          {getAllPlayersFromRedux.length > 0 ? (
+            <View
+              style={{ alignItems: "center", marginTop: 20, paddingBottom: 30 }}
+            >
+              {getAllPlayersFromRedux.map((item) => (
+                <View key={item.id} style={styles.containerPlayer}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate("DetailPlayerScreen", { item })
+                    }
+                  >
                     <View
                       style={{
                         flexDirection: "row",
+                        alignItems: "center",
+                        marginLeft: 20,
                       }}
                     >
-                      <Text
-                        style={{
-                          marginLeft: 20,
-                          marginRight: 10,
-                          fontSize: 14,
+                      <Avatar.Image
+                        size={40}
+                        source={{
+                          uri: item.avatar_url,
                         }}
-                      >
-                        {item.name}
-                      </Text>
-                      <Text>-</Text>
-                      {item.favorite.length - 1 < 2 &&
-                      item.favorite.length > 0 ? (
-                        <Text> Yêu thích {item.favorite[0]}</Text>
-                      ) : item.favorite.length > 0 ? (
+                      />
+                      <View>
                         <Text
                           style={{
-                            fontSize: 14,
-                            marginLeft: 10,
+                            marginHorizontal: 20,
+                            fontSize: 16,
+                            fontWeight: "bold",
                           }}
                         >
-                          Yêu thích {item.favorite[0]} và{" "}
-                          {item.favorite.length - 1} môn
+                          {item.username}
                         </Text>
-                      ) : (
-                        <Text> Yêu thích không có</Text>
-                      )}
+                        <View
+                          style={{
+                            flexDirection: "row",
+                          }}
+                        >
+                          <Text
+                            style={{
+                              marginLeft: 20,
+                              marginRight: 10,
+                              fontSize: 14,
+                            }}
+                          >
+                            {item.name}
+                          </Text>
+                          <Text>-</Text>
+                          {item.favorite?.length - 1 < 2 &&
+                          item.favorite?.length > 0 ? (
+                            <Text> Yêu thích {item.favorite[0]}</Text>
+                          ) : item.favorite?.length > 0 ? (
+                            <Text
+                              style={{
+                                fontSize: 14,
+                                marginLeft: 10,
+                              }}
+                            >
+                              Yêu thích {item.favorite[0]} và{" "}
+                              {item.favorite?.length - 1} môn
+                            </Text>
+                          ) : (
+                            <Text> Yêu thích không có</Text>
+                          )}
+                        </View>
+                      </View>
                     </View>
-                  </View>
+                  </TouchableOpacity>
                 </View>
-              </TouchableOpacity>
+              ))}
             </View>
-          ))}
-        </View>
-      </ScrollView>
+          ) : (
+            <Text
+              style={{
+                color: "#1646A9",
+                fontSize: 20,
+                textAlign: "center",
+                fontWeight: "bold",
+                marginTop: 20,
+              }}
+            >
+              Không có thông tin phù hợp
+            </Text>
+          )}
+        </ScrollView>
+      )}
     </SafeAreaView>
   );
 }

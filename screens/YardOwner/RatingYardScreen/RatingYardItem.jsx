@@ -1,68 +1,53 @@
 import { AntDesign } from "@expo/vector-icons";
+import { useEffect, useState } from "react";
 import { FlatList, Image, StyleSheet, Text, View } from "react-native";
 import { Avatar } from "react-native-paper";
+import { useDispatch, useSelector } from "react-redux";
+import defaultAvatar from "../../../assets/avatar_default.png";
+import defaultImage from "../../../assets/default_img.png";
+import { getStadiumDetailByUserSelector } from "../../../redux/selectors";
+import { getDetailStadiumByUser } from "../../../redux/slices/yardSlice";
 
-const fakeData = {
-  averageRating: 4,
-  thumbnail:
-    "https://i.pinimg.com/564x/fc/f8/9a/fcf89a7d9dc91c15b36545cd6d9ed712.jpg",
-  comments: [
-    {
-      id: "c1",
-      avatar:
-        "https://i.pinimg.com/564x/0e/48/2e/0e482efba911b30ef9d6cbe70ad0c25a.jpg",
-      name: "Bé Ninh",
-      comment: "Sân sạch sẽ, nhân viên thân thiện",
-      rating: 5,
-    },
-    {
-      id: "c2",
-      avatar:
-        "https://i.pinimg.com/564x/0e/48/2e/0e482efba911b30ef9d6cbe70ad0c25a.jpg",
-      name: "Bé Ninh",
-      comment: "Sân sạch sẽ, nhân viên thân thiện",
-      rating: 4,
-    },
-    {
-      id: "c3",
-      avatar:
-        "https://i.pinimg.com/564x/0e/48/2e/0e482efba911b30ef9d6cbe70ad0c25a.jpg",
-      name: "Bé Ninh",
-      comment: "Sân sạch sẽ, nhân viên thân thiện",
-      rating: 4,
-    },
-    {
-      id: "c4",
-      avatar:
-        "https://i.pinimg.com/564x/0e/48/2e/0e482efba911b30ef9d6cbe70ad0c25a.jpg",
-      name: "Bé Ninh",
-      comment: "Sân sạch sẽ, nhân viên thân thiện",
-      rating: 4,
-    },
-    {
-      id: "c5",
-      avatar:
-        "https://i.pinimg.com/564x/0e/48/2e/0e482efba911b30ef9d6cbe70ad0c25a.jpg",
-      name: "Bé Ninh",
-      comment: "Sân sạch sẽ, nhân viên thân thiện",
-      rating: 5,
-    },
-  ],
-};
+const RatingYardItem = ({ route }) => {
+  const { stadiumId } = route.params;
+  const dispatch = useDispatch();
+  const stadiumDetail = useSelector(getStadiumDetailByUserSelector);
 
-const RatingYardItem = () => {
+  const [detail, setDetail] = useState(null);
+
+  useEffect(() => {
+    dispatch(getDetailStadiumByUser(stadiumId));
+  }, [dispatch, stadiumId]);
+
+  useEffect(() => {
+    if (stadiumDetail) {
+      setDetail(stadiumDetail);
+    }
+  }, [stadiumDetail]);
+
+  console.log("detail", detail);
+
   const CommentItem = ({ item }) => {
     return (
       <View style={styles.ratingContainer}>
-        <Avatar.Image
-          size={50}
-          source={{
-            uri: item.avatar,
-          }}
-          style={styles.avatar}
-        ></Avatar.Image>
+        {item.user.avatar_url ? (
+          <Avatar.Image
+            size={50}
+            source={{
+              uri: item.user.avatar_url,
+            }}
+            style={styles.avatar}
+          ></Avatar.Image>
+        ) : (
+          <Avatar.Image
+            size={50}
+            source={defaultAvatar}
+            style={styles.avatar}
+          ></Avatar.Image>
+        )}
+
         <View style={styles.ratingInfo}>
-          <Text style={styles.name}>{item.name}</Text>
+          <Text style={styles.name}>{item.user.name}</Text>
           <Text style={styles.comment}>{item.comment}</Text>
         </View>
         <View style={styles.ratingWrapper}>
@@ -73,30 +58,40 @@ const RatingYardItem = () => {
     );
   };
 
+  if (!detail) {
+    return <Text>Loading...</Text>;
+  }
+
   return (
     <View style={{ flex: 1 }}>
-      <Image
-        style={styles.yardItemImage}
-        source={{
-          uri: fakeData.thumbnail,
-        }}
-      />
+      {detail && detail.stadium_thumnail ? (
+        <Image
+          style={styles.yardItemImage}
+          source={{
+            uri: detail.stadium_thumnail,
+          }}
+        />
+      ) : (
+        <Image style={styles.yardItemImage} source={defaultImage} />
+      )}
+
       <View style={styles.averageRating}>
         <Text style={[styles.whiteText, { fontWeight: "bold" }]}>
-          Đánh giá trung bình: {fakeData.averageRating} / 5
+          Đánh giá trung bình: {detail.stadium_rating} / 5
         </Text>
         <AntDesign name="star" size={24} color="#F9A825" />
       </View>
-      <View
-        style={{
-          flex: 1,
-          marginHorizontal: 20,
-        }}
-      >
+      <Text style={[styles.blackText, styles.ratingCountText]}>
+        Đang có {detail.total_rating || 0} lượt đánh giá
+      </Text>
+      <View style={{ flex: 1, marginHorizontal: 20 }}>
         <FlatList
-          data={fakeData.comments}
+          data={detail.ratings}
           keyExtractor={(item) => item.id}
           renderItem={CommentItem}
+          ListEmptyComponent={
+            <Text style={styles.emptyText}>Không có đánh giá nào!</Text>
+          }
         />
       </View>
     </View>
@@ -107,15 +102,17 @@ const styles = StyleSheet.create({
   yardItemImage: {
     width: "100%",
     height: 200,
-    objectFit: "cover",
-    objectPosition: "center",
+    resizeMode: "cover",
   },
   whiteText: {
     fontSize: 16,
     color: "white",
   },
+  blackText: {
+    fontSize: 16,
+    color: "black",
+  },
   averageRating: {
-    display: "flex",
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#1646A9",
@@ -123,24 +120,20 @@ const styles = StyleSheet.create({
     padding: 20,
     marginHorizontal: 20,
     borderRadius: 12,
-    gap: 10,
+    justifyContent: "space-between",
   },
   ratingContainer: {
     borderRadius: 12,
-    display: "flex",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    borderRadius: 12,
     borderColor: "#C4C4C4",
     borderWidth: 1,
     padding: 20,
     marginBottom: 20,
-    gap: 10,
   },
   ratingInfo: {
     width: "60%",
-    display: "flex",
     justifyContent: "center",
   },
   name: {
@@ -152,13 +145,23 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   ratingWrapper: {
-    display: "flex",
     flexDirection: "row",
     alignItems: "center",
     gap: 5,
   },
   ratingCount: {
     fontSize: 16,
+    fontWeight: "bold",
+  },
+  ratingCountText: {
+    textAlign: "center",
+    marginBottom: 20,
+  },
+  emptyText: {
+    textAlign: "center",
+    fontSize: 24,
+    color: "#1446a9",
+    marginTop: 20,
     fontWeight: "bold",
   },
 });

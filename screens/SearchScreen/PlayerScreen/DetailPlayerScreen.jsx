@@ -26,21 +26,15 @@ const fakeData = [
   },
 ];
 
-const fakeCLBData = [
-  { id: "1", name: "Hoang Anh Gia Lai in HCM" },
-  { id: "2", name: "Hoang Anh Gia Lai in HCM" },
-  { id: "3", name: "Hoang Anh Gia Lai in HCM" },
-  { id: "4", name: "Hoang Anh Gia Lai in HCM" },
-  { id: "5", name: "Hoang Anh Gia Lai in HCM" },
-  { id: "6", name: "Hoang Anh Gia Lai in HCM" },
-];
-
-export default function DetailPlayerScreen({ navigation }) {
+export default function DetailPlayerScreen({ navigation, route }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalDetailVisible, setModalDetailVisible] = useState(true);
   const [showMenu, setShowMenu] = useState(false);
   const [liked, setLiked] = useState("");
   const [addUser, setAddUser] = useState("");
+
+  const { item } = route.params;
+  console.log(item);
 
   const handleCloseModal = () => {
     setModalVisible(false);
@@ -81,17 +75,41 @@ export default function DetailPlayerScreen({ navigation }) {
               <Avatar.Image
                 size={100}
                 source={{
-                  uri: "https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcQlj3rCfLHry58AtJ8ZyBEAFPtChMddDSUSjt7C7nV3Nhsni9RIx5b0-n7LxfgerrPS6b-P-u3BOM3abuY",
+                  uri: item.avatar_url,
                 }}
               />
-              <View style={{ marginLeft: 20, marginBottom: 30 }}>
-                <Text
-                  style={{ fontSize: 20, fontWeight: "bold", marginBottom: 10 }}
+              <View style={styles.header}>
+                <View
+                  style={{
+                    marginRight: 20,
+                  }}
                 >
-                  Tai Vo
-                </Text>
-                <Text style={{ marginBottom: 10 }}>Nam</Text>
-                <View style={{ display: "flex", flexDirection: "row" }}>
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      fontWeight: "bold",
+                      marginBottom: 10,
+                    }}
+                  >
+                    {item.name}
+                  </Text>
+                  <Text style={{ marginBottom: 10 }}>{item.username}</Text>
+                </View>
+                <TouchableOpacity
+                  onPress={() => {
+                    setModalVisible(false);
+                    navigation.navigate("PlayerScreen");
+                    navigation.navigate("ChatListScreen");
+                  }}
+                >
+                  <Ionicons
+                    name="chatbubble-ellipses-outline"
+                    size={30}
+                    color="black"
+                    style={{ marginRight: 30 }}
+                  />
+                </TouchableOpacity>
+                {/* <View style={{ display: "flex", flexDirection: "row" }}>
                   {addUser === "checked" ? (
                     <TouchableOpacity onPress={() => setAddUser("unchecked")}>
                       <AntDesign
@@ -111,20 +129,7 @@ export default function DetailPlayerScreen({ navigation }) {
                       />
                     </TouchableOpacity>
                   )}
-                  <TouchableOpacity
-                    onPress={() => {
-                      setModalVisible(false);
-                      navigation.navigate("PlayerScreen");
-                      navigation.navigate("ChatListScreen");
-                    }}
-                  >
-                    <Ionicons
-                      name="chatbubble-ellipses-outline"
-                      size={30}
-                      color="black"
-                      style={{ marginRight: 30 }}
-                    />
-                  </TouchableOpacity>
+
                   {liked === "liked" ? (
                     <TouchableOpacity onPress={() => setLiked("unliked")}>
                       <AntDesign name="star" size={30} color="#F9A825" />
@@ -134,7 +139,7 @@ export default function DetailPlayerScreen({ navigation }) {
                       <AntDesign name="staro" size={30} color="black" />
                     </TouchableOpacity>
                   )}
-                </View>
+                </View> */}
               </View>
             </View>
             <ScrollView>
@@ -148,31 +153,32 @@ export default function DetailPlayerScreen({ navigation }) {
                           flexDirection: "row",
                           justifyContent: "space-between",
                           marginHorizontal: 20,
-                          marginTop: 10,
+                          paddingVertical: 20,
                         }}
                         onPress={() => setModalVisible(true)}
                       >
                         <View style={{ display: "flex", flexDirection: "row" }}>
-                          <FontAwesome6
-                            name={item.icon}
-                            size={24}
-                            color="#000"
-                            style={{ marginRight: 10 }}
-                          />
-                          <Text>{item.title}</Text>
+                          <Text
+                            style={{
+                              fontSize: 15,
+                              fontWeight: "600",
+                            }}
+                          >
+                            {item.title}
+                          </Text>
                         </View>
                         <View>
                           <AntDesign name="right" size={24} color="#000" />
                         </View>
                       </TouchableOpacity>
-                      <View
+                      {/* <View
                         style={{
                           borderBottomWidth: 1,
                           marginVertical: 5,
                           borderColor: "#C4C4C4",
                         }}
-                      />
-                      <View style={styles.bottomInfoSport}>
+                      /> */}
+                      {/* <View style={styles.bottomInfoSport}>
                         <View style={styles.centerStyle}>
                           <Text style={{ color: "#707070" }}>
                             Trình độ (Tự đánh giá)
@@ -187,7 +193,7 @@ export default function DetailPlayerScreen({ navigation }) {
                             {item.position}
                           </Text>
                         </View>
-                      </View>
+                      </View> */}
                     </View>
                   </View>
                 ))}
@@ -307,6 +313,11 @@ const styles = {
   },
   editBtn: {
     padding: 10,
+  },
+  header: {
+    marginLeft: 20,
+    flexDirection: "row",
+    alignItems: "center",
   },
   horizontalIconsContainer: {
     flexDirection: "row",
