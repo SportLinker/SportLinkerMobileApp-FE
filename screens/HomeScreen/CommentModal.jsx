@@ -1,5 +1,5 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -12,71 +12,86 @@ import {
   Platform,
 } from "react-native";
 import { Avatar } from "react-native-paper";
+import { useDispatch } from "react-redux";
+import { getBlogCommentList } from "../../redux/slices/blogSlice";
 
-export default function CommentModal({ modalVisible, setModalVisible }) {
+const comments = [
+  {
+    id: "1",
+    avatar: "https://randomuser.me/api/portraits/men/1.jpg",
+    name: "John Doe",
+    comment: "Great post!",
+  },
+  {
+    id: "2",
+    avatar: "https://randomuser.me/api/portraits/women/2.jpg",
+    name: "Jane Smith",
+    comment: "Nice one!",
+  },
+  {
+    id: "3",
+    avatar: "https://randomuser.me/api/portraits/men/3.jpg",
+    name: "Michael Johnson",
+    comment: "Thanks for sharing.",
+  },
+  {
+    id: "4",
+    avatar: "https://randomuser.me/api/portraits/women/4.jpg",
+    name: "Emily Davis",
+    comment: "Really insightful!",
+  },
+  {
+    id: "5",
+    avatar: "https://randomuser.me/api/portraits/men/5.jpg",
+    name: "William Brown",
+    comment: "Loved the content!",
+  },
+  {
+    id: "6",
+    avatar: "https://randomuser.me/api/portraits/women/6.jpg",
+    name: "Sophia Wilson",
+    comment: "Very informative.",
+  },
+  {
+    id: "7",
+    avatar: "https://randomuser.me/api/portraits/men/7.jpg",
+    name: "James Taylor",
+    comment: "Well written!",
+  },
+  {
+    id: "8",
+    avatar: "https://randomuser.me/api/portraits/women/8.jpg",
+    name: "Olivia Martinez",
+    comment: "Great insights.",
+  },
+  {
+    id: "9",
+    avatar: "https://randomuser.me/api/portraits/men/9.jpg",
+    name: "Benjamin Anderson",
+    comment: "Excellent post!",
+  },
+  {
+    id: "10",
+    avatar: "https://randomuser.me/api/portraits/women/10.jpg",
+    name: "Isabella Thomas",
+    comment: "Really enjoyed this!",
+  },
+];
+
+export default function CommentModal({
+  modalVisible,
+  setModalVisible,
+  blogId,
+}) {
   const [commentText, setCommentText] = useState("");
-  const comments = [
-    {
-      id: "1",
-      avatar: "https://randomuser.me/api/portraits/men/1.jpg",
-      name: "John Doe",
-      comment: "Great post!",
-    },
-    {
-      id: "2",
-      avatar: "https://randomuser.me/api/portraits/women/2.jpg",
-      name: "Jane Smith",
-      comment: "Nice one!",
-    },
-    {
-      id: "3",
-      avatar: "https://randomuser.me/api/portraits/men/3.jpg",
-      name: "Michael Johnson",
-      comment: "Thanks for sharing.",
-    },
-    {
-      id: "4",
-      avatar: "https://randomuser.me/api/portraits/women/4.jpg",
-      name: "Emily Davis",
-      comment: "Really insightful!",
-    },
-    {
-      id: "5",
-      avatar: "https://randomuser.me/api/portraits/men/5.jpg",
-      name: "William Brown",
-      comment: "Loved the content!",
-    },
-    {
-      id: "6",
-      avatar: "https://randomuser.me/api/portraits/women/6.jpg",
-      name: "Sophia Wilson",
-      comment: "Very informative.",
-    },
-    {
-      id: "7",
-      avatar: "https://randomuser.me/api/portraits/men/7.jpg",
-      name: "James Taylor",
-      comment: "Well written!",
-    },
-    {
-      id: "8",
-      avatar: "https://randomuser.me/api/portraits/women/8.jpg",
-      name: "Olivia Martinez",
-      comment: "Great insights.",
-    },
-    {
-      id: "9",
-      avatar: "https://randomuser.me/api/portraits/men/9.jpg",
-      name: "Benjamin Anderson",
-      comment: "Excellent post!",
-    },
-    {
-      id: "10",
-      avatar: "https://randomuser.me/api/portraits/women/10.jpg",
-      name: "Isabella Thomas",
-      comment: "Really enjoyed this!",
-    },
-  ];
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (blogId) {
+      dispatch(getBlogCommentList(blogId));
+    }
+  }, []);
 
   return (
     <Modal
