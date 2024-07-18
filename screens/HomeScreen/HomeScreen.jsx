@@ -22,7 +22,6 @@ const HomeScreen = ({ navigation }) => {
   const { triggerNotification } = NotificationComponent();
   const [refreshing, setRefreshing] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
-  const [posts, setPosts] = useState([1, 2, 3]);
   const [pageNumber, setPageNumber] = useState(1);
 
   const blogListSelector = useSelector(getBlogListSelector);
@@ -157,7 +156,7 @@ const HomeScreen = ({ navigation }) => {
             blogListSelector.list_blog.map((item, index) => (
               <PostItem
                 caption={item.blog.blog_content}
-                blog={item}
+                blog={item.blog}
                 key={index + item?.id}
                 navigation={navigation}
               />
