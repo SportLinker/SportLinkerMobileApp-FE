@@ -1,15 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Button, FlatList, StyleSheet } from "react-native";
+import { Button, FlatList, StyleSheet, Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllYardByOwner } from "../../../redux/slices/yardSlice";
 import { getAllYardSelector } from "../../../redux/selectors";
-
-const fields = [
-  { id: "1", name: "Sân 1" },
-  { id: "2", name: "Sân 2" },
-  { id: "3", name: "Sân 3" },
-  // Thêm các sân khác vào đây
-];
+import { getAllYardByOwner } from "../../../redux/slices/yardSlice";
 
 const OrderYardScreen = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -17,8 +10,6 @@ const OrderYardScreen = ({ navigation }) => {
   const yardList = useSelector(getAllYardSelector);
 
   const [yards, setYard] = useState(null);
-
-  // console.log("yards", yards);
 
   useEffect(() => {
     dispatch(getAllYardByOwner());

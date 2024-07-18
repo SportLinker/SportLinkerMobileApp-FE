@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Button, StyleSheet } from "react-native";
+import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 
 const CreateBookingScreen = ({ navigation, route }) => {
   const { selectedDate, bookings, setBookings } = route.params;

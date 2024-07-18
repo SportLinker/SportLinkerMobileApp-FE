@@ -19,14 +19,19 @@ import {
   ratingStadium,
 } from "../../../redux/slices/yardSlice";
 
-const RatingModal = ({ visible, onClose, stadium, longitude, latitude }) => {
+const RatingModal = ({
+  visible,
+  onClose,
+  stadium,
+  setMessageSnackbar,
+  setSnackbarVisible,
+}) => {
   const dispatch = useDispatch();
 
   const [rating, setRating] = useState(0);
   const [feedback, setFeedback] = useState("");
 
   const confirmedRatingYard = () => {
-    console.log("feedback", feedback);
     const feedbackData = {
       content: feedback,
       rating: rating,
@@ -36,6 +41,8 @@ const RatingModal = ({ visible, onClose, stadium, longitude, latitude }) => {
         dispatch(getDetailStadiumByUser(stadium.id));
       }
     );
+    setMessageSnackbar(`Đánh giá sân ${stadium?.stadium_name} thành công!`);
+    setSnackbarVisible(true);
     onClose();
 
     // Clear state
