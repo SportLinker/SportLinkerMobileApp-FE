@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import WithDrawModal from "../AccountScreen/Withdraw/WithDrawModal";
 import ReChargeModal from "../AccountScreen/Recharge/ReChargeModal";
 import { useSelector } from "react-redux";
+import defaultAvatar from "../../assets/avatar_default.png";
 
 const WalletOptions = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -32,13 +33,22 @@ const WalletOptions = () => {
     <View style={styles.container}>
       <View style={styles.headerContainer}>
         <View style={styles.profileContainer}>
-          <Avatar.Image
-            size={60}
-            source={{
-              uri: listTransaction.user.avatar_url,
-            }}
-            style={styles.avatar}
-          />
+          {listTransaction.user.avatar_url ? (
+            <Avatar.Image
+              size={60}
+              source={{
+                uri: listTransaction.user.avatar_url,
+              }}
+              style={styles.avatar}
+            />
+          ) : (
+            <Avatar.Image
+              size={60}
+              source={defaultAvatar}
+              style={styles.avatar}
+            />
+          )}
+
           <View>
             <Text style={styles.profileName}>{listTransaction.user.name}</Text>
             <View style={styles.balanceWrapper}>
