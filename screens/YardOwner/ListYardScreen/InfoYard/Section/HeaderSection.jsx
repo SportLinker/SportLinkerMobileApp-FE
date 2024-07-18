@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, Text, View, StyleSheet } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { Avatar } from "react-native-paper";
 import defaultAvatar from "../../../../../assets/avatar_default.png";
 

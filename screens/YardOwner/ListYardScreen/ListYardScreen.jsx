@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { SafeAreaView, ScrollView, StyleSheet } from "react-native";
+import { SafeAreaView, StyleSheet } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllYardByOwnerSelector } from "../../../redux/selectors";
 import { getAllYardByYardOwner } from "../../../redux/slices/yardSlice";
@@ -22,9 +22,7 @@ const ListYardScreen = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={{ height: "90%" }}>
-        <ListYardItem data={yards} stadiumId={stadiumId} />
-      </ScrollView>
+      <ListYardItem data={yards} stadiumId={stadiumId} />
     </SafeAreaView>
   );
 };

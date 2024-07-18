@@ -25,8 +25,6 @@ const RatingYardItem = ({ route }) => {
     }
   }, [stadiumDetail]);
 
-  console.log("detail", detail);
-
   const CommentItem = ({ item }) => {
     return (
       <View style={styles.ratingContainer}>
