@@ -9,8 +9,6 @@ import defaultAvatar from "../../../../assets/avatar_default.png";
 export default function HeaderSection({ stadium, stadiumOwner }) {
   const [image, setImage] = useState(stadiumOwner.avatar_url);
 
-  // console.log("stadium", stadium);
-
   const renderStars = (rating) => {
     const stars = [];
     for (let i = 1; i <= 5; i++) {
