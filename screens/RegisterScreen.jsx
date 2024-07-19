@@ -1,26 +1,25 @@
-import {
-  View,
-  Text,
-  Platform,
-  KeyboardAvoidingView,
-  ScrollView,
-} from "react-native";
-import React, { useState } from "react";
-import { SafeAreaView } from "react-native";
-import { StyleSheet } from "react-native";
-import { Image } from "react-native";
-import { Button, Portal, Snackbar, TextInput } from "react-native-paper";
 import { Formik } from "formik";
-import * as Yup from "yup";
+import React, { useState } from "react";
+import {
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { Button, Portal, Snackbar, TextInput } from "react-native-paper";
+import { useDispatch, useSelector } from "react-redux";
+import * as Yup from "yup";
+import Loading from "../component/Loading";
 import RadioButtonGroup from "../component/RadioButtonGroup";
 import SportSelectOptions from "../component/SportSelectOptions";
-import { useDispatch, useSelector } from "react-redux";
-import { register } from "../redux/slices/userSlice";
-import { WINDOW_HEIGHT, WINDOW_WIDTH } from "../utils/constant";
 import { getUserLoadingSelector } from "../redux/selectors";
-import Loading from "../component/Loading";
 import { getArrStringSportName } from "../utils";
+import { WINDOW_HEIGHT, WINDOW_WIDTH } from "../utils/constant";
 
 const phoneRegExp = /^0\d{9}$/;
 

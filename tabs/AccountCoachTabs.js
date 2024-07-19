@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { View } from "react-native";
 import MenuAccount from "../screens/AccountScreen/MenuAccount";
 import CoachProfile from "../screens/Coach/Profile/CoachProfile";
-import CourseSelectionModal from "../screens/Coach/Profile/SelectCourseModal/CourseSelectionModal";
 
 export default function AccountCoachTabs() {
   const Stack = createStackNavigator();

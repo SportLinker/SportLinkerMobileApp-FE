@@ -8,9 +8,11 @@ import {
   View,
 } from "react-native";
 import { Calendar } from "react-native-calendars";
-import Icon from "react-native-vector-icons/MaterialIcons";
+import { Snackbar } from "react-native-paper";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import Icon from "react-native-vector-icons/MaterialIcons";
 import { useDispatch } from "react-redux";
+import { screenHeight, screenWidth } from "../../../component/style";
 import { confirmBooked } from "../../../redux/slices/bookSlice";
 import { getAllYardByOwner } from "../../../redux/slices/yardSlice";
 
@@ -26,6 +28,8 @@ const BookingScreen = ({ route, navigation }) => {
   const [showCalendar, setShowCalendar] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState(null);
+  const [snackbarVisible, setSnackbarVisible] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
   const onDayPress = (day) => {
     const currentDate = new Date();
@@ -41,34 +45,55 @@ const BookingScreen = ({ route, navigation }) => {
   };
 
   const updateBookingStatus = (date, timeSlot, status) => {
-    dispatch(confirmBooked({ status, booking_id: timeSlot.id })).then(() => {
-      setBookings((prevBookings) =>
-        prevBookings.map((booking) =>
-          booking.date === date
-            ? {
-                ...booking,
-                matches: booking.matches.map((match) =>
-                  match.id === timeSlot.id ? { ...match, status } : match
-                ),
+    Alert.alert(
+      "Xác nhận",
+      `Bạn có chắc chắn muốn ${
+        status === "accepted" ? "chấp nhận" : "xóa"
+      } đặt sân này không?`,
+      [
+        {
+          text: "Hủy",
+          style: "cancel",
+        },
+        {
+          text: "Đồng ý",
+          onPress: () => {
+            dispatch(confirmBooked({ status, booking_id: timeSlot.id })).then(
+              () => {
+                setBookings((prevBookings) =>
+                  prevBookings.map((booking) =>
+                    booking.date === date
+                      ? {
+                          ...booking,
+                          matches: booking.matches.map((match) =>
+                            match.id === timeSlot.id
+                              ? { ...match, status }
+                              : match
+                          ),
+                        }
+                      : booking
+                  )
+                );
+                dispatch(getAllYardByOwner());
+                setSnackbarMessage(
+                  `${
+                    status === "accepted" ? "Chấp nhận" : "Xóa"
+                  } đặt sân thành công!`
+                );
+                setSnackbarVisible(true);
               }
-            : booking
-        )
-      );
-      dispatch(getAllYardByOwner());
-      Alert.alert(
-        "Thông báo",
-        `${status === "accepted" ? "Chấp nhận" : "Xóa"} đặt sân thành công!`
-      );
-    });
+            );
+          },
+        },
+      ]
+    );
   };
 
   const acceptBooking = (date, timeSlot) => {
-    console.log("Accepted booking for date", date);
     updateBookingStatus(date, timeSlot, "accepted");
   };
 
   const deleteBooking = (date, timeSlot) => {
-    console.log("Delete booking for date", date);
     updateBookingStatus(date, timeSlot, "rejected");
   };
 
@@ -157,8 +182,10 @@ const BookingScreen = ({ route, navigation }) => {
             const bookingItem = bookings.find(
               (booking) => booking.date === date
             );
-            const allBooked = bookingItem.matches.length > 0;
-            const color = allBooked ? "#1646a9" : "#ff0000";
+            const accepted = bookingItem.matches.some(
+              (match) => match.status === "accepted"
+            );
+            const color = accepted ? "#1646a9" : "#ff0000"; // Red if not all accepted
             acc[date] = {
               selected: true,
               marked: true,
@@ -170,6 +197,14 @@ const BookingScreen = ({ route, navigation }) => {
           style={styles.calendar}
         />
       )}
+      <Snackbar
+        visible={snackbarVisible}
+        onDismiss={() => setSnackbarVisible(false)}
+        duration={3000}
+        style={styles.snackbarContainer}
+      >
+        {snackbarMessage}
+      </Snackbar>
     </View>
   );
 };
@@ -240,6 +275,16 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRadius: 5,
     backgroundColor: "#ddd",
+  },
+  snackbarContainer: {
+    borderRadius: 10,
+    alignItems: "center",
+    backgroundColor: "#1646A9",
+    textAlign: "center",
+    transform: [
+      { translateX: 0 * screenWidth },
+      { translateY: -0.02 * screenHeight },
+    ],
   },
 });
 

@@ -5,15 +5,13 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 // Import screen components
 import { Image } from "react-native";
+import { useSelector } from "react-redux";
+import defaultAvatar from "../assets/avatar_default.png";
+import { getUserSelector } from "../redux/selectors";
 import AccountTabs from "./AccountTabs";
 import ChatTabs from "./ChatTabs";
 import HomeTabs from "./HomeTabs";
 import SearchTopTabNavigator from "./SearchTopTabNavigator";
-import { color } from "react-native-elements/dist/helpers";
-import UpgradeScreen from "../screens/UpgradeScreen/UpgradeScreen";
-import { useSelector } from "react-redux";
-import { getUserSelector } from "../redux/selectors";
-import defaultAvatar from "../assets/avatar_default.png";
 
 const Tab = createBottomTabNavigator();
 
@@ -62,7 +60,7 @@ const BottomTabNavigator = () => {
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Upgrade"
         component={UpgradeScreen}
         options={{
@@ -76,7 +74,7 @@ const BottomTabNavigator = () => {
             />
           ),
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Chat"
         component={ChatTabs}

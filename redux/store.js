@@ -35,6 +35,9 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
+      immutableCheck: {
+        warnAfter: 400, // Increase the warning threshold to 400
+      },
     }),
 });
 

@@ -6,10 +6,8 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 // Import screen components
 import { Image } from "react-native";
 import HomeCoachScreen from "../screens/Coach/HomeCoach/HomeCoach";
-import AccountTabs from "./AccountTabs";
-import ChatTabs from "./ChatTabs";
-import CoachProfile from "../screens/Coach/Profile/CoachProfile";
 import AccountCoachTabs from "./AccountCoachTabs";
+import ChatTabs from "./ChatTabs";
 
 const Tab = createBottomTabNavigator();
 

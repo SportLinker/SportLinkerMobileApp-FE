@@ -6,12 +6,13 @@ import {
   Platform,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
-  TextInput,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
+import { getAllYardByOwnerSelector } from "../../../../redux/selectors";
 import {
   createYardInStadium,
   getAllYardByOwner,
@@ -20,7 +21,6 @@ import {
   updateYard,
 } from "../../../../redux/slices/yardSlice";
 import SportSelectionPopup from "./SportSelectPopup";
-import { getAllYardByOwnerSelector } from "../../../../redux/selectors";
 
 const CreateYardScreen = ({ navigation, route }) => {
   const { stadiumId, yardId, yardDetail = {} } = route.params;

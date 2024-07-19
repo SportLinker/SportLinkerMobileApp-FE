@@ -1,30 +1,23 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-  SafeAreaView,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  Alert,
-} from "react-native";
-import { TextInput, Button, Divider, Snackbar } from "react-native-paper";
-import { screenHeight, screenWidth } from "../component/style";
-import { useDispatch, useSelector } from "react-redux";
-import userSlice, { login } from "../redux/slices/userSlice";
-import { api } from "../services/api";
-import { createEvent } from "../redux/slices/eventSlice";
-import { getUserLoadingSelector } from "../redux/selectors";
-import Loading from "../component/Loading";
-import { useEffect } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import NotificationComponent from "../component/NotificationComponent";
 import auth from "@react-native-firebase/auth";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import firebase from "@react-native-firebase/app";
+import React, { useEffect, useState } from "react";
+import {
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { Button, Divider, Snackbar, TextInput } from "react-native-paper";
+import { useDispatch, useSelector } from "react-redux";
+import NotificationComponent from "../component/NotificationComponent";
+import { screenHeight, screenWidth } from "../component/style";
+import { getUserLoadingSelector } from "../redux/selectors";
+import userSlice, { login } from "../redux/slices/userSlice";
 
 const LoginScreen = ({ navigation }) => {
   const [loginForm, setLoginForm] = useState({
