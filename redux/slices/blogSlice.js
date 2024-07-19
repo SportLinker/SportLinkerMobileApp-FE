@@ -33,6 +33,24 @@ export const likeBlog = createAsyncThunk(
   }
 );
 
+export const postCommentBlog = createAsyncThunk(
+  "blogSlice/postCommentBlog",
+  async (formData, { rejectWithValue }) => {
+    const { blogId, comment } = formData;
+    console.log("comment blogId: ", blogId, comment);
+    try {
+      const response = await api.post(`blogs/comment/${blogId}`, {
+        content: comment,
+      });
+      console.log("API Response post comment blog: ", response.data);
+      return response.data;
+    } catch (error) {
+      console.log("Error: ", JSON.stringify(error.response.data));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const dislikeBlog = createAsyncThunk(
   "blogSlice/dislikeBlog",
   async (blogId, { rejectWithValue }) => {
@@ -55,6 +73,24 @@ export const deleteBlog = createAsyncThunk(
       console.log("deleteBlog blog with id: ", blogId);
       const response = await api.delete(`blogs/${blogId}`);
       console.log("deleteBlog blog response: ", JSON.stringify(response.data));
+      return response.data.metadata;
+    } catch (error) {
+      console.log("Error: ", JSON.stringify(error.response.data));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const deleteCommentBlog = createAsyncThunk(
+  "blogSlice/deleteCommentBlog",
+  async (commentId, { rejectWithValue }) => {
+    try {
+      console.log("deleteBlog comment blog with id: ", commentId);
+      const response = await api.delete(`blogs/comment/${commentId}`);
+      console.log(
+        "deleteBlog comment blog response: ",
+        JSON.stringify(response.data)
+      );
       return response.data.metadata;
     } catch (error) {
       console.log("Error: ", JSON.stringify(error.response.data));
@@ -149,6 +185,16 @@ export const blogSlice = createSlice({
         state.loading = false;
         state.error = action.payload; // Ensure consistent error handling
       })
+      .addCase(postCommentBlog.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(postCommentBlog.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(postCommentBlog.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload; // Ensure consistent error handling
+      })
       .addCase(dislikeBlog.pending, (state) => {
         state.loading = true;
       })
@@ -166,6 +212,16 @@ export const blogSlice = createSlice({
         state.loading = false;
       })
       .addCase(deleteBlog.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload; // Ensure consistent error handling
+      })
+      .addCase(deleteCommentBlog.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteCommentBlog.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(deleteCommentBlog.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload; // Ensure consistent error handling
       })

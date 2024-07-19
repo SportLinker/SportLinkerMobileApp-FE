@@ -191,7 +191,6 @@ const LoginScreen = ({ navigation }) => {
             <TextInput
               style={styles.input}
               mode="outlined"
-              inputMode="decimal"
               placeholder="Tên đăng nhập"
               onChangeText={(text) => {
                 setLoginForm((prevState) => ({ ...prevState, username: text }));
