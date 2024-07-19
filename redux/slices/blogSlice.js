@@ -33,6 +33,24 @@ export const likeBlog = createAsyncThunk(
   }
 );
 
+export const postCommentBlog = createAsyncThunk(
+  "blogSlice/postCommentBlog",
+  async (formData, { rejectWithValue }) => {
+    const { blogId, comment } = formData;
+    console.log("comment blogId: ", blogId, comment);
+    try {
+      const response = await api.post(`blogs/comment/${blogId}`, {
+        content: comment,
+      });
+      console.log("API Response post comment blog: ", response.data);
+      return response.data;
+    } catch (error) {
+      console.log("Error: ", JSON.stringify(error.response.data));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const dislikeBlog = createAsyncThunk(
   "blogSlice/dislikeBlog",
   async (blogId, { rejectWithValue }) => {
@@ -146,6 +164,16 @@ export const blogSlice = createSlice({
         state.loading = false;
       })
       .addCase(likeBlog.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload; // Ensure consistent error handling
+      })
+      .addCase(postCommentBlog.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(postCommentBlog.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(postCommentBlog.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload; // Ensure consistent error handling
       })
