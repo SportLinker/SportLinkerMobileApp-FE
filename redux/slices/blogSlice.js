@@ -81,6 +81,24 @@ export const deleteBlog = createAsyncThunk(
   }
 );
 
+export const deleteCommentBlog = createAsyncThunk(
+  "blogSlice/deleteCommentBlog",
+  async (commentId, { rejectWithValue }) => {
+    try {
+      console.log("deleteBlog comment blog with id: ", commentId);
+      const response = await api.delete(`blogs/comment/${commentId}`);
+      console.log(
+        "deleteBlog comment blog response: ",
+        JSON.stringify(response.data)
+      );
+      return response.data.metadata;
+    } catch (error) {
+      console.log("Error: ", JSON.stringify(error.response.data));
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const getBlogList = createAsyncThunk(
   "blogSlice/getBlogList",
   async (formData, { rejectWithValue }) => {
@@ -194,6 +212,16 @@ export const blogSlice = createSlice({
         state.loading = false;
       })
       .addCase(deleteBlog.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload; // Ensure consistent error handling
+      })
+      .addCase(deleteCommentBlog.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteCommentBlog.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(deleteCommentBlog.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload; // Ensure consistent error handling
       })
