@@ -1,6 +1,5 @@
-import { View, Text } from "react-native";
 import React, { useEffect } from "react";
-import { Image } from "react-native";
+import { Image, View } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 
 export default function WelcomeScreen({ navigation }) {

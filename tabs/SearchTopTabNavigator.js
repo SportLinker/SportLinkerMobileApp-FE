@@ -4,15 +4,12 @@ import React, { useState } from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 // Import screen components
-import { useNavigationState } from "@react-navigation/native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import SearchInputDynamic from "../component/SearchInputDynamic";
 import EventScreen from "../screens/SearchScreen/EventScreen/EventScreen";
 import YardScreen from "../screens/SearchScreen/YardScreen/YardScreen";
 import CoachTabs from "./CoachTabs";
 import PlayerTabs from "./PlayerTabs";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Button } from "react-native-paper";
-import { color } from "react-native-elements/dist/helpers";
 
 const TopTab = createMaterialTopTabNavigator();
 

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { View, Modal, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { useDispatch, useSelector } from "react-redux";
 import { getAllSportSelector } from "../../../../redux/selectors";
 import { getAllSport } from "../../../../redux/slices/yardSlice";
-import { useDispatch, useSelector } from "react-redux";
 
 const SportSelectionPopup = ({ visible, onClose, onSelectSport }) => {
   const dispatch = useDispatch();
@@ -17,8 +17,6 @@ const SportSelectionPopup = ({ visible, onClose, onSelectSport }) => {
   useEffect(() => {
     if (sportList) setSports(sportList);
   }, [sportList]);
-
-  // console.log("sports", sports);
 
   return (
     <Modal

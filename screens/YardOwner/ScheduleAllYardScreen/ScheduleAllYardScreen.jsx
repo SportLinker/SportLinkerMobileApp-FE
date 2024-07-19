@@ -9,11 +9,11 @@ import {
 } from "react-native";
 import { Calendar } from "react-native-calendars";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllYardByOwner } from "../../../redux/slices/yardSlice";
 import {
   getAllYardSelector,
   getLoadingSelector,
 } from "../../../redux/selectors";
+import { getAllYardByOwner } from "../../../redux/slices/yardSlice";
 import NoYard from "../ListAllYardScreen/NoYard/NoYard";
 
 const ScheduleAllYardScreen = ({ navigation }) => {

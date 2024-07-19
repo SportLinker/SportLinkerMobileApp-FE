@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
+  Keyboard,
   KeyboardAvoidingView,
   Platform,
-  TouchableWithoutFeedback,
-  Keyboard,
+  SafeAreaView,
+  StyleSheet,
+  Text,
   TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
 } from "react-native";
-import { TextInput, Button } from "react-native-paper";
+import { Button, TextInput } from "react-native-paper";
 
 const OTPInputScreen = ({ navigation }) => {
   const [otp, setOtp] = useState(["", "", "", ""]);

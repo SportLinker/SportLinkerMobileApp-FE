@@ -48,25 +48,23 @@ const ListAllYardScreen = ({ navigation }) => {
         </View>
       ) : (
         <>
-          <ScrollView style={{ height: "90%" }}>
-            {yards.length > 0 ? (
-              <>
-                <FilterOptionList
-                  setFilterOptions={setFilterOptions}
-                  yards={yards}
-                />
-                <ListAllYardItem data={filteredData} />
-              </>
-            ) : (
-              <>
-                <FilterOptionList
-                  setFilterOptions={setFilterOptions}
-                  yards={yards}
-                />
-                <NoYard />
-              </>
-            )}
-          </ScrollView>
+          {yards.length > 0 ? (
+            <>
+              <FilterOptionList
+                setFilterOptions={setFilterOptions}
+                yards={yards}
+              />
+              <ListAllYardItem data={filteredData} />
+            </>
+          ) : (
+            <>
+              <FilterOptionList
+                setFilterOptions={setFilterOptions}
+                yards={yards}
+              />
+              <NoYard />
+            </>
+          )}
         </>
       )}
     </SafeAreaView>

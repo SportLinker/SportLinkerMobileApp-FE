@@ -4,10 +4,8 @@ import { api } from "../../services/api";
 export const bookYardByUser = createAsyncThunk(
   "bookSlice/bookYardByUser",
   async (bookData, { rejectWithValue }) => {
-    // console.log("API Response: ", bookData);
     try {
       const response = await api.post(`/bookings`, bookData);
-      console.log("API Response: ", response.data);
       return response.data;
     } catch (error) {
       console.log("Error: ", JSON.stringify(error.response.data));
@@ -19,10 +17,8 @@ export const bookYardByUser = createAsyncThunk(
 export const getAllBookedByUser = createAsyncThunk(
   "bookSlice/getAllBookedByUser",
   async (_, { rejectWithValue }) => {
-    // console.log("API Response: ", bookData);
     try {
       const response = await api.get(`/bookings/getByUser`);
-      // console.log("API Response: ", response.data);
       return response.data.metadata;
     } catch (error) {
       console.log("Error: ", JSON.stringify(error.response.data));
@@ -34,11 +30,8 @@ export const getAllBookedByUser = createAsyncThunk(
 export const cancelBooked = createAsyncThunk(
   "bookSlice/cancelBooked",
   async (booking_id, { rejectWithValue }) => {
-    console.log("booking_id: ", booking_id);
     try {
       const response = await api.delete(`/bookings/${booking_id}`);
-      // console.log("status", status);
-      console.log("API Response: ", response.data);
       return response.data;
     } catch (error) {
       console.log("Error: ", JSON.stringify(error.response.data));
@@ -50,14 +43,10 @@ export const cancelBooked = createAsyncThunk(
 export const confirmBooked = createAsyncThunk(
   "bookSlice/confirmBooked",
   async ({ status, booking_id }, { rejectWithValue }) => {
-    // console.log("status: ", status);
-    // console.log("booking_id: ", booking_id);
     try {
       const response = await api.put(`/bookings/${booking_id}`, {
         status: status,
       });
-      // console.log("status", status);
-      console.log("API Response: ", response.data);
       return response.data;
     } catch (error) {
       console.log("Error: ", JSON.stringify(error.response.data));

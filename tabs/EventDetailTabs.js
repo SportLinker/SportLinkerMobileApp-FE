@@ -1,10 +1,10 @@
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import EventMember from "../screens/SearchScreen/EventScreen/EventMember";
-import EventDetail from "../screens/SearchScreen/EventScreen/EventDetail";
 import { useEffect } from "react";
 import { Text, View } from "react-native";
 import { useSelector } from "react-redux";
 import { getEventSelector } from "../redux/selectors";
+import EventDetail from "../screens/SearchScreen/EventScreen/EventDetail";
+import EventMember from "../screens/SearchScreen/EventScreen/EventMember";
 import { convertUTCToVietnamTime } from "../utils";
 
 const TopTab = createMaterialTopTabNavigator();
