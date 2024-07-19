@@ -12,8 +12,13 @@ import {
   Platform,
 } from "react-native";
 import { Avatar } from "react-native-paper";
-import { useDispatch } from "react-redux";
-import { getBlogCommentList } from "../../redux/slices/blogSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getBlogCommentList,
+  postCommentBlog,
+} from "../../redux/slices/blogSlice";
+import { Alert } from "react-native";
+import { getBlogCommentListSelector } from "../../redux/selectors";
 
 const comments = [
   {
@@ -85,13 +90,40 @@ export default function CommentModal({
 }) {
   const [commentText, setCommentText] = useState("");
 
+  const commentListSelector = useSelector(getBlogCommentListSelector);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (blogId) {
-      dispatch(getBlogCommentList(blogId));
+      try {
+        dispatch(getBlogCommentList(blogId));
+      } catch (error) {
+        console.log("Error get comment list: ", error);
+      }
     }
   }, []);
+
+  const handlePostComment = () => {
+    try {
+      const formData = {
+        blogId: blogId,
+        comment: commentText,
+      };
+      console.log("formData comment", formData);
+      dispatch(postCommentBlog(formData)).then((response) => {
+        console.log("Response comment: ", response);
+        if (response?.payload?.message == "Comment created") {
+          setCommentText("");
+          dispatch(getBlogCommentList(blogId));
+        } else {
+          Alert.alert("Đăng comment thất bại!", "");
+        }
+      });
+    } catch (error) {
+      console.log("Error post comment: ", error);
+    }
+  };
 
   return (
     <Modal
@@ -123,7 +155,7 @@ export default function CommentModal({
           </View>
           <FlatList
             style={{ width: "100%" }}
-            data={comments}
+            data={commentListSelector}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
               <View style={styles.commentItem}>
@@ -131,13 +163,17 @@ export default function CommentModal({
                   <Avatar.Image
                     size={40}
                     source={{
-                      uri: item.avatar,
+                      uri:
+                        item.user?.avatar_url ||
+                        "https://randomuser.me/api/portraits/men/1.jpg",
                     }}
                     style={styles.avatar}
                   />
                   <View style={styles.commentText}>
-                    <Text style={styles.commentName}>{item.name}</Text>
-                    <Text>{item.comment}</Text>
+                    <Text style={styles.commentName}>
+                      {item.user?.name || ""}
+                    </Text>
+                    <Text>{item.content}</Text>
                   </View>
                 </View>
               </View>
@@ -151,7 +187,10 @@ export default function CommentModal({
               onChangeText={setCommentText}
               placeholderTextColor="black"
             />
-            <TouchableOpacity style={styles.sendButton}>
+            <TouchableOpacity
+              style={styles.sendButton}
+              onPress={() => handlePostComment()}
+            >
               <MaterialIcons name="send" size={24} color="white" />
             </TouchableOpacity>
           </View>
@@ -201,7 +240,7 @@ const styles = StyleSheet.create({
 
   commentItem: {
     paddingVertical: 10,
-    width: "100%",
+    flex: 1,
     paddingHorizontal: 20,
   },
   commentContent: {
@@ -209,6 +248,7 @@ const styles = StyleSheet.create({
   },
   commentText: {
     marginLeft: 10,
+    width: "90%",
   },
   commentName: {
     fontWeight: "bold",
