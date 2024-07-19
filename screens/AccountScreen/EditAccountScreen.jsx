@@ -49,6 +49,8 @@ export default function EditAccountScreen({ navigation }) {
 
   const dispatch = useDispatch();
 
+  console.log(userSelector.favorite);
+
   const initialValues = userSelector.id
     ? {
         textName: userSelector.name,

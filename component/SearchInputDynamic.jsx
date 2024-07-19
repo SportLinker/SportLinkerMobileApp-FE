@@ -15,6 +15,7 @@ export default function SearchInputDynamic({ screen }) {
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
   const [location, setLocation] = useState(null);
+  const [address, setAddress] = useState(null);
 
   useEffect(() => {
     (async () => {

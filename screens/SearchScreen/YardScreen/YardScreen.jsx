@@ -73,14 +73,12 @@ export default function YardScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
-        <YardItem
-          data={stadiums}
-          latitude={latitude}
-          longitude={longitude}
-          loading={loading}
-        />
-      </ScrollView>
+      <YardItem
+        data={stadiums}
+        latitude={latitude}
+        longitude={longitude}
+        loading={loading}
+      />
     </SafeAreaView>
   );
 }

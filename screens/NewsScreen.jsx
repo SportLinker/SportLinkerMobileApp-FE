@@ -1,6 +1,6 @@
 // NewsScreen.js
 import React from "react";
-import { View, Text, Button, Platform } from "react-native";
+import { Button, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const NewsScreen = ({ navigation }) => {

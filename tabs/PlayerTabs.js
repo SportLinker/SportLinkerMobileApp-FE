@@ -1,8 +1,7 @@
-import { View, Text } from "react-native";
-import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import PlayerScreen from "../screens/SearchScreen/PlayerScreen/PlayerScreen";
+import React from "react";
 import DetailPlayerScreen from "../screens/SearchScreen/PlayerScreen/DetailPlayerScreen";
+import PlayerScreen from "../screens/SearchScreen/PlayerScreen/PlayerScreen";
 
 export default function PlayerTabs() {
   const Stack = createStackNavigator();
