@@ -228,3 +228,11 @@ export function getDistanceTime(timestamp) {
     return `${day}/${month}/${year}`;
   }
 }
+
+// CONVERT HTTP TO HTTPS
+export function convertHttpToHttps(url) {
+  if (url.startsWith("http://")) {
+    return url.replace("http://", "https://");
+  }
+  return url;
+}

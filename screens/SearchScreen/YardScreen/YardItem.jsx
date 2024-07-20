@@ -5,6 +5,7 @@ import { FlatList, Image, StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import DefaultImage from "../../../assets/default_img.png";
 import Loading from "../../../component/Loading";
+import { convertHttpToHttps } from "../../../utils";
 
 export default function YardItem({ data, loading, latitude, longitude }) {
   const navigation = useNavigation();
@@ -24,7 +25,7 @@ export default function YardItem({ data, loading, latitude, longitude }) {
       <View style={styles.imageContainer}>
         {yard.stadium_thumnail ? (
           <Image
-            source={{ uri: yard.stadium_thumnail }}
+            source={{ uri: convertHttpToHttps(yard.stadium_thumnail) }}
             style={styles.imageYard}
           />
         ) : (

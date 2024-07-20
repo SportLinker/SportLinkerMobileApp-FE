@@ -10,6 +10,7 @@ import React, { useState } from "react";
 import { Modal, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { Avatar } from "react-native-paper";
 import DetailCoachScreen from "../CoachScreen/DetailCoachScreen";
+import { convertHttpToHttps } from "../../../utils";
 
 const fakeData = [
   {
@@ -75,7 +76,7 @@ export default function DetailPlayerScreen({ navigation, route }) {
               <Avatar.Image
                 size={100}
                 source={{
-                  uri: item.avatar_url,
+                  uri: convertHttpToHttps(item.avatar_url),
                 }}
               />
               <View style={styles.header}>

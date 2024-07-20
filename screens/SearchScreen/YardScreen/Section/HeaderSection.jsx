@@ -5,6 +5,7 @@ import { styles } from "../../../../component/style";
 import { FontAwesome } from "@expo/vector-icons";
 import DefaultImage from "../../../../assets/default_img.png";
 import defaultAvatar from "../../../../assets/avatar_default.png";
+import { convertHttpToHttps } from "../../../../utils";
 
 export default function HeaderSection({ stadium, stadiumOwner }) {
   const [image, setImage] = useState(stadiumOwner.avatar_url);
@@ -46,7 +47,7 @@ export default function HeaderSection({ stadium, stadiumOwner }) {
           {stadium && stadium.stadium_thumnail ? (
             <Image
               source={{
-                uri: stadium.stadium_thumnail,
+                uri: convertHttpToHttps(stadium.stadium_thumnail),
               }}
               style={styles.imageDetailYard}
             />
@@ -57,7 +58,7 @@ export default function HeaderSection({ stadium, stadiumOwner }) {
           {stadiumOwner && stadiumOwner.avatar_url ? (
             <Avatar.Image
               size={100}
-              source={{ uri: image }}
+              source={{ uri: convertHttpToHttps(image) }}
               style={[styles.avatar, styles.avatarShadow]}
             />
           ) : (

@@ -25,6 +25,7 @@ import TabViewProfile from "./ActionButton/TabViewProfile";
 import HeaderAccount from "./HeaderAccount/HeaderAccount";
 import MyBook from "./ActionButton/MyBook";
 import defaultAvatar from "../../assets/avatar_default.png";
+import { convertHttpToHttps } from "../../utils";
 
 const fakeData = [
   {
@@ -146,7 +147,7 @@ export default function AccountScreen() {
             {userSelector && userSelector.avatar_url ? (
               <Avatar.Image
                 size={100}
-                source={{ uri: userSelector.avatar_url }}
+                source={{ uri: convertHttpToHttps(userSelector.avatar_url) }}
                 style={{ marginTop: 10 }}
               />
             ) : (

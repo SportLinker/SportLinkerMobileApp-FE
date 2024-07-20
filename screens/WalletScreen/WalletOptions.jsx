@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Avatar, FAB } from "react-native-paper";
-import { formatCurrency } from "../../utils";
+import { convertHttpToHttps, formatCurrency } from "../../utils";
 import { useEffect, useState } from "react";
 import WithDrawModal from "../AccountScreen/Withdraw/WithDrawModal";
 import ReChargeModal from "../AccountScreen/Recharge/ReChargeModal";
@@ -37,7 +37,7 @@ const WalletOptions = () => {
             <Avatar.Image
               size={60}
               source={{
-                uri: listTransaction.user.avatar_url,
+                uri: convertHttpToHttps(listTransaction.user.avatar_url),
               }}
               style={styles.avatar}
             />

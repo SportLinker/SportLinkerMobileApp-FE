@@ -30,8 +30,9 @@ import PublicStatusModal from "./PublicStatusModal";
 import { uploadMultipleImages } from "../../services/cloudinary";
 import { useDispatch, useSelector } from "react-redux";
 import blogSlice, { postBlog } from "../../redux/slices/blogSlice";
-import { getBlogLoadingSelector } from "../../redux/selectors";
+import { getBlogLoadingSelector, getUserSelector } from "../../redux/selectors";
 import Loading from "../../component/Loading";
+import { convertHttpToHttps } from "../../utils";
 
 const cationOptions = [
   {
@@ -75,6 +76,7 @@ export default function PostLinkerScreen({ navigation }) {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [searchQuery, setSearchQuery] = useState(null);
   const [publicStatus, setPublicStatus] = useState("Công khai");
+  const userSelector = useSelector(getUserSelector);
 
   const dispatch = useDispatch();
   const loading = useSelector(getBlogLoadingSelector);
@@ -230,13 +232,13 @@ export default function PostLinkerScreen({ navigation }) {
             <Avatar.Image
               size={50}
               source={{
-                uri: "https://www.redditstatic.com/avatars/avatar_default_03_FF8717.png",
+                uri: convertHttpToHttps(userSelector.avatar_url),
               }}
             />
             <View style={styles.headingWrapper}>
               <View style={styles.nameWrapper}>
                 <Text multiline={true} numberOfLines={2}>
-                  <Text style={styles.boldText}>Ninh Đăng Phạm</Text>
+                  <Text style={styles.boldText}>{userSelector.name}</Text>
                   {selectedLocation && <Text> đang ở</Text>}
                   {selectedLocation && (
                     <Text style={styles.boldText}>
@@ -302,7 +304,7 @@ export default function PostLinkerScreen({ navigation }) {
                     renderImage={(data) => (
                       <Image
                         style={styles.previewImage}
-                        source={{ uri: data.url }}
+                        source={{ uri: convertHttpToHttps(data.url) }}
                       />
                     )}
                     containerStyle={styles.previewContainer}
