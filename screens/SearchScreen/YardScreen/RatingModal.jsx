@@ -18,6 +18,7 @@ import {
   getDetailStadiumByUser,
   ratingStadium,
 } from "../../../redux/slices/yardSlice";
+import { convertHttpToHttps } from "../../../utils";
 
 const RatingModal = ({
   visible,
@@ -80,7 +81,7 @@ const RatingModal = ({
                 <Text style={modalStyles.modalTitle}>Đánh giá sân</Text>
                 {stadium.stadium_thumbnail ? (
                   <Image
-                    source={{ uri: stadium.stadium_thumbnail }}
+                    source={{ uri: convertHttpToHttps(stadium.stadium_thumbnail) }}
                     style={modalStyles.modalImage}
                   />
                 ) : (

@@ -18,6 +18,7 @@ import {
   sendMessageByUser,
 } from "../../redux/slices/messageSlice";
 import socket from "../../services/socket";
+import { convertHttpToHttps } from "../../utils";
 
 export default function ChatDetail({ navigation }) {
   const { chatDetail, group_message_id, loading, error } = useSelector(
@@ -92,7 +93,9 @@ export default function ChatDetail({ navigation }) {
             <Avatar.Image
               size={60}
               source={{
-                uri: chatDetail.group_message_detail.group_message_thumnail,
+                uri: convertHttpToHttps(
+                  chatDetail.group_message_detail.group_message_thumnail
+                ),
               }}
               style={{ marginRight: 10 }}
             />
