@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import defaultImage from "../../../assets/default_img.png";
 import { getByOwnerSelector } from "../../../redux/selectors";
 import { getStadiumByOwner } from "../../../redux/slices/yardSlice";
+import { convertHttpToHttps } from "../../../utils";
 
 const RatingYardList = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -58,7 +59,7 @@ const RatingYardList = ({ navigation }) => {
           <Image
             style={styles.yardItemImage}
             source={{
-              uri: item.stadium_thumnail,
+              uri: convertHttpToHttps(item.stadium_thumnail),
             }}
           />
         ) : (

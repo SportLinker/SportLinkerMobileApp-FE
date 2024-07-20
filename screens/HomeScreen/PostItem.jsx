@@ -16,7 +16,7 @@ import LoadVideo from "./LoadVideo";
 import LoadImage from "./LoadImage";
 import Autolink from "react-native-autolink";
 import { LinkPreview } from "@flyerhq/react-native-link-preview";
-import { getDistanceTime } from "../../utils";
+import { convertHttpToHttps, getDistanceTime } from "../../utils";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deleteBlog,
@@ -143,7 +143,7 @@ export default function PostItem({
           <Avatar.Image
             size={40}
             source={{
-              uri: blog && blog.owner?.avatar_url,
+              uri: blog && convertHttpToHttps(blog.owner?.avatar_url),
             }}
             style={styles.mr5}
           />

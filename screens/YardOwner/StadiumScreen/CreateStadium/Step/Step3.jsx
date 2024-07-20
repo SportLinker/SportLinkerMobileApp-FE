@@ -1,6 +1,7 @@
 import React from "react";
 import { View, TouchableOpacity, Text, StyleSheet, Image } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { convertHttpToHttps } from "../../../../../utils";
 
 const Step3 = ({
   stadiumData,
@@ -42,7 +43,7 @@ const Step3 = ({
       >
         {stadiumData.stadium_thumnail ? (
           <Image
-            source={{ uri: stadiumData.stadium_thumnail }}
+            source={{ uri: convertHttpToHttps(stadiumData.stadium_thumnail) }}
             style={styles.thumbnail}
           />
         ) : (

@@ -17,6 +17,7 @@ import {
   getEventLoadingtSelector,
 } from "../../../redux/selectors";
 import Loading from "../../../component/Loading";
+import { convertHttpToHttps } from "../../../utils";
 
 export const mock_data = [
   { id: 1, name: "Tai Vo", star: "true" },
@@ -74,7 +75,7 @@ export default function PlayerScreen({ navigation }) {
                       <Avatar.Image
                         size={40}
                         source={{
-                          uri: item.avatar_url,
+                          uri: convertHttpToHttps(item.avatar_url),
                         }}
                       />
                       <View>

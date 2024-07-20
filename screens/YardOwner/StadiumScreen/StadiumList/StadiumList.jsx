@@ -10,6 +10,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { FAB } from "react-native-paper";
 import DefaultImage from "../../../../assets/default_img.png";
+import { convertHttpToHttps } from "../../../../utils";
 
 export default function StadiumList({ stadiumList }) {
   const navigation = useNavigation();
@@ -32,7 +33,7 @@ export default function StadiumList({ stadiumList }) {
             {stadium.stadium_thumnail && stadium.stadium_thumnail ? (
               <Image
                 source={{
-                  uri: stadium.stadium_thumnail,
+                  uri: convertHttpToHttps(stadium.stadium_thumnail),
                 }}
                 style={styles.image}
               />

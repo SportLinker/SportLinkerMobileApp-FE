@@ -3,6 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const api = axios.create({
   baseURL: "https://be.sportlinker.site/v1/api",
+  baseURL: API_URL,
 });
 
 api.interceptors.request.use(
