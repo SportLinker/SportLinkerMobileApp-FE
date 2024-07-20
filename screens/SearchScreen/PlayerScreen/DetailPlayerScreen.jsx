@@ -10,6 +10,11 @@ import React, { useState } from "react";
 import { Modal, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { Avatar } from "react-native-paper";
 import DetailCoachScreen from "../CoachScreen/DetailCoachScreen";
+import { useDispatch } from "react-redux";
+import {
+  createIndividualChat,
+  getMessageDetail,
+} from "../../../redux/slices/messageSlice";
 import { convertHttpToHttps } from "../../../utils";
 
 const fakeData = [
@@ -33,6 +38,8 @@ export default function DetailPlayerScreen({ navigation, route }) {
   const [showMenu, setShowMenu] = useState(false);
   const [liked, setLiked] = useState("");
   const [addUser, setAddUser] = useState("");
+
+  const dispatch = useDispatch();
 
   const { item } = route.params;
   console.log(item);
@@ -98,9 +105,42 @@ export default function DetailPlayerScreen({ navigation, route }) {
                 </View>
                 <TouchableOpacity
                   onPress={() => {
-                    setModalVisible(false);
-                    navigation.navigate("PlayerScreen");
-                    navigation.navigate("ChatListScreen");
+                    try {
+                      setModalVisible(false);
+                      dispatch(createIndividualChat(item.id)).then(
+                        (response) => {
+                          if (response) {
+                            console.log("Response create chat: ", response);
+                            if (
+                              response?.payload &&
+                              response.payload?.group_message_id
+                            ) {
+                              dispatch(
+                                getMessageDetail(
+                                  response.payload?.group_message_id
+                                )
+                              ).then((response) => {
+                                console.log(
+                                  "Response get message detail",
+                                  response
+                                );
+                                if (
+                                  response.payload?.group_message_detail &&
+                                  response.payload.group_message_detail
+                                    .group_message_id
+                                ) {
+                                  navigation.navigate("ChatDetailScreen");
+                                }
+                              });
+                            }
+                            // navigation.navigate("PlayerScreen");
+                            // navigation.navigate("ChatListScreen");
+                          }
+                        }
+                      );
+                    } catch (error) {
+                      console.log("Error create individual chat", error);
+                    }
                   }}
                 >
                   <Ionicons

@@ -85,7 +85,7 @@ const SearchTopTabNavigator = () => {
             SÂN
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => {
             setActiveTab("coach");
           }}
@@ -104,13 +104,13 @@ const SearchTopTabNavigator = () => {
           >
             HLV
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
 
       {activeTab == "match" && <EventScreen />}
       {activeTab == "user" && <PlayerTabs />}
       {activeTab == "yard" && <YardScreen />}
-      {activeTab == "coach" && <CoachTabs />}
+      {/* {activeTab == "coach" && <CoachTabs />} */}
     </>
   );
 };

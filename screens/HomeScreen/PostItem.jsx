@@ -270,7 +270,7 @@ export default function PostItem({
             <Icon name="chat-outline" size={30} />
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => console.log("Share pressed")}
+            onPress={() => Alert.alert("Tính năng đang phát triển!", "")}
             style={styles.mr5}
           >
             <Icon name="share-outline" size={30} />

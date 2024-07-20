@@ -67,6 +67,26 @@ export const sendMessageByUser = createAsyncThunk(
   }
 );
 
+export const createIndividualChat = createAsyncThunk(
+  "messageSlice/createIndividualChat",
+  async (userId, { rejectWithValue }) => {
+    try {
+      console.log("userId", userId);
+      const response = await api.post(`/groupMessage`, {
+        user_id: userId,
+      });
+      console.log("createIndividualChat API Response:", response.data.metadata);
+      return response.data.metadata;
+    } catch (error) {
+      if (!error.response) {
+        throw error;
+      }
+      console.log("error", error.response.data);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const getListNotification = createAsyncThunk(
   "messageSlice/getListNotification",
   async (_, { rejectWithValue }) => {
@@ -140,6 +160,16 @@ export const messageSlice = createSlice({
         state.loading = false;
       })
       .addCase(sendMessageByUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload; // Ensure consistent error handling
+      })
+      .addCase(createIndividualChat.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(createIndividualChat.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(createIndividualChat.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload; // Ensure consistent error handling
       })
