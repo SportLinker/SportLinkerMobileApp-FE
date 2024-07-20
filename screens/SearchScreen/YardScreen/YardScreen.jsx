@@ -1,22 +1,13 @@
 import * as Location from "expo-location";
 import React, { useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
-import { yard_data } from "../../../utils/constant";
-import YardItem from "./YardItem";
+import { SafeAreaView, StyleSheet } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllStadiumByUser } from "../../../redux/slices/eventSlice";
 import {
   getAllStadiumByUserSelector,
   getEventLoadingtSelector,
-  getLoadingSelector,
 } from "../../../redux/selectors";
+import { getAllStadiumByUser } from "../../../redux/slices/eventSlice";
+import YardItem from "./YardItem";
 
 export default function YardScreen() {
   const dispatch = useDispatch();

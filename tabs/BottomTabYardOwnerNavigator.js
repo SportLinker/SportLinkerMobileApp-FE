@@ -49,21 +49,6 @@ const BottomTabYardOwnerNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Chat"
-        component={ChatTabs}
-        options={{
-          headerShown: false,
-          tabBarLabel: "Chat",
-          tabBarIcon: ({ color, size }) => (
-            <Icon
-              name={"chat-processing-outline"}
-              color={color}
-              size={size + 5}
-            />
-          ),
-        }}
-      />
-      <Tab.Screen
         name="Account"
         component={AccountTabs}
         options={{

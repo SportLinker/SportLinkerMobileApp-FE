@@ -20,6 +20,7 @@ import SportSelectOptions from "../component/SportSelectOptions";
 import { getUserLoadingSelector } from "../redux/selectors";
 import { getArrStringSportName } from "../utils";
 import { WINDOW_HEIGHT, WINDOW_WIDTH } from "../utils/constant";
+import { register } from "../redux/slices/userSlice";
 
 const phoneRegExp = /^0\d{9}$/;
 
@@ -116,26 +117,26 @@ export default function RegisterScreen({ navigation }) {
               "https://www.redditstatic.com/avatars/avatar_default_03_FF8717.png",
           };
           console.log(formData);
-          // try {
-          //   dispatch(register(formData)).then((response) => {
-          //     if (response.error) {
-          //       console.log("error response");
-          //       setFailMessage(response.payload.message);
-          //     }
-          //     if (
-          //       response?.payload?.message &&
-          //       response.payload.message == "Register sucessfully"
-          //     ) {
-          //       console.log("success");
-          //       setSuccessMessage("Đăng ký thành công!");
-          //       setTimeout(() => {
-          //         navigation.navigate("Login");
-          //       }, 3000);
-          //     }
-          //   });
-          // } catch (error) {
-          //   console.log("error", error);
-          // }
+          try {
+            dispatch(register(formData)).then((response) => {
+              if (response.error) {
+                console.log("error response");
+                setFailMessage(response.payload.message);
+              }
+              if (
+                response?.payload?.message &&
+                response.payload.message == "Register sucessfully"
+              ) {
+                console.log("success");
+                setSuccessMessage("Đăng ký thành công!");
+                setTimeout(() => {
+                  navigation.navigate("Login");
+                }, 3000);
+              }
+            });
+          } catch (error) {
+            console.log("error", error);
+          }
         }}
       >
         {({
@@ -204,6 +205,7 @@ export default function RegisterScreen({ navigation }) {
                 placeholder="Mật khẩu"
                 onChangeText={handleChange("password")}
                 onBlur={handleBlur("password")}
+                secureTextEntry={true}
                 value={values.password}
                 outlineColor={touched.password && errors.password && "red"}
               />
@@ -219,6 +221,7 @@ export default function RegisterScreen({ navigation }) {
                 onChangeText={handleChange("confirmPassword")}
                 onBlur={handleBlur("confirmPassword")}
                 value={values.confirmPassword}
+                secureTextEntry={true}
                 outlineColor={
                   touched.confirmPassword && errors.confirmPassword && "red"
                 }

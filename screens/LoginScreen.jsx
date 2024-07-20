@@ -27,6 +27,7 @@ const LoginScreen = ({ navigation }) => {
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
   const [isHidePassword, setIsHidePassword] = useState(true);
+  const [invalidInput, setInvalidInput] = useState(true);
 
   const loadingSelector = useSelector(getUserLoadingSelector);
 
@@ -40,29 +41,29 @@ const LoginScreen = ({ navigation }) => {
   const handleLogin = async () => {
     console.log("handleLogin");
     try {
-      // Handle login logic here, such as sending login credentials to server
       if (loginForm.username === "" || loginForm.password === "") {
         setErrorMessage("Vui lòng không bỏ trống!");
+        setInvalidInput(false);
+        return;
       }
       dispatch(login(loginForm)).then((response) => {
         console.log(response);
 
-        //login failed
         if (response.error) {
           setErrorMessage("Tên đăng nhập hoặc mật khẩu không đúng!");
+          setInvalidInput(false);
         }
 
-        //login successful
         if (
           response?.payload?.message &&
-          response.payload.message == "Login sucessfully"
+          response.payload.message === "Login sucessfully"
         ) {
           setSuccessMessage("Đăng nhập thành công!");
           setTimeout(() => {
-            if (response.payload.metadata.user.role == "player") {
+            if (response.payload.metadata.user.role === "player") {
               navigation.navigate("BottomTabs");
             }
-            if (response.payload.metadata.user.role == "stadium") {
+            if (response.payload.metadata.user.role === "stadium") {
               navigation.navigate("BottomTabYardOwnerNavigator");
             }
           }, 500);
@@ -79,12 +80,10 @@ const LoginScreen = ({ navigation }) => {
         "906328135376-90t5fhq0fe85g0bjdse93s62bkcun5q7.apps.googleusercontent.com",
     });
     try {
-      // Check if your device supports Google Play
       await GoogleSignin.hasPlayServices({
         showPlayServicesUpdateDialog: true,
       });
 
-      // Get the user's ID token
       const { idToken } = await GoogleSignin.signIn();
       console.log(`idToken`, idToken);
 
@@ -93,7 +92,6 @@ const LoginScreen = ({ navigation }) => {
         return;
       }
 
-      // Create a Google credential with the token
       const googleCredential = auth.GoogleAuthProvider.credential(idToken);
       console.log(`googleCredential`, googleCredential);
 
@@ -102,7 +100,6 @@ const LoginScreen = ({ navigation }) => {
         return;
       }
 
-      // Sign-in the user with the credential
       const userCredential = await auth().signInWithCredential(
         googleCredential
       );
@@ -117,7 +114,6 @@ const LoginScreen = ({ navigation }) => {
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        {/* {loadingSelector && <Loading visible={loadingSelector} />} */}
         <ScrollView>
           <View style={styles.container}>
             <Image
@@ -189,11 +185,15 @@ const LoginScreen = ({ navigation }) => {
 
             <Text style={styles.label}>Tên đăng nhập:</Text>
             <TextInput
-              style={styles.input}
+              style={[
+                styles.input,
+                { borderColor: invalidInput ? "#4878D9" : "red" },
+              ]}
               mode="outlined"
               placeholder="Tên đăng nhập"
               onChangeText={(text) => {
                 setLoginForm((prevState) => ({ ...prevState, username: text }));
+                setInvalidInput(true);
               }}
               outlineColor={errorMessage && "red"}
               value={loginForm.username}
@@ -201,10 +201,14 @@ const LoginScreen = ({ navigation }) => {
             <Text style={styles.label}>Mật khẩu:</Text>
             <TextInput
               mode="outlined"
-              style={styles.input}
+              style={[
+                styles.input,
+                { borderColor: invalidInput ? "#4878D9" : "red" },
+              ]}
               placeholder="Mật khẩu"
               onChangeText={(text) => {
                 setLoginForm((prevState) => ({ ...prevState, password: text }));
+                setInvalidInput(true);
               }}
               right={
                 <TextInput.Icon
@@ -346,9 +350,7 @@ const styles = StyleSheet.create({
     height: 40,
     backgroundColor: "white",
     marginVertical: 12,
-    borderWidth: 1,
     borderRadius: 8,
-    borderColor: "#4878D9",
     borderWidth: 2,
   },
   button: {
@@ -366,6 +368,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#1646A9",
     textAlign: "center",
+    color: "white",
     transform: [
       { translateX: 0 * screenWidth },
       { translateY: -0.02 * screenHeight },
@@ -373,6 +376,7 @@ const styles = StyleSheet.create({
   },
   snackbarContainerFail: {
     backgroundColor: "red",
+    color: "white",
   },
 });
 

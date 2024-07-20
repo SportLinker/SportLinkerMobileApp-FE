@@ -260,11 +260,11 @@ const EventScheduleTable = ({ eventListData, loading }) => {
         <View>
           <Text
             style={{
-              color: "#1646A9",
-              fontSize: 20,
-              fontWeight: "bold",
               textAlign: "center",
-              paddingTop: 30,
+              fontSize: 24,
+              color: "#1446a9",
+              marginTop: 20,
+              fontWeight: "bold",
             }}
           >
             Không tìm thấy trận đấu nào!
