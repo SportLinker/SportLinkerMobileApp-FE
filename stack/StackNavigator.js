@@ -39,6 +39,7 @@ import EventDetailTabs from "../tabs/EventDetailTabs";
 import CreateYardScreen from "../screens/YardOwner/ListYardScreen/CreateYardScreen/CreateYardScreen";
 import ListAllYardScreen from "../screens/YardOwner/ListAllYardScreen/ListAllYardScreen";
 import ScheduleAllYardScreen from "../screens/YardOwner/ScheduleAllYardScreen/ScheduleAllYardScreen";
+import BlogDetailScreen from "../screens/HomeScreen/BlogDetailScreen";
 
 const Stack = createStackNavigator();
 
@@ -391,6 +392,17 @@ const StackNavigator = () => (
         headerTitleAlign: "center",
         headerTintColor: "white",
         headerBackTitle: " ",
+      }}
+    />
+
+    <Stack.Screen
+      name="BlogDetailScreen"
+      component={BlogDetailScreen}
+      options={{
+        title: "Bài viết",
+        headerStyle: { backgroundColor: "#1646a9" },
+        headerTitleAlign: "center",
+        headerTintColor: "white",
       }}
     />
   </Stack.Navigator>
