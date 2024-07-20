@@ -12,7 +12,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIndetifier": "com.phuoc18.sportlinker",
@@ -26,7 +28,10 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "permissions": ["CAMERA", "INTERNET"],
+      "permissions": [
+        "CAMERA",
+        "INTERNET"
+      ],
       "package": "com.phuoc18.sportlinker"
     },
     "web": {

@@ -6,7 +6,7 @@ const tabs = [
   { key: "profile", label: "Giới thiệu" },
   { key: "post", label: "Bài đăng" },
   { key: "match", label: "Trận đấu" },
-  { key: "transaction", label: "Giao dịch" },
+  // { key: "transaction", label: "Giao dịch" },
   { key: "book", label: "Đặt sân" },
 ];
 
@@ -16,6 +16,10 @@ export default function TabViewProfile({ activeTab, setActiveTab }) {
       <FlatList
         data={tabs}
         horizontal
+        contentContainerStyle={{
+          flex: 1,
+          justifyContent: "space-between",
+        }}
         style={{ padding: 10 }}
         renderItem={({ item }) => (
           <TouchableOpacity
