@@ -131,6 +131,26 @@ export const getMyBlogList = createAsyncThunk(
   }
 );
 
+export const getBlogDetail = createAsyncThunk(
+  "blogSlice/getBlogDetail",
+  async (blogId, { rejectWithValue }) => {
+    try {
+      const response = await api.get(`/blogs/${blogId}`);
+      console.log(
+        "API Response Get Blog Detail: ",
+        JSON.stringify(response.data)
+      );
+      return response.data.metadata;
+    } catch (error) {
+      console.log(
+        "Error Get Blog Detail: ",
+        JSON.stringify(error.response.data)
+      );
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const getBlogCommentList = createAsyncThunk(
   "blogSlice/getBlogCommentList",
   async (blogId, { rejectWithValue }) => {
@@ -154,6 +174,7 @@ export const blogSlice = createSlice({
   initialState: {
     blogList: null,
     myBlogList: null,
+    blogDetail: null,
     blogCommentList: null,
     loading: false,
     error: null,
@@ -249,6 +270,17 @@ export const blogSlice = createSlice({
         state.myBlogList = action.payload;
       })
       .addCase(getMyBlogList.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload; // Ensure consistent error handling
+      })
+      .addCase(getBlogDetail.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getBlogDetail.fulfilled, (state, action) => {
+        state.loading = false;
+        state.blogDetail = action.payload;
+      })
+      .addCase(getBlogDetail.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload; // Ensure consistent error handling
       })
