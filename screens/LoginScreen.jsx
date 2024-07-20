@@ -367,6 +367,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#1646A9",
     textAlign: "center",
+    color: "white",
     transform: [
       { translateX: 0 * screenWidth },
       { translateY: -0.02 * screenHeight },
@@ -374,6 +375,7 @@ const styles = StyleSheet.create({
   },
   snackbarContainerFail: {
     backgroundColor: "red",
+    color: "white",
   },
 });
 

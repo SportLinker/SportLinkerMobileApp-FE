@@ -50,11 +50,6 @@ export default function AccountScreen() {
 
   const dispatch = useDispatch();
 
-  // const fakeDataCommunity = [
-  //   { id: 1, city: "Ho Chi Minh City", code: "EXE201" },
-  //   { id: 2, city: "Hanoi", code: "EXE202" },
-  // ];
-
   const [showImagePickerOptions, setShowImagePickerOptions] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
