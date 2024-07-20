@@ -46,6 +46,7 @@ export default function PostItem({
     }
     if (blog && blog.blog_link.length > 0) {
       const urlArr = blog.blog_link.map((item) => item.url);
+      console.log("urlArr", urlArr);
       setImages(urlArr);
     }
   }, [blog]);
@@ -270,7 +271,12 @@ export default function PostItem({
             <Icon name="chat-outline" size={30} />
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => Alert.alert("Tính năng đang phát triển!", "")}
+            onPress={() => {
+              // Alert.alert("Tính năng đang phát triển!", "")
+              navigation.navigate("BlogDetailScreen", {
+                blogId: blog.id,
+              });
+            }}
             style={styles.mr5}
           >
             <Icon name="share-outline" size={30} />

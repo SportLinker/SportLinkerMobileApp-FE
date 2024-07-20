@@ -49,7 +49,7 @@ const ListLikeScreen = ({ navigation }) => {
     <View style={styles.itemContainer}>
       <Avatar.Image
         size={40}
-        source={{ uri: convertHttpToHttps(convertHttpToHttps) }}
+        source={{ uri: convertHttpToHttps(item.avatar) }}
         style={styles.avatar}
       />
       <Text style={styles.name}>{item.name}</Text>
