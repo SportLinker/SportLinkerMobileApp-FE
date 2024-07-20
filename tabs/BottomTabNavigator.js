@@ -12,6 +12,7 @@ import AccountTabs from "./AccountTabs";
 import ChatTabs from "./ChatTabs";
 import HomeTabs from "./HomeTabs";
 import SearchTopTabNavigator from "./SearchTopTabNavigator";
+import { convertHttpToHttps } from "../utils";
 
 const Tab = createBottomTabNavigator();
 
@@ -98,7 +99,11 @@ const BottomTabNavigator = () => {
           tabBarLabel: "Tài Khoản",
           tabBarIcon: ({ color, size }) => (
             <Image
-              source={image === defaultAvatar ? image : { uri: image }}
+              source={
+                image === defaultAvatar
+                  ? image
+                  : { uri: convertHttpToHttps(image) }
+              }
               style={{
                 height: size + 5,
                 width: size + 5,

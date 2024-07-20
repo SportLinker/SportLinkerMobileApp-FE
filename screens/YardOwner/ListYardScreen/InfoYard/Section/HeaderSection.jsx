@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Avatar } from "react-native-paper";
 import defaultAvatar from "../../../../../assets/avatar_default.png";
+import { convertHttpToHttps } from "../../../../../utils";
 
 export default function HeaderSection({ image, yardDetail }) {
   return (
@@ -27,7 +28,7 @@ export default function HeaderSection({ image, yardDetail }) {
           {image ? (
             <Avatar.Image
               size={90}
-              source={{ uri: image }}
+              source={{ uri: convertHttpToHttps(image) }}
               style={[styles.avatarYard, styles.avatarShadow]}
             />
           ) : (

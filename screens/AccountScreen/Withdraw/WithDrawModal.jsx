@@ -23,6 +23,7 @@ import {
   getListTransactionByUser,
   paymentWithDraw,
 } from "../../../redux/slices/paymentSlice";
+import { convertHttpToHttps } from "../../../utils";
 
 const WithDrawModal = ({ modalVisible, setModalVisible }) => {
   const [banks, setBanks] = useState([]);
@@ -190,7 +191,7 @@ const WithDrawModal = ({ modalVisible, setModalVisible }) => {
                   title={
                     <View style={styles.menuItem}>
                       <Image
-                        source={{ uri: bank.logo }}
+                        source={{ uri: convertHttpToHttps(bank.logo) }}
                         style={{
                           width: 100,
                           height: 50,

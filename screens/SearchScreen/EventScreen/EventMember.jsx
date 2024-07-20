@@ -13,6 +13,7 @@ import { getEventSelector } from "../../../redux/selectors";
 import ConfirmPopup from "../../../component/ConfirmPopup";
 import { TouchableOpacity } from "react-native";
 import { unjoinEventByUserOrOwner } from "../../../redux/slices/eventSlice";
+import { convertHttpToHttps } from "../../../utils";
 
 const EventMember = ({ navigation }) => {
   const eventDetail = useSelector(getEventSelector);
@@ -72,14 +73,19 @@ const EventMember = ({ navigation }) => {
                   >
                     <Avatar.Image
                       size={50}
-                      source={{ uri: item.user_join.avatar_url }}
+                      source={{
+                        uri: convertHttpToHttps(item.user_join.avatar_url),
+                      }}
                     />
                   </View>
                   <Text style={styles.itemText}>{item.user_join.name}</Text>
                 </>
               ) : (
                 <>
-                  <Avatar.Image size={50} source={{ uri: item.avatar_url }} />
+                  <Avatar.Image
+                    size={50}
+                    source={{ uri: convertHttpToHttps(item.avatar_url) }}
+                  />
                   <Text style={styles.itemText}>{item.name}</Text>
                 </>
               )}

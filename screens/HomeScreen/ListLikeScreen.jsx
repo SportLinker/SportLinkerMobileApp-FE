@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
 import { Avatar, Button, Appbar, Searchbar } from "react-native-paper";
+import { convertHttpToHttps } from "../../utils";
 
 const ListLikeScreen = ({ navigation }) => {
   const [people, setPeople] = useState([
@@ -48,7 +49,7 @@ const ListLikeScreen = ({ navigation }) => {
     <View style={styles.itemContainer}>
       <Avatar.Image
         size={40}
-        source={{ uri: item.avatar }}
+        source={{ uri: convertHttpToHttps(convertHttpToHttps) }}
         style={styles.avatar}
       />
       <Text style={styles.name}>{item.name}</Text>

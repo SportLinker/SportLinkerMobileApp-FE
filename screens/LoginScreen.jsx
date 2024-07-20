@@ -272,7 +272,7 @@ const LoginScreen = ({ navigation }) => {
               </TouchableOpacity>
             </View>
 
-            <Button
+            {/* <Button
               mode="outlined"
               style={{ marginBottom: 10 }}
               onPress={() => navigation.navigate("BottomTabs")}
@@ -301,7 +301,7 @@ const LoginScreen = ({ navigation }) => {
               }}
             >
               Press to schedule a notification
-            </Button>
+            </Button> */}
           </View>
         </ScrollView>
         <Snackbar
@@ -371,7 +371,7 @@ const styles = StyleSheet.create({
     color: "white",
     transform: [
       { translateX: 0 * screenWidth },
-      { translateY: -0.02 * screenHeight },
+      { translateY: 0.1 * screenHeight },
     ],
   },
   snackbarContainerFail: {

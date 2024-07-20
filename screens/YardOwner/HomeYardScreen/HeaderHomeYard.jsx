@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Avatar } from "react-native-paper";
 import defaultAvatar from "../../../assets/avatar_default.png";
+import { convertHttpToHttps } from "../../../utils";
 
 export default function HeaderHomeYard({ user }) {
   const navigation = useNavigation();
@@ -16,7 +17,7 @@ export default function HeaderHomeYard({ user }) {
           {user && user.avatar_url ? (
             <Avatar.Image
               size={100}
-              source={{ uri: image }}
+              source={{ uri: convertHttpToHttps(image) }}
               style={styles.avatar}
             />
           ) : (

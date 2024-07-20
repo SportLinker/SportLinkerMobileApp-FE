@@ -4,6 +4,7 @@ import Recharge from "../Recharge/Recharge";
 import { styles } from "../../../component/style";
 import { Avatar } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
+import { convertHttpToHttps } from "../../../utils";
 
 const HeaderAccount = ({ image, setShowImagePickerOptions }) => {
   return (
@@ -27,7 +28,7 @@ const HeaderAccount = ({ image, setShowImagePickerOptions }) => {
           <TouchableOpacity onPress={() => setShowImagePickerOptions(true)}>
             <Avatar.Image
               size={100}
-              source={{ uri: image }}
+              source={{ uri: convertHttpToHttps(image) }}
               style={[{ marginTop: 10 }, styles.shadow]}
             />
           </TouchableOpacity>
