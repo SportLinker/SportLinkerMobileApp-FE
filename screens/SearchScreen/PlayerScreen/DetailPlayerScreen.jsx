@@ -15,6 +15,7 @@ import {
   createIndividualChat,
   getMessageDetail,
 } from "../../../redux/slices/messageSlice";
+import { convertHttpToHttps } from "../../../utils";
 
 const fakeData = [
   {
@@ -82,7 +83,7 @@ export default function DetailPlayerScreen({ navigation, route }) {
               <Avatar.Image
                 size={100}
                 source={{
-                  uri: item.avatar_url,
+                  uri: convertHttpToHttps(item.avatar_url),
                 }}
               />
               <View style={styles.header}>

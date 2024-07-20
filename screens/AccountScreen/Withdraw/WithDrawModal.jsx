@@ -23,6 +23,7 @@ import {
   getListTransactionByUser,
   paymentWithDraw,
 } from "../../../redux/slices/paymentSlice";
+import { convertHttpToHttps } from "../../../utils";
 
 const WithDrawModal = ({ modalVisible, setModalVisible }) => {
   const [banks, setBanks] = useState([]);
@@ -162,7 +163,11 @@ const WithDrawModal = ({ modalVisible, setModalVisible }) => {
 
   return (
     <Portal>
-      <Dialog visible={modalVisible} onDismiss={hideModal}>
+      <Dialog
+        visible={modalVisible}
+        onDismiss={hideModal}
+        style={{ backgroundColor: "#fff" }}
+      >
         <Dialog.Title style={styles.dialogTitle}>Rút Tiền</Dialog.Title>
         <ScrollView contentContainerStyle={styles.scrollView}>
           <Dialog.Content>
@@ -186,7 +191,7 @@ const WithDrawModal = ({ modalVisible, setModalVisible }) => {
                   title={
                     <View style={styles.menuItem}>
                       <Image
-                        source={{ uri: bank.logo }}
+                        source={{ uri: convertHttpToHttps(bank.logo) }}
                         style={{
                           width: 100,
                           height: 50,
@@ -288,6 +293,8 @@ const styles = StyleSheet.create({
     borderColor: "#1646A9",
     borderRadius: 5,
     paddingHorizontal: 10,
+    backgroundColor: "#fff",
+    color: "black",
   },
   submitButton: {
     backgroundColor: "#1646A9",
@@ -303,7 +310,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   closeButtonText: {
-    color: "black",
+    color: "white",
     fontSize: 16,
   },
   scrollView: {

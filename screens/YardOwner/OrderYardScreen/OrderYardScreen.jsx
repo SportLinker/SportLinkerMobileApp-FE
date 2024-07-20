@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { Button, FlatList, StyleSheet, Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllYardSelector } from "../../../redux/selectors";
+import {
+  getAllYardSelector,
+  getLoadingSelector,
+} from "../../../redux/selectors";
 import { getAllYardByOwner } from "../../../redux/slices/yardSlice";
+import FilterOptionList from "../ListYardScreen/FilterOption";
+import Loading from "../../../component/Loading";
 
 const OrderYardScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const yardList = useSelector(getAllYardSelector);
+  const loading = useSelector(getLoadingSelector);
 
   const [yards, setYard] = useState(null);
+  const [filterOptions, setFilterOptions] = useState({ stadiumName: "all" });
 
   useEffect(() => {
     dispatch(getAllYardByOwner());
@@ -21,36 +28,51 @@ const OrderYardScreen = ({ navigation }) => {
     }
   }, [yardList]);
 
+  const filteredData =
+    filterOptions.stadiumName === "all"
+      ? yards
+      : yards.filter(
+          (item) => item.stadium.stadium_name === filterOptions.stadiumName
+        );
+
   return (
     <View style={styles.container}>
-      <FlatList
-        data={yards}
-        keyExtractor={(item) => item.yard_id}
-        renderItem={({ item }) => (
-          <View style={styles.fieldContainer}>
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              <Text style={styles.fieldName}>{item.yard_name}</Text>
-              <Text>{item.yard_sport}</Text>
-            </View>
-            <Button
-              title="Đặt lịch"
-              color="#1E90FF"
-              onPress={() =>
-                navigation.navigate("Booking", {
-                  yard_name: item.yard_name,
-                  booking: item.BookingYard,
-                })
-              }
-            />
-          </View>
-        )}
+      <FilterOptionList
+        setFilterOptions={setFilterOptions}
+        yards={yards || []}
       />
+      {!loading ? (
+        <FlatList
+          data={filteredData || []}
+          keyExtractor={(item) => item.yard_id}
+          renderItem={({ item }) => (
+            <View style={styles.fieldContainer}>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={styles.fieldName}>{item.yard_name}</Text>
+                <Text>{item.yard_sport}</Text>
+              </View>
+              <Button
+                title="Xem đặt sân"
+                color="#1446a9"
+                onPress={() =>
+                  navigation.navigate("Booking", {
+                    yard_name: item.yard_name,
+                    booking: item.BookingYard,
+                  })
+                }
+              />
+            </View>
+          )}
+        />
+      ) : (
+        <Loading message={"Loading..."} visible={loading} />
+      )}
     </View>
   );
 };

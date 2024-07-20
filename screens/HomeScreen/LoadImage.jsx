@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 import Swiper from "react-native-swiper";
+import { convertHttpToHttps } from "../../utils";
 
 const LoadImage = ({ listImages }) => {
   return (
@@ -14,7 +15,10 @@ const LoadImage = ({ listImages }) => {
       >
         {listImages.map((imageUri, index) => (
           <View key={index} style={styles.slide}>
-            <Image source={{ uri: imageUri }} style={styles.image} />
+            <Image
+              source={{ uri: convertHttpToHttps(imageUri) }}
+              style={styles.image}
+            />
           </View>
         ))}
       </Swiper>

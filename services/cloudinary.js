@@ -24,7 +24,7 @@ export const uploadImageToCloudinary = async (uri, type, fileName) => {
 
   try {
     const response = await axios.post(
-      `http://api.cloudinary.com/v1_1/${formatKey(
+      `https://api.cloudinary.com/v1_1/${formatKey(
         CLOUDINARY_CLOUD_NAME
       )}/image/upload`,
       data,

@@ -8,7 +8,11 @@ import {
 } from "react-native";
 import { Avatar, Button, Snackbar } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { convertUTCToVietnamTime, formatCurrency } from "../../../utils";
+import {
+  convertHttpToHttps,
+  convertUTCToVietnamTime,
+  formatCurrency,
+} from "../../../utils";
 import { DashCircle } from "../../../component/DashCircle";
 import {
   getEventLoadingtSelector,
@@ -131,7 +135,7 @@ const EventDetail = ({ navigation }) => {
                 key={newItem.user_join.id + index}
                 size={50}
                 source={{
-                  uri: newItem.user_join.avatar_url,
+                  uri: convertHttpToHttps(newItem.user_join.avatar_url),
                 }}
               />
             );

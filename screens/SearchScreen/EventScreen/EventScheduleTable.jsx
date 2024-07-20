@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUserSelector } from "../../../redux/selectors";
 import { getDetailEvent } from "../../../redux/slices/eventSlice";
 import { getSportIcon } from "../../../utils/constant";
+import { convertHttpToHttps } from "../../../utils";
 
 const EventScheduleTable = ({ eventListData, loading }) => {
   const dispatch = useDispatch();
@@ -201,7 +202,7 @@ const EventScheduleTable = ({ eventListData, loading }) => {
                         size={30}
                         source={{
                           uri: newItem.user_join?.avatar_url
-                            ? newItem.user_join?.avatar_url
+                            ? convertHttpToHttps(convertHttpToHttps)
                             : "https://www.redditstatic.com/avatars/avatar_default_03_FF8717.png",
                         }}
                       />
@@ -260,11 +261,11 @@ const EventScheduleTable = ({ eventListData, loading }) => {
         <View>
           <Text
             style={{
-              color: "#1646A9",
-              fontSize: 20,
-              fontWeight: "bold",
               textAlign: "center",
-              paddingTop: 30,
+              fontSize: 24,
+              color: "#1446a9",
+              marginTop: 20,
+              fontWeight: "bold",
             }}
           >
             Không tìm thấy trận đấu nào!

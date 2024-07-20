@@ -285,6 +285,7 @@ const styles = StyleSheet.create({
       { translateX: 0 * screenWidth },
       { translateY: -0.02 * screenHeight },
     ],
+    color: "white",
   },
 });
 
