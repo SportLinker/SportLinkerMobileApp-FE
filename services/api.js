@@ -1,10 +1,8 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { API_URL } from "@env";
 
 export const api = axios.create({
-  baseURL: "http://14.225.198.20:8080/v1/api",
-  // baseURL: API_URL,
+  baseURL: "https://be.sportlinker.site/v1/api",
 });
 
 api.interceptors.request.use(
@@ -47,9 +45,12 @@ api.interceptors.response.use(
       const refreshToken = await AsyncStorage.getItem("refreshToken");
       if (refreshToken) {
         try {
-          const response = await axios.post(`${API_URL}/auth/refresh-token`, {
-            token: refreshToken,
-          });
+          const response = await axios.post(
+            `${"https://fine-special-ram.ngrok-free.app/v1/api"}/auth/refresh-token`,
+            {
+              token: refreshToken,
+            }
+          );
           const newAccessToken = response.data.accessToken;
           const newRefreshToken = response.data.refreshToken;
 

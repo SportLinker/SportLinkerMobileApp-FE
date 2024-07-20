@@ -18,6 +18,7 @@ import { getListMessageSelector } from "../../redux/selectors";
 import Loading from "../../component/Loading";
 import { io } from "socket.io-client";
 import socket from "../../services/socket";
+import { useIsFocused } from "@react-navigation/native";
 
 export default function ChatListScreen({ navigation }) {
   const [searchQuery, setSearchQuery] = useState("");
@@ -28,10 +29,14 @@ export default function ChatListScreen({ navigation }) {
   );
   const { userInfo } = useSelector((state) => state.userSlice);
 
+  const isFocused = useIsFocused();
+
   useEffect(() => {
-    dispatch(getListMessage());
-    socket.emit("online-user", userInfo.id);
-  }, [dispatch]);
+    if (isFocused) {
+      dispatch(getListMessage());
+      socket.emit("online-user", userInfo.id);
+    }
+  }, [isFocused]);
   useEffect(() => {
     if (socket) {
       const handleMessageReceive = (msg) => {

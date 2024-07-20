@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CLOUDINARY_CLOUD_NAME, CLOUDINARY_UPLOAD_PRESET_NAME } from "@env";
+// import { CLOUDINARY_CLOUD_NAME, CLOUDINARY_UPLOAD_PRESET_NAME } from "@env";
 import { Platform } from "react-native";
 
 const formatKey = (key) => {
@@ -7,8 +7,10 @@ const formatKey = (key) => {
   return newString;
 };
 
+const CLOUDINARY_CLOUD_NAME = "dgo0zdagl";
+const CLOUDINARY_UPLOAD_PRESET_NAME = "_SportLinker";
+
 export const uploadImageToCloudinary = async (uri, type, fileName) => {
-  console.log("KEY: ", CLOUDINARY_CLOUD_NAME, CLOUDINARY_UPLOAD_PRESET_NAME);
   console.log("uri:", uri, "type:", type, "file:", fileName);
   const data = new FormData();
   data.append("file", {
