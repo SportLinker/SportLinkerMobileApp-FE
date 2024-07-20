@@ -8,7 +8,7 @@ import {
   Linking,
   Animated,
 } from "react-native";
-import { Avatar, Divider, Menu } from "react-native-paper";
+import { Avatar, Menu } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import CommentModal from "./CommentModal"; // Import CommentModal
 import { Ionicons } from "@expo/vector-icons";
@@ -25,7 +25,13 @@ import {
 } from "../../redux/slices/blogSlice";
 import { Alert } from "react-native";
 
-export default function PostItem({ navigation, caption, blog }) {
+export default function PostItem({
+  navigation,
+  caption,
+  blog,
+  refreshBlog,
+  handleShowMessage,
+}) {
   const [liked, setLiked] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [url, setUrl] = useState(null);
@@ -98,7 +104,13 @@ export default function PostItem({ navigation, caption, blog }) {
   const handleDeleteBlog = () => {
     try {
       dispatch(deleteBlog(blog?.id)).then((response) => {
-        console.log("response delete blog: " + response);
+        console.log("response delete blog: " + JSON.stringify(response));
+        if (response.payload == "Remove blog success") {
+          console.log("delete blog success");
+          handleShowMessage("Xoá bài đăng thành công!", "success");
+        } else {
+          handleShowMessage("Xoá bài đăng thất bại!", "error");
+        }
         closeMenu();
       });
     } catch (error) {

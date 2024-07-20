@@ -11,72 +11,16 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
-import { Avatar } from "react-native-paper";
-import { useDispatch } from "react-redux";
-import { getBlogCommentList } from "../../redux/slices/blogSlice";
-
-const comments = [
-  {
-    id: "1",
-    avatar: "https://randomuser.me/api/portraits/men/1.jpg",
-    name: "John Doe",
-    comment: "Great post!",
-  },
-  {
-    id: "2",
-    avatar: "https://randomuser.me/api/portraits/women/2.jpg",
-    name: "Jane Smith",
-    comment: "Nice one!",
-  },
-  {
-    id: "3",
-    avatar: "https://randomuser.me/api/portraits/men/3.jpg",
-    name: "Michael Johnson",
-    comment: "Thanks for sharing.",
-  },
-  {
-    id: "4",
-    avatar: "https://randomuser.me/api/portraits/women/4.jpg",
-    name: "Emily Davis",
-    comment: "Really insightful!",
-  },
-  {
-    id: "5",
-    avatar: "https://randomuser.me/api/portraits/men/5.jpg",
-    name: "William Brown",
-    comment: "Loved the content!",
-  },
-  {
-    id: "6",
-    avatar: "https://randomuser.me/api/portraits/women/6.jpg",
-    name: "Sophia Wilson",
-    comment: "Very informative.",
-  },
-  {
-    id: "7",
-    avatar: "https://randomuser.me/api/portraits/men/7.jpg",
-    name: "James Taylor",
-    comment: "Well written!",
-  },
-  {
-    id: "8",
-    avatar: "https://randomuser.me/api/portraits/women/8.jpg",
-    name: "Olivia Martinez",
-    comment: "Great insights.",
-  },
-  {
-    id: "9",
-    avatar: "https://randomuser.me/api/portraits/men/9.jpg",
-    name: "Benjamin Anderson",
-    comment: "Excellent post!",
-  },
-  {
-    id: "10",
-    avatar: "https://randomuser.me/api/portraits/women/10.jpg",
-    name: "Isabella Thomas",
-    comment: "Really enjoyed this!",
-  },
-];
+import { Avatar, Menu } from "react-native-paper";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  deleteCommentBlog,
+  getBlogCommentList,
+  postCommentBlog,
+} from "../../redux/slices/blogSlice";
+import { Ionicons } from "@expo/vector-icons";
+import { Alert } from "react-native";
+import { getBlogCommentListSelector } from "../../redux/selectors";
 
 export default function CommentModal({
   modalVisible,
@@ -84,14 +28,79 @@ export default function CommentModal({
   blogId,
 }) {
   const [commentText, setCommentText] = useState("");
+  const [visibleMenu, setVisibleMenu] = useState(false);
+
+  const commentListSelector = useSelector(getBlogCommentListSelector);
+  const { userInfo } = useSelector((state) => state.userSlice);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (blogId) {
-      dispatch(getBlogCommentList(blogId));
+      try {
+        dispatch(getBlogCommentList(blogId));
+      } catch (error) {
+        console.log("Error get comment list: ", error);
+      }
     }
   }, []);
+
+  const openMenu = () => setVisibleMenu(true);
+
+  const closeMenu = () => setVisibleMenu(false);
+
+  const handlePostComment = () => {
+    try {
+      const formData = {
+        blogId: blogId,
+        comment: commentText,
+      };
+      console.log("formData comment", formData);
+      dispatch(postCommentBlog(formData)).then((response) => {
+        console.log("Response comment: ", response);
+        if (response?.payload?.message == "Comment created") {
+          setCommentText("");
+          dispatch(getBlogCommentList(blogId));
+        } else {
+          Alert.alert("Đăng comment thất bại!", "");
+        }
+      });
+    } catch (error) {
+      console.log("Error post comment: ", error);
+    }
+  };
+
+  const handleDeleteComment = (commentId) => {
+    try {
+      dispatch(deleteCommentBlog(commentId)).then((response) => {
+        console.log("Response delete comment: ", response);
+        if (response.payload == "Remove comment success") {
+          dispatch(getBlogCommentList(blogId));
+        } else {
+          Alert.alert("Xoá comment thất bại!", "");
+        }
+      });
+    } catch (error) {
+      console.log("Error deleting comment: ", error);
+    }
+  };
+
+  const confirmDeleteComment = (commentId) => {
+    Alert.alert(
+      "Xác nhận",
+      `Bạn có chắc chắn là muốn xoá bài đăng này không?`,
+      [
+        {
+          text: "Huỷ",
+          style: "cancel",
+        },
+        {
+          text: "Có",
+          onPress: () => handleDeleteComment(commentId),
+        },
+      ]
+    );
+  };
 
   return (
     <Modal
@@ -101,6 +110,7 @@ export default function CommentModal({
       onRequestClose={() => {
         setModalVisible(!modalVisible);
       }}
+      style={{ zIndex: 0 }}
     >
       <KeyboardAvoidingView
         style={styles.modalContainer}
@@ -123,7 +133,7 @@ export default function CommentModal({
           </View>
           <FlatList
             style={{ width: "100%" }}
-            data={comments}
+            data={commentListSelector}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
               <View style={styles.commentItem}>
@@ -131,13 +141,32 @@ export default function CommentModal({
                   <Avatar.Image
                     size={40}
                     source={{
-                      uri: item.avatar,
+                      uri:
+                        item.user?.avatar_url ||
+                        "https://randomuser.me/api/portraits/men/1.jpg",
                     }}
                     style={styles.avatar}
                   />
                   <View style={styles.commentText}>
-                    <Text style={styles.commentName}>{item.name}</Text>
-                    <Text>{item.comment}</Text>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Text style={styles.commentName}>
+                        {item.user?.name || ""}
+                      </Text>
+                      {item.user_id == userInfo.id && (
+                        <Ionicons
+                          name="close-circle"
+                          size={24}
+                          color="red"
+                          onPress={() => confirmDeleteComment(item.id)}
+                        />
+                      )}
+                    </View>
+                    <Text>{item.content}</Text>
                   </View>
                 </View>
               </View>
@@ -151,7 +180,10 @@ export default function CommentModal({
               onChangeText={setCommentText}
               placeholderTextColor="black"
             />
-            <TouchableOpacity style={styles.sendButton}>
+            <TouchableOpacity
+              style={styles.sendButton}
+              onPress={() => handlePostComment()}
+            >
               <MaterialIcons name="send" size={24} color="white" />
             </TouchableOpacity>
           </View>
@@ -167,6 +199,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     alignItems: "center",
     backgroundColor: "rgba(0,0,0,0.5)",
+    zIndex: 0,
   },
   modalView: {
     width: "100%",
@@ -201,7 +234,7 @@ const styles = StyleSheet.create({
 
   commentItem: {
     paddingVertical: 10,
-    width: "100%",
+    flex: 1,
     paddingHorizontal: 20,
   },
   commentContent: {
@@ -209,8 +242,10 @@ const styles = StyleSheet.create({
   },
   commentText: {
     marginLeft: 10,
+    width: "90%",
   },
   commentName: {
+    width: "90%",
     fontWeight: "bold",
   },
   inputContainer: {
