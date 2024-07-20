@@ -21,6 +21,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { Alert } from "react-native";
 import { getBlogCommentListSelector } from "../../redux/selectors";
+import { convertHttpToHttps } from "../../utils";
 
 export default function CommentModal({
   modalVisible,
@@ -142,7 +143,7 @@ export default function CommentModal({
                     size={40}
                     source={{
                       uri:
-                        item.user?.avatar_url ||
+                        convertHttpToHttps(convertHttpToHttps) ||
                         "https://randomuser.me/api/portraits/men/1.jpg",
                     }}
                     style={styles.avatar}

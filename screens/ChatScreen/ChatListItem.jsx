@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import React from "react";
 import { Avatar } from "react-native-paper";
-import { convertTo12HourFormat } from "../../utils";
+import { convertHttpToHttps, convertTo12HourFormat } from "../../utils";
 import { useDispatch } from "react-redux";
 import messageSlice, {
   getMessageDetail,
@@ -24,7 +24,7 @@ export default function ChatListItem({ seen, navigation, chatItem }) {
         <Avatar.Image
           size={45}
           source={{
-            uri: chatItem.group_message_thumnail,
+            uri: convertHttpToHttps(chatItem.group_message_thumnail),
           }}
           style={{ marginRight: 10 }}
         />

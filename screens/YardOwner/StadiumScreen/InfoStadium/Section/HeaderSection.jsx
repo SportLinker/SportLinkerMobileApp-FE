@@ -5,6 +5,7 @@ import { styles } from "../../../../../component/style";
 import defaultImage from "../../../../../assets/default_img.png";
 import defaultAvatar from "../../../../../assets/avatar_default.png";
 import { FontAwesome } from "@expo/vector-icons";
+import { convertHttpToHttps } from "../../../../../utils";
 
 export default function HeaderSection({ userAvatar, stadiumDetail }) {
   const renderStars = (rating) => {
@@ -44,7 +45,7 @@ export default function HeaderSection({ userAvatar, stadiumDetail }) {
           <Image
             source={
               stadiumDetail.stadium_thumnail
-                ? { uri: stadiumDetail.stadium_thumnail }
+                ? { uri: convertHttpToHttps(stadiumDetail.stadium_thumnail) }
                 : defaultImage
             }
             style={styles.imageDetailYard}

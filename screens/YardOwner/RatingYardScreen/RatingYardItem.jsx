@@ -7,6 +7,7 @@ import defaultAvatar from "../../../assets/avatar_default.png";
 import defaultImage from "../../../assets/default_img.png";
 import { getStadiumDetailByUserSelector } from "../../../redux/selectors";
 import { getDetailStadiumByUser } from "../../../redux/slices/yardSlice";
+import { convertHttpToHttps } from "../../../utils";
 
 const RatingYardItem = ({ route }) => {
   const { stadiumId } = route.params;
@@ -32,7 +33,7 @@ const RatingYardItem = ({ route }) => {
           <Avatar.Image
             size={50}
             source={{
-              uri: item.user.avatar_url,
+              uri: convertHttpToHttps(item.user.avatar_url),
             }}
             style={styles.avatar}
           ></Avatar.Image>
@@ -66,7 +67,7 @@ const RatingYardItem = ({ route }) => {
         <Image
           style={styles.yardItemImage}
           source={{
-            uri: detail.stadium_thumnail,
+            uri: convertHttpToHttps(detail.stadium_thumnail),
           }}
         />
       ) : (
