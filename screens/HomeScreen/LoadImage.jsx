@@ -4,6 +4,7 @@ import Swiper from "react-native-swiper";
 import { convertHttpToHttps } from "../../utils";
 
 const LoadImage = ({ listImages }) => {
+  console.log("Loading images...", listImages);
   return (
     <View style={styles.container}>
       <Swiper
@@ -13,14 +14,15 @@ const LoadImage = ({ listImages }) => {
         activeDotStyle={styles.activeDotStyle}
         loop={false} // Disable looping
       >
-        {listImages.map((imageUri, index) => (
-          <View key={index} style={styles.slide}>
-            <Image
-              source={{ uri: convertHttpToHttps(imageUri) }}
-              style={styles.image}
-            />
-          </View>
-        ))}
+        {listImages &&
+          listImages.map((imageUri, index) => (
+            <View key={index} style={styles.slide}>
+              <Image
+                source={{ uri: convertHttpToHttps(imageUri) }}
+                style={styles.image}
+              />
+            </View>
+          ))}
       </Swiper>
     </View>
   );

@@ -231,7 +231,8 @@ export function getDistanceTime(timestamp) {
 
 // CONVERT HTTP TO HTTPS
 export function convertHttpToHttps(url) {
-  if (url.startsWith("http://")) {
+  console.log("URI: " + url);
+  if (url && url.startsWith("http://")) {
     return url.replace("http://", "https://");
   }
   return url;

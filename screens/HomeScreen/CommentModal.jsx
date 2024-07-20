@@ -142,9 +142,9 @@ export default function CommentModal({
                   <Avatar.Image
                     size={40}
                     source={{
-                      uri:
-                        convertHttpToHttps(convertHttpToHttps) ||
-                        "https://randomuser.me/api/portraits/men/1.jpg",
+                      uri: item.user?.avatar_url
+                        ? convertHttpToHttps(item.user?.avatar_url)
+                        : "https://randomuser.me/api/portraits/men/1.jpg",
                     }}
                     style={styles.avatar}
                   />
