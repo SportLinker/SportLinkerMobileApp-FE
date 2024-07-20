@@ -190,7 +190,6 @@ const LoginScreen = ({ navigation }) => {
                 { borderColor: invalidInput ? "#4878D9" : "red" },
               ]}
               mode="outlined"
-              inputMode=""
               placeholder="Tên đăng nhập"
               onChangeText={(text) => {
                 setLoginForm((prevState) => ({ ...prevState, username: text }));
