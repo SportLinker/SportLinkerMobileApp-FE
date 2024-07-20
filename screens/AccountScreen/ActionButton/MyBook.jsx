@@ -136,8 +136,7 @@ const MyBook = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f8f8f8",
-    padding: 10,
+    backgroundColor: "#ffffff",
   },
   card: {
     borderRadius: 10,
