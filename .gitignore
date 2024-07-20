@@ -132,6 +132,9 @@ dist
 # Ignore credentials.json
 credentials.json
 
+# Ignore eas.json
+eas.json
+
 # Android build directories and IDE files
 android/
 

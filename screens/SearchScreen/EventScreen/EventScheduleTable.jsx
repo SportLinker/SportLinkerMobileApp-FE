@@ -202,7 +202,7 @@ const EventScheduleTable = ({ eventListData, loading }) => {
                         size={30}
                         source={{
                           uri: newItem.user_join?.avatar_url
-                            ? convertHttpToHttps(convertHttpToHttps)
+                            ? convertHttpToHttps(newItem.user_join?.avatar_url)
                             : "https://www.redditstatic.com/avatars/avatar_default_03_FF8717.png",
                         }}
                       />
