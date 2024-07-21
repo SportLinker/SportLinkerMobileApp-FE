@@ -14,6 +14,7 @@ import {
 import { getStadiumByOwner } from "../../../redux/slices/yardSlice";
 import NoStadiumScreen from "./InfoStadium/NoStadiumScreen";
 import StadiumList from "./StadiumList/StadiumList";
+import Loading from "../../../component/Loading";
 
 const StadiumScreen = () => {
   const navigation = useNavigation();
@@ -36,9 +37,7 @@ const StadiumScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       {loading ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#6200ee" />
-        </View>
+        <Loading visible={loading} />
       ) : stadiumList && stadiumList.length > 0 ? (
         <StadiumList stadiumList={stadiumList} />
       ) : (

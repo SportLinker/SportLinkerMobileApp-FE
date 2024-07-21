@@ -1,21 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { Alert, ScrollView, StyleSheet } from "react-native"; // Import Alert from React Native
+import { SafeAreaView, StyleSheet } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { getStadiumDetailByUserSelector } from "../../../redux/selectors";
-import { getDetailStadiumByUser } from "../../../redux/slices/yardSlice";
 import RatingModal from "./RatingModal";
-import { ActionButtons } from "./Section/ActionButtons ";
-import { DetailsSection } from "./Section/DetailsSection";
-import HeaderSection from "./Section/HeaderSection";
-import { IntroductionSection } from "./Section/IntroductionSection";
 import { Snackbar } from "react-native-paper";
 import { screenHeight, screenWidth } from "../../../component/style";
+import Loading from "../../../component/Loading";
+import {
+  getLoadingSelector,
+  getStadiumDetailByUserSelector,
+} from "../../../redux/selectors";
+import { getDetailStadiumByUser } from "../../../redux/slices/yardSlice";
+import { ActionButtons } from "./Section/ActionButtons";
+import { HeaderSection } from "./Section/HeaderSection";
+import { IntroductionSection } from "./Section/IntroductionSection";
+import { DetailsSection } from "./Section/DetailsSection";
 
 const DetailYardScreen = ({ route }) => {
   const { stadium, latitude, longitude } = route?.params;
 
   const dispatch = useDispatch();
   const stadiumDetailById = useSelector(getStadiumDetailByUserSelector);
+  const loading = useSelector(getLoadingSelector);
 
   const [image, setImage] = useState(
     "https://i.pinimg.com/236x/71/db/24/71db24f6798f1a208b7fe8a503365458.jpg"
@@ -23,13 +28,13 @@ const DetailYardScreen = ({ route }) => {
   const [liked, setLiked] = useState("");
   const [stadiumOwner, setStadiumOwner] = useState(stadium.owner);
   const [modalVisible, setModalVisible] = useState(false);
-  const [stadiumDetail, setStadiumDetail] = useState(false);
+  const [stadiumDetail, setStadiumDetail] = useState(null);
   const [snackbarVisible, setSnackbarVisible] = useState(false);
-  const [messageSnackbar, setMessageSnackbar] = useState();
+  const [messageSnackbar, setMessageSnackbar] = useState("");
 
   useEffect(() => {
     dispatch(getDetailStadiumByUser(stadium.id));
-  }, []);
+  }, [dispatch, stadium.id]);
 
   useEffect(() => {
     if (stadiumDetailById) {
@@ -45,8 +50,9 @@ const DetailYardScreen = ({ route }) => {
     setModalVisible(true);
   };
 
+  if (!stadiumDetail) return <Loading visible={loading} />;
   return (
-    <ScrollView style={{ backgroundColor: "#fff" }}>
+    <SafeAreaView style={{ backgroundColor: "#fff", flex: 1 }}>
       <HeaderSection
         image={image}
         stadium={stadiumDetail}
@@ -68,7 +74,7 @@ const DetailYardScreen = ({ route }) => {
       >
         {messageSnackbar}
       </Snackbar>
-      {stadiumDetail && !stadiumDetail.can_rating ? (
+      {stadiumDetail && !stadiumDetail.can_rating && (
         <RatingModal
           stadium={stadiumDetail}
           visible={modalVisible}
@@ -78,8 +84,8 @@ const DetailYardScreen = ({ route }) => {
           setMessageSnackbar={setMessageSnackbar}
           setSnackbarVisible={setSnackbarVisible}
         />
-      ) : null}
-    </ScrollView>
+      )}
+    </SafeAreaView>
   );
 };
 
