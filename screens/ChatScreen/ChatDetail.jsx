@@ -84,9 +84,7 @@ export default function ChatDetail({ navigation }) {
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ flex: 1 }}>
         <View style={styles.chatHeader}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("ChatListScreen")}
-          >
+          <TouchableOpacity onPress={() => navigation.goBack()}>
             <Text style={styles.btnBack}>Quay về</Text>
           </TouchableOpacity>
           <View style={styles.avatarWrap}>

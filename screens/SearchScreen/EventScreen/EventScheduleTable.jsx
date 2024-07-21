@@ -263,7 +263,7 @@ const EventScheduleTable = ({ eventListData, loading }) => {
             style={{
               textAlign: "center",
               fontSize: 24,
-              color: "#1446a9",
+              color: "#707070",
               marginTop: 20,
               fontWeight: "bold",
             }}

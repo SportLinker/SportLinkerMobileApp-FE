@@ -354,7 +354,7 @@ export const sports = [
   // Add more sports as needed
 ];
 
-// find icon base on sport name
+// find icon base on sport name like "Bóng đá"
 export function getSportIcon(sportName) {
   // Tìm môn thể thao trong mảng sports
   const sport = sports.find((s) => s.sport_name === sportName);
