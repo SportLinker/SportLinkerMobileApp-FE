@@ -34,7 +34,7 @@ export default function MyPost({ navigation }) {
         ...blog,
         owner: userInfo,
       }));
-      console.log("new my blog", newMyBlog);
+      console.log("new my blog", JSON.stringify(newMyBlog));
       setMyBlog(newMyBlog);
     }
   }, [myBlogListSelector]);

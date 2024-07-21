@@ -46,7 +46,6 @@ export default function PostItem({
     }
     if (blog && blog.blog_link.length > 0) {
       const urlArr = blog.blog_link.map((item) => item.url);
-      console.log("urlArr", urlArr);
       setImages(urlArr);
     }
   }, [blog]);
@@ -244,7 +243,7 @@ export default function PostItem({
       )}
 
       {(images.length > 0 || listVideo.length > 0) && (
-        <View>
+        <View style={{ height: 400 }}>
           {images.length == 0 && listVideo.length > 0 ? (
             <LoadVideo listVideo={listVideo} />
           ) : (
@@ -272,10 +271,10 @@ export default function PostItem({
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              // Alert.alert("Tính năng đang phát triển!", "")
-              navigation.navigate("BlogDetailScreen", {
-                blogId: blog.id,
-              });
+              Alert.alert("Tính năng đang phát triển!", "");
+              // navigation.navigate("BlogDetailScreen", {
+              //   blogId: blog.id,
+              // });
             }}
             style={styles.mr5}
           >
@@ -299,6 +298,7 @@ export default function PostItem({
 
 const styles = StyleSheet.create({
   postWrapper: {
+    flex: 1,
     marginTop: 30,
     marginBottom: 10,
     paddingBottom: 40,

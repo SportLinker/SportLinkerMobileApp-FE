@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { getBlogDetail } from "../../redux/slices/blogSlice";
+import blogSlice, { getBlogDetail } from "../../redux/slices/blogSlice";
 import { getBlogDetailSelector } from "../../redux/selectors";
 import PostItem from "./PostItem";
 
@@ -15,8 +15,9 @@ const BlogDetailScreen = ({ route, navigation }) => {
   useEffect(() => {
     if (blogId) {
       //call api get blog
-      console.log("BLogid" + blogId);
+      console.log("BLogid: " + blogId);
       try {
+        dispatch(blogSlice.actions.resetBlogDetail());
         dispatch(getBlogDetail(blogId));
       } catch (error) {
         console.log("Error getting blog details: " + error);
@@ -25,7 +26,12 @@ const BlogDetailScreen = ({ route, navigation }) => {
   }, [blogId]);
 
   return (
-    <View style={{ paddingHorizontal: 10 }}>
+    <View
+      style={{
+        paddingHorizontal: 10,
+        flex: 1,
+      }}
+    >
       {blogSelector && (
         <PostItem
           caption={blogSelector.blog_content}

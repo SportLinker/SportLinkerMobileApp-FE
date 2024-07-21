@@ -4,26 +4,29 @@ import Swiper from "react-native-swiper";
 import { convertHttpToHttps } from "../../utils";
 
 const LoadImage = ({ listImages }) => {
-  console.log("Loading images...", listImages);
   return (
     <View style={styles.container}>
-      <Swiper
-        style={styles.swiper}
-        autoplayTimeout={3}
-        dotStyle={styles.dotStyle}
-        activeDotStyle={styles.activeDotStyle}
-        loop={false} // Disable looping
-      >
-        {listImages &&
-          listImages.map((imageUri, index) => (
+      {!listImages && <Text>Loading...</Text>}
+      {listImages && (
+        <Swiper
+          style={styles.swiper}
+          autoplayTimeout={3}
+          dotStyle={styles.dotStyle}
+          activeDotStyle={styles.activeDotStyle}
+          loop={false} // Disable looping
+        >
+          {listImages.map((imageUri, index) => (
             <View key={index} style={styles.slide}>
               <Image
-                source={{ uri: convertHttpToHttps(imageUri) }}
+                source={{
+                  uri: convertHttpToHttps(imageUri),
+                }}
                 style={styles.image}
               />
             </View>
           ))}
-      </Swiper>
+        </Swiper>
+      )}
     </View>
   );
 };
@@ -51,8 +54,6 @@ const styles = StyleSheet.create({
   },
   slide: {
     flex: 1,
-    width: "100%",
-    height: "100%",
     justifyContent: "center",
     alignItems: "center",
     overflow: "hidden",
