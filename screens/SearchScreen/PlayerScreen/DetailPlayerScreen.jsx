@@ -6,6 +6,7 @@ import {
   Ionicons,
   MaterialIcons,
 } from "@expo/vector-icons";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import React, { useEffect, useState } from "react";
 import { Modal, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { Avatar } from "react-native-paper";
@@ -16,6 +17,7 @@ import messageSlice, {
   getMessageDetail,
 } from "../../../redux/slices/messageSlice";
 import { convertHttpToHttps } from "../../../utils";
+import { getSportIcon } from "../../../utils/constant";
 
 const fakeData = [
   {
@@ -77,14 +79,14 @@ export default function DetailPlayerScreen({ navigation, route }) {
               >
                 <AntDesign name="arrowleft" size={24} color="black" />
               </TouchableOpacity>
-              <View style={styles.horizontalIconsContainer}>
+              {/* <View style={styles.horizontalIconsContainer}>
                 <TouchableOpacity
                   style={styles.icon}
                   onPress={() => setShowMenu(true)}
                 >
                   <Ionicons name="ellipsis-vertical" size={24} color="black" />
                 </TouchableOpacity>
-              </View>
+              </View> */}
             </View>
             <View style={{ display: "flex", flexDirection: "row" }}>
               <Avatar.Image
@@ -225,7 +227,11 @@ export default function DetailPlayerScreen({ navigation, route }) {
                           </Text>
                         </View>
                         <View>
-                          <AntDesign name="right" size={24} color="#000" />
+                          <Icon
+                            size={24}
+                            color="#000"
+                            name={getSportIcon(item)}
+                          />
                         </View>
                       </TouchableOpacity>
                       {/* <View

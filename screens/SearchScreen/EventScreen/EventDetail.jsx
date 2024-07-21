@@ -1,5 +1,4 @@
 import {
-  Alert,
   ScrollView,
   StyleSheet,
   Text,
@@ -35,6 +34,10 @@ import Loading from "../../../component/Loading";
 import { DEFAULT_DISTACNCE, getSportIcon } from "../../../utils/constant";
 import CreateSportEventModal from "./CreateSportEventModal";
 import { useRoute } from "@react-navigation/native";
+import messageSlice, {
+  createIndividualChat,
+  getMessageDetail,
+} from "../../../redux/slices/messageSlice";
 
 const fakeData = {
   id: "e1",
@@ -310,7 +313,48 @@ const EventDetail = ({ navigation }) => {
             </Button>
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              try {
+                if (eventDetail.user_create_id) {
+                  dispatch(
+                    createIndividualChat(eventDetail.user_create_id)
+                  ).then((response) => {
+                    if (response) {
+                      console.log("Response create chat with host: ", response);
+                      if (
+                        response?.payload &&
+                        response.payload?.group_message_id
+                      ) {
+                        dispatch(
+                          getMessageDetail(response.payload?.group_message_id)
+                        ).then((response) => {
+                          console.log("Response get message detail", response);
+                          if (
+                            response.payload?.group_message_detail &&
+                            response.payload.group_message_detail
+                              .group_message_id
+                          ) {
+                            navigation.navigate("ChatDetailScreen");
+                            dispatch(
+                              messageSlice.actions.setGroupMessageID(
+                                response.payload.group_message_detail
+                                  .group_message_id
+                              )
+                            );
+                          }
+                        });
+                      }
+                      // navigation.navigate("PlayerScreen");
+                      // navigation.navigate("ChatListScreen");
+                    }
+                  });
+                }
+              } catch (error) {
+                console.log("Error create individual chat", error);
+              }
+            }}
+          >
             <Button
               style={[
                 styles.floatBtn,
