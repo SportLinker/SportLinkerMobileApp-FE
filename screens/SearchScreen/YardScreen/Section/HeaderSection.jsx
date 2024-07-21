@@ -7,7 +7,7 @@ import DefaultImage from "../../../../assets/default_img.png";
 import defaultAvatar from "../../../../assets/avatar_default.png";
 import { convertHttpToHttps } from "../../../../utils";
 
-export default function HeaderSection({ stadium, stadiumOwner }) {
+export function HeaderSection({ stadium, stadiumOwner }) {
   const [image, setImage] = useState(stadiumOwner.avatar_url);
 
   const renderStars = (rating) => {

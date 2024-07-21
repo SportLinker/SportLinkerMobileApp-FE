@@ -5,14 +5,19 @@ import { Avatar } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
 import defaultAvatar from "../../../assets/avatar_default.png";
 import defaultImage from "../../../assets/default_img.png";
-import { getStadiumDetailByUserSelector } from "../../../redux/selectors";
+import {
+  getLoadingSelector,
+  getStadiumDetailByUserSelector,
+} from "../../../redux/selectors";
 import { getDetailStadiumByUser } from "../../../redux/slices/yardSlice";
 import { convertHttpToHttps } from "../../../utils";
+import Loading from "../../../component/Loading";
 
 const RatingYardItem = ({ route }) => {
   const { stadiumId } = route.params;
   const dispatch = useDispatch();
   const stadiumDetail = useSelector(getStadiumDetailByUserSelector);
+  const loading = useSelector(getLoadingSelector);
 
   const [detail, setDetail] = useState(null);
 
@@ -63,36 +68,42 @@ const RatingYardItem = ({ route }) => {
 
   return (
     <View style={{ flex: 1 }}>
-      {detail && detail.stadium_thumnail ? (
-        <Image
-          style={styles.yardItemImage}
-          source={{
-            uri: convertHttpToHttps(detail.stadium_thumnail),
-          }}
-        />
+      {loading ? (
+        <Loading visible={loading} />
       ) : (
-        <Image style={styles.yardItemImage} source={defaultImage} />
-      )}
+        <>
+          {detail && detail.stadium_thumnail ? (
+            <Image
+              style={styles.yardItemImage}
+              source={{
+                uri: convertHttpToHttps(detail.stadium_thumnail),
+              }}
+            />
+          ) : (
+            <Image style={styles.yardItemImage} source={defaultImage} />
+          )}
 
-      <View style={styles.averageRating}>
-        <Text style={[styles.whiteText, { fontWeight: "bold" }]}>
-          Đánh giá trung bình: {detail.stadium_rating} / 5
-        </Text>
-        <AntDesign name="star" size={24} color="#F9A825" />
-      </View>
-      <Text style={[styles.blackText, styles.ratingCountText]}>
-        Đang có {detail.total_rating || 0} lượt đánh giá
-      </Text>
-      <View style={{ flex: 1, marginHorizontal: 20 }}>
-        <FlatList
-          data={detail.ratings}
-          keyExtractor={(item) => item.id}
-          renderItem={CommentItem}
-          ListEmptyComponent={
-            <Text style={styles.emptyText}>Không có đánh giá nào!</Text>
-          }
-        />
-      </View>
+          <View style={styles.averageRating}>
+            <Text style={[styles.whiteText, { fontWeight: "bold" }]}>
+              Đánh giá trung bình: {detail.stadium_rating} / 5
+            </Text>
+            <AntDesign name="star" size={24} color="#F9A825" />
+          </View>
+          <Text style={[styles.blackText, styles.ratingCountText]}>
+            Đang có {detail.total_rating || 0} lượt đánh giá
+          </Text>
+          <View style={{ flex: 1, marginHorizontal: 20 }}>
+            <FlatList
+              data={detail.ratings}
+              keyExtractor={(item) => item.id}
+              renderItem={CommentItem}
+              ListEmptyComponent={
+                <Text style={styles.emptyText}>Không có đánh giá nào!</Text>
+              }
+            />
+          </View>
+        </>
+      )}
     </View>
   );
 };

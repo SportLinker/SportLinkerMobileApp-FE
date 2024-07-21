@@ -10,13 +10,18 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import defaultImage from "../../../assets/default_img.png";
-import { getByOwnerSelector } from "../../../redux/selectors";
+import {
+  getByOwnerSelector,
+  getLoadingSelector,
+} from "../../../redux/selectors";
 import { getStadiumByOwner } from "../../../redux/slices/yardSlice";
 import { convertHttpToHttps } from "../../../utils";
+import Loading from "../../../component/Loading";
 
 const RatingYardList = ({ navigation }) => {
   const dispatch = useDispatch();
   const stadium = useSelector(getByOwnerSelector);
+  const loading = useSelector(getLoadingSelector);
 
   const [stadiumList, setStadiumList] = useState([]);
   const [averageRating, setAverageRating] = useState(0);
@@ -81,18 +86,24 @@ const RatingYardList = ({ navigation }) => {
 
   return (
     <View style={styles.ratingContainer}>
-      <View style={styles.averageRating}>
-        <Text style={[styles.whiteText, { fontWeight: "bold" }]}>
-          Đánh giá trung bình: {averageRating} / 5
-        </Text>
-        <AntDesign name="star" size={24} color="#F9A825" />
-      </View>
-      <FlatList
-        data={stadiumList}
-        renderItem={YardItem}
-        keyExtractor={(item) => item.id}
-        style={styles.ratingListContainer}
-      />
+      {loading ? (
+        <Loading visible={loading} />
+      ) : (
+        <>
+          <View style={styles.averageRating}>
+            <Text style={[styles.whiteText, { fontWeight: "bold" }]}>
+              Đánh giá trung bình: {averageRating} / 5
+            </Text>
+            <AntDesign name="star" size={24} color="#F9A825" />
+          </View>
+          <FlatList
+            data={stadiumList}
+            renderItem={YardItem}
+            keyExtractor={(item) => item.id}
+            style={styles.ratingListContainer}
+          />
+        </>
+      )}
     </View>
   );
 };
