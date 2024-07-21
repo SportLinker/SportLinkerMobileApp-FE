@@ -15,6 +15,7 @@ import {
 } from "../../../redux/selectors";
 import { getAllYardByOwner } from "../../../redux/slices/yardSlice";
 import NoYard from "../ListAllYardScreen/NoYard/NoYard";
+import Loading from "../../../component/Loading";
 
 const ScheduleAllYardScreen = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -88,9 +89,7 @@ const ScheduleAllYardScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       {loading ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#0000ff" />
-        </View>
+        <Loading visible={loading} />
       ) : yards.length === 0 ? (
         <NoYard />
       ) : (
