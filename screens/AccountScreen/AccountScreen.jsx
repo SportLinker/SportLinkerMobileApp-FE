@@ -44,7 +44,7 @@ const fakeData = [
   },
 ];
 
-export default function AccountScreen() {
+export default function AccountScreen({ navigation }) {
   const [activeTab, setActiveTab] = useState("profile");
   const userSelector = useSelector(getUserSelector);
   const loading = useSelector(getUserLoadingSelector);
@@ -192,7 +192,7 @@ export default function AccountScreen() {
       <TabViewProfile activeTab={activeTab} setActiveTab={setActiveTab} />
 
       {activeTab === "profile" && <Profile fakeData={fakeData} />}
-      {activeTab === "post" && <MyPost />}
+      {activeTab === "post" && <MyPost navigation={navigation} />}
       {activeTab === "match" && <MyMatch />}
       {activeTab === "transaction" && <MyTransaction />}
       {activeTab === "book" && <MyBook />}
