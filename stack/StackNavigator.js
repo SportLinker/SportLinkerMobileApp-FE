@@ -77,6 +77,7 @@ const StackNavigator = () => (
       name="BottomTabs"
       options={{
         headerShown: false,
+        swipeEnabled: false,
       }}
       component={BottomTabNavigator}
     />

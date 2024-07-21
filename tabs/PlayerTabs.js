@@ -28,6 +28,7 @@ export default function PlayerTabs() {
           options={{
             headerShown: false,
             headerLeft: () => null,
+            gestureEnabled: false,
           }}
         />
       </Stack.Navigator>

@@ -6,12 +6,12 @@ import {
   Ionicons,
   MaterialIcons,
 } from "@expo/vector-icons";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { Avatar } from "react-native-paper";
 import DetailCoachScreen from "../CoachScreen/DetailCoachScreen";
 import { useDispatch } from "react-redux";
-import {
+import messageSlice, {
   createIndividualChat,
   getMessageDetail,
 } from "../../../redux/slices/messageSlice";
@@ -50,6 +50,13 @@ export default function DetailPlayerScreen({ navigation, route }) {
   const toggleMenu = () => {
     setShowMenu(!showMenu);
   };
+
+  // useEffect(() => {
+  //   if (!modalVisible) {
+  //     navigation.navigate("PlayerScreen");
+  //   }
+  // }, [modalVisible]);
+
   return (
     <>
       <Modal
@@ -129,7 +136,16 @@ export default function DetailPlayerScreen({ navigation, route }) {
                                   response.payload.group_message_detail
                                     .group_message_id
                                 ) {
+                                  // fix error turn on , off modal
+                                  navigation.navigate("PlayerScreen");
+                                  setModalVisible(false);
                                   navigation.navigate("ChatDetailScreen");
+                                  dispatch(
+                                    messageSlice.actions.setGroupMessageID(
+                                      response.payload.group_message_detail
+                                        .group_message_id
+                                    )
+                                  );
                                 }
                               });
                             }
@@ -185,7 +201,7 @@ export default function DetailPlayerScreen({ navigation, route }) {
             </View>
             <ScrollView>
               <View style={{ alignItems: "center", marginTop: 30 }}>
-                {fakeData.map((item, index) => (
+                {item.favorite.map((item, index) => (
                   <View style={styles.innerInfoSport} key={index}>
                     <View>
                       <TouchableOpacity
@@ -205,7 +221,7 @@ export default function DetailPlayerScreen({ navigation, route }) {
                               fontWeight: "600",
                             }}
                           >
-                            {item.title}
+                            {item}
                           </Text>
                         </View>
                         <View>
@@ -243,10 +259,10 @@ export default function DetailPlayerScreen({ navigation, route }) {
           </View>
         </View>
       </Modal>
-      <DetailCoachScreen
+      {/* <DetailCoachScreen
         modalVisible={modalVisible}
         modalClose={handleCloseModal}
-      />
+      /> */}
       <Modal visible={showMenu} animationType="fade" transparent={true}>
         <TouchableOpacity
           activeOpacity={1}
