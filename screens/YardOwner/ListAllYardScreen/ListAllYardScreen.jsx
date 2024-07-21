@@ -16,6 +16,7 @@ import { getAllYardByOwner } from "../../../redux/slices/yardSlice";
 import ListAllYardItem from "./ListAllYardItem";
 import FilterOptionList from "../ListYardScreen/FilterOption";
 import NoYard from "./NoYard/NoYard";
+import Loading from "../../../component/Loading";
 
 const ListAllYardScreen = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -43,9 +44,7 @@ const ListAllYardScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       {loading ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#0000ff" />
-        </View>
+        <Loading visible={loading} />
       ) : (
         <>
           {yards.length > 0 ? (

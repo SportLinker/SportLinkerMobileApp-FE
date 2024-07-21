@@ -12,6 +12,7 @@ import { ActionButtons } from "./Section/ActionButtons ";
 import { DetailsSection } from "./Section/DetailsSection";
 import HeaderSection from "./Section/HeaderSection";
 import IntroductionSection from "./Section/IntroductionSection";
+import Loading from "../../../../component/Loading";
 
 const InfoYard = ({ route }) => {
   const { yardId } = route.params;
@@ -37,15 +38,7 @@ const InfoYard = ({ route }) => {
   return (
     <ScrollView style={{ backgroundColor: "#fff" }}>
       {loading ? (
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <ActivityIndicator size="large" color="#0000ff" />
-        </View>
+        <Loading visible={loading} />
       ) : (
         <>
           <HeaderSection image={userAvatar} yardDetail={yardDetail} />
