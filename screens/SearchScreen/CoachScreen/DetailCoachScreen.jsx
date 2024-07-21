@@ -64,7 +64,7 @@ export default function DetailCoachScreen() {
                 fontWeight: "bold",
               }}
             >
-              Kim Anh
+              Ninh
             </Text>
             <View style={{ display: "flex", flexDirection: "row" }}>
               <Text style={{ paddingTop: 3, fontWeight: 700, fontSize: 16 }}>
