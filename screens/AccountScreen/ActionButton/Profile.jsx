@@ -1,9 +1,10 @@
-import { AntDesign } from "@expo/vector-icons";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import React from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { styles } from "../../../component/style";
 import { useSelector } from "react-redux";
 import { getUserSelector } from "../../../redux/selectors";
+import { getSportIcon } from "../../../utils/constant";
 
 const Profile = () => {
   const userSelector = useSelector(getUserSelector);
@@ -35,7 +36,8 @@ const Profile = () => {
                       <Text style={styles.textFav}>{item}</Text>
                     </View>
                     <View>
-                      <AntDesign name="right" size={24} color="#000" />
+                      {/* <AntDesign name="right" size={24} color="#000" /> */}
+                      <Icon size={24} color="#000" name={getSportIcon(item)} />
                     </View>
                   </TouchableOpacity>
                 </View>

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import blogSlice, { getBlogDetail } from "../../redux/slices/blogSlice";
+import { getBlogDetail } from "../../redux/slices/blogSlice";
 import { getBlogDetailSelector } from "../../redux/selectors";
 import PostItem from "./PostItem";
 
@@ -17,7 +17,6 @@ const BlogDetailScreen = ({ route, navigation }) => {
       //call api get blog
       console.log("BLogid: " + blogId);
       try {
-        dispatch(blogSlice.actions.resetBlogDetail());
         dispatch(getBlogDetail(blogId));
       } catch (error) {
         console.log("Error getting blog details: " + error);
@@ -40,7 +39,7 @@ const BlogDetailScreen = ({ route, navigation }) => {
         />
       )}
       {!blogSelector && (
-        <Text style={{ fontSize: 24, color: "blue" }}>
+        <Text style={{ fontSize: 24, color: "#707070" }}>
           Không tìm thấy bài viết
         </Text>
       )}

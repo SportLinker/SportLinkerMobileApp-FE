@@ -281,8 +281,12 @@ export default function PostItem({
             <Icon name="share-outline" size={30} />
           </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={() => navigation.navigate("ListLikeScreen")}>
-          <Text>500 lượt thích</Text>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("ListLikeScreen", { blogId: blog.id })
+          }
+        >
+          <Text>{blog.total_like} lượt thích</Text>
         </TouchableOpacity>
       </View>
       {modalVisible && (
