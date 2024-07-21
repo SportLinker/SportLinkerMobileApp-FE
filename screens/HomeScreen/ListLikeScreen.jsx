@@ -1,9 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
 import { Avatar, Button, Appbar, Searchbar } from "react-native-paper";
 import { convertHttpToHttps } from "../../utils";
+import { getBlogReactListSelector } from "../../redux/selectors";
+import { useDispatch, useSelector } from "react-redux";
+import { getBlogLikeList } from "../../redux/slices/blogSlice";
 
-const ListLikeScreen = ({ navigation }) => {
+const ListLikeScreen = ({ navigation, route }) => {
+  const { blogId } = route.params;
+
+  const dispatch = useDispatch();
+
+  const likeListSelector = useSelector(getBlogReactListSelector);
+
+  useEffect(() => {
+    if (blogId) {
+      try {
+        dispatch(getBlogLikeList(blogId));
+      } catch (error) {
+        console.log("Error get like list", error);
+      }
+    }
+  }, [blogId]);
+
   const [people, setPeople] = useState([
     {
       id: "1",
@@ -49,11 +68,16 @@ const ListLikeScreen = ({ navigation }) => {
     <View style={styles.itemContainer}>
       <Avatar.Image
         size={40}
-        source={{ uri: convertHttpToHttps(item.avatar) }}
+        source={{
+          uri:
+            item?.user && item.user?.avatar_url
+              ? convertHttpToHttps(item.user?.avatar_url)
+              : "https://randomuser.me/api/portraits/men/1.jpg",
+        }}
         style={styles.avatar}
       />
-      <Text style={styles.name}>{item.name}</Text>
-      <Button
+      <Text style={styles.name}>{item.user?.name}</Text>
+      {/* <Button
         mode={item.isFollowing ? "outlined" : "contained"}
         onPress={() => handleFollowToggle(item.id)}
         style={item.isFollowing ? styles.followingButton : styles.followButton}
@@ -61,7 +85,7 @@ const ListLikeScreen = ({ navigation }) => {
         labelStyle={{ fontSize: 15 }}
       >
         {item.isFollowing ? "Đang theo dõi" : "Theo dõi"}
-      </Button>
+      </Button> */}
     </View>
   );
 
@@ -79,7 +103,7 @@ const ListLikeScreen = ({ navigation }) => {
         />
       </Appbar.Header>
 
-      <Searchbar
+      {/* <Searchbar
         placeholder={`Tìm kiếm`}
         onChangeText={handleSearchChange}
         value={searchQuery}
@@ -87,14 +111,26 @@ const ListLikeScreen = ({ navigation }) => {
         placeholderTextColor="#707070"
         style={styles.searchInput}
         inputStyle={{ fontSize: 14 }}
-      />
-      <FlatList
-        data={people.filter((person) =>
-          person.name.toLowerCase().includes(searchQuery.toLowerCase())
-        )}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-      />
+      /> */}
+      {likeListSelector && likeListSelector?.length > 0 && (
+        <FlatList
+          data={likeListSelector}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+        />
+      )}
+      {!likeListSelector ||
+        (likeListSelector?.length == 0 && (
+          <Text
+            style={{
+              fontSize: 18,
+              color: "#707070",
+              margin: 10,
+            }}
+          >
+            Bài viết chưa có lượt thích nào!
+          </Text>
+        ))}
     </View>
   );
 };
@@ -109,6 +145,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 10,
     paddingHorizontal: 10,
+    borderBottomColor: "#e5e5e5",
+    borderBottomWidth: 2,
   },
   avatar: {
     marginRight: 10,

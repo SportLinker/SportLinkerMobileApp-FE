@@ -132,47 +132,54 @@ export default function CommentModal({
             </TouchableOpacity>
             <Text style={styles.modalTitle}>Bình luận</Text>
           </View>
-          <FlatList
-            style={{ width: "100%" }}
-            data={commentListSelector}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
-              <View style={styles.commentItem}>
-                <View style={styles.commentContent}>
-                  <Avatar.Image
-                    size={40}
-                    source={{
-                      uri: item.user?.avatar_url
-                        ? convertHttpToHttps(item.user?.avatar_url)
-                        : "https://randomuser.me/api/portraits/men/1.jpg",
-                    }}
-                    style={styles.avatar}
-                  />
-                  <View style={styles.commentText}>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
+          {commentListSelector && (
+            <FlatList
+              style={{ width: "100%" }}
+              data={commentListSelector}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => (
+                <View style={styles.commentItem}>
+                  <View style={styles.commentContent}>
+                    <Avatar.Image
+                      size={40}
+                      source={{
+                        uri: item.user?.avatar_url
+                          ? convertHttpToHttps(item.user?.avatar_url)
+                          : "https://randomuser.me/api/portraits/men/1.jpg",
                       }}
-                    >
-                      <Text style={styles.commentName}>
-                        {item.user?.name || ""}
-                      </Text>
-                      {item.user_id == userInfo.id && (
-                        <Ionicons
-                          name="close-circle"
-                          size={24}
-                          color="red"
-                          onPress={() => confirmDeleteComment(item.id)}
-                        />
-                      )}
+                      style={styles.avatar}
+                    />
+                    <View style={styles.commentText}>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <Text style={styles.commentName}>
+                          {item.user?.name || ""}
+                        </Text>
+                        {item.user_id == userInfo.id && (
+                          <Ionicons
+                            name="close-circle"
+                            size={24}
+                            color="red"
+                            onPress={() => confirmDeleteComment(item.id)}
+                          />
+                        )}
+                      </View>
+                      <Text>{item.content}</Text>
                     </View>
-                    <Text>{item.content}</Text>
                   </View>
                 </View>
-              </View>
-            )}
-          />
+              )}
+            />
+          )}
+          {!commentListSelector && (
+            <Text style={{ fontSize: 18, color: "#707070" }}>
+              Không tìm thấy bình luận!
+            </Text>
+          )}
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.input}

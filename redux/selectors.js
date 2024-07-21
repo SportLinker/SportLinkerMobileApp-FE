@@ -38,5 +38,7 @@ export const getBlogLoadingSelector = (state) => state.blogSlice.loading;
 export const getBlogListSelector = (state) => state.blogSlice.blogList;
 export const getMyBlogListSelector = (state) => state.blogSlice.myBlogList;
 export const getBlogDetailSelector = (state) => state.blogSlice.blogDetail;
+export const getBlogReactListSelector = (state) =>
+  state.blogSlice.blogReactList;
 export const getBlogCommentListSelector = (state) =>
   state.blogSlice.blogCommentList;

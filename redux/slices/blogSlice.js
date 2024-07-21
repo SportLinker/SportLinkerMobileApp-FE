@@ -169,12 +169,34 @@ export const getBlogCommentList = createAsyncThunk(
   }
 );
 
+export const getBlogLikeList = createAsyncThunk(
+  "blogSlice/getBlogLikeList",
+  async (blogId, { rejectWithValue }) => {
+    try {
+      console.log("Blog Id: ", blogId);
+      const response = await api.get(`/blogs/react/${blogId}`);
+      console.log(
+        "API Get Blog React Response: ",
+        JSON.stringify(response.data)
+      );
+      return response.data.metadata;
+    } catch (error) {
+      console.log(
+        "Error Get Blog React: ",
+        JSON.stringify(error.response.data)
+      );
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const blogSlice = createSlice({
   name: "blogSlice",
   initialState: {
     blogList: null,
     myBlogList: null,
     blogDetail: null,
+    blogReactList: null,
     blogCommentList: null,
     loading: false,
     error: null,
@@ -182,9 +204,6 @@ export const blogSlice = createSlice({
   reducers: {
     setBlogLoading: (state, action) => {
       state.loading = action.payload;
-    },
-    resetBlogDetail: (state, action) => {
-      state.blogDetail = null;
     },
   },
   extraReducers: (builder) => {
@@ -277,6 +296,7 @@ export const blogSlice = createSlice({
         state.error = action.payload; // Ensure consistent error handling
       })
       .addCase(getBlogDetail.pending, (state) => {
+        state.blogDetail = null; //reset blogDetail
         state.loading = true;
       })
       .addCase(getBlogDetail.fulfilled, (state, action) => {
@@ -287,7 +307,20 @@ export const blogSlice = createSlice({
         state.loading = false;
         state.error = action.payload; // Ensure consistent error handling
       })
+      .addCase(getBlogLikeList.pending, (state) => {
+        state.blogReactList = null; //reset blogReactList
+        state.loading = true;
+      })
+      .addCase(getBlogLikeList.fulfilled, (state, action) => {
+        state.loading = false;
+        state.blogReactList = action.payload;
+      })
+      .addCase(getBlogLikeList.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload; // Ensure consistent error handling
+      })
       .addCase(getBlogCommentList.pending, (state) => {
+        state.blogCommentList = null;
         state.loading = true;
       })
       .addCase(getBlogCommentList.fulfilled, (state, action) => {
