@@ -183,6 +183,9 @@ export const blogSlice = createSlice({
     setBlogLoading: (state, action) => {
       state.loading = action.payload;
     },
+    resetBlogDetail: (state, action) => {
+      state.blogDetail = null;
+    },
   },
   extraReducers: (builder) => {
     builder
