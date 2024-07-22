@@ -30,6 +30,7 @@ export default function CommentModal({
 }) {
   const [commentText, setCommentText] = useState("");
   const [visibleMenu, setVisibleMenu] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const commentListSelector = useSelector(getBlogCommentListSelector);
   const { userInfo } = useSelector((state) => state.userSlice);
@@ -52,20 +53,24 @@ export default function CommentModal({
 
   const handlePostComment = () => {
     try {
-      const formData = {
-        blogId: blogId,
-        comment: commentText,
-      };
-      console.log("formData comment", formData);
-      dispatch(postCommentBlog(formData)).then((response) => {
-        console.log("Response comment: ", response);
-        if (response?.payload?.message == "Comment created") {
-          setCommentText("");
-          dispatch(getBlogCommentList(blogId));
-        } else {
-          Alert.alert("Đăng comment thất bại!", "");
-        }
-      });
+      if (commentText.trim() != "") {
+        const formData = {
+          blogId: blogId,
+          comment: commentText,
+        };
+        console.log("formData comment", formData);
+        setLoading(true);
+        dispatch(postCommentBlog(formData)).then((response) => {
+          console.log("Response comment: ", response);
+          if (response?.payload?.message == "Comment created") {
+            setCommentText("");
+            setLoading(false);
+            dispatch(getBlogCommentList(blogId));
+          } else {
+            Alert.alert("Đăng comment thất bại!", "");
+          }
+        });
+      }
     } catch (error) {
       console.log("Error post comment: ", error);
     }
@@ -190,7 +195,11 @@ export default function CommentModal({
             />
             <TouchableOpacity
               style={styles.sendButton}
-              onPress={() => handlePostComment()}
+              onPress={() => {
+                if (!loading) {
+                  handlePostComment();
+                }
+              }}
             >
               <MaterialIcons name="send" size={24} color="white" />
             </TouchableOpacity>
