@@ -84,6 +84,8 @@ export default function RegisterScreen({ navigation }) {
   const [isOpenSportModal, setIsOpenSportModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [failMessage, setFailMessage] = useState("");
+  const [isHidePassword, setIsHidePassword] = useState(true);
+  const [isHideConfirmPassword, setIsHideConfirmPassword] = useState(true);
   const dispatch = useDispatch();
   const loadingSelector = useSelector(getUserLoadingSelector);
 
@@ -205,9 +207,17 @@ export default function RegisterScreen({ navigation }) {
                 placeholder="Mật khẩu"
                 onChangeText={handleChange("password")}
                 onBlur={handleBlur("password")}
-                secureTextEntry={true}
+                secureTextEntry={isHidePassword}
                 value={values.password}
                 outlineColor={touched.password && errors.password && "red"}
+                right={
+                  <TextInput.Icon
+                    color="#1646A9"
+                    forceTextInputFocus={false}
+                    icon={isHidePassword ? "eye-off" : "eye"}
+                    onPress={() => setIsHidePassword(!isHidePassword)}
+                  />
+                }
               />
               <Text style={styles.errorMessage}>
                 {touched.password && errors.password && errors.password}
@@ -221,9 +231,19 @@ export default function RegisterScreen({ navigation }) {
                 onChangeText={handleChange("confirmPassword")}
                 onBlur={handleBlur("confirmPassword")}
                 value={values.confirmPassword}
-                secureTextEntry={true}
+                secureTextEntry={isHideConfirmPassword}
                 outlineColor={
                   touched.confirmPassword && errors.confirmPassword && "red"
+                }
+                right={
+                  <TextInput.Icon
+                    color="#1646A9"
+                    forceTextInputFocus={false}
+                    icon={isHideConfirmPassword ? "eye-off" : "eye"}
+                    onPress={() =>
+                      setIsHideConfirmPassword(!isHideConfirmPassword)
+                    }
+                  />
                 }
               />
               <Text style={styles.errorMessage}>

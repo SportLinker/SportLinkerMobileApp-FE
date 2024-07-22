@@ -18,6 +18,7 @@ import messageSlice, {
 } from "../../../redux/slices/messageSlice";
 import { convertHttpToHttps } from "../../../utils";
 import { getSportIcon } from "../../../utils/constant";
+import PremiumIcon from "../../../component/PremiumIcon";
 
 const fakeData = [
   {
@@ -106,9 +107,12 @@ export default function DetailPlayerScreen({ navigation, route }) {
                       fontSize: 20,
                       fontWeight: "bold",
                       marginBottom: 10,
+                      flexDirection: "row",
+                      alignItems: "center",
                     }}
                   >
-                    {item.name}
+                    <Text>{item.name}</Text>
+                    {item && item?.is_premium && <PremiumIcon size={16} />}
                   </Text>
                   <Text style={{ marginBottom: 10 }}>{item.username}</Text>
                 </View>
@@ -203,45 +207,48 @@ export default function DetailPlayerScreen({ navigation, route }) {
             </View>
             <ScrollView>
               <View style={{ alignItems: "center", marginTop: 30 }}>
-                {item.favorite.map((item, index) => (
-                  <View style={styles.innerInfoSport} key={index}>
-                    <View>
-                      <TouchableOpacity
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          marginHorizontal: 20,
-                          paddingVertical: 20,
-                        }}
-                        onPress={() => setModalVisible(true)}
-                      >
-                        <View style={{ display: "flex", flexDirection: "row" }}>
-                          <Text
-                            style={{
-                              fontSize: 15,
-                              fontWeight: "600",
-                            }}
+                {item.favorite &&
+                  item.favorite.map((item, index) => (
+                    <View style={styles.innerInfoSport} key={index}>
+                      <View>
+                        <TouchableOpacity
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            marginHorizontal: 20,
+                            paddingVertical: 20,
+                          }}
+                          onPress={() => setModalVisible(true)}
+                        >
+                          <View
+                            style={{ display: "flex", flexDirection: "row" }}
                           >
-                            {item}
-                          </Text>
-                        </View>
-                        <View>
-                          <Icon
-                            size={24}
-                            color="#000"
-                            name={getSportIcon(item)}
-                          />
-                        </View>
-                      </TouchableOpacity>
-                      {/* <View
+                            <Text
+                              style={{
+                                fontSize: 15,
+                                fontWeight: "600",
+                              }}
+                            >
+                              {item}
+                            </Text>
+                          </View>
+                          <View>
+                            <Icon
+                              size={24}
+                              color="#000"
+                              name={getSportIcon(item)}
+                            />
+                          </View>
+                        </TouchableOpacity>
+                        {/* <View
                         style={{
                           borderBottomWidth: 1,
                           marginVertical: 5,
                           borderColor: "#C4C4C4",
                         }}
                       /> */}
-                      {/* <View style={styles.bottomInfoSport}>
+                        {/* <View style={styles.bottomInfoSport}>
                         <View style={styles.centerStyle}>
                           <Text style={{ color: "#707070" }}>
                             Trình độ (Tự đánh giá)
@@ -257,9 +264,9 @@ export default function DetailPlayerScreen({ navigation, route }) {
                           </Text>
                         </View>
                       </View> */}
+                      </View>
                     </View>
-                  </View>
-                ))}
+                  ))}
               </View>
             </ScrollView>
           </View>
