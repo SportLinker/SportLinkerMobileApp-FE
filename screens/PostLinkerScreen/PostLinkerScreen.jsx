@@ -29,7 +29,7 @@ import SelectLocationModal from "../../component/SelectLocationModal";
 import PublicStatusModal from "./PublicStatusModal";
 import { uploadMultipleImages } from "../../services/cloudinary";
 import { useDispatch, useSelector } from "react-redux";
-import blogSlice, { postBlog } from "../../redux/slices/blogSlice";
+import blogSlice, { getBlogList, postBlog } from "../../redux/slices/blogSlice";
 import { getBlogLoadingSelector, getUserSelector } from "../../redux/selectors";
 import Loading from "../../component/Loading";
 import { convertHttpToHttps } from "../../utils";
@@ -61,6 +61,8 @@ const cationOptions = [
   //   color: "#AB741A",
   // },
 ];
+
+const PAGE_SIZE = 10;
 
 export default function PostLinkerScreen({ navigation }) {
   const [caption, setCaption] = useState("");
@@ -111,7 +113,7 @@ export default function PostLinkerScreen({ navigation }) {
 
       const formData = {
         blog_content: caption,
-        blog_address: selectedLocation?.address || "",
+        blog_address: selectedLocation?.title || "",
         blog_sport: "",
         images: imageURLs || [],
         videos: [],
@@ -124,9 +126,13 @@ export default function PostLinkerScreen({ navigation }) {
           response?.payload.message == "Blog created successfully"
         ) {
           setSuccessMessage("Tạo bài đăng thành công!");
-          setTimeout(() => {
+          const formData = {
+            pageNumber: 1,
+            pageSize: PAGE_SIZE,
+          };
+          dispatch(getBlogList(formData)).then((response) => {
             navigation.navigate("BottomTabs");
-          }, 800);
+          });
         } else {
           setErrorMessage("Tạo bài đăng thất bại!");
         }
