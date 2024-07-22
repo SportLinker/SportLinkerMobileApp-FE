@@ -2,6 +2,7 @@ import auth from "@react-native-firebase/auth";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import React, { useEffect, useState } from "react";
 import {
+  Alert,
   Image,
   KeyboardAvoidingView,
   Platform,
@@ -139,10 +140,11 @@ const LoginScreen = ({ navigation }) => {
                 marginVertical: "auto",
                 padding: 8,
               }}
-              onPress={() =>
-                onGoogleButtonPress().then(() =>
-                  console.log("Signed in with Google!")
-                )
+              onPress={
+                () => Alert.alert("Tính năng đang phát triển", "")
+                // onGoogleButtonPress().then(() =>
+                //   console.log("Signed in with Google!")
+                // )
               }
             >
               <View

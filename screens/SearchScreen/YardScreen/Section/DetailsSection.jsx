@@ -30,10 +30,10 @@ export function DetailsSection({ rating, stadium }) {
         </View>
       </View>
       <View style={{ display: "flex", flexDirection: "row", marginTop: 20 }}>
-        <Feather
-          name="clock"
+        <AntDesign
+          name="clockcircle"
           size={30}
-          color="black"
+          color="#F9A825"
           style={{ marginHorizontal: 25 }}
         />
         <View

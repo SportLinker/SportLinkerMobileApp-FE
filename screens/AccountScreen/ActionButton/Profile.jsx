@@ -36,7 +36,6 @@ const Profile = () => {
                       <Text style={styles.textFav}>{item}</Text>
                     </View>
                     <View>
-                      {/* <AntDesign name="right" size={24} color="#000" /> */}
                       <Icon size={24} color="#000" name={getSportIcon(item)} />
                     </View>
                   </TouchableOpacity>

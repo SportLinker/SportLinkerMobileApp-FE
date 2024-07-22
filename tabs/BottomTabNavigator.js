@@ -13,6 +13,7 @@ import ChatTabs from "./ChatTabs";
 import HomeTabs from "./HomeTabs";
 import SearchTopTabNavigator from "./SearchTopTabNavigator";
 import { convertHttpToHttps } from "../utils";
+import UpgradeScreen from "../screens/UpgradeScreen/UpgradeScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -61,7 +62,7 @@ const BottomTabNavigator = () => {
           ),
         }}
       />
-      {/* <Tab.Screen
+      <Tab.Screen
         name="Upgrade"
         component={UpgradeScreen}
         options={{
@@ -75,7 +76,7 @@ const BottomTabNavigator = () => {
             />
           ),
         }}
-      /> */}
+      />
       <Tab.Screen
         name="Chat"
         component={ChatTabs}
