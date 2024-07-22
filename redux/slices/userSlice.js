@@ -75,6 +75,7 @@ export const userSlice = createSlice({
       createdAt: null,
       updatedAt: null,
       last_active_time: null,
+      is_premium: false,
       status: "active",
       longitude: null,
       latitude: null,

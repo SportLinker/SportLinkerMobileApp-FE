@@ -18,6 +18,7 @@ import {
 } from "../../../redux/selectors";
 import Loading from "../../../component/Loading";
 import { convertHttpToHttps } from "../../../utils";
+import PremiumIcon from "../../../component/PremiumIcon";
 
 export const mock_data = [
   { id: 1, name: "Tai Vo", star: "true" },
@@ -84,9 +85,12 @@ export default function PlayerScreen({ navigation }) {
                             marginHorizontal: 20,
                             fontSize: 16,
                             fontWeight: "bold",
+                            flexDirection: "row",
+                            alignItems: "center",
                           }}
                         >
-                          {item.username}
+                          <Text>{item.username}</Text>
+                          {item && item?.is_premium && <PremiumIcon />}
                         </Text>
                         <View
                           style={{

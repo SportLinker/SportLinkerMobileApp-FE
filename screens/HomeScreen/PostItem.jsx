@@ -24,6 +24,7 @@ import {
   likeBlog,
 } from "../../redux/slices/blogSlice";
 import { Alert } from "react-native";
+import PremiumIcon from "../../component/PremiumIcon";
 
 export default function PostItem({
   navigation,
@@ -149,9 +150,19 @@ export default function PostItem({
           />
           <View>
             <View style={{ display: "flex", flexDirection: "row" }}>
-              <Text style={styles.mr5}> {blog && blog.owner?.name}</Text>
+              <Text
+                style={
+                  (styles.mr5,
+                  { flexDirection: "row", alignItems: "center", gap: 10 })
+                }
+              >
+                <Text>{blog && blog.owner?.name}</Text>
+                {blog && blog.owner?.is_premium && <PremiumIcon />}
+              </Text>
+
               {blog && blog?.blog_address && (
                 <Text>
+                  {" "}
                   đang ở{" "}
                   <Text style={{ fontWeight: "bold" }}>
                     {blog.blog_address}

@@ -26,6 +26,7 @@ import HeaderAccount from "./HeaderAccount/HeaderAccount";
 import MyBook from "./ActionButton/MyBook";
 import defaultAvatar from "../../assets/avatar_default.png";
 import { convertHttpToHttps } from "../../utils";
+import PremiumIcon from "../../component/PremiumIcon";
 
 const fakeData = [
   {
@@ -173,8 +174,19 @@ export default function AccountScreen({ navigation }) {
           </TouchableOpacity>
         </View>
         <View style={styles.nameAccountContainer}>
-          <Text style={{ marginTop: 5, fontSize: 20, fontWeight: "bold" }}>
-            {userSelector.name}
+          <Text
+            style={{
+              marginTop: 5,
+              fontSize: 20,
+              fontWeight: "bold",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <Text>{userSelector.name}</Text>
+            {userSelector && userSelector?.is_premium && (
+              <PremiumIcon size={18} />
+            )}
           </Text>
           {/* <Text style={{ marginTop: 5, fontWeight: "bold" }}>
               Nam ● Người lớn
