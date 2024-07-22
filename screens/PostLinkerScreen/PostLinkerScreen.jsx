@@ -33,6 +33,7 @@ import blogSlice, { postBlog } from "../../redux/slices/blogSlice";
 import { getBlogLoadingSelector, getUserSelector } from "../../redux/selectors";
 import Loading from "../../component/Loading";
 import { convertHttpToHttps } from "../../utils";
+import PremiumIcon from "../../component/PremiumIcon";
 
 const cationOptions = [
   {
@@ -172,7 +173,23 @@ export default function PostLinkerScreen({ navigation }) {
       console.log("imageArr", imageArr);
       let imagesSelect = imageArr.map((image) => image.uri);
       if (imagesSelect.length > 3) {
-        alert("Bạn chỉ có thể chọn tối đa 3 ảnh.");
+        Alert.alert(
+          "Bạn chỉ có thể chọn tối đa 3 ảnh",
+          "Hãy nâng cấp lên Premium để đăng được nhiều ảnh hơn nhé!",
+          [
+            {
+              text: "Cancel",
+              style: "cancel",
+            },
+            {
+              text: "Nâng cấp",
+              onPress: () => {
+                navigation.navigate("BottomTabs");
+                navigation.navigate("Upgrade");
+              },
+            },
+          ]
+        );
         return;
       }
       console.log("images: " + imagesSelect);
@@ -238,7 +255,17 @@ export default function PostLinkerScreen({ navigation }) {
             <View style={styles.headingWrapper}>
               <View style={styles.nameWrapper}>
                 <Text multiline={true} numberOfLines={2}>
-                  <Text style={styles.boldText}>{userSelector.name}</Text>
+                  <Text
+                    style={[
+                      styles.boldText,
+                      { flexDirection: "row", alignItems: "center" },
+                    ]}
+                  >
+                    <Text>{userSelector.name}</Text>
+                    {userSelector && userSelector?.is_premium && (
+                      <PremiumIcon size={16} />
+                    )}
+                  </Text>
                   {selectedLocation && <Text> đang ở</Text>}
                   {selectedLocation && (
                     <Text style={styles.boldText}>

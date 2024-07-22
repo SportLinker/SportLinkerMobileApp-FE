@@ -7,7 +7,7 @@ export const getListMessage = createAsyncThunk(
     try {
       const data = await api.get(`/groupMessage`);
 
-      console.log("getListMessage:", data.data.metadata);
+      console.log("getListMessage:", JSON.stringify(data.data.metadata));
       return data.data.metadata;
     } catch (error) {
       console.log("error", error);
