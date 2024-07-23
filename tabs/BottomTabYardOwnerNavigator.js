@@ -17,15 +17,15 @@ const Tab = createBottomTabNavigator();
 
 const BottomTabYardOwnerNavigator = () => {
   const userSelector = useSelector(getUserSelector);
-  const [image, setImage] = useState(userSelector.avatar_url);
+  const [image, setImage] = useState(userSelector && userSelector.avatar_url);
 
   useEffect(() => {
-    if (!userSelector.avatar_url) {
+    if (!userSelector) {
       setImage(defaultAvatar);
     } else {
       setImage(userSelector.avatar_url);
     }
-  }, [userSelector.avatar_url]);
+  }, [userSelector]);
 
   return (
     <Tab.Navigator

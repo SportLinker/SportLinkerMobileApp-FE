@@ -1,11 +1,12 @@
-import { View, Text, Modal, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
-import { styles } from "../../component/style";
 import { useNavigation } from "@react-navigation/native";
-import ReChargeModal from "./Recharge/ReChargeModal";
-import WithDrawModal from "./Withdraw/WithDrawModal"; // Import the new modal
+import React, { useState } from "react";
+import { Modal, Text, TouchableOpacity, View } from "react-native";
+import { useDispatch } from "react-redux";
+import { styles } from "../../component/style";
+import { logout } from "../../redux/slices/userSlice";
 
 export default function MenuAccount({ showMenu, setShowMenu }) {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const [showLogOut, setShowLogOut] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -18,6 +19,12 @@ export default function MenuAccount({ showMenu, setShowMenu }) {
   const toggleWithdrawModal = () => {
     // Add toggle function for withdraw modal
     setWithdrawModalVisible(!withdrawModalVisible);
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
+    setShowLogOut(false);
+    navigation.navigate("Login");
   };
 
   return (
@@ -115,13 +122,7 @@ export default function MenuAccount({ showMenu, setShowMenu }) {
                 marginTop: 10,
               }}
             >
-              <TouchableOpacity
-                onPress={() => {
-                  setShowLogOut(false);
-                  navigation.navigate("Login");
-                }}
-                style={styles.menuItem}
-              >
+              <TouchableOpacity onPress={handleLogout} style={styles.menuItem}>
                 <Text style={[styles.textMenuLogout, styles.blueText]}>
                   Xác nhận
                 </Text>
