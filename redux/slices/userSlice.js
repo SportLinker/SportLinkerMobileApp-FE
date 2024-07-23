@@ -23,6 +23,21 @@ export const login = createAsyncThunk(
     }
   }
 );
+
+export const logout = createAsyncThunk(
+  "userSlice/logout",
+  async (_, { rejectWithValue }) => {
+    try {
+      const data = await api.get(`/authen/logout`);
+
+      console.log("logout", data.data.metadata);
+      return data.data.metadata;
+    } catch (error) {
+      console.log("error", error);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 export const register = createAsyncThunk(
   "userSlice/register",
   async (formData, { rejectWithValue }) => {
@@ -117,7 +132,40 @@ export const userSlice = createSlice({
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload; // Ensure consistent error handling
+        state.error = action.payload;
+      })
+      .addCase(logout.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.loading = false;
+        state.userInfo = {
+          id: null,
+          phone: null,
+          email: null,
+          name: null,
+          username: null,
+          password: null,
+          bio: null,
+          avatar_url: null,
+          gender: null,
+          date_of_birth: null,
+          role: null,
+          createdAt: null,
+          updatedAt: null,
+          last_active_time: null,
+          is_premium: false,
+          status: null,
+          longitude: null,
+          latitude: null,
+        };
+        AsyncStorage.removeItem("accessToken");
+        AsyncStorage.removeItem("refreshToken");
+        AsyncStorage.removeItem("xClientId");
+      })
+      .addCase(logout.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       })
       .addCase(register.pending, (state) => {
         state.loading = true;
