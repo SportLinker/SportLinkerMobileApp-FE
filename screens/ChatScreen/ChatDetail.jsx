@@ -31,6 +31,9 @@ export default function ChatDetail({ navigation }) {
 
   const scrollViewRef = useRef(null);
 
+  //variable use for set timeout
+  let timeout;
+
   useEffect(() => {
     scrollToBottom();
   }, [chatDetail]);
@@ -150,7 +153,14 @@ export default function ChatDetail({ navigation }) {
             icon="send"
             size="small"
             style={styles.btnSend}
-            onPress={sendMessage}
+            onPress={() => {
+              if (timeout) {
+                clearTimeout(timeout);
+              }
+              timeout = setTimeout(() => {
+                sendMessage();
+              }, 300);
+            }}
             color="white"
           />
         </View>

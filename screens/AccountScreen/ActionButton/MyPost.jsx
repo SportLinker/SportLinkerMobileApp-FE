@@ -87,6 +87,13 @@ export default function MyPost({ navigation }) {
                 refreshBlog={onRefresh}
               />
             ))}
+          {!myBlog && (
+            <Text
+              style={{ fontSize: 16, fontWeight: "bold", color: "#707070" }}
+            >
+              Không tìm thấy bài đăng nào!
+            </Text>
+          )}
         </ScrollView>
         <Snackbar
           visible={!!errorMessage}

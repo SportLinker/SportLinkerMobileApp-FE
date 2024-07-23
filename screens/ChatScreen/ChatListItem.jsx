@@ -34,8 +34,18 @@ export default function ChatListItem({ seen, navigation, chatItem }) {
             <Text
               style={
                 chatItem.is_seen
-                  ? styles.textContent
-                  : [styles.textContent, styles.seen]
+                  ? [
+                      styles.textContent,
+                      {
+                        width: "25%",
+                        textAlign: "right",
+                      },
+                    ]
+                  : [
+                      styles.textContent,
+                      styles.seen,
+                      { width: "25%", textAlign: "right" },
+                    ]
               }
             >
               {convertTo12HourFormat(chatItem.last_active_time)}
@@ -73,13 +83,14 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   userName: {
-    fontSize: 16,
+    width: "75%",
+    fontSize: 14,
     color: "black",
     fontWeight: "bold",
   },
   textContent: {
     color: "#707070",
-    fontSize: 14,
+    fontSize: 12,
     maxWidth: 250,
     overflow: "hidden",
   },

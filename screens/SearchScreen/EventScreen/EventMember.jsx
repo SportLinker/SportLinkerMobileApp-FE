@@ -97,13 +97,18 @@ const EventMember = ({ navigation }) => {
               <>
                 <Avatar.Image
                   size={50}
-                  source={{ uri: item.user_join.avatar_url }}
+                  source={{
+                    uri: convertHttpToHttps(item.user_join.avatar_url),
+                  }}
                 />
                 <Text style={styles.itemText}>{item.user_join.name}</Text>
               </>
             ) : (
               <>
-                <Avatar.Image size={50} source={{ uri: item.avatar_url }} />
+                <Avatar.Image
+                  size={50}
+                  source={{ uri: convertHttpToHttps(item.avatar_url) }}
+                />
                 <Text style={styles.itemText}>{item.name}</Text>
               </>
             )}
@@ -229,7 +234,7 @@ const styles = StyleSheet.create({
   },
   itemText: {
     marginTop: 5,
-    fontSize: 16,
+    fontSize: 12,
     color: "#333",
     textAlign: "center",
   },
