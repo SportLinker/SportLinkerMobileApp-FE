@@ -64,6 +64,7 @@ const OrderYardScreen = ({ navigation }) => {
                   navigation.navigate("Booking", {
                     yard_name: item.yard_name,
                     booking: item.BookingYard,
+                    price: item.price_per_hour,
                   })
                 }
               />
