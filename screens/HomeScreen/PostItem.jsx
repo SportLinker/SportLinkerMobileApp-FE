@@ -37,6 +37,7 @@ export default function PostItem({
   const [modalVisible, setModalVisible] = useState(false);
   const [url, setUrl] = useState(null);
   const [images, setImages] = useState([]);
+  const [totalLike, setTotalLike] = useState(0);
   const [visibleMenu, setVisibleMenu] = React.useState(false);
 
   const { userInfo } = useSelector((state) => state.userSlice);
@@ -48,6 +49,9 @@ export default function PostItem({
     if (blog && blog.blog_link.length > 0) {
       const urlArr = blog.blog_link.map((item) => item.url);
       setImages(urlArr);
+    }
+    if (blog && blog.total_like) {
+      setTotalLike(blog.total_like);
     }
   }, [blog]);
 
@@ -79,8 +83,10 @@ export default function PostItem({
 
     //handle whether like or unlike blog
     if (!liked) {
+      setTotalLike((prevState) => prevState + 1);
       dispatch(likeBlog(blog?.id));
     } else {
+      setTotalLike((prevState) => prevState - 1);
       dispatch(dislikeBlog(blog?.id));
     }
   };
@@ -297,7 +303,7 @@ export default function PostItem({
             navigation.navigate("ListLikeScreen", { blogId: blog.id })
           }
         >
-          <Text>{blog.total_like} lượt thích</Text>
+          <Text>{totalLike} lượt thích</Text>
         </TouchableOpacity>
       </View>
       {modalVisible && (

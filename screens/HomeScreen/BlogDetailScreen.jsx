@@ -39,7 +39,7 @@ const BlogDetailScreen = ({ route, navigation }) => {
         />
       )}
       {!blogSelector && (
-        <Text style={{ fontSize: 24, color: "#707070" }}>
+        <Text style={{ fontSize: 16, color: "#707070" }}>
           Không tìm thấy bài viết
         </Text>
       )}

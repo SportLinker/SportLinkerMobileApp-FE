@@ -132,7 +132,7 @@ export const FilterEventOptionList = ({
   };
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <FlatList
         data={fakeData}
         horizontal
@@ -191,17 +191,20 @@ export const FilterEventOptionList = ({
 const styles = StyleSheet.create({
   flatList: {
     backgroundColor: "#F7F7F7",
+    flex: 1,
   },
   buttonLabel: {
     marginVertical: 0,
+    fontSize: 12,
     paddingVertical: 10,
+    textAlign: "center",
     paddingHorizontal: 20,
     marginHorizontal: 0,
   },
   button: {
     marginHorizontal: 5,
     marginVertical: 10,
-    height: 40,
+    paddingVertical: 0,
     backgroundColor: "#707070",
   },
   modalContainer: {

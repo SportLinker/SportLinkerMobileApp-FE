@@ -37,7 +37,7 @@ export default function YardItem({ data, loading, latitude, longitude }) {
         </View>
       </View>
       <View style={styles.infoContainer}>
-        <View>
+        <View style={{ flex: 1 }}>
           <Text style={styles.stadiumName}>
             {yard.stadium_name} -{" "}
             <Text style={styles.distanceText}>{yard?.distance?.text}</Text>
@@ -50,14 +50,14 @@ export default function YardItem({ data, loading, latitude, longitude }) {
           </Text>
         </View>
         <View style={styles.iconContainer}>
-          <AntDesign name="right" size={24} color="black" />
+          <AntDesign name="right" size={20} color="black" />
         </View>
       </View>
     </TouchableOpacity>
   );
 
   return (
-    <View style={{ marginTop: 20, marginHorizontal: "auto", minHeight: 400 }}>
+    <View style={{ marginTop: 20, marginHorizontal: 10, minHeight: 400 }}>
       {loading ? (
         <Loading message={"Loading..."} visible={loading} />
       ) : (
@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
   containerYardUser: {
     backgroundColor: "#fff",
     borderRadius: 10,
+    marginHorizontal: 5,
     marginVertical: 10,
     shadowColor: "#000",
     shadowOffset: {
@@ -92,7 +93,7 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   imageYard: {
-    width: 340,
+    width: "100%",
     height: 150,
     borderRadius: 10,
   },
@@ -112,6 +113,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   infoContainer: {
+    flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 10,
@@ -121,6 +123,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 17,
     color: "#4878d9",
+    width: "100%",
   },
   distanceText: {
     color: "#000",
@@ -129,7 +132,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   iconContainer: {
+    width: "10%",
     justifyContent: "center",
+    alignItems: "center",
   },
   noYardText: {
     color: "#1646A9",
