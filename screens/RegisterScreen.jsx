@@ -398,10 +398,10 @@ const styles = StyleSheet.create({
     height: 50,
     backgroundColor: "white",
     marginVertical: 10,
-    borderWidth: 1,
+    // borderWidth: 1,
     borderRadius: 8,
     borderColor: "#4878D9",
-    borderWidth: 2,
+    // borderWidth: 2,
   },
   errorMessage: {
     fontSize: 14,
