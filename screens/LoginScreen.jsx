@@ -1,6 +1,6 @@
 import auth from "@react-native-firebase/auth";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Alert,
   Image,
@@ -17,8 +17,9 @@ import { Button, Divider, Snackbar, TextInput } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
 import NotificationComponent from "../component/NotificationComponent";
 import { screenHeight, screenWidth } from "../component/style";
-import { getUserLoadingSelector } from "../redux/selectors";
+import { getUserLoadingSelector, getUserSelector } from "../redux/selectors";
 import userSlice, { login } from "../redux/slices/userSlice";
+import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 
 const LoginScreen = ({ navigation }) => {
   const [loginForm, setLoginForm] = useState({
@@ -31,13 +32,24 @@ const LoginScreen = ({ navigation }) => {
   const [invalidInput, setInvalidInput] = useState(true);
 
   const loadingSelector = useSelector(getUserLoadingSelector);
-
+  const userInfo = useSelector(getUserSelector);
+  const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const { triggerNotification } = NotificationComponent();
 
   useEffect(() => {
-    dispatch(userSlice.actions.setUserLoading(false));
-  }, []);
+    if (isFocused) {
+      dispatch(userSlice.actions.setUserLoading(false));
+
+      if (!userInfo || userInfo.id === null) {
+        navigation.navigate("Login");
+      } else if (userInfo.role === "player") {
+        navigation.navigate("BottomTabs");
+      } else if (userInfo.role === "stadium") {
+        navigation.navigate("BottomTabYardOwnerNavigator");
+      }
+    }
+  }, [userInfo, navigation, dispatch, useIsFocused]);
 
   const handleLogin = async () => {
     console.log("handleLogin");
