@@ -108,7 +108,7 @@ export default function EditAccountScreen({ navigation }) {
   return (
     <SafeAreaView style={{ flex: 1, position: "relative" }}>
       {loading && <Loading visible={loading} />}
-      <ScrollView>
+      <ScrollView keyboardDismissMode="on-drag">
         <View style={{ paddingTop: 20 }}>
           <View style={{ alignItems: "center" }}>
             <Text style={{ fontWeight: "bold", fontSize: 20 }}>
@@ -148,6 +148,7 @@ export default function EditAccountScreen({ navigation }) {
                     style={styles.input}
                     onChangeText={handleChange("phone")}
                     onBlur={handleBlur("phone")}
+                    readOnly
                     value={values.phone}
                   />
                   {touched.phone && errors.phone && (
@@ -161,6 +162,7 @@ export default function EditAccountScreen({ navigation }) {
                     onChangeText={handleChange("textEmail")}
                     onBlur={handleBlur("textEmail")}
                     value={values.textEmail}
+                    readOnly
                   />
                   {touched.textEmail && errors.textEmail && (
                     <Text style={styles.errorText}>{errors.textEmail}</Text>

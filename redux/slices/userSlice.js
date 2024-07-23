@@ -30,8 +30,8 @@ export const logout = createAsyncThunk(
     try {
       const data = await api.get(`/authen/logout`);
 
-      console.log("logout", data.data);
-      // return data.data;
+      console.log("logout", data.data.metadata);
+      return data.data.metadata;
     } catch (error) {
       console.log("error", error);
       return rejectWithValue(error.response.data);

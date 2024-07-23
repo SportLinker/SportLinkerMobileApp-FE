@@ -155,7 +155,7 @@ export default function RegisterScreen({ navigation }) {
           >
             {loadingSelector && <Loading visible={loadingSelector} />}
 
-            <ScrollView style={styles.container}>
+            <ScrollView keyboardDismissMode="on-drag" style={styles.container}>
               <Image
                 style={{
                   resizeMode: "contain",
@@ -225,6 +225,7 @@ export default function RegisterScreen({ navigation }) {
               <Text style={styles.label}>Xác nhận mật khẩu:</Text>
               <TextInput
                 style={styles.input}
+                dense
                 mode="outlined"
                 inputMode="text"
                 placeholder="Xác nhận mật khẩu"
@@ -394,8 +395,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   input: {
-    width: "100%",
-    height: 40,
+    height: 50,
     backgroundColor: "white",
     marginVertical: 10,
     // borderWidth: 1,
