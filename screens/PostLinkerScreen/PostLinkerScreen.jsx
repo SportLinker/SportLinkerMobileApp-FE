@@ -178,7 +178,7 @@ export default function PostLinkerScreen({ navigation }) {
       let imageArr = [...result.assets];
       console.log("imageArr", imageArr);
       let imagesSelect = imageArr.map((image) => image.uri);
-      if (imagesSelect.length > 3) {
+      if (!userSelector.is_premium && imagesSelect.length > 3) {
         Alert.alert(
           "Bạn chỉ có thể chọn tối đa 3 ảnh",
           "Hãy nâng cấp lên Premium để đăng được nhiều ảnh hơn nhé!",
@@ -196,6 +196,10 @@ export default function PostLinkerScreen({ navigation }) {
             },
           ]
         );
+        return;
+      }
+      if (userSelector.is_premium && imagesSelect.length > 10) {
+        Alert.alert("Bạn chỉ có thể chọn tối đa 10 ảnh", "");
         return;
       }
       console.log("images: " + imagesSelect);
@@ -286,13 +290,14 @@ export default function PostLinkerScreen({ navigation }) {
                   flexDirection: "row-reverse",
                   alignItems: "center",
                   justifyContent: "space-between",
-                  gap: 10,
+                  gap: 5,
                 }}
                 labelStyle={{
                   fontWeight: "bold",
-                  marginVertical: 3,
+                  marginVertical: 1,
                   marginHorizontal: 5,
-
+                  paddingVertical: 0,
+                  fontSize: 12,
                   color: "#1646A9",
                 }}
                 onPress={() => alert("Tính năng đang phát triển")}
@@ -301,7 +306,7 @@ export default function PostLinkerScreen({ navigation }) {
                 style={{
                   borderRadius: 5,
                   height: 30,
-                  width: 120,
+                  width: "30%",
                   paddingVertical: 0,
                   paddingHorizontal: 0,
                   marginVertical: 0,

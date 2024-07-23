@@ -181,7 +181,7 @@ export default function CommentModal({
             />
           )}
           {!commentListSelector && (
-            <Text style={{ fontSize: 18, color: "#707070" }}>
+            <Text style={{ fontSize: 16, color: "#707070" }}>
               Không tìm thấy bình luận!
             </Text>
           )}

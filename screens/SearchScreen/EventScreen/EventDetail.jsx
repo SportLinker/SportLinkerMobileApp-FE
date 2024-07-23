@@ -499,15 +499,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 20,
-    gap: 10,
     zIndex: 0,
     backgroundColor: "rgba(255, 255, 255, 0.9)",
   },
   floatBtnLabel: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "bold",
-    paddingVertical: 8,
-    paddingHorizontal: 5,
+    paddingVertical: 5,
+    paddingHorizontal: 0,
   },
   floatBtn: {
     borderRadius: 12,
