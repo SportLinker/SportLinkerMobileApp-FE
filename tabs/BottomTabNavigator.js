@@ -106,9 +106,9 @@ const BottomTabNavigator = () => {
                   : { uri: convertHttpToHttps(image) }
               }
               style={{
-                height: size + 5,
-                width: size + 5,
-                borderRadius: size + 5,
+                height: size,
+                width: size,
+                borderRadius: size,
               }}
             />
           ),
