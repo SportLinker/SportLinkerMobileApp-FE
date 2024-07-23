@@ -115,7 +115,7 @@ const LoginScreen = ({ navigation }) => {
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        <ScrollView>
+        <ScrollView keyboardDismissMode="on-drag">
           <View style={styles.container}>
             <Image
               style={{
@@ -349,7 +349,7 @@ const styles = StyleSheet.create({
   },
   input: {
     width: "100%",
-    height: 40,
+    height: 50,
     backgroundColor: "white",
     marginVertical: 12,
     borderRadius: 8,

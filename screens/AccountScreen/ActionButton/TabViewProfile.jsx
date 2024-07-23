@@ -28,10 +28,10 @@ export default function TabViewProfile({ activeTab, setActiveTab }) {
         data={tabs}
         horizontal
         contentContainerStyle={{
-          flex: 1,
           justifyContent: "space-between",
+          width: "100%",
         }}
-        style={{ padding: 10 }}
+        style={{ paddingHorizontal: 5, flex: 1 }}
         renderItem={({ item }) => (
           <TouchableOpacity
             style={[
@@ -46,6 +46,7 @@ export default function TabViewProfile({ activeTab, setActiveTab }) {
               style={[
                 styles.boldText,
                 activeTab == item.key && styles.activeText,
+                { fontSize: 12 },
               ]}
             >
               {item.label}

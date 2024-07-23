@@ -115,10 +115,10 @@ const EventScheduleTable = ({ eventListData, loading }) => {
                     borderRadius: 15,
                     overflow: "hidden",
                     textAlign: "center",
-                    fontSize: 14,
+                    fontSize: 12,
                     fontWeight: "bold",
                     paddingHorizontal: 10,
-                    paddingVertical: 3,
+                    paddingTop: 2,
                   }}
                 >
                   Đủ người
@@ -134,10 +134,10 @@ const EventScheduleTable = ({ eventListData, loading }) => {
                     borderRadius: 15,
                     overflow: "hidden",
                     textAlign: "center",
-                    fontSize: 14,
+                    fontSize: 12,
                     fontWeight: "bold",
                     paddingHorizontal: 10,
-                    paddingVertical: 3,
+                    paddingTop: 2,
                   }}
                 >
                   Chưa Đủ Người
@@ -262,7 +262,7 @@ const EventScheduleTable = ({ eventListData, loading }) => {
           <Text
             style={{
               textAlign: "center",
-              fontSize: 24,
+              fontSize: 16,
               color: "#707070",
               marginTop: 20,
               fontWeight: "bold",
