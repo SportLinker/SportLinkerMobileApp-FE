@@ -5,6 +5,7 @@ import {
   ScrollView,
   StyleSheet,
   View,
+  Text,
 } from "react-native";
 import { FAB } from "react-native-paper";
 import FuncHomeYard from "./FuncHomeYard";

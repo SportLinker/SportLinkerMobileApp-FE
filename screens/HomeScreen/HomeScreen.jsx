@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import socket from "../../services/socket";
 import NotificationComponent from "../../component/NotificationComponent";
 import { getBlogList } from "../../redux/slices/blogSlice";
-import { getBlogListSelector } from "../../redux/selectors";
+import { getBlogListSelector, getUserSelector } from "../../redux/selectors";
 
 const PAGE_SIZE = 10;
 

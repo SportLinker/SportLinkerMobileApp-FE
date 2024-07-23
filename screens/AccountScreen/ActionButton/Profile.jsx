@@ -12,7 +12,7 @@ const Profile = () => {
 
   return (
     <>
-      {favorite.length > 0 ? (
+      {favorite && favorite.length > 0 ? (
         <>
           <View style={styles.topInfoSport}>
             <Text style={{ color: "#707070", fontWeight: "bold" }}>
