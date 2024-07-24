@@ -142,7 +142,7 @@ const LoginScreen = ({ navigation }) => {
             <Text style={styles.secondaryText}>
               Để đăng nhập hãy nhập thông tin bên dưới
             </Text>
-            {/* <Button
+            <Button
               mode="outlined"
               labelStyle={{
                 color: "black",
@@ -195,10 +195,11 @@ const LoginScreen = ({ navigation }) => {
                 theme={{ colors: { primary: "gray" } }}
                 style={{ flex: 1, height: 1 }}
               />
-            </View> */}
+            </View>
 
             <Text style={styles.label}>Tên đăng nhập:</Text>
             <TextInput
+              textColor="black"
               style={[
                 styles.input,
                 { borderColor: invalidInput ? "#4878D9" : "red" },
@@ -214,6 +215,7 @@ const LoginScreen = ({ navigation }) => {
             />
             <Text style={styles.label}>Mật khẩu:</Text>
             <TextInput
+              textColor="black"
               mode="outlined"
               style={[
                 styles.input,
@@ -363,7 +365,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 50,
     backgroundColor: "white",
-    // marginVertical: 12,
+    marginVertical: 12,
     marginBottom: 12,
     borderRadius: 8,
     // borderWidth: 1,

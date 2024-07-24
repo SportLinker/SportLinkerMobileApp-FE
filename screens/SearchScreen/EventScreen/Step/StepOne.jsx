@@ -38,7 +38,7 @@ const StepOne = ({ values, setFieldValue, errors, touched }) => {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.stepContainer}>
             <Text style={styles.textTitle}>Chi Tiết</Text>
             <View style={styles.justifyLeft}>
