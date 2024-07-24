@@ -74,7 +74,7 @@ export const getListTransactionByUser = createAsyncThunk(
     try {
       // Change logic in there
       const data = await api.get(
-        `/transactions/getByUser?pageSize=10&pageNumber=1`
+        `/transactions/getByUser?pageSize=50&pageNumber=1`
       );
 
       console.log("getListTransactionByUser data:", data.data.metadata);
