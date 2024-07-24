@@ -15,7 +15,11 @@ const ConfirmPopup = ({
     <Portal>
       <Dialog
         visible={visible}
-        style={{ backgroundColor: "#e9e9e9", borderRadius: 10 }}
+        style={{
+          backgroundColor: "#e9e9e9",
+          borderRadius: 10,
+          color: "#707070",
+        }}
         onDismiss={onCancel}
       >
         <Dialog.Title style={styles.title}>{title}</Dialog.Title>
@@ -50,10 +54,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     textAlign: "center",
+    color: "black",
   },
   description: {
     fontSize: 16,
     textAlign: "center",
+    color: "#707070",
   },
   actions: {
     justifyContent: "space-between",

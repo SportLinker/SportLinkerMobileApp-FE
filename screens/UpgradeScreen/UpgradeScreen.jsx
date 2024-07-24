@@ -146,6 +146,7 @@ export default function UpgradeScreen() {
         <Dialog
           style={{ backgroundColor: "white" }}
           visible={qrVisible}
+          dismissable={false}
           onDismiss={hideQrDialog}
         >
           <Dialog.Title style={{ color: "#1646A9", textAlign: "center" }}>
@@ -227,7 +228,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 24,
-    width: "80%",
+    width: "90%",
     backgroundColor: "#1646A9",
   },
   divider: {

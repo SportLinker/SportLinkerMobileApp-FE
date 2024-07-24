@@ -7,7 +7,7 @@ export const createEvent = createAsyncThunk(
     try {
       const response = await api.post(`/matches`, eventForm);
 
-      console.log("API Response: ", response.data); // Log the API response
+      console.log("API Response: ", JSON.stringify(response.data)); // Log the API response
       return response.data; // Return the response data
     } catch (error) {
       console.log("Error: ", JSON.stringify(error.response.data));
@@ -27,12 +27,13 @@ export const updateEvent = createAsyncThunk(
           maximum_join: eventForm.maximum_join,
           start_time: eventForm.start_time,
           end_time: eventForm.end_time,
+          cid: eventForm.cid,
           option: {
-            budget: eventForm.budget,
-            note: eventForm.note,
+            budget: eventForm.option.budget,
+            note: eventForm.option.note,
           },
         });
-        console.log(response.data);
+        console.log("Update event result: ", JSON.stringify(response.data));
         return response.data; // Return the response data
       }
     } catch (error) {
@@ -88,7 +89,7 @@ export const getDetailEvent = createAsyncThunk(
     try {
       const response = await api.get(`/matches/${eventID}`, eventID);
 
-      console.log("API getDetailEvent: ", response.data); // Log the API response
+      console.log("API getDetailEvent: ", JSON.stringify(response.data)); // Log the API response
       return response.data.metadata; // Return the response data
     } catch (error) {
       console.log("Error: ", JSON.stringify(error.response.data));

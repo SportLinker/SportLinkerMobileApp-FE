@@ -262,7 +262,7 @@ const EventDetail = ({ navigation }) => {
           </View>
         </View>
 
-        {fakeData.participationFee != 0 && (
+        {eventDetail?.option && eventDetail?.option?.budget != 0 && (
           <View style={styles.itemWrapper}>
             <Icon name="hand-coin-outline" size={30} color={"black"} />
             <View style={styles.inlineTextWrapper}>
@@ -276,7 +276,7 @@ const EventDetail = ({ navigation }) => {
           </View>
         )}
 
-        {fakeData.memberGender && (
+        {/* {fakeData.memberGender && (
           <View style={styles.itemWrapper}>
             <Icon name="account-multiple-outline" size={30} color={"black"} />
 
@@ -284,14 +284,16 @@ const EventDetail = ({ navigation }) => {
               <Text style={styles.boldText}>{fakeData.memberGender}</Text>
             </View>
           </View>
-        )}
+        )} */}
 
-        {fakeData.note != "" && (
-          <View style={styles.noteView}>
-            <Text style={styles.boldText}>Ghi chú</Text>
-            <Text style={styles.subText}>{fakeData.note}</Text>
-          </View>
-        )}
+        {eventDetail?.option &&
+          eventDetail?.option?.note != "string" &&
+          eventDetail?.option?.note != null && (
+            <View style={styles.noteView}>
+              <Text style={styles.boldText}>Ghi chú</Text>
+              <Text style={styles.subText}>{eventDetail?.option?.note}</Text>
+            </View>
+          )}
       </ScrollView>
       <View style={styles.floatContainer}>
         {eventDetail.is_owner ? (
@@ -461,6 +463,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     display: "flex",
+    height: "80%",
     gap: 20,
     paddingBottom: 100,
     paddingHorizontal: 20,
@@ -489,13 +492,10 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   floatContainer: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
     width: "100%",
     display: "flex",
     flexDirection: "row",
-    height: 150,
+    height: "15%",
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 20,
