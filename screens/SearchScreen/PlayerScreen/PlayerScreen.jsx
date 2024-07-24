@@ -41,7 +41,7 @@ export default function PlayerScreen({ navigation }) {
     dispatch(getAllPlayers());
   }, []);
 
-  console.log(eventLoadingtSelector);
+  console.log(getAllPlayersFromRedux);
 
   if (!getAllPlayersFromRedux) return <Text>Loading...</Text>;
 
