@@ -16,6 +16,8 @@ import { getUserSelector } from "../../../redux/selectors";
 function HomeYardScreen({ navigation }) {
   const user = useSelector(getUserSelector);
 
+  console.log(user);
+
   if (!user) return <Text>Loading...</Text>;
   return (
     <SafeAreaView style={{ backgroundColor: "#fff" }}>

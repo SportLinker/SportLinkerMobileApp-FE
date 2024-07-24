@@ -38,6 +38,41 @@ export const logout = createAsyncThunk(
     }
   }
 );
+
+export const registerPremium = createAsyncThunk(
+  "userSlice/registerPremium",
+  async ({ type }, { rejectWithValue }) => {
+    console.log("registerPremium", type);
+
+    try {
+      const data = await api.post(`/users/premium?type=${type}`);
+
+      console.log("registerPremium:", data.data);
+      return data.data;
+    } catch (error) {
+      console.log("error", error);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const getPremiumByUser = createAsyncThunk(
+  "userSlice/getPremiumByUser",
+  async (_, { rejectWithValue }) => {
+    console.log("getPremiumByUser");
+
+    try {
+      const data = await api.get(`/users/premium/getByUser`);
+
+      console.log("getPremiumByUser:", data.data);
+      return data.data;
+    } catch (error) {
+      console.log("error", error);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const register = createAsyncThunk(
   "userSlice/register",
   async (formData, { rejectWithValue }) => {
@@ -95,6 +130,7 @@ export const userSlice = createSlice({
       longitude: null,
       latitude: null,
     },
+    premium: null,
     loading: false,
     error: null,
   },
@@ -164,6 +200,29 @@ export const userSlice = createSlice({
         AsyncStorage.removeItem("xClientId");
       })
       .addCase(logout.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(registerPremium.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(registerPremium.fulfilled, (state, action) => {
+        state.loading = false;
+        state.userInfo.is_premium = action.payload.metadata.is_premium;
+      })
+      .addCase(registerPremium.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload; // Ensure consistent error handling
+      })
+
+      .addCase(getPremiumByUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getPremiumByUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.premium = action.payload;
+      })
+      .addCase(getPremiumByUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
