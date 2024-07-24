@@ -91,7 +91,11 @@ const TransactionReview = () => {
               : "Thất Bại"}
           </Text>
           <Text style={styles.transactionName}>
-            {item.type === "deposit" ? "Nạp Tiền" : "Rút Tiền"}
+            {item.type === "deposit"
+              ? "Nạp Tiền"
+              : item.type === "withdraw"
+              ? "Rút Tiền"
+              : "Premium"}
           </Text>
           <Text style={styles.transactionTime}>
             {formatISODate(item.created_at)}
