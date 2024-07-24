@@ -7,7 +7,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
 import { Button, Snackbar } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,7 +16,7 @@ import { getUserSelector } from "../../../redux/selectors";
 import {
   createEvent,
   getEventList,
-  updateEvent
+  updateEvent,
 } from "../../../redux/slices/eventSlice";
 import { getListMessage } from "../../../redux/slices/messageSlice";
 import { calculateEventTimes } from "../../../utils";
@@ -56,8 +56,12 @@ const CreateSportEventModal = ({ visible, onClose, eventDetail }) => {
           getDurationTime(eventDetail?.start_time, eventDetail?.end_time) + "",
         selectedSport: getSportObj(eventDetail?.sport_name),
         participants: eventDetail?.maximum_join + "",
-        budget: eventDetail?.option?.budget,
-        note: "",
+        budget: eventDetail?.option?.budget + "",
+        note:
+          eventDetail?.option?.note == "string" ||
+          eventDetail?.option?.note == null
+            ? ""
+            : eventDetail?.option?.note,
         searchQuery: "",
         selectedLocation: {
           cid: eventDetail?.place_detail?.cid,
@@ -115,7 +119,7 @@ const CreateSportEventModal = ({ visible, onClose, eventDetail }) => {
       .required("Hãy chọn số lượng người tham gia"),
     budget: Yup.number().min(1000, "Ngân sách mỗi người mang lớn hơn 1000"),
     // .required("Hãy chọn số tiền"),
-    // note: Yup.string().required("Hãy viết lưu ý"),
+    note: Yup.string(),
   });
 
   const validationSchemaStepThree = Yup.object().shape({
@@ -190,11 +194,14 @@ const CreateSportEventModal = ({ visible, onClose, eventDetail }) => {
           maximum_join: parseInt(values.participants),
           start_time: times.start_time,
           end_time: times.end_time,
+          cid: values.selectedLocation.cid,
           option: {
             budget: values.budget ? parseInt(values.budget) : null,
             note: values.note ? values.note : null,
           },
         };
+
+        console.log("Event Form updated", eventForm);
 
         dispatch(updateEvent(eventForm)).then((res) => {
           if (res.type === "eventSlice/updateEvent/fulfilled") {
@@ -239,10 +246,13 @@ const CreateSportEventModal = ({ visible, onClose, eventDetail }) => {
           },
         };
 
-        console.log(eventForm);
+        console.log(JSON.stringify(eventForm));
         dispatch(createEvent(eventForm)).then((res) => {
           if (res.type === "eventSlice/createEvent/fulfilled") {
-            console.log("Event created successfully: ", res.payload);
+            console.log(
+              "Event created successfully: ",
+              JSON.stringify(res.payload)
+            );
             setSuccessMessage("Bạn đã tạo kèo thành công !!!");
             const formData = {
               long: getUserInfo.longitude,
@@ -257,7 +267,7 @@ const CreateSportEventModal = ({ visible, onClose, eventDetail }) => {
               setStep(1);
               onClose();
               dispatch(getListMessage());
-            }, 3000);
+            }, 1000);
           } else {
             if (res.payload.message == "Not found") {
               setFailMessage("Hãy đăng nhập lại !!!");
