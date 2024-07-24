@@ -1,8 +1,8 @@
 import auth from "@react-native-firebase/auth";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import React, { useCallback, useEffect, useState } from "react";
+import { useIsFocused } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
 import {
-  Alert,
   Image,
   KeyboardAvoidingView,
   Platform,
@@ -13,13 +13,13 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Button, Divider, Snackbar, TextInput } from "react-native-paper";
+import { Button, Snackbar, TextInput } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
 import NotificationComponent from "../component/NotificationComponent";
 import { screenHeight, screenWidth } from "../component/style";
 import { getUserLoadingSelector, getUserSelector } from "../redux/selectors";
 import userSlice, { login } from "../redux/slices/userSlice";
-import { useFocusEffect, useIsFocused } from "@react-navigation/native";
+import { BackHandler } from "react-native";
 
 const LoginScreen = ({ navigation }) => {
   const [loginForm, setLoginForm] = useState({
@@ -40,16 +40,21 @@ const LoginScreen = ({ navigation }) => {
   useEffect(() => {
     if (isFocused) {
       dispatch(userSlice.actions.setUserLoading(false));
-
-      if (!userInfo || userInfo.id === null) {
-        navigation.navigate("Login");
-      } else if (userInfo.role === "player") {
-        navigation.navigate("BottomTabs");
-      } else if (userInfo.role === "stadium") {
-        navigation.navigate("BottomTabYardOwnerNavigator");
-      }
     }
-  }, [userInfo, navigation, dispatch, useIsFocused]);
+  }, [dispatch, isFocused]);
+
+  useEffect(() => {
+    const backAction = () => {
+      return true; // Chặn hành động quay lại
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
 
   const handleLogin = async () => {
     console.log("handleLogin");
