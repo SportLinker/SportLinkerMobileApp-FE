@@ -1,20 +1,49 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, SafeAreaView, StyleSheet, Image } from "react-native";
+import { SafeAreaView, StyleSheet, Image, View } from "react-native";
+import { Button, Paragraph, Dialog, Portal } from "react-native-paper";
+import CurrentPlan from "./CurrentPlan";
+import PlanSelection from "./PlanSelection";
+import backgroundImage from "../../assets/logo.png";
+import { useDispatch, useSelector } from "react-redux";
 import {
-  RadioButton,
-  Button,
-  Title,
-  Paragraph,
-  Divider,
-  Dialog,
-  Portal,
-} from "react-native-paper";
+  getPremiumByUser,
+  registerPremium,
+} from "../../redux/slices/userSlice";
+import { getUserSelector } from "../../redux/selectors";
+import { formatDate, formatISODate } from "../../utils";
 
-export default function UpgradeScreen() {
+export default function UpgradeScreen({ navigation }) {
   const [checked, setChecked] = useState("first");
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(false); // Modal for insufficient funds
+  const [successVisible, setSuccessVisible] = useState(false); // Modal for success
   const [qrVisible, setQrVisible] = useState(false);
   const [timer, setTimer] = useState(120); // 2 minutes in seconds
+  const [currentPlan, setCurrentPlan] = useState(
+    "Gói Cơ Bản - 39.000đ / tháng"
+  );
+  const [expiryDate, setExpiryDate] = useState(null);
+  const [hasEnoughFunds, setHasEnoughFunds] = useState(false); // Check if user has enough funds
+
+  const dispatch = useDispatch();
+
+  const userSelector = useSelector(getUserSelector);
+  const fetchCurrentPlan = () => {
+    dispatch(getPremiumByUser()).then((res) => {
+      console.log("res: " + JSON.stringify(res));
+      if (res.payload.metadata.status == "active") {
+        if (res.payload.metadata.type == "month") {
+          setCurrentPlan("Gói Cơ Bản - 39.000đ / tháng");
+        } else if (res.payload.metadata.type == "year") {
+          setCurrentPlan("Gói 1 Năm - 390.000đ / năm");
+        }
+        setExpiryDate(formatISODate(res.payload.metadata.expired_at));
+      }
+    });
+  };
+
+  useEffect(() => {
+    fetchCurrentPlan();
+  }, []);
 
   useEffect(() => {
     let interval;
@@ -30,25 +59,48 @@ export default function UpgradeScreen() {
   }, [qrVisible, timer]);
 
   const handleSubmit = () => {
-    setVisible(true);
+    const type = checked === "first" ? "month" : "year";
+    dispatch(
+      registerPremium({
+        type,
+      })
+    ).then((res) => {
+      console.log("res: " + JSON.stringify(res));
+      setQrVisible(false);
+      if (res.payload.message === "Create premium successfully") {
+        setSuccessVisible(true);
+        fetchCurrentPlan();
+      }
+
+      if (res.payload.message === "Ví của bạn không đủ để thanh toán") {
+        setVisible(true);
+      }
+    });
+
+    // setQrVisible(false);
+    // if (hasEnoughFunds) {
+    //   setSuccessVisible(true); // Show success modal
+    // } else {
+    //   setVisible(true); // Show insufficient funds modal
+    // }
   };
 
   const hideDialog = () => {
+    navigation.navigate("WalletHomeScreen");
     setVisible(false);
   };
 
-  const handleAccept = () => {
-    setVisible(false);
-    setTimer(120); // Reset timer to 2 minutes
+  const hideSuccessDialog = () => {
+    setSuccessVisible(false);
+    // Optional: Add any additional logic for when the success dialog is closed
+  };
+
+  const handleConfirm = () => {
     setQrVisible(true);
   };
 
   const hideQrDialog = () => {
     setQrVisible(false);
-  };
-
-  const getBorderColor = (value) => {
-    return checked === value ? "#1646A9" : "#ccc";
   };
 
   const getSelectedPlan = () => {
@@ -57,73 +109,76 @@ export default function UpgradeScreen() {
       : "Gói 1 Năm - 390.000đ / năm";
   };
 
-  const formatTime = (seconds) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
-  };
-
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        <Title style={styles.title}>Nâng Cấp Gói Của Bạn</Title>
-        <Paragraph style={styles.description}>
-          Chọn gói tốt nhất phù hợp với nhu cầu của bạn.
-        </Paragraph>
-
-        <View style={styles.radioContainer}>
-          <RadioButton.Group
-            onValueChange={(newValue) => setChecked(newValue)}
-            value={checked}
-          >
-            <View
-              style={[
-                styles.radioItem,
-                {
-                  borderColor: getBorderColor("first"),
-                  backgroundColor: checked === "first" ? "#E3F2FD" : "#fff",
-                },
-              ]}
-            >
-              <RadioButton value="first" />
-              <Text style={styles.radioText}>Gói Cơ Bản - 39.000đ / tháng</Text>
-            </View>
-            <View
-              style={[
-                styles.radioItem,
-                {
-                  borderColor: getBorderColor("second"),
-                  backgroundColor: checked === "second" ? "#E3F2FD" : "#fff",
-                },
-              ]}
-            >
-              <RadioButton value="second" />
-              <Text style={styles.radioText}>Gói 1 Năm - 390.000đ / năm</Text>
-            </View>
-          </RadioButton.Group>
-        </View>
-
-        <Divider style={styles.divider} />
-
-        <View style={styles.ownedItemsContainer}>
-          <Title style={styles.subTitle}>Những gì bạn sở hữu</Title>
-          <Paragraph style={styles.ownedItem}>
-            - Gói nâng cấp: <Text style={styles.boldText}>Không quảng cáo</Text>
-            , <Text style={styles.boldText}>Đăng bài không giới hạn</Text>,{" "}
-            <Text style={styles.boldText}>Xem được lịch sử thi đấu</Text>.
-          </Paragraph>
-        </View>
-
-        <Button mode="contained" onPress={handleSubmit} style={styles.button}>
-          Xác Nhận
-        </Button>
-      </View>
+      {userSelector.is_premium ? (
+        <CurrentPlan currentPlan={currentPlan} expiryDate={expiryDate} />
+      ) : (
+        <PlanSelection
+          handleSubmit={handleConfirm}
+          checked={checked}
+          setChecked={setChecked}
+        />
+      )}
 
       <Portal>
+        {/* Insufficient Funds Modal */}
         <Dialog
           style={{ backgroundColor: "white" }}
           visible={visible}
           onDismiss={hideDialog}
+        >
+          <Dialog.Title style={{ color: "#1646A9" }}>Thông Báo</Dialog.Title>
+          <Dialog.Content>
+            <View style={styles.imageContainer}>
+              <Image
+                source={{
+                  uri: "https://cdn-icons-png.flaticon.com/512/7269/7269138.png",
+                }}
+                style={styles.modalImage}
+              />
+            </View>
+            <Paragraph style={{ textAlign: "center", fontSize: 17 }}>
+              Bạn không đủ tiền để thực hiện giao dịch.
+            </Paragraph>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={hideDialog}>Nạp Tiền</Button>
+          </Dialog.Actions>
+        </Dialog>
+
+        {/* Success Modal */}
+        <Dialog
+          style={{ backgroundColor: "white" }}
+          visible={successVisible}
+          onDismiss={hideSuccessDialog}
+        >
+          <Dialog.Title style={{ color: "#1646A9", textAlign: "center" }}>
+            Thành Công
+          </Dialog.Title>
+          <Dialog.Content>
+            <View style={styles.imageContainer}>
+              <Image
+                source={{
+                  uri: "https://westphysics.com/wp-content/uploads/2022/10/green-tick-icon.png",
+                }}
+                style={styles.modalImage}
+              />
+            </View>
+            <Paragraph style={{ textAlign: "center", fontSize: 17 }}>
+              Chúc mừng bạn đã trở thành thành viên Premium !!!
+            </Paragraph>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={hideSuccessDialog}>Đóng</Button>
+          </Dialog.Actions>
+        </Dialog>
+
+        {/* QR Code Modal */}
+        <Dialog
+          style={{ backgroundColor: "white" }}
+          visible={qrVisible}
+          onDismiss={hideQrDialog}
         >
           <Dialog.Title style={{ color: "#1646A9" }}>Xác Nhận</Dialog.Title>
           <Dialog.Content>
@@ -135,43 +190,15 @@ export default function UpgradeScreen() {
             >
               {getSelectedPlan()}
             </Paragraph>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button onPress={handleAccept}>Chấp nhận</Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
-
-      <Portal>
-        <Dialog
-          style={{ backgroundColor: "white" }}
-          visible={qrVisible}
-          onDismiss={hideQrDialog}
-        >
-          <Dialog.Title style={{ color: "#1646A9", textAlign: "center" }}>
-            Thông Tin Thanh Toán
-          </Dialog.Title>
-          <Dialog.Content>
-            <Paragraph style={{ textAlign: "center", fontSize: 17 }}>
-              Đây là mã QR để thanh toán. Bạn có {formatTime(timer)} để hoàn
-              thành thanh toán.
-            </Paragraph>
             <View style={styles.qrCodeContainer}>
-              <Image
-                source={{
-                  uri: "https://th.bing.com/th/id/R.4b3690db393943912c9ce450ff3a6f18?rik=13kfS%2fgyFrzeSg&pid=ImgRaw&r=0",
-                }} // Replace with your QR code image URL
-                style={styles.qrCode}
-              />
+              <Image source={backgroundImage} style={styles.qrCode} />
             </View>
-            <Paragraph
-              style={{ textAlign: "center", fontSize: 17, marginTop: 16 }}
-            >
-              Thông tin ngân hàng: ABC Bank, Số tài khoản: 123456789
+            <Paragraph style={{ textAlign: "center", fontSize: 17 }}>
+              Hãy đảm bảo ví của bạn đủ tiền nhé
             </Paragraph>
           </Dialog.Content>
           <Dialog.Actions>
-            <Button onPress={hideQrDialog}>Đóng</Button>
+            <Button onPress={handleSubmit}>Chấp nhận</Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>
@@ -185,74 +212,22 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: "#fff",
   },
-  content: {
-    flex: 1,
-    justifyContent: "center",
+  imageContainer: {
     alignItems: "center",
+    marginVertical: 10,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 16,
-    color: "#1646A9",
-  },
-  subTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 8,
-    color: "#1646A9",
-  },
-  description: {
-    fontSize: 16,
-    textAlign: "center",
-    marginBottom: 24,
-  },
-  radioContainer: {
-    marginBottom: 24,
-    width: "100%",
-    paddingHorizontal: 16,
-  },
-  radioItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 12,
-    padding: 10,
-    borderWidth: 1,
-    borderRadius: 5,
-  },
-  radioText: {
-    fontSize: 16,
-    marginLeft: 8,
-    color: "#1646A9",
-  },
-  button: {
-    marginTop: 24,
-    width: "80%",
-    backgroundColor: "#1646A9",
-  },
-  divider: {
-    marginVertical: 24,
-    height: 1,
-    width: "100%",
-  },
-  ownedItemsContainer: {
-    width: "100%",
-    paddingHorizontal: 16,
-  },
-  ownedItem: {
-    fontSize: 16,
-    marginBottom: 8,
-    color: "#1646A9",
-  },
-  boldText: {
-    fontWeight: "bold",
+  modalImage: {
+    width: 100,
+    height: 100,
+    marginBottom: 20,
   },
   qrCodeContainer: {
     alignItems: "center",
     marginVertical: 10,
   },
   qrCode: {
-    width: 250,
-    height: 250,
+    width: 240,
+    height: 100,
+    marginVertical: 20,
   },
 });
