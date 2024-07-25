@@ -20,11 +20,13 @@ export const ActionButtons = ({ stadiumId, stadiumDetail }) => {
 
   const handleDelete = async () => {
     const res = await dispatch(deleteStadium({ stadium_id: stadiumId }));
-    const { code } = res.payload;
+    const { code, message } = res.payload;
     if (code === 200 || code === 201) {
       Alert.alert("Thành công", "Sân đã được xóa thành công!");
-    } else {
-      Alert.alert("Thất bại", "Xóa sân không thành công!");
+    } else if (code === 400) {
+      Alert.alert("Thất bại", message);
+    } else if (code === 500) {
+      Alert.alert("Thất bại", "Hệ thống đang bảo trì!");
     }
     dispatch(getStadiumByOwner());
     navigation.goBack();
