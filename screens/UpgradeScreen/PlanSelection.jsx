@@ -73,9 +73,16 @@ const PlanSelection = ({ handleSubmit, checked, setChecked }) => {
             <Title style={styles.subTitle}>Những gì bạn sở hữu</Title>
             <Paragraph style={styles.ownedItem}>
               - Gói nâng cấp:{" "}
-              <Text style={styles.boldText}>Không quảng cáo</Text>,{" "}
               <Text style={styles.boldText}>
-                Đăng bài không giới hạn hình ảnh
+                Tài khoản sở hữu tick xanh chuyên nghiệp
+              </Text>
+              ,{" "}
+              <Text style={styles.boldText}>
+                Bài viết được hiển thị ưu tiên
+              </Text>
+              ,{" "}
+              <Text style={styles.boldText}>
+                Có thể đăng thoải mái 10 ảnh trong một bài
               </Text>
               ,{" "}
               <Text style={styles.boldText}>
