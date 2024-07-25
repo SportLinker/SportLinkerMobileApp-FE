@@ -173,7 +173,7 @@ export default function RegisterScreen({ navigation }) {
               <TextInput
                 style={styles.input}
                 mode="outlined"
-                inputMode="decimal"
+                inputMode="text"
                 placeholder="Tên đăng nhập"
                 onChangeText={handleChange("username")}
                 onBlur={handleBlur("username")}
