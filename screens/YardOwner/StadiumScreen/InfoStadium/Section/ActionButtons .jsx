@@ -21,7 +21,7 @@ export const ActionButtons = ({ stadiumId, stadiumDetail }) => {
   const handleDelete = async () => {
     const res = await dispatch(deleteStadium({ stadium_id: stadiumId }));
     const { code } = res.payload;
-    if (code === 200 && code === 201) {
+    if (code === 200 || code === 201) {
       Alert.alert("Thành công", "Sân đã được xóa thành công!");
     } else {
       Alert.alert("Thất bại", "Xóa sân không thành công!");

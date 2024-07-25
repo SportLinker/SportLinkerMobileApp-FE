@@ -15,12 +15,20 @@ export const ActionButtons = ({ yardDetail, yardId }) => {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
 
-  const handleDelete = () => {
-    dispatch(deleteYard({ yard_id: yardId })).then(() =>
-      dispatch(getAllYardByOwner())
-    );
+  const handleDelete = async () => {
+    const res = await dispatch(deleteYard({ yard_id: yardId }));
+    const { code, message } = res.payload;
+    console.log(code, message);
+
+    dispatch(getAllYardByOwner());
     navigation.goBack();
-    Alert.alert("Thành công", "Sân nhỏ đã được xóa thành công");
+    if (code === 200 || code === 201) {
+      Alert.alert("Xác nhận", "Bạn đã xóa sân nhỏ thành công!");
+    } else if (code === 400) {
+      Alert.alert("Thông báo", message);
+    } else if (code === 500) {
+      Alert.alert("Thông báo", "Chức năng đang được bảo trì!");
+    }
     setModalVisible(false);
   };
 

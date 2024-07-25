@@ -5,8 +5,12 @@ import { Button } from "react-native-paper";
 const FilterOptionList = ({ setFilterOptions, yards }) => {
   const [activeOption, setActiveOption] = useState("Tất cả");
 
+  const filteredStadium = yards.filter(
+    (stadium) => stadium.stadium.stadium_status === "approved"
+  );
+
   const uniqueStadiumNames = [
-    ...new Set(yards.map((yard) => yard.stadium.stadium_name)),
+    ...new Set(filteredStadium.map((yard) => yard.stadium.stadium_name)),
   ];
 
   const options = [
