@@ -19,10 +19,16 @@ export default function StadiumList({ stadiumList }) {
     navigation.navigate("CreateStadium");
   };
 
+  // console.log("stadiumList", stadiumList);
+
+  const filteredStadium = stadiumList.filter(
+    (stadium) => stadium.stadium_status === "approved"
+  );
+
   return (
     <>
       <ScrollView contentContainerStyle={styles.container}>
-        {stadiumList.map((stadium) => (
+        {filteredStadium.map((stadium) => (
           <TouchableOpacity
             key={stadium.id}
             style={styles.card}

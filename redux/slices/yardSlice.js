@@ -4,10 +4,8 @@ import { api } from "../../services/api";
 export const createStadium = createAsyncThunk(
   "yardSlice/createStadium",
   async (stadiumData, { rejectWithValue }) => {
-    // console.log("API Response: ", stadiumData);
     try {
       const response = await api.post(`/stadiums`, stadiumData);
-      // console.log("API Response: ", response.data);
       return response.data;
     } catch (error) {
       console.log("Error: ", JSON.stringify(error.response.data));
@@ -47,6 +45,7 @@ export const deleteStadium = createAsyncThunk(
   async ({ stadium_id }, { rejectWithValue }) => {
     try {
       const response = await api.delete(`/stadiums/${stadium_id}`);
+
       return response.data;
     } catch (error) {
       console.log("Error: ", JSON.stringify(error.response.data));
@@ -58,7 +57,6 @@ export const deleteStadium = createAsyncThunk(
 export const deleteYard = createAsyncThunk(
   "yardSlice/deleteYard",
   async ({ yard_id }, { rejectWithValue }) => {
-    console.log("yard_id: ", yard_id);
     try {
       const response = await api.delete(`/yards/${yard_id}`);
       return response.data;

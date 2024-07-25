@@ -33,9 +33,18 @@ const RatingYardList = ({ navigation }) => {
   useEffect(() => {
     if (stadium) {
       setStadiumList(stadium);
-      calculateAverageRating(stadium);
     }
   }, [stadium]);
+
+  console.log("stadium in rating", stadium);
+
+  const filteredStadium = stadiumList.filter(
+    (stadium) => stadium.stadium_status === "approved"
+  );
+
+  useEffect(() => {
+    calculateAverageRating(filteredStadium);
+  }, [filteredStadium]);
 
   const calculateAverageRating = (stadiums) => {
     if (stadiums.length === 0) {
@@ -97,7 +106,7 @@ const RatingYardList = ({ navigation }) => {
             <AntDesign name="star" size={24} color="#F9A825" />
           </View>
           <FlatList
-            data={stadiumList}
+            data={filteredStadium}
             renderItem={YardItem}
             keyExtractor={(item) => item.id}
             style={styles.ratingListContainer}
