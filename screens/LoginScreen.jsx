@@ -13,7 +13,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Button, Snackbar, TextInput } from "react-native-paper";
+import { Button, Divider, Snackbar, TextInput } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
 import NotificationComponent from "../component/NotificationComponent";
 import { screenHeight, screenWidth } from "../component/style";
