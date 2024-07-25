@@ -23,8 +23,8 @@ import { BackHandler } from "react-native";
 
 const LoginScreen = ({ navigation }) => {
   const [loginForm, setLoginForm] = useState({
-    username: "ninh18",
-    password: "123456",
+    username: "",
+    password: "",
   });
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");

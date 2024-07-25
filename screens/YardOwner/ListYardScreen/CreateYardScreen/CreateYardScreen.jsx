@@ -112,12 +112,12 @@ const CreateYardScreen = ({ navigation, route }) => {
         )}
         <Formik
           initialValues={{
-            yard_name: yardDetail.yard_name || "Sân 1",
-            yard_description: yardDetail.yard_description || "Sân 5 người",
+            yard_name: yardDetail.yard_name || "",
+            yard_description: yardDetail.yard_description || "",
             yard_sport: yardDetail.yard_sport || "",
             price_per_hour: yardDetail.price_per_hour
               ? String(yardDetail.price_per_hour)
-              : "100000",
+              : "",
           }}
           validationSchema={yardSchema}
           onSubmit={handleSaveNewYard}

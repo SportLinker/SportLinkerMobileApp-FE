@@ -82,7 +82,11 @@ const RatingYardItem = ({ route }) => {
           ) : (
             <Image style={styles.yardItemImage} source={defaultImage} />
           )}
-
+          <View style={styles.nameStadium}>
+            <Text style={{ fontWeight: "bold", fontSize: 24 }}>
+              {detail.stadium_name}
+            </Text>
+          </View>
           <View style={styles.averageRating}>
             <Text style={[styles.whiteText, { fontWeight: "bold" }]}>
               Đánh giá trung bình: {detail.stadium_rating} / 5
@@ -173,6 +177,11 @@ const styles = StyleSheet.create({
     color: "#1446a9",
     marginTop: 20,
     fontWeight: "bold",
+  },
+  nameStadium: {
+    marginHorizontal: "auto",
+    marginVertical: "auto",
+    paddingTop: 10,
   },
 });
 

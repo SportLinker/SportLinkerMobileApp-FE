@@ -75,13 +75,9 @@ const CreateStadium = ({ route }) => {
 
       if (!result.canceled) {
         const { uri, type, fileName } = result.assets[0];
-        console.log("Selected image:", result.assets[0]);
 
         // Upload image to Cloudinary
         uploadImageToCloudinary(uri, type, fileName).then((response) => {
-          // after get a link from cloudinary then update url link for server
-          console.log("response image ", response);
-
           // Update stadiumData with the Cloudinary URL
           setStadiumData({
             ...stadiumData,
