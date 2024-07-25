@@ -95,7 +95,9 @@ const TransactionReview = () => {
               ? "Nạp Tiền"
               : item.type === "withdraw"
               ? "Rút Tiền"
-              : "Premium"}
+              : item.type === "premium"
+              ? "Premium"
+              : "Booking"}
           </Text>
           <Text style={styles.transactionTime}>
             {formatISODate(item.created_at)}
