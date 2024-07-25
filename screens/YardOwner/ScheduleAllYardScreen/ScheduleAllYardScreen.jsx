@@ -27,6 +27,8 @@ const ScheduleAllYardScreen = ({ navigation }) => {
   const [bookings, setBookings] = useState({});
   const [selectedDates, setSelectedDates] = useState([]);
 
+  const filteredYard = yards?.filter((yard) => yard.yard_status === "avaiable");
+
   useEffect(() => {
     dispatch(getAllYardByOwner());
   }, []);
@@ -37,7 +39,10 @@ const ScheduleAllYardScreen = ({ navigation }) => {
 
   useEffect(() => {
     if (yards.length > 0) {
-      setSelectedField({ id: yards[0].yard_id, name: yards[0].yard_name });
+      setSelectedField({
+        id: filteredYard[0].yard_id,
+        name: filteredYard[0].yard_name,
+      });
     }
   }, [yards]);
 
@@ -95,7 +100,7 @@ const ScheduleAllYardScreen = ({ navigation }) => {
       ) : (
         <>
           <FlatList
-            data={yards.map((yard) => ({
+            data={filteredYard.map((yard) => ({
               id: yard.yard_id,
               name: yard.yard_name,
             }))}

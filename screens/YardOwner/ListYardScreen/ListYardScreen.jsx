@@ -20,9 +20,11 @@ const ListYardScreen = ({ navigation, route }) => {
     if (yardList) setYards(yardList);
   }, [yardList]);
 
+  const filteredYard = yards?.filter((yard) => yard.yard_status === "avaiable");
+
   return (
     <SafeAreaView style={styles.container}>
-      <ListYardItem data={yards} stadiumId={stadiumId} />
+      <ListYardItem data={filteredYard} stadiumId={stadiumId} />
     </SafeAreaView>
   );
 };

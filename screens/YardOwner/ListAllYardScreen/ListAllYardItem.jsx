@@ -6,6 +6,8 @@ import { styles } from "../../../component/style";
 const ListAllYardItem = ({ data }) => {
   const navigation = useNavigation();
 
+  const filteredYard = data?.filter((yard) => yard.yard_status === "avaiable");
+
   const renderItem = ({ item: yard }) => (
     <TouchableOpacity
       key={yard.yard_id}
@@ -84,7 +86,7 @@ const ListAllYardItem = ({ data }) => {
   return (
     <View style={{ marginTop: 20, marginHorizontal: "auto" }}>
       <FlatList
-        data={data}
+        data={filteredYard || []}
         renderItem={renderItem}
         keyExtractor={(item) => item.yard_id.toString()}
         contentContainerStyle={{ paddingBottom: 20 }}
