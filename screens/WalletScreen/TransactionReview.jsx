@@ -112,14 +112,13 @@ const TransactionReview = () => {
               : styles.transactionValueCancel
           }
         >
-          {item.type === "deposit" ? "+" : "-"}
           {formatCurrency(item.amount, "VND", "vi-VN")}
         </Text>
       </TouchableOpacity>
     );
   };
 
-  if (!listTransaction) return <Text>Loading...</Text>;
+  if (!listTransaction.transactions) return <Text>Loading...</Text>;
 
   return (
     <View style={styles.container}>

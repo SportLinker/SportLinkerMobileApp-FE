@@ -6,6 +6,7 @@ export const bookYardByUser = createAsyncThunk(
   async (bookData, { rejectWithValue }) => {
     try {
       const response = await api.post(`/bookings`, bookData);
+      console.log("Dat san", response.data);
       return response.data;
     } catch (error) {
       console.log("Error: ", JSON.stringify(error.response.data));

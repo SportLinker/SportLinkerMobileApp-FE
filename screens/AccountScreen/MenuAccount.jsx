@@ -60,7 +60,7 @@ export default function MenuAccount({ showMenu, setShowMenu }) {
                 borderColor: "#C4C4C4",
               }}
             />
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={() => {
                 setShowMenu(false);
                 navigation.navigate("PasswordScreen");
@@ -68,14 +68,14 @@ export default function MenuAccount({ showMenu, setShowMenu }) {
               style={styles.menuItem}
             >
               <Text style={styles.textMenuItem}>Đổi Mật Khẩu</Text>
-            </TouchableOpacity>
-            <View
+            </TouchableOpacity> */}
+            {/* <View
               style={{
                 borderBottomWidth: 1,
                 marginVertical: 5,
                 borderColor: "#C4C4C4",
               }}
-            />
+            /> */}
             <TouchableOpacity
               onPress={() => {
                 setShowMenu(false);

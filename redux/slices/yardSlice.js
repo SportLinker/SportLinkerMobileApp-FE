@@ -45,7 +45,7 @@ export const deleteStadium = createAsyncThunk(
   async ({ stadium_id }, { rejectWithValue }) => {
     try {
       const response = await api.delete(`/stadiums/${stadium_id}`);
-
+      console.log("Xóa sân", response.data);
       return response.data;
     } catch (error) {
       console.log("Error: ", JSON.stringify(error.response.data));
