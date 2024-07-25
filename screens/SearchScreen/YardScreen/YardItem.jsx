@@ -33,7 +33,7 @@ export default function YardItem({ data, loading, latitude, longitude }) {
         )}
         <View style={styles.ratingContainer}>
           <AntDesign name="star" size={24} color="#f9a827" />
-          <Text style={styles.ratingText}>{yard.total_rating}</Text>
+          <Text style={styles.ratingText}>{yard.stadium_rating}</Text>
         </View>
       </View>
       <View style={styles.infoContainer}>

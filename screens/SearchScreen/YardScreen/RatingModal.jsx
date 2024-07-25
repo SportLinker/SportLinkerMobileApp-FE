@@ -19,6 +19,7 @@ import {
   ratingStadium,
 } from "../../../redux/slices/yardSlice";
 import { convertHttpToHttps } from "../../../utils";
+import { getAllStadiumByUser } from "../../../redux/slices/eventSlice";
 
 const RatingModal = ({
   visible,
@@ -26,6 +27,8 @@ const RatingModal = ({
   stadium,
   setMessageSnackbar,
   setSnackbarVisible,
+  longitude,
+  latitude,
 }) => {
   const dispatch = useDispatch();
 
@@ -34,12 +37,19 @@ const RatingModal = ({
 
   const confirmedRatingYard = () => {
     const feedbackData = {
-      content: feedback,
+      comment: feedback,
       rating: rating,
     };
     dispatch(ratingStadium({ stadium_id: stadium.id, feedbackData })).then(
       () => {
         dispatch(getDetailStadiumByUser(stadium.id));
+        if (latitude && longitude) {
+          const formData = {
+            long: longitude,
+            lat: latitude,
+          };
+          dispatch(getAllStadiumByUser(formData));
+        }
       }
     );
     setMessageSnackbar(`Đánh giá sân ${stadium?.stadium_name} thành công!`);
@@ -81,7 +91,9 @@ const RatingModal = ({
                 <Text style={modalStyles.modalTitle}>Đánh giá sân</Text>
                 {stadium.stadium_thumbnail ? (
                   <Image
-                    source={{ uri: convertHttpToHttps(stadium.stadium_thumbnail) }}
+                    source={{
+                      uri: convertHttpToHttps(stadium.stadium_thumbnail),
+                    }}
                     style={modalStyles.modalImage}
                   />
                 ) : (

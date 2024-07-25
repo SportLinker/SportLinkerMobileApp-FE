@@ -52,7 +52,11 @@ export default function HeaderSection({ userAvatar, stadiumDetail }) {
           />
           <Avatar.Image
             size={90}
-            source={userAvatar ? { uri: userAvatar } : defaultAvatar}
+            source={
+              userAvatar
+                ? { uri: convertHttpToHttps(userAvatar) }
+                : defaultAvatar
+            }
             style={[styles.avatar, styles.avatarShadow]}
           />
         </View>

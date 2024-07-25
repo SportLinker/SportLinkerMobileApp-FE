@@ -1,36 +1,22 @@
-import { AntDesign } from "@expo/vector-icons";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   SafeAreaView,
   ScrollView,
+  StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
 import { Avatar } from "react-native-paper";
-import { styles } from "../../../component/style";
-import FilterEventOptionList from "../EventScreen/FilterEventOptionList";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllPlayers } from "../../../redux/slices/eventSlice";
+import Loading from "../../../component/Loading";
+import PremiumIcon from "../../../component/PremiumIcon";
 import {
   getAllPlayersSelector,
   getEventLoadingtSelector,
 } from "../../../redux/selectors";
-import Loading from "../../../component/Loading";
+import { getAllPlayers } from "../../../redux/slices/eventSlice";
 import { convertHttpToHttps } from "../../../utils";
-import PremiumIcon from "../../../component/PremiumIcon";
-
-export const mock_data = [
-  { id: 1, name: "Tai Vo", star: "true" },
-  { id: 2, name: "Tai Vo", star: "false" },
-  { id: 3, name: "Tai Vo", star: "false" },
-  { id: 4, name: "Tai Vo", star: "true" },
-  { id: 5, name: "Tai Vo", star: "false" },
-  { id: 6, name: "Tai Vo", star: "true" },
-  { id: 7, name: "Tai Vo", star: "false" },
-  { id: 8, name: "Tai Vo", star: "true" },
-  { id: 9, name: "Tai Vo", star: "false" },
-];
 
 export default function PlayerScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -41,87 +27,46 @@ export default function PlayerScreen({ navigation }) {
     dispatch(getAllPlayers());
   }, []);
 
-  console.log(getAllPlayersFromRedux);
-
-  if (!getAllPlayersFromRedux) return <Text>Loading...</Text>;
+  if (!getAllPlayersFromRedux)
+    return <Text style={styles.loadingText}>Loading...</Text>;
 
   return (
-    <SafeAreaView style={{ backgroundColor: "#fff", minHeight: 600 }}>
-      {/* <FilterEventOptionList /> */}
+    <SafeAreaView style={styles.container}>
       {eventLoadingtSelector ? (
-        <Loading
-          message={"Loading..."}
-          visible={eventLoadingtSelector}
-        ></Loading>
+        <Loading message="Loading..." visible={eventLoadingtSelector} />
       ) : (
         <ScrollView>
           {getAllPlayersFromRedux.length > 0 ? (
-            <View
-              style={{ alignItems: "center", marginTop: 20, paddingBottom: 30 }}
-            >
+            <View style={styles.playerContainer}>
               {getAllPlayersFromRedux.map((item) => (
-                <View key={item.id} style={styles.containerPlayer}>
+                <View key={item.id} style={styles.playerCard}>
                   <TouchableOpacity
                     onPress={() =>
                       navigation.navigate("DetailPlayerScreen", { item })
                     }
                   >
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        marginLeft: 20,
-                      }}
-                    >
+                    <View style={styles.playerRow}>
                       <Avatar.Image
                         size={40}
-                        source={{
-                          uri: convertHttpToHttps(item.avatar_url),
-                        }}
+                        source={{ uri: convertHttpToHttps(item.avatar_url) }}
                       />
                       <View>
-                        <Text
-                          style={{
-                            marginHorizontal: 20,
-                            fontSize: 16,
-                            fontWeight: "bold",
-                            flexDirection: "row",
-                            alignItems: "center",
-                          }}
-                        >
-                          <Text>{item.username}</Text>
-                          {item && item?.is_premium && <PremiumIcon />}
+                        <Text style={styles.playerName}>
+                          {item.username}
+                          {item.is_premium && <PremiumIcon />}
                         </Text>
-                        <View
-                          style={{
-                            flexDirection: "row",
-                          }}
-                        >
-                          <Text
-                            style={{
-                              marginLeft: 20,
-                              marginRight: 10,
-                              fontSize: 14,
-                            }}
-                          >
-                            {item.name}
-                          </Text>
-                          <Text>-</Text>
-                          {item.favorite?.length - 1 < 2 &&
-                          item.favorite?.length > 0 ? (
-                            <Text> Yêu thích {item.favorite[0]}</Text>
-                          ) : item.favorite?.length > 0 ? (
-                            <Text
-                              style={{
-                                fontSize: 14,
-                                marginLeft: 10,
-                              }}
-                            >
-                              Yêu thích {item.favorite[0]} và{" "}
-                              {item.favorite?.length - 1} môn
+                        <View style={styles.playerDetails}>
+                          <Text style={styles.favoriteText}>{item.name}</Text>
+                          {item.favorite?.length > 0 ? (
+                            <Text style={styles.favoriteText}>
+                              Yêu thích {item.favorite[0]}
+                              {item.favorite.length > 1 &&
+                                ` và ${item.favorite.length - 1} môn`}
                             </Text>
                           ) : (
-                            <Text> Yêu thích không có</Text>
+                            <Text style={styles.favoriteText}>
+                              Yêu thích không có
+                            </Text>
                           )}
                         </View>
                       </View>
@@ -131,20 +76,64 @@ export default function PlayerScreen({ navigation }) {
               ))}
             </View>
           ) : (
-            <Text
-              style={{
-                color: "#1646A9",
-                fontSize: 20,
-                textAlign: "center",
-                fontWeight: "bold",
-                marginTop: 20,
-              }}
-            >
-              Không có thông tin phù hợp
-            </Text>
+            <Text style={styles.noInfoText}>Không có thông tin phù hợp</Text>
           )}
         </ScrollView>
       )}
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "#fff",
+    minHeight: 600,
+  },
+  loadingText: {
+    fontSize: 20,
+    textAlign: "center",
+    color: "#1646A9",
+    marginVertical: 20,
+  },
+  playerContainer: {
+    alignItems: "center",
+    marginTop: 20,
+    paddingBottom: 30,
+  },
+  playerCard: {
+    width: "90%",
+    marginVertical: 10,
+    padding: 15,
+    borderRadius: 8,
+    backgroundColor: "#f9f9f9",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 5, // For Android
+  },
+  playerRow: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  playerName: {
+    marginHorizontal: 20,
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  playerDetails: {
+    flexDirection: "column",
+    marginLeft: 20,
+  },
+  favoriteText: {
+    paddingLeft: 20,
+    fontSize: 14,
+  },
+  noInfoText: {
+    color: "#1646A9",
+    fontSize: 20,
+    textAlign: "center",
+    fontWeight: "bold",
+    marginTop: 20,
+  },
+});

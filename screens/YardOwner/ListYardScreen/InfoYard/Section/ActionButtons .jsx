@@ -18,7 +18,6 @@ export const ActionButtons = ({ yardDetail, yardId }) => {
   const handleDelete = async () => {
     const res = await dispatch(deleteYard({ yard_id: yardId }));
     const { code, message } = res.payload;
-    console.log(code, message);
 
     dispatch(getAllYardByOwner());
     navigation.goBack();

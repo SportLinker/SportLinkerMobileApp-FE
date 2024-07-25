@@ -112,6 +112,7 @@ const StackNavigator = () => (
         title: "Rút tiền",
         headerStyle: { backgroundColor: "#1646a9" },
         headerTintColor: "white",
+        headerTitleAlign: "center",
         headerBackTitle: " ",
       }}
     />
@@ -119,9 +120,10 @@ const StackNavigator = () => (
       name="RatingYardListScreen"
       component={RatingYardList}
       options={{
-        title: "Đáng giá sân",
+        title: "Đánh giá sân",
         headerStyle: { backgroundColor: "#1646a9" },
         headerTintColor: "white",
+        headerTitleAlign: "center",
         headerBackTitle: " ",
       }}
     />
@@ -129,9 +131,10 @@ const StackNavigator = () => (
       name="RatingYardItemScreen"
       component={RatingYardItem}
       options={{
-        title: "Sân TSN",
+        title: "Chi tiết sân",
         headerStyle: { backgroundColor: "#1646a9" },
         headerTintColor: "white",
+        headerTitleAlign: "center",
         headerBackTitle: " ",
       }}
     />
@@ -142,6 +145,7 @@ const StackNavigator = () => (
         title: "Ví tiền",
         headerStyle: { backgroundColor: "#1646a9" },
         headerTintColor: "white",
+        headerTitleAlign: "center",
         // headerBackTitle: " ",
       }}
     />

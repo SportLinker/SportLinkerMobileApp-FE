@@ -36,8 +36,6 @@ const RatingYardList = ({ navigation }) => {
     }
   }, [stadium]);
 
-  console.log("stadium in rating", stadium);
-
   const filteredStadium = stadiumList.filter(
     (stadium) => stadium.stadium_status === "approved"
   );

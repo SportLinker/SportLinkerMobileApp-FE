@@ -93,7 +93,6 @@ const StepThree = ({ values, setFieldValue, errors, touched }) => {
               key={i}
               style={styles.locationItem}
               onPress={() => {
-                console.log(location);
                 setFieldValue("selectedLocation", location);
               }}
             >
