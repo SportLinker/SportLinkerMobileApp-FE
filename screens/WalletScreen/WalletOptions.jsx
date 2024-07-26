@@ -32,49 +32,61 @@ const WalletOptions = () => {
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
-        <View style={styles.profileContainer}>
-          {listTransaction.user.avatar_url ? (
-            <Avatar.Image
-              size={60}
-              source={{
-                uri: convertHttpToHttps(listTransaction.user.avatar_url),
-              }}
-              style={styles.avatar}
-            />
-          ) : (
-            <Avatar.Image
-              size={60}
-              source={defaultAvatar}
-              style={styles.avatar}
-            />
-          )}
+        {listTransaction && (
+          <View style={styles.profileContainer}>
+            {listTransaction.user.avatar_url ? (
+              <Avatar.Image
+                size={60}
+                source={{
+                  uri: convertHttpToHttps(
+                    listTransaction.user && listTransaction.user?.avatar_url
+                  ),
+                }}
+                style={styles.avatar}
+              />
+            ) : (
+              <Avatar.Image
+                size={60}
+                source={defaultAvatar}
+                style={styles.avatar}
+              />
+            )}
 
-          <View>
-            <Text style={styles.profileName}>{listTransaction.user.name}</Text>
-            <View style={styles.balanceWrapper}>
-              <TouchableOpacity onPress={() => setIsHideMoney(!isHideMoney)}>
-                {isHideMoney ? (
-                  <MaterialCommunityIcons
-                    name="eye-off"
-                    size={24}
-                    color="black"
-                  />
-                ) : (
-                  <MaterialCommunityIcons name="eye" size={24} color="black" />
-                )}
-              </TouchableOpacity>
-              <Text style={styles.balance}>
-                {isHideMoney
-                  ? "*******"
-                  : formatCurrency(
-                      listTransaction.user.Wallet.balance,
-                      "VND",
-                      "vi-VN"
-                    )}
+            <View>
+              <Text style={styles.profileName}>
+                {listTransaction.user && listTransaction.user?.name}
               </Text>
+              <View style={styles.balanceWrapper}>
+                <TouchableOpacity onPress={() => setIsHideMoney(!isHideMoney)}>
+                  {isHideMoney ? (
+                    <MaterialCommunityIcons
+                      name="eye-off"
+                      size={24}
+                      color="black"
+                    />
+                  ) : (
+                    <MaterialCommunityIcons
+                      name="eye"
+                      size={24}
+                      color="black"
+                    />
+                  )}
+                </TouchableOpacity>
+                <Text style={styles.balance}>
+                  {isHideMoney
+                    ? "*******"
+                    : formatCurrency(
+                        listTransaction.user &&
+                          listTransaction.user.Wallet &&
+                          listTransaction.user.Wallet.balance,
+                        "VND",
+                        "vi-VN"
+                      )}
+                </Text>
+              </View>
             </View>
           </View>
-        </View>
+        )}
         <View style={styles.actionContainer}>
           <TouchableOpacity
             style={styles.actionButton}
