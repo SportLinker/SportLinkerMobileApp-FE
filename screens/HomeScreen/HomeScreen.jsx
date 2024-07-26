@@ -79,6 +79,7 @@ const HomeScreen = ({ navigation }) => {
   const onRefresh = () => {
     try {
       setRefreshing(true);
+      setPageNumber(1);
       const formData = {
         pageNumber: 1,
         pageSize: PAGE_SIZE,

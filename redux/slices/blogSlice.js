@@ -275,7 +275,14 @@ export const blogSlice = createSlice({
         state.loading = false;
         //handle whether load a new list or paging
         if (action.payload.page_number > 1) {
-          state.blogList = [...state.blogList, action.payload];
+          state.blogList = {
+            ...state.blogList,
+            ...action.payload,
+            list_blog: [
+              ...state.blogList.list_blog,
+              ...action.payload.list_blog,
+            ],
+          };
         } else {
           state.blogList = action.payload;
         }
