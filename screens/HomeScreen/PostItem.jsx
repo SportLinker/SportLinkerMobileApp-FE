@@ -159,7 +159,12 @@ export default function PostItem({
               <Text
                 style={
                   (styles.mr5,
-                  { flexDirection: "row", alignItems: "center", gap: 10 })
+                  {
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: 10,
+                    fontSize: 16,
+                  })
                 }
               >
                 <Text>{blog && blog.owner?.name}</Text>
@@ -211,7 +216,7 @@ export default function PostItem({
               anchor={
                 <Ionicons
                   name="ellipsis-vertical"
-                  size={24}
+                  size={20}
                   color="black"
                   onPress={() => openMenu()}
                 />
@@ -360,7 +365,7 @@ const styles = StyleSheet.create({
   },
   postTitle: {
     marginBottom: 15,
-    fontSize: 16,
+    fontSize: 14,
   },
   postTime: {
     color: "#707070",
