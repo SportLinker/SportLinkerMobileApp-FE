@@ -118,21 +118,27 @@ const TransactionReview = () => {
     );
   };
 
-  if (!listTransaction.transactions) return <Text>Loading...</Text>;
+  if (!listTransaction) return <Text>Loading...</Text>;
 
   return (
-    <View style={styles.container}>
-      <Text style={{ fontSize: 24, marginBottom: 10 }}>Lịch sử giao dịch</Text>
-      {listTransaction.transactions.length == 0 ? (
-        <Text style={styles.transactionEmpty}>Không lịch sử giao dịch</Text>
-      ) : (
-        <FlatList
-          data={listTransaction.transactions}
-          renderItem={TransactionItem}
-          keyExtractor={(item) => item.id}
-        />
-      )}
-    </View>
+    listTransaction &&
+    listTransaction.transactions && (
+      <View style={styles.container}>
+        <Text style={{ fontSize: 24, marginBottom: 10 }}>
+          Lịch sử giao dịch
+        </Text>
+        {!listTransaction.transactions ||
+        listTransaction.transactions.length == 0 ? (
+          <Text style={styles.transactionEmpty}>Không lịch sử giao dịch</Text>
+        ) : (
+          <FlatList
+            data={listTransaction.transactions}
+            renderItem={TransactionItem}
+            keyExtractor={(item) => item.id}
+          />
+        )}
+      </View>
+    )
   );
 };
 

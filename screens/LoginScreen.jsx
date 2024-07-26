@@ -325,23 +325,23 @@ const LoginScreen = ({ navigation }) => {
             </Button> */}
           </View>
         </ScrollView>
-        <Snackbar
-          visible={!!errorMessage}
-          duration={2000}
-          onDismiss={() => setErrorMessage(null)}
-          style={[styles.snackbarContainer, styles.snackbarContainerFail]}
-        >
-          {errorMessage}
-        </Snackbar>
-        <Snackbar
-          visible={successMessage !== ""}
-          onDismiss={() => setSuccessMessage("")}
-          duration={1000}
-          style={styles.snackbarContainer}
-        >
-          {successMessage}
-        </Snackbar>
       </KeyboardAvoidingView>
+      <Snackbar
+        visible={!!errorMessage}
+        duration={2000}
+        onDismiss={() => setErrorMessage(null)}
+        style={[styles.snackbarContainer, styles.snackbarContainerFail]}
+      >
+        {errorMessage}
+      </Snackbar>
+      <Snackbar
+        visible={successMessage !== ""}
+        onDismiss={() => setSuccessMessage("")}
+        duration={1000}
+        style={styles.snackbarContainer}
+      >
+        {successMessage}
+      </Snackbar>
     </SafeAreaView>
   );
 };
@@ -393,7 +393,7 @@ const styles = StyleSheet.create({
     color: "white",
     transform: [
       { translateX: 0 * screenWidth },
-      { translateY: 0.3 * screenHeight },
+      { translateY: 0 * screenHeight },
     ],
   },
   snackbarContainerFail: {
