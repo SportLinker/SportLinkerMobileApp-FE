@@ -35,7 +35,7 @@ export default function HeaderHomeYard({ user }) {
             onPress={() => navigation.navigate("ListAllYard")}
           >
             <FontAwesome name="list-ul" size={24} color="black" />
-            <Text style={{ textAlign: "center" }}>Tất Cả Sân Nhỏ</Text>
+            <Text style={styles.actionText}>Tất Cả Sân Nhỏ</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -43,7 +43,7 @@ export default function HeaderHomeYard({ user }) {
             onPress={() => navigation.navigate("WalletHomeScreen")}
           >
             <AntDesign name="wallet" size={24} color="black" />
-            <Text>Ví</Text>
+            <Text style={styles.actionText}>Ví</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -63,26 +63,22 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   profileContainer: {
-    display: "flex",
     flexDirection: "row",
     backgroundColor: "#fff",
     marginTop: 15,
     padding: 10,
     width: "90%",
     borderRadius: 15,
+    alignItems: "center",
   },
   avatar: {
-    marginVertical: "auto",
-    marginRight: 30,
-    marginLeft: 20,
+    marginRight: 20,
   },
   profileName: {
-    marginVertical: "auto",
     fontSize: 20,
     fontWeight: "700",
   },
   actionContainer: {
-    display: "flex",
     flexDirection: "row",
   },
   actionButton: {
@@ -92,5 +88,8 @@ const styles = StyleSheet.create({
     padding: 10,
     width: "40%",
     borderRadius: 15,
+  },
+  actionText: {
+    textAlign: "center",
   },
 });

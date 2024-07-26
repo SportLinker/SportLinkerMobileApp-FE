@@ -20,7 +20,7 @@ const OrderYardScreen = ({ navigation }) => {
 
   useEffect(() => {
     dispatch(getAllYardByOwner());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (yardList) {
@@ -30,9 +30,11 @@ const OrderYardScreen = ({ navigation }) => {
 
   const filteredData =
     filterOptions.stadiumName === "all"
-      ? yards
-      : yards.filter(
-          (item) => item.stadium.stadium_name === filterOptions.stadiumName
+      ? yards?.filter((yard) => yard.yard_status === "avaiable")
+      : yards?.filter(
+          (item) =>
+            item.stadium.stadium_name === filterOptions.stadiumName &&
+            item.yard_status === "avaiable"
         );
 
   return (
