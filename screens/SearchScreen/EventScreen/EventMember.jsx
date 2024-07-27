@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getEventSelector } from "../../../redux/selectors";
 import ConfirmPopup from "../../../component/ConfirmPopup";
 import { TouchableOpacity } from "react-native";
-import { unjoinEventByUserOrOwner } from "../../../redux/slices/eventSlice";
+import { getDetailEvent, unjoinEventByUserOrOwner } from "../../../redux/slices/eventSlice";
 import { convertHttpToHttps } from "../../../utils";
 
 const EventMember = ({ navigation }) => {
@@ -49,15 +49,19 @@ const EventMember = ({ navigation }) => {
       setSuccessMessage("Xóa người tham gia thành công");
       setTimeout(() => {
         navigation.goBack();
+        dispatch(getDetailEvent(eventDetail.match_id));
         setConfirmDeleteUserByOwner(false);
       }, 4000);
     });
   };
 
+  console.log("eventDetail: " + JSON.stringify(eventDetail));
+
   const MemberItem = ({ item }) => {
     return (
       <View>
-        {eventDetail.is_owner ? (
+        {eventDetail.is_owner &&
+        item.user_join_id !== eventDetail.user_create.id ? (
           <TouchableOpacity
             onPress={() => setConfirmDeleteUserByOwner(item.user_join)}
           >
