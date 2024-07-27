@@ -9,19 +9,28 @@ import {
 } from "react-native";
 import { Avatar, Button, Snackbar } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
-import { getEventSelector } from "../../../redux/selectors";
+import { getEventSelector, getUserSelector } from "../../../redux/selectors";
 import ConfirmPopup from "../../../component/ConfirmPopup";
 import { TouchableOpacity } from "react-native";
-import { getDetailEvent, unjoinEventByUserOrOwner } from "../../../redux/slices/eventSlice";
+import {
+  getDetailEvent,
+  getEventList,
+  unjoinEventByUserOrOwner,
+} from "../../../redux/slices/eventSlice";
 import { convertHttpToHttps } from "../../../utils";
+import { DEFAULT_DISTACNCE } from "../../../utils/constant";
 
 const EventMember = ({ navigation }) => {
   const eventDetail = useSelector(getEventSelector);
+  const getUserInfo = useSelector(getUserSelector);
+
   const [successMessage, setSuccessMessage] = useState("");
   const [confirmDeleteUserByOwner, setConfirmDeleteUserByOwner] =
     useState(false);
   const [dataMember, setDataMember] = useState([]);
+
   const dispatch = useDispatch();
+
   const fakeData = [
     {
       title: "Người tổ chức",
@@ -40,19 +49,34 @@ const EventMember = ({ navigation }) => {
   }, [eventDetail.match_join]);
 
   const handleDeleteUserByOwner = () => {
-    const formCancel = {
-      match_id: eventDetail.match_id,
-      user_id: confirmDeleteUserByOwner.id,
-    };
+    try {
+      const formCancel = {
+        match_id: eventDetail.match_id,
+        user_id: confirmDeleteUserByOwner.id,
+      };
 
-    dispatch(unjoinEventByUserOrOwner(formCancel)).then((res) => {
-      setSuccessMessage("Xóa người tham gia thành công");
-      setTimeout(() => {
-        navigation.goBack();
-        dispatch(getDetailEvent(eventDetail.match_id));
+      dispatch(unjoinEventByUserOrOwner(formCancel)).then((res) => {
         setConfirmDeleteUserByOwner(false);
-      }, 4000);
-    });
+        setSuccessMessage("Xóa người tham gia thành công");
+        setConfirmDeleteUserByOwner(false);
+        dispatch(getDetailEvent(eventDetail.match_id)).then((response) => {
+          const formData = {
+            long: getUserInfo.longitude,
+            lat: getUserInfo.latitude,
+            distance: DEFAULT_DISTACNCE,
+            start_time: 0,
+            end_time: 23,
+            sport_name: "",
+          };
+          dispatch(getEventList(formData));
+          setTimeout(() => {
+            navigation.goBack();
+          }, 2000);
+        });
+      });
+    } catch (error) {
+      console.log("Error deleting user by owner: ", error);
+    }
   };
 
   console.log("eventDetail: " + JSON.stringify(eventDetail));

@@ -1,6 +1,6 @@
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Avatar } from "react-native-paper";
 import defaultAvatar from "../../../assets/avatar_default.png";
@@ -9,6 +9,12 @@ import { convertHttpToHttps } from "../../../utils";
 export default function HeaderHomeYard({ user }) {
   const navigation = useNavigation();
   const [image, setImage] = useState(user.avatar_url);
+
+  useEffect(() => {
+    if (user && user.avatar_url) {
+      setImage(user.avatar_url);
+    }
+  }, [user]);
 
   return (
     <View style={styles.container}>
