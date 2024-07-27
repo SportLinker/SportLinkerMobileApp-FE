@@ -22,12 +22,12 @@ import { DEFAULT_DISTACNCE } from "../../../utils/constant";
 
 const EventMember = ({ navigation }) => {
   const eventDetail = useSelector(getEventSelector);
+  const getUserInfo = useSelector(getUserSelector);
+
   const [successMessage, setSuccessMessage] = useState("");
   const [confirmDeleteUserByOwner, setConfirmDeleteUserByOwner] =
     useState(false);
   const [dataMember, setDataMember] = useState([]);
-
-  const getUserInfo = useSelector(getUserSelector);
 
   const dispatch = useDispatch();
 
@@ -49,35 +49,43 @@ const EventMember = ({ navigation }) => {
   }, [eventDetail.match_join]);
 
   const handleDeleteUserByOwner = () => {
-    const formCancel = {
-      match_id: eventDetail.match_id,
-      user_id: confirmDeleteUserByOwner.id,
-    };
+    try {
+      const formCancel = {
+        match_id: eventDetail.match_id,
+        user_id: confirmDeleteUserByOwner.id,
+      };
 
-    dispatch(unjoinEventByUserOrOwner(formCancel)).then((res) => {
-      setConfirmDeleteUserByOwner(false);
-      setSuccessMessage("Xóa người tham gia thành công");
-      dispatch(getDetailEvent(eventDetail.match_id)).then((res) => {
-        const formData = {
-          long: getUserInfo.longitude,
-          lat: getUserInfo.latitude,
-          distance: DEFAULT_DISTACNCE,
-          start_time: 0,
-          end_time: 23,
-          sport_name: "",
-        };
-        dispatch(getEventList(formData));
-        setTimeout(() => {
-          navigation.goBack();
-        }, 2000);
+      dispatch(unjoinEventByUserOrOwner(formCancel)).then((res) => {
+        setConfirmDeleteUserByOwner(false);
+        setSuccessMessage("Xóa người tham gia thành công");
+        setConfirmDeleteUserByOwner(false);
+        dispatch(getDetailEvent(eventDetail.match_id)).then((response) => {
+          const formData = {
+            long: getUserInfo.longitude,
+            lat: getUserInfo.latitude,
+            distance: DEFAULT_DISTACNCE,
+            start_time: 0,
+            end_time: 23,
+            sport_name: "",
+          };
+          dispatch(getEventList(formData));
+          setTimeout(() => {
+            navigation.goBack();
+          }, 2000);
+        });
       });
-    });
+    } catch (error) {
+      console.log("Error deleting user by owner: ", error);
+    }
   };
+
+  console.log("eventDetail: " + JSON.stringify(eventDetail));
 
   const MemberItem = ({ item }) => {
     return (
       <View>
-        {eventDetail.is_owner ? (
+        {eventDetail.is_owner &&
+        item.user_join_id !== eventDetail.user_create.id ? (
           <TouchableOpacity
             onPress={() => setConfirmDeleteUserByOwner(item.user_join)}
           >
