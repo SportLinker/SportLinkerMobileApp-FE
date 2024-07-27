@@ -149,45 +149,79 @@ const EventDetail = ({ navigation }) => {
   };
 
   const handleCancelEvent = () => {
-    setConfirmCancelEventByOwner(false);
-    dispatch(deleteEvent(eventDetail.match_id)).then((res) => {
-      setSuccessMessage("Hủy sự kiện thành công !!!");
-      setTimeout(() => {
-        const formData = {
-          long: getUserInfo.longitude,
-          lat: getUserInfo.latitude,
-          distance: DEFAULT_DISTACNCE,
-          start_time: 0,
-          end_time: 23,
-          sport_name: "",
-        };
-        dispatch(getEventList(formData));
-        navigation.goBack();
-      }, 3000);
-    });
+    try {
+      setConfirmCancelEventByOwner(false);
+      dispatch(deleteEvent(eventDetail.match_id)).then((res) => {
+        setSuccessMessage("Hủy sự kiện thành công !!!");
+        setTimeout(() => {
+          const formData = {
+            long: getUserInfo.longitude,
+            lat: getUserInfo.latitude,
+            distance: DEFAULT_DISTACNCE,
+            start_time: 0,
+            end_time: 23,
+            sport_name: "",
+          };
+          dispatch(getEventList(formData));
+          navigation.goBack();
+        }, 3000);
+      });
+    } catch (error) {
+      console.log("Error cancle event by owner: ", error);
+    }
   };
   const handleCancelEventByUser = async () => {
-    const clientId = await AsyncStorage.getItem("xClientId");
-    const formCancel = {
-      match_id: eventDetail.match_id,
-      user_id: clientId,
-    };
-    setConfirmCancelEventByUser(false);
+    try {
+      const clientId = await AsyncStorage.getItem("xClientId");
+      const formCancel = {
+        match_id: eventDetail.match_id,
+        user_id: clientId,
+      };
+      setConfirmCancelEventByUser(false);
 
-    dispatch(unjoinEventByUserOrOwner(formCancel)).then((res) => {
-      dispatch(getDetailEvent(eventDetail.match_id));
-      setSuccessMessage("Hủy tham gia thành công !!!");
-      setAttended(false);
-    });
+      dispatch(unjoinEventByUserOrOwner(formCancel)).then((res) => {
+        dispatch(getDetailEvent(eventDetail.match_id)).then((res) => {
+          const formData = {
+            long: getUserInfo.longitude,
+            lat: getUserInfo.latitude,
+            distance: DEFAULT_DISTACNCE,
+            start_time: 0,
+            end_time: 23,
+            sport_name: "",
+          };
+          dispatch(getEventList(formData)).then((response) => {
+            setSuccessMessage("Hủy tham gia thành công !!!");
+            setAttended(false);
+          });
+        });
+      });
+    } catch (error) {
+      console.log("Error unjoin event: ", error);
+    }
   };
 
   const handleJoinEvent = () => {
-    setConfirmJoinEventByoinEventByUser(false);
-    dispatch(joinEventByUser(eventDetail.match_id)).then((res) => {
-      setAttended(true);
-      dispatch(getDetailEvent(eventDetail.match_id));
-      setSuccessMessage("Tham gia kèo thành công");
-    });
+    try {
+      setConfirmJoinEventByoinEventByUser(false);
+      dispatch(joinEventByUser(eventDetail.match_id)).then((res) => {
+        setAttended(true);
+        dispatch(getDetailEvent(eventDetail.match_id)).then((response) => {
+          const formData = {
+            long: getUserInfo.longitude,
+            lat: getUserInfo.latitude,
+            distance: DEFAULT_DISTACNCE,
+            start_time: 0,
+            end_time: 23,
+            sport_name: "",
+          };
+          dispatch(getEventList(formData)).then((response) => {
+            setSuccessMessage("Tham gia kèo thành công");
+          });
+        });
+      });
+    } catch (error) {
+      console.log("Error join event: ", error);
+    }
   };
 
   if (getEventLoading && !isOpenUpdateModal) {
