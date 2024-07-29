@@ -3,6 +3,7 @@ import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { useIsFocused } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import {
+  Alert,
   Image,
   KeyboardAvoidingView,
   Platform,
@@ -158,7 +159,11 @@ const LoginScreen = ({ navigation }) => {
                 padding: 8,
               }}
               onPress={
-                () => Alert.alert("Tính năng đang phát triển", "")
+                () =>
+                  Alert.alert(
+                    "Tính năng đang phát triển",
+                    "Hãy đăng nhập bằng username"
+                  )
                 // onGoogleButtonPress().then(() =>
                 //   console.log("Signed in with Google!")
                 // )
