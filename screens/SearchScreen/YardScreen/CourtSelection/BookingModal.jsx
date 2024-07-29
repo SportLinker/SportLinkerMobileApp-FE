@@ -1,40 +1,51 @@
+import DateTimePicker from "@react-native-community/datetimepicker";
 import React, { useState } from "react";
 import {
+  Alert,
   Modal,
+  StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  StyleSheet,
-  Alert,
 } from "react-native";
-import DateTimePicker from "@react-native-community/datetimepicker";
 
 const BookingModal = ({
   visible,
   onClose,
   selectedDate,
   setSelectedDate,
-  showCalendar,
-  setShowCalendar,
   startTime,
   setStartTime,
   endTime,
   setEndTime,
-  isManualTimeSelection,
-  setIsManualTimeSelection,
-  selectedSlot,
-  setSelectedSlot,
   showTimePicker,
   setShowTimePicker,
   handleConfirmTime,
-  handleSlotSelection,
   renderBookingsForDate,
   selectedYard,
 }) => {
   const [isSelectingStartTime, setIsSelectingStartTime] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
+  // const [hour, setHour] = useState(getCurrentHour);
+  // const [minute, setMinute] = useState(getCurrentMinute);
 
+  // function getCurrentHour() {
+  //   const now = new Date();
+  //   return now.getHours();
+  // }
+  // function getCurrentMinute() {
+  //   const now = new Date();
+  //   return now.getMinutes();
+  // }
+
+  // function formatTime(hour, minute) {
+  //   const formattedHour = hour.toString().padStart(2, "0");
+  //   const formattedMinute = minute.toString().padStart(2, "0");
+  //   return `${formattedHour}:${formattedMinute}`;
+  // }
   const handleConfirmBooking = () => {
+    // const formattedTime = formatTime(hour, minute);
+
     if (!selectedDate) {
       Alert.alert("Vui lòng chọn ngày");
       return;
@@ -44,6 +55,11 @@ const BookingModal = ({
       Alert.alert("Vui lòng chọn đầy đủ giờ bắt đầu và kết thúc");
       return;
     }
+
+    // if (startTime < formattedTime) {
+    //   Alert.alert("Giờ bắt đầu không trước giờ hiện tại");
+    //   return;
+    // }
 
     const start = new Date(`${selectedDate}T${startTime}`);
     const end = new Date(`${selectedDate}T${endTime}`);
@@ -105,7 +121,8 @@ const BookingModal = ({
             <Text style={styles.closeModalButtonText}>Đóng</Text>
           </TouchableOpacity>
           <Text style={styles.bookingTitle}>
-            Đặt sân {selectedYard ? selectedYard.yard_name : ""}
+            Đặt sân{"\n"}
+            <Text> {selectedYard ? selectedYard.yard_name : ""}</Text>
           </Text>
           <Text style={styles.bookingTitle}>Chọn ngày</Text>
           <TouchableOpacity
@@ -126,108 +143,73 @@ const BookingModal = ({
           )}
           {selectedDate && renderBookingsForDate()}
           <View style={styles.timeSelectionContainer}>
-            <TouchableOpacity
-              onPress={() => setIsManualTimeSelection(!isManualTimeSelection)}
-              style={styles.manualTimeSelectionButton}
-            >
-              <Text style={styles.manualTimeSelectionButtonText}>
-                {isManualTimeSelection
-                  ? "Chọn theo slot thời gian"
-                  : "Chọn giờ thủ công"}
-              </Text>
-            </TouchableOpacity>
+            <View style={styles.manualTimeSelectionButton}>
+              <Text style={styles.manualTimeSelectionButtonText}>Chọn giờ</Text>
+            </View>
             <Text style={styles.timeSelectionTitle}>
-              {isManualTimeSelection
-                ? "Chọn giờ bắt đầu và kết thúc"
-                : "Chọn slot thời gian"}
+              Chọn giờ bắt đầu và kết thúc
             </Text>
-            {isManualTimeSelection ? (
-              <View>
-                <TouchableOpacity
-                  onPress={() => {
-                    setIsSelectingStartTime(true);
-                    setShowTimePicker(true);
+
+            <View>
+              <TouchableOpacity
+                onPress={() => {
+                  setIsSelectingStartTime(true);
+                  setShowTimePicker(true);
+                }}
+                style={styles.timePickerButton}
+              >
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
                   }}
-                  style={styles.timePickerButton}
                 >
-                  <View
+                  <Text style={styles.timePickerButtonText}>
+                    Chọn giờ bắt đầu:
+                  </Text>
+                  <Text
                     style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      justifyContent: "space-between",
+                      color: "#1446a9",
+                      fontWeight: "bold",
+                      fontSize: 20,
+                      marginVertical: "auto",
                     }}
                   >
-                    <Text style={styles.timePickerButtonText}>
-                      Chọn giờ bắt đầu:
-                    </Text>
-                    <Text
-                      style={{
-                        color: "#1446a9",
-                        fontWeight: "bold",
-                        fontSize: 20,
-                        marginVertical: "auto",
-                      }}
-                    >
-                      {startTime || "HH:MM"}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => {
-                    setIsSelectingStartTime(false);
-                    setShowTimePicker(true);
+                    {startTime || "HH:MM"}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  setIsSelectingStartTime(false);
+                  setShowTimePicker(true);
+                }}
+                style={styles.timePickerButton}
+              >
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
                   }}
-                  style={styles.timePickerButton}
                 >
-                  <View
+                  <Text style={styles.timePickerButtonText}>
+                    Chọn giờ kết thúc:
+                  </Text>
+                  <Text
                     style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      justifyContent: "space-between",
+                      color: "#1446a9",
+                      fontWeight: "bold",
+                      fontSize: 20,
+                      marginVertical: "auto",
                     }}
                   >
-                    <Text style={styles.timePickerButtonText}>
-                      Chọn giờ kết thúc:
-                    </Text>
-                    <Text
-                      style={{
-                        color: "#1446a9",
-                        fontWeight: "bold",
-                        fontSize: 20,
-                        marginVertical: "auto",
-                      }}
-                    >
-                      {endTime || "HH:MM"}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-            ) : (
-              <View>
-                {["8:00 - 12:00", "12:00 - 16:00", "16:00 - 20:00"].map(
-                  (slot) => (
-                    <TouchableOpacity
-                      key={slot}
-                      onPress={() => handleSlotSelection(slot)}
-                      style={[
-                        styles.timeSlotButton,
-                        selectedSlot === slot && styles.selectedTimeSlotButton,
-                      ]}
-                    >
-                      <Text
-                        style={[
-                          styles.timeSlotButtonText,
-                          selectedSlot === slot &&
-                            styles.selectedTimeSlotButtonText,
-                        ]}
-                      >
-                        {slot}
-                      </Text>
-                    </TouchableOpacity>
-                  )
-                )}
-              </View>
-            )}
+                    {endTime || "HH:MM"}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
 
             <TouchableOpacity
               onPress={handleConfirmBooking}
@@ -294,7 +276,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#2196F3",
     borderRadius: 10,
     padding: 10,
-    width: "50%",
+    width: "60%",
     marginBottom: 10,
   },
   toggleCalendarButtonText: {
@@ -306,14 +288,15 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   manualTimeSelectionButton: {
-    backgroundColor: "#2196F3",
-    borderRadius: 10,
+    // backgroundColor: "#2196F3",
+    // borderRadius: 10,
     padding: 10,
     marginVertical: 10,
   },
   manualTimeSelectionButtonText: {
-    color: "white",
-    fontSize: 16,
+    color: "black",
+    fontSize: 24,
+    fontWeight: "bold",
     textAlign: "center",
   },
   timeSelectionTitle: {
@@ -322,7 +305,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   timePickerButton: {
-    backgroundColor: "#a5a5a5",
+    backgroundColor: "#bebebe",
     borderRadius: 10,
     padding: 10,
     marginVertical: 5,

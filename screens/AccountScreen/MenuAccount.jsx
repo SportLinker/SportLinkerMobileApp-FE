@@ -48,6 +48,7 @@ export default function MenuAccount({ showMenu, setShowMenu }) {
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate("WalletHomeScreen");
+                setShowMenu(false);
               }}
               style={styles.menuItem}
             >

@@ -27,12 +27,6 @@ const phoneRegExp = /^0\d{9}$/;
 
 const validationSchema = Yup.object().shape({
   textName: Yup.string().required("Tên là bắt buộc"),
-  textEmail: Yup.string()
-    .email("Email không hợp lệ")
-    .required("Email là bắt buộc"),
-  phone: Yup.string()
-    .matches(phoneRegExp, "Số điện thoại không hợp lệ!")
-    .required("Số điện thoại là bắt buộc!"),
   dateOfBirth: Yup.date().required("Ngày sinh là bắt buộc"),
   textBio: Yup.string(),
   isGenderSelected: Yup.string().required("Giới tính là bắt buộc"),

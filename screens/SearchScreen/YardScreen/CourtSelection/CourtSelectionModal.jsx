@@ -130,13 +130,6 @@ const CourtSelectionModal = ({ visible, onClose, stadiumId }) => {
     }
 
     if (!isManualTimeSelection) {
-      if (selectedSlot) {
-        const [start, end] = selectedSlot.split(" - ");
-        confirmBooking(start, end);
-      } else {
-        Alert.alert("Vui lòng chọn giờ");
-      }
-    } else {
       if (startTime === "" || endTime === "") {
         Alert.alert("Vui lòng chọn giờ bắt đầu và kết thúc");
         return;
