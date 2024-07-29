@@ -45,6 +45,16 @@ const MyBook = () => {
     return `${hours}:${minutes}`;
   };
 
+  const formatDate = (dateTimeString) => {
+    const date = new Date(dateTimeString);
+    // Thay đổi định dạng ngày theo nhu cầu, ví dụ 'Ngày 27/07/2024'
+    return date.toLocaleDateString("vi-VN", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+  };
+
   const getStatusColor = (status) => {
     switch (status) {
       case "pending":
@@ -86,8 +96,12 @@ const MyBook = () => {
       <View style={styles.innerText}>
         <Text style={styles.textBold}>Thời gian: </Text>
         <Text style={styles.text}>
-          {formatTime(item.time_start)} -{formatTime(item.time_end)} giờ
+          {formatTime(item.time_start)} - {formatTime(item.time_end)} giờ
         </Text>
+      </View>
+      <View style={styles.innerText}>
+        <Text style={styles.textBold}>Ngày: </Text>
+        <Text style={styles.text}>{formatDate(item.time_start)}</Text>
       </View>
 
       <View style={styles.innerText}>
@@ -116,6 +130,8 @@ const MyBook = () => {
       )}
     </View>
   );
+
+  console.log(booked);
 
   return (
     <View style={styles.container}>

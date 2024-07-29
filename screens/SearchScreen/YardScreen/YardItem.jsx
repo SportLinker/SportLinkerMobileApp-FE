@@ -111,6 +111,7 @@ const styles = StyleSheet.create({
     color: "#f9a827",
     fontWeight: "bold",
     marginLeft: 5,
+    marginVertical: "auto",
   },
   infoContainer: {
     flex: 1,
