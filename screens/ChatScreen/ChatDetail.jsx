@@ -100,19 +100,13 @@ export default function ChatDetail({ navigation }) {
               }}
               style={{ marginRight: 10 }}
             />
-            <View>
-              <Text style={styles.userName}>
-                {chatDetail.group_message_detail.group_message_name}
-              </Text>
-              <Text style={styles.userActive}>Đang hoạt động</Text>
-            </View>
           </View>
         </View>
         <ScrollView
           ref={scrollViewRef}
           style={styles.chatBody}
           contentContainerStyle={{ paddingTop: 20 }}
-          onLayout={scrollToBottom} // Scroll to the end when ScrollView is rendered
+          onLayout={scrollToBottom}
         >
           {chatDetail.messages
             .slice()
