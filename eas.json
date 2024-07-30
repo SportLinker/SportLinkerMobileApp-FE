@@ -12,14 +12,16 @@
       "env": {
         "API_URL": "https://be.sportlinker.site/v1/api",
         "CLOUDINARY_CLOUD_NAME": "dgo0zdagl",
-        "CLOUDINARY_UPLOAD_PRESET_NAME": "_SportLinker"
+        "CLOUDINARY_UPLOAD_PRESET_NAME": "_SportLinker",
+        "API_SOCKET": "https://be.sportlinker.site"
       }
     },
     "production": {
       "env": {
         "API_URL": "https://be.sportlinker.site/v1/api",
         "CLOUDINARY_CLOUD_NAME": "dgo0zdagl",
-        "CLOUDINARY_UPLOAD_PRESET_NAME": "_SportLinker"
+        "CLOUDINARY_UPLOAD_PRESET_NAME": "_SportLinker",
+        "API_SOCKET": "https://be.sportlinker.site"
       }
     }
   },
