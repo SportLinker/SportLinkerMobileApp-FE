@@ -142,6 +142,7 @@ export default function EditAccountScreen({ navigation }) {
                     style={styles.input}
                     onChangeText={handleChange("phone")}
                     onBlur={handleBlur("phone")}
+                    placeholder="Đang phát triển"
                     readOnly
                     value={values.phone}
                   />
@@ -156,6 +157,7 @@ export default function EditAccountScreen({ navigation }) {
                     onChangeText={handleChange("textEmail")}
                     onBlur={handleBlur("textEmail")}
                     value={values.textEmail}
+                    placeholder="Đang phát triển"
                     readOnly
                   />
                   {touched.textEmail && errors.textEmail && (

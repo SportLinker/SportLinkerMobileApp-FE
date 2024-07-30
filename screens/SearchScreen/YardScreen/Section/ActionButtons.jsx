@@ -35,7 +35,7 @@ export const ActionButtons = ({ stadium, handleRating }) => {
       </TouchableOpacity>
       <TouchableOpacity style={styles.iconContainer} onPress={openModal}>
         <Ionicons
-          name="bookmark-outline"
+          name="calendar-outline"
           size={30}
           color="black"
           style={{ paddingBottom: 3 }}
