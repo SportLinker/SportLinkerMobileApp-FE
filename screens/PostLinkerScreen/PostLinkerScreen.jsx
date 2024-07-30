@@ -289,7 +289,7 @@ export default function PostLinkerScreen({ navigation }) {
                 contentStyle={{
                   flexDirection: "row-reverse",
                   alignItems: "center",
-                  justifyContent: "space-between",
+                  justifyContent: "center",
                   gap: 5,
                 }}
                 labelStyle={{
@@ -302,7 +302,6 @@ export default function PostLinkerScreen({ navigation }) {
                 }}
                 onPress={() => alert("Tính năng đang phát triển")}
                 mode="outlined"
-                icon="chevron-down"
                 style={{
                   borderRadius: 5,
                   height: 30,

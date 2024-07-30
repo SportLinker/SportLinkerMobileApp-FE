@@ -396,6 +396,7 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 50,
+    lineHeight: 50,
     backgroundColor: "white",
     marginVertical: 10,
     // borderWidth: 1,
