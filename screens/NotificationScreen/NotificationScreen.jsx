@@ -94,16 +94,6 @@ export default function NotificationScreen({ navigation }) {
         <View>
           {notifications.length > 0 && notifications ? (
             <View>
-              <Text
-                style={{
-                  marginTop: 20,
-                  marginLeft: 20,
-                  fontWeight: 700,
-                  color: "#a7a7a7",
-                }}
-              >
-                Hôm nay
-              </Text>
               {notifications.map((item) => (
                 <View
                   key={item.notification_id}
