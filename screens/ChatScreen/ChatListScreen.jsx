@@ -33,10 +33,11 @@ export default function ChatListScreen({ navigation }) {
 
   useEffect(() => {
     if (isFocused) {
-      dispatch(getListMessage());
+      // dispatch(getListMessage());
       socket.emit("online-user", userInfo.id);
     }
   }, [isFocused]);
+
   useEffect(() => {
     if (socket) {
       const handleMessageReceive = (msg) => {

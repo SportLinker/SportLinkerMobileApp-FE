@@ -15,7 +15,7 @@ export const login = createAsyncThunk(
         password,
       });
 
-      console.log("login data:", data.data);
+      console.log("login data:", data);
       return data.data;
     } catch (error) {
       console.log("error", error);

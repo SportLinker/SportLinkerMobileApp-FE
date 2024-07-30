@@ -123,7 +123,6 @@ const styles = StyleSheet.create({
   },
   playerDetails: {
     flexDirection: "column",
-    marginLeft: 20,
   },
   favoriteText: {
     paddingLeft: 20,

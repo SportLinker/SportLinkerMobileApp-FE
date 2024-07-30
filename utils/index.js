@@ -215,6 +215,9 @@ export function getDistanceTime(timestamp) {
   if (timeDifference < millisecondsInADay) {
     //if the distance time less than 24hours ago
     const hoursAgo = Math.floor(timeDifference / millisecondsInAnHour);
+    if (hoursAgo == 0) {
+      return `Vừa đăng`;
+    }
     return `${hoursAgo}h`;
   } else if (timeDifference < millisecondsInADay * 7) {
     //if the distance time less than 7 days ago

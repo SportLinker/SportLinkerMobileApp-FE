@@ -53,6 +53,15 @@ const LoginScreen = ({ navigation }) => {
       "hardwareBackPress",
       backAction
     );
+    if (userInfo.id) {
+      if (userInfo.role === "player") {
+        navigation.navigate("BottomTabs");
+      }
+      if (userInfo.role === "stadium") {
+        console.log("Please");
+        navigation.navigate("BottomTabYardOwnerNavigator");
+      }
+    }
 
     return () => backHandler.remove();
   }, []);
