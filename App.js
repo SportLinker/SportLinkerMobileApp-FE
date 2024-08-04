@@ -10,7 +10,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { MenuProvider } from "react-native-popup-menu"; // Thêm import
 
 const App = () => (
-  <SafeAreaProvider>
+  <SafeAreaProvider style={{ color: "black" }}>
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <PaperProvider>
