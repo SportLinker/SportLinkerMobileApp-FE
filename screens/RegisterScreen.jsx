@@ -172,6 +172,7 @@ export default function RegisterScreen({ navigation }) {
               <Text style={styles.label}>Tên đăng nhập:</Text>
               <TextInput
                 style={styles.input}
+                textColor="black"
                 mode="outlined"
                 inputMode="text"
                 placeholder="Tên đăng nhập"
@@ -187,6 +188,7 @@ export default function RegisterScreen({ navigation }) {
               <Text style={styles.label}>Họ và tên:</Text>
               <TextInput
                 style={styles.input}
+                textColor="black"
                 mode="outlined"
                 inputMode="text"
                 placeholder="Họ và tên"
@@ -202,6 +204,7 @@ export default function RegisterScreen({ navigation }) {
               <Text style={styles.label}>Mật khẩu:</Text>
               <TextInput
                 style={styles.input}
+                textColor="black"
                 mode="outlined"
                 inputMode="text"
                 placeholder="Mật khẩu"
@@ -225,6 +228,7 @@ export default function RegisterScreen({ navigation }) {
               <Text style={styles.label}>Xác nhận mật khẩu:</Text>
               <TextInput
                 style={styles.input}
+                textColor="black"
                 dense
                 mode="outlined"
                 inputMode="text"
